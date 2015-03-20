@@ -1,0 +1,18 @@
+---
+layout: default
+---
+          <a id="forkme_banner" href="https://github.com/kindquiet">View on GitHub</a>
+
+          <h1 id="project_title">Kindquiet.GitHub.io</h1>
+          <h2 id="project_tagline">素食勤俭敬老孝慈 - dayu's blog</h2>
+
+<p>This is the index page</p>
+<p>My post list:</p>
+<ul>
+   {% for post in site.posts %}
+       <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+   {% endfor %}
+</ul>
+
+
+
