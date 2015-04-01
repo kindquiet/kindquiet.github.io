@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>nfs  mount  permission denied的可能原因及解决 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="nfs  mount  permission denied的可能原因及解决"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-06-24T07:39:10.000Z" class="post__time">六月 24, 2010</time><h1 class="post__title"><a href="/2010/06/24/w/nfs-mount-permission-denied-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0-e5-8f-8a-e8-a7-a3-e5-86-b3/">nfs  mount  permission denied的可能原因及解决</a></h1></header><div class="post__main"><p>当nfs客户端增加到十台时，clinet报错</p>
+<pre><code><span class="symbol">mount:</span> <span class="number">10.168</span>.<span class="number">1.162</span><span class="symbol">:/data/iscsi/webapp</span> failed, reason given by <span class="symbol">server:</span> <span class="constant">Permission </span>denied
+
+<span class="symbol">server:</span>
+
+<span class="constant">Jun </span><span class="number">24</span> <span class="number">10</span><span class="symbol">:</span><span class="number">13</span><span class="symbol">:</span><span class="number">17</span> svr162 mountd[<span class="number">15431</span>]<span class="symbol">:</span> authenticated mount request from <span class="number">10.168</span>.<span class="number">1.176</span><span class="symbol">:</span><span class="number">1020</span> <span class="keyword">for</span> /data/iscsi/webapp (<span class="regexp">/data/iscsi</span><span class="regexp">/webapp)</span>
+</code></pre><p>升级nfs server:</p>
+<p>yum update nfs-utils&nbsp; portmap</p>
+<pre><code>排除iptables防火墙、hosts.deny限制等原因，子网内所有服务器都有权限mount,
+
+showmount -e <span class="number">10</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">162</span>
+
+/data/iscsi/webapp&amp;nbsp; <span class="number">10</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">0</span>/<span class="number">24</span>
+
+考虑是否超出了nfs服务器支持的客户端数量上限。查资料nfs属于无状态服务，没有数量限制。试过多种方法，终于解决，只要mount
+
+nfsd on /<span class="keyword">proc</span>/fs/nfsd <span class="keyword">type</span> nfsd (rw)
+
+you can solve the problem adding the following lines <span class="keyword">in</span> /etc/fstab on the server side:
+
+nfsd /<span class="keyword">proc</span>/fs/nfsd nfsd <span class="type">auto</span>,defaults <span class="number">0</span> <span class="number">0</span>
+
+sunrpc /<span class="keyword">var</span>/lib/nfs/rpc_pipefs rpc_pipefs <span class="type">auto</span>,defaults <span class="number">0</span> <span class="number">0</span>
+
+<span class="type">Then</span> <span class="keyword">type</span> on the server
+
+mount -a
+
+<span class="type">And</span> <span class="keyword">try</span> to mount de resource <span class="keyword">in</span> the client
+</code></pre><p><a href="http://www.linuxforums.org/forum/linux-networking/44779-nfs-permission-denied-error.html" target="_blank" rel="external">http://www.linuxforums.org/forum/linux-networking/44779-nfs-permission-denied-error.html</a></p>
+</div><footer class="post__foot u-cf"><a href="/2010/06/24/w/nfs-mount-permission-denied-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0-e5-8f-8a-e8-a7-a3-e5-86-b3/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/06/24/w/nfs-mount-permission-denied-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0-e5-8f-8a-e8-a7-a3-e5-86-b3/" data-url="http://blog.veryi.com/2010/06/24/w/nfs-mount-permission-denied-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0-e5-8f-8a-e8-a7-a3-e5-86-b3/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/07/06/w/e8-80-81-e6-97-a7-e7-b3-bb-e7-bb-9f-e8-af-b7-e8-b0-a8-e6-85-8e-e5-8d-87-e7-ba-a7gcc/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/06/13/w/e5-9b-bd-e5-86-85-e7-9a-84centos-yum-e6-ba-90-e5-8f-8arpm-e4-bb-93-e5-ba-93/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

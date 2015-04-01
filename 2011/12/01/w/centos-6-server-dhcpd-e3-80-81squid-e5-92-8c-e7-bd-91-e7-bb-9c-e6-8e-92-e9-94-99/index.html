@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos 6 server dhcpd、squid和网络排错 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos 6 server dhcpd、squid和网络排错"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-12-01T07:32:41.000Z" class="post__time">十二月 1, 2011</time><h1 class="post__title"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/">centos 6 server dhcpd、squid和网络排错</a></h1></header><div class="post__main"><p>服务器需要停止的服务：</p>
+<pre><code>NetworkManager
+
+dnsmasq
+
+域名不能解析，resolv.conf被修改
+
+cat /etc/resolv.conf
+
+# Generated <span class="keyword">by</span> NetworkManager
+
+chkconfig dnsmasq off
+
+chkconfig --list dnsmasq
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: ** Ignoring requests <span class="keyword">on</span> eth0.&amp;nbsp; <span class="keyword">If</span> this <span class="keyword">is</span> <span class="keyword">not</span> what
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; you want, please <span class="keyword">write</span> a subnet declaration
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">in</span> your dhcpd.conf file <span class="keyword">for</span> the network segment
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> which <span class="keyword">interface</span> eth0 <span class="keyword">is</span> attached. **
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: <span class="keyword">Not</span> configured <span class="keyword">to</span> listen <span class="keyword">on</span> any interfaces!
+
+在subnet里定义的网段要与你的网卡IP所处网段一致,
+
+实际情况是网卡eth0没启动。
+
+chkconfig --list dhcpd
+
+centos <span class="number">6</span> 启动eth0 网卡时报错：
+
+Error: Connection activation failed: Device <span class="keyword">not</span> managed <span class="keyword">by</span> NetworkManager
+
+<span class="number">1</span>\. <span class="keyword">Remove</span> Network Manager <span class="keyword">from</span> startup Services.
+
+chkconfig NetworkManager off
+
+chkconfig --list NetworkManager
+
+<span class="number">2</span>\. <span class="keyword">Add</span> <span class="keyword">Default</span> Net Manager
+
+chkconfig network <span class="keyword">on</span>
+
+chkconfig --list network
+
+Stop NetworkManager first
+
+service NetworkManager stop
+
+<span class="keyword">and</span> <span class="keyword">then</span> start <span class="keyword">Default</span> Manager
+
+service network start
+
+<span class="keyword">or</span> you can change it easy:
+
+system-config-network 
+
+uncheck the box that sets the eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="keyword">and</span> <span class="keyword">set</span> IP info <span class="keyword">from</span> there.
+
+system-config-services 
+
+stop <span class="keyword">and</span> disable NetworkManager , start <span class="keyword">and</span> enable network
+
+you have problem because both <span class="keyword">of</span> NetworkManager <span class="keyword">and</span> Network <span class="keyword">using</span> same Network driver <span class="keyword">and</span> <span class="keyword">default</span> network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared after restart.
+
+squid Version <span class="number">3.2</span>.<span class="number">0.13</span>: ERROR: No
+
+<span class="keyword">forward</span>-proxy ports configured.
+
+&amp;gt; #http/https ports
+
+&amp;gt; http_port <span class="number">33070</span> transparent
+
+&amp;gt;
+
+So, only one port, <span class="keyword">and</span> its a NAT traffic receiving port. Looks like 
+
+Squid was right, &amp;quot;no <span class="keyword">forward</span>-proxy ports configured&amp;quot;.
+
+Should <span class="keyword">not</span> be <span class="keyword">on</span> every request, that <span class="keyword">is</span> a sign <span class="keyword">of</span> some other problem 
+
+happening. Just <span class="keyword">on</span> the ones which need <span class="keyword">to</span> produce internal URLs (ie 
+
+error page icons, FTP directory icons, cache manager requests, etc). 
+
+Squid requires a <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> the URL it tells the browser <span class="keyword">to</span> 
+
+fetch those icons <span class="keyword">from</span>. A NAT <span class="keyword">or</span> TROXY receiving port <span class="keyword">is</span> somewhat 
+
+vulnerable <span class="keyword">to</span> forgery attacks <span class="keyword">and</span> Squid now avoids publishing its 
+
+details. Accel ports have some problematic cases <span class="keyword">in</span> the parser <span class="keyword">and</span> <span class="keyword">until</span> 
+
+those are figured <span class="keyword">out</span> properly they are avoided <span class="keyword">as</span> well. Which just 
+
+leaves the regular <span class="keyword">old</span> <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> now.
+
+Adding &amp;quot;http_port <span class="number">3128</span>&amp;quot; <span class="keyword">or</span> somesuch <span class="keyword">is</span> enough <span class="keyword">to</span> avoid this message
+
+http:<span class="comment">//web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/" data-url="http://blog.veryi.com/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/11/26/w/e8-af-ab-e5-90-be-e4-b9-a1-e5-88-9d-e5-8f-91-e5-bf-83-e5-ad-a6-e4-bd-9b-e8-80-85-e4-b9-a6-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-ab/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

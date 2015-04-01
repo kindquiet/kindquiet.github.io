@@ -1,0 +1,187 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>linux服务器samba源代码安装设置 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="linux服务器samba源代码安装设置"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-03-27T02:47:07.000Z" class="post__time">三月 27, 2009</time><h1 class="post__title"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/">linux服务器samba源代码安装设置</a></h1></header><div class="post__main"><p>操作系统：</p>
+<p>cat /etc/redhat-release</p>
+<p>CentOS release 4.5 (Final)</p>
+<p>&nbsp;</p>
+<p>安装</p>
+<p>cd /usr/local/src/</p>
+<p>wget <a href="http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz" target="_blank" rel="external">http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz</a></p>
+<p>tar xfz samba-3.3.2.tar.gz</p>
+<p>cd /usr/local/src/samba-3.3.2/source</p>
+<p>./configure &ndash;prefix=/usr/local/samba/</p>
+<p>make -j6 &amp;&amp; make install</p>
+<p>&nbsp;</p>
+<p>系统默认语言:</p>
+<p>cat /etc/sysconfig/i18n</p>
+<p>LANG=&quot;zh_CN.UTF-8&quot;</p>
+<pre><code><span class="constant">LC_ALL</span>=&amp;quot;zh_CN.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
+
+<span class="constant">LANGUAGE</span>=&amp;quot;zh_CN.<span class="constant">GB18030</span><span class="symbol">:zh_CN</span>.<span class="constant">GB2312</span><span class="symbol">:zh_CN</span><span class="symbol">:en_US</span>.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
+</code></pre><p>SUPPORTED=&rdquo;zh_HK.UTF-8:zh_HK:zh:zh_CN.UTF-8:zh_CN:zh:zh_SG.UTF-8:zh_SG:zh:zh_TW.UTF-8:zh_TW:zh:en_US.UTF-8:en_US:en&rdquo;</p>
+<p>SYSFONT=&rdquo;latarcyrheb-sun16&Prime;</p>
+<p>&nbsp;</p>
+<p>vi /etc/ld.so.conf</p>
+<p>添加 :</p>
+<p>/usr/local/samba/lib</p>
+<p><span id="ArticleContent1_ArticleContent1_lblContent">更新动态链接库</span>缓存:</p>
+<p>ldconfig</p>
+<p>&nbsp;</p>
+<p>cd /usr/local/samba/lib</p>
+<p>vi smb.conf</p>
+<p>[global]</p>
+<p>&nbsp;&nbsp; DISPLAY CHARSET= utf8</p>
+<p>&nbsp;&nbsp; #UNIX CHARSET = cp936</p>
+<p>&nbsp;&nbsp;&nbsp; unix charset = UTF-8</p>
+<p>&nbsp;&nbsp; DOS CHARSET = utf8</p>
+<p>&nbsp;&nbsp; workgroup = workgroup</p>
+<p>&nbsp;&nbsp; server string = veryi.com samba server</p>
+<p>&nbsp;&nbsp; security = user</p>
+<p>&nbsp;&nbsp; load printers = no</p>
+<p>&nbsp;&nbsp; log level = 2</p>
+<p>&nbsp;&nbsp; log file = /var/log/samba/%m.%I.log</p>
+<p>&nbsp;&nbsp; max log size = 5000</p>
+<p>&nbsp;&nbsp;&nbsp; announce as = NT</p>
+<p>&nbsp;&nbsp;&nbsp; announce version = 4.0</p>
+<p>&nbsp;&nbsp;&nbsp; browse list = yes</p>
+<p>&nbsp;&nbsp; encrypt passwords = yes</p>
+<p>&nbsp;&nbsp; smb passwd file = /etc/samba/smbpasswd</p>
+<p>&nbsp;&nbsp; dns proxy = no</p>
+<p>&nbsp;&nbsp; socket options = TCP_NODELAY SO_RCVBUF=8192 SO_SNDBUF=8192</p>
+<p>&nbsp; interfaces = 192.168.6.0/24</p>
+<p>&nbsp;&nbsp; local master = yes</p>
+<p>&nbsp;&nbsp; os level = 89</p>
+<p>&nbsp;&nbsp; time server&nbsp; = yes</p>
+<p>&nbsp;&nbsp; domain master = yes</p>
+<p>&nbsp;&nbsp; preferred master = yes</p>
+<p>&nbsp;&nbsp; domain logons = yes</p>
+<p>&nbsp;&nbsp; wins support = yes</p>
+<p>[homes]</p>
+<p>&nbsp;&nbsp; comment = Home Directories</p>
+<p>&nbsp;&nbsp; browseable = no</p>
+<p>&nbsp;&nbsp; writable = yes</p>
+<p>&nbsp;&nbsp; valid users = %S</p>
+<p>&nbsp;&nbsp; create mode = 0664</p>
+<p>&nbsp;&nbsp; directory mode = 0775</p>
+<p>&nbsp;&nbsp; map to guest = bad user</p>
+<p>[work]</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comment = web application root</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path = /home/work</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; write list = veryi</p>
+<p>[printers]</p>
+<p>&nbsp;&nbsp; comment = All Printers</p>
+<p>&nbsp;&nbsp; path = /usr/spool/samba</p>
+<p>&nbsp;&nbsp; browseable = no</p>
+<p>&nbsp;&nbsp; guest ok = no</p>
+<p>&nbsp;&nbsp; writable = no</p>
+<p>&nbsp;&nbsp; printable = yes</p>
+<h1 id="如果是rpm、yum安装配置文件在/etc/samba目录下。">如果是rpm、yum安装配置文件在/etc/samba目录下。</h1><p>添加用户：</p>
+<p>smbpasswd -a user01</p>
+<p>&nbsp;</p>
+<p>启动脚本（redhat）：</p>
+<p>vi /etc/init.d/smb</p>
+<h1 id="!/bin/sh">!/bin/sh</h1><p>#</p>
+<h1 id="chkconfig:_-_91_35">chkconfig: - 91 35</h1><h1 id="description:_Starts_and_stops_the_Samba_smbd_and_nmbd_daemons_\">description: Starts and stops the Samba smbd and nmbd daemons \</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_used_to_provide_SMB_network_services-">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used to provide SMB network services.</h1><p>#</p>
+<h1 id="pidfile:_/var/run/samba/smbd-pid">pidfile: /var/run/samba/smbd.pid</h1><h1 id="pidfile:_/var/run/samba/nmbd-pid">pidfile: /var/run/samba/nmbd.pid</h1><h1 id="config:&nbsp;_/etc/samba/smb-conf">config:&nbsp; /etc/samba/smb.conf</h1><h1 id="Source_function_library-">Source function library.</h1><p>if [ -f /etc/init.d/functions ] ; then</p>
+<p>&nbsp; . /etc/init.d/functions</p>
+<p>elif [ -f /etc/rc.d/init.d/functions ] ; then</p>
+<p>&nbsp; . /etc/rc.d/init.d/functions</p>
+<p>else</p>
+<p>&nbsp; exit 0</p>
+<p>fi</p>
+<h1 id="Avoid_using_root&rsquo;s_TMPDIR">Avoid using root&rsquo;s TMPDIR</h1><p>unset TMPDIR</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>. /etc/sysconfig/network</p>
+<p>if [ -f /etc/sysconfig/samba ]; then</p>
+<p>&nbsp;&nbsp; . /etc/sysconfig/samba</p>
+<p>fi</p>
+<p>&nbsp;</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0</p>
+<h1 id="Check_that_smb-conf_exists-">Check that smb.conf exists.</h1><h1 id="[_-f_/etc/samba/smb-conf_]_||_exit_0">[ -f /etc/samba/smb.conf ] || exit 0</h1><p>[ -f /usr/local/samba/lib/smb.conf ] || exit 0</p>
+<h1 id="Options_to_smbd">Options to smbd</h1><p>SMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
+<h1 id="Options_to_nmbd">Options to nmbd</h1><p>NMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
+<p>RETVAL=0</p>
+<p>start() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/smbd $SMBDOPTIONS</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/nmbd $NMBDOPTIONS</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; touch /var/lock/subsys/smb || \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=1</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>stop() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc nmbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; rm -f /var/lock/subsys/smb</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo &ldquo;&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>restart() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
+<p>}</p>
+<p>reload() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Reloading smb.conf file: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd -HUP</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>&nbsp;</p>
+<p>rhstatus() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status smbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status nmbd</p>
+<p>}</p>
+<h1 id="Allow_status_as_non-root-">Allow status as non-root.</h1><p>if [ &quot;$1&quot; = status ]; then</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit $?</p>
+<p>fi</p>
+<h1 id="Check_that_we_can_write_to_it&hellip;_so_non-root_users_stop_here">Check that we can write to it&hellip; so non-root users stop here</h1><h1 id="[_-w_/etc/samba/smb-conf_]_||_exit_0">[ -w /etc/samba/smb.conf ] || exit 0</h1><p>case &ldquo;$1&Prime; in</p>
+<p>&nbsp; start)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; stop)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; restart)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; restart</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; reload)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reload</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; status)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; condrestart)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ -f /var/lock/subsys/smb ] &amp;&amp; restart || :</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; *)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo $&rdquo;Usage: $0 {start|stop|restart|reload|status|condrestart}&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1</p>
+<p>esac</p>
+<p>exit $?</p>
+<p>增加执行属性:</p>
+<p>chmod +x /etc/init.d/smb</p>
+<p>mkdir -p /var/log/samba</p>
+<p>&nbsp;</p>
+<p>启动：</p>
+<p>/etc/init.d/smb start</p>
+</div><footer class="post__foot u-cf"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/" data-url="http://blog.veryi.com/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/03/30/w/e4-ba-94-e7-a6-8f-e4-b8-b4-e9-97-a8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

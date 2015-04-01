@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>用u盘/移动硬盘升级pc服务器bios - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="用u盘/移动硬盘升级pc服务器bios"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong><font face="宋体">微码</font></strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
+<p>准备工作：</p>
+<p>制作可引导移动硬盘，<a href="http://veryi.com/w/257.html" target="_blank" rel="external">参考http://veryi.com/w/257.html</a>；</p>
+<p>下载bios镜像，复制到移动硬盘相应目录。</p>
+<p>编辑menu.lst，添加：</p>
+<p>title bios CD ISO</p>
+<pre><code>&amp;nbsp; fallback <span class="number">8</span>
+
+&amp;nbsp; find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
+
+&amp;nbsp; <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (<span class="number">0xff</span>)
+
+&amp;nbsp; savedefault <span class="comment">--wait=2</span>
+
+title bios DOS IMG
+
+&amp;nbsp; find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (fd0)+<span class="number">1</span>
+
+&amp;nbsp; rootnoverify (fd0)
+</code></pre><p>文件名和目录要对应。</p>
+<p>升级过程：</p>
+<p>要保证供电稳定，启动服务器，按F12，选usb启动。然后选择cd iso或dos img加载。后面步骤参考</p>
+<p><a href="http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK" target="_blank" rel="external">http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK</a></p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/" data-url="http://blog.veryi.com/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

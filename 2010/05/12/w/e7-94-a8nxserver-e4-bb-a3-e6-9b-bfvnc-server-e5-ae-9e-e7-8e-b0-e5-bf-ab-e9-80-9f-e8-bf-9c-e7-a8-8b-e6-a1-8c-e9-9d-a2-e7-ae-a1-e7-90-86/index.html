@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>用nxserver代替vnc-server实现快速远程桌面管理 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="用nxserver代替vnc-server实现快速远程桌面管理"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-05-12T08:02:20.000Z" class="post__time">五月 12, 2010</time><h1 class="post__title"><a href="/2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/">用nxserver代替vnc-server实现快速远程桌面管理</a></h1></header><div class="post__main"><p>nx技术采取了新的远程协议，把x桌面的数据经过提取，仅传送一些参数，而且通过ssh来进行数据加密传送，因此相比VNC或直接XDMP具有很快的速度 和较高的安全性能。</p>
+<p>&nbsp; centos 6，安装更新为：</p>
+<p>yum install freenx nxproxy nxagent -y</p>
+<p>否则报错：</p>
+<p>Can&#39;t open /var/lib/nxserver/db/running/sessionId{…}: No such file or directory.</p>
+<p>centos客户端安装：</p>
+<p>yum install opennx -y</p>
+<p>或者下载<a href="https://www.nomachine.com/download" target="_blank" rel="external">https://www.nomachine.com/download</a></p>
+<p>&nbsp;</p>
+<p>要点：</p>
+<p>1、centos 5 yum安装的包是nx-3.4.0-3.el5.centos，freenx-0.7.3-3.el5.centos。</p>
+<p>配置文件在/etc/nxserver</p>
+<p>客户端的key的位置是</p>
+<p>/var/lib/nxserver/home/.ssh/client.id_dsa.key</p>
+<p>2、如果验证错误，可以重置key:</p>
+<p>nxsetup —install —setup-nomachine-key —clean —purge</p>
+<pre><code><span class="comment">nxsetup</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">setup</span><span class="literal">-</span><span class="comment">nomachine</span><span class="literal">-</span><span class="comment">key</span>
+</code></pre><p>3. 对于centos 6，安装 NX / FreeNX ：</p>
+<p>yum groupinstall Desktop -y</p>
+<p>yum install nx freenx -y</p>
+<p>You may also download the RPMS from:</p>
+<pre><code><span class="symbol">http:</span>/<span class="regexp">/mirror.centos.org/centos</span><span class="regexp">/5/extras</span><span class="regexp">/i386/</span><span class="constant">RPMS/</span>
+
+<span class="keyword">and</span> the <span class="constant">SRPMS </span><span class="symbol">from:</span>
+
+<span class="symbol">http:</span>/<span class="regexp">/mirror.centos.org/centos</span><span class="regexp">/5/extras</span><span class="regexp">/SRPMS/</span>
+</code></pre><p>Copy a minimal configuration file for nxserver :</p>
+<p>cd /etc/nxserver ; cp node.conf.sample node.conf</p>
+<p>nxsetup —install —setup-nomachine-key</p>
+<pre><code>nxserver <span class="comment">--start</span>
+
+&amp;nbsp;
+</code></pre><p>4、如果是下载rpm包安装nxclient-3.4.0-7.i386.rpm,nxnode- 3.4.0-11.i386.rpm,nxserver-3.4.0-12.i386.rpm，</p>
+<p>配置文件在/usr/NX/etc/，</p>
+<p>执 行文件在/usr/NX/bin，初始化明令：</p>
+<p>nxserver —install —setup-nomachine-key</p>
+<p>5. Installing the NoMachine Client</p>
+<pre><code>download <span class="keyword">from</span> http:<span class="comment">//www.nomachine.com/</span>
+</code></pre><p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select the connection type, the desktop system you want to use(e.g. Gnome), and the size of the desktop. Also decide if you want to Encrypt all Traffic via SSL. If you use SSL, not only is the traffic encrypted, but it uses only the SSL port you list to make the connection. This means only the SSL port needs to be open to inbound traffic if you are connecting from outside a firewall. Select Next when finished.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the advanced dialog window under the General Tab, you should see the items you have already entered and a Key… button. You will need to ssh into the server which you are trying to connect and go to the /etc/nxserver/ directory and edit the file client.id_dsa.key (you must be the root user to open this file). Copy all the text (including the BEGIN DSA PRIVATE KEY and END DSA PRIVATE KEY lines. Press the Key… button, delete the text that is in there, and paste the client.id_dsa.key information from the server into the DSA Key text box (shown in yellow below}, then select Save. [attachment:nxclient4.png] [attachment:nxclient5.png]</p>
+<p>6. Misc Notes</p>
+<p>If you are installing FreeNX on a remote server, you will also need to install a Desktop environment on the machine in order to run the remote session. An easy to do that for Gnome is to run this command :</p>
+<p>yum groupinstall &#39;GNOME Desktop Environment&#39; &#39;X Window System&#39;</p>
+<p>Note: If you are running CentOS 5, yum groupinstall &quot;GNOME Desktop Environment&quot; may complain about a missing libgaim.so.0. This is a known bug. Please see CentOS-5 FAQ for details.</p>
+<p>FreeNX expects to make an ssh connection at 127.0.0.1, i.e., at the local host address. If you haven&#39;t changed your default sshd_config, the sshd daemon will be available at that IP address.</p>
+<p>However, if you have modified the ListenAddress lines in /etc/ssh/sshd_config, this can cause a problem. Make sure that sshd is available at 127.0.0.1. This can be checked with</p>
+<p>netstat -an |grep 22</p>
+<p>The result should be similar to</p>
+<p>tcp&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp; 0 0.0.0.0:22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.0.0.0:*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LISTEN</p>
+<pre><code>tcp&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>&amp;nbsp;&amp;nbsp; <span class="number">0</span> <span class="symbol">:</span><span class="symbol">:</span><span class="symbol">:</span><span class="number">22</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="constant">LISTEN</span>
+</code></pre><p>(The above assumes that you use the default port 22 for ssh connections.) This output indicates that sshd is listening on all addresses.</p>
+<p>If remotely connected, use the screen command. You are about to restart sshd which will disconnect a remote ssh session. (There are other ways to restart the sshd daemon without disconnecting yourself, but screen is one of the easiest ones.).</p>
+<p>screen</p>
+<p>This should give you a command prompt. Restart sshd.</p>
+<p>/etc/init.d/sshd restart</p>
+<p>Use netstat -an again to check that it is now listening at 127.0.0.1.</p>
+<p>netstat -an</p>
+<p>You should now see something like</p>
+<p>tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.1.20:22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.0.0.0:*&nbsp;&nbsp;&nbsp; LISTEN</p>
+<pre><code>tcp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span><span class="symbol">:</span><span class="number">22</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="constant">LISTEN</span>
+</code></pre><p>FreeNX will now be able to connect.</p>
+<p><a href="http://wiki.centos.org/HowTos/FreeNX" target="_blank" rel="external">http://wiki.centos.org/HowTos/FreeNX</a></p>
+<p>Firewall ports</p>
+<p>&nbsp;&nbsp;&nbsp; * NX need at least 2 ports: NX port and X11 port</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; * NX port = <span class="number">4000</span> + display <span class="built_in">number</span> (<span class="built_in">open</span> port <span class="number">5000</span>-<span class="number">5200</span> <span class="command"><span class="keyword">on</span> <span class="title">firewall</span>)</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * X11 port = <span class="number">6000</span> + display <span class="built_in">number</span> (i.e. <span class="built_in">open</span> port <span class="number">7000</span>-<span class="number">7200</span> <span class="command"><span class="keyword">on</span> <span class="title">firewall</span>)</span>
+</code></pre><p>nx不能连接错误排除：</p>
+<p>freenx server 一连接上立即失效</p>
+<pre><code>已经通过密码验证，而且windows版的客户端还会出现一个有nomechine的logo的窗口，但是立刻就消失了，提示
+
+Session <span class="keyword">...</span> failed.
+
+详细信息：
+
+Error: Connection with remote peer broken.
+
+Error: Please check the state of your network and retry.
+
+Session: Terminating session at &amp;<span class="comment">#39;Tue Sep 16 17:24:20 2008&amp;#39;.</span>
+
+Session: Session terminated at &amp;<span class="comment">#39;Tue Sep 16 17:24:20 2008&amp;#39;.</span>
+</code></pre><p>解决：</p>
+<pre><code>检查服务器~user<span class="regexp">/.nx/</span>目录。
+
+检查gnome或kde是否安装，与nxclient设置是否一致。
+</code></pre><p>yum groupinstall &#39;KDE Desktop&#39; -y</p>
+</div><footer class="post__foot u-cf"><a href="/2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/" data-url="http://blog.veryi.com/2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/05/19/w/centos-5-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8p2p-bittorrentbt-e4-b8-8b-e8-bd-bd-e5-b7-a5-e5-85-b7/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/04/27/w/wordpress-e5-b8-b8-e7-94-a8-e7-bb-b4-e6-8a-a4-e6-98-8e-e4-bb-a4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>一个高度安全的iptables防火墙配置脚本 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="一个高度安全的iptables防火墙配置脚本"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-07T03:56:33.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/">一个高度安全的iptables防火墙配置脚本</a></h1></header><div class="post__main"><p>管理linux服务器10年经验总结的一个linux iptables 防火墙。</p>
+<p>除了测试服务器，接入internet的linux服务器都应该打开iptables防火墙。</p>
+<p>vi /etc/sysconfig/iptables</p>
+<h1 id="created_by_dayu@veryi-com">created by dayu@veryi.com</h1><p>*filter</p>
+<p>:INPUT DROP [0:0]</p>
+<p>:FORWARD DROP [0:0]</p>
+<p>:OUTPUT DROP [0:0]</p>
+<p>:LOG_ACCEPT - [0:0]</p>
+<p>:LOG_DROP - [0:0]</p>
+<p>-A INPUT -i lo -j ACCEPT</p>
+<p>-A INPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A INPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A INPUT -p tcp —dport 80 -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 25 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 110 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<h1 id="pasv_ftp">pasv ftp</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_21_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 21 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_58000:58129_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 58000:58129 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><p>-A INPUT -s your_trust_ip -p tcp -m state —state NEW -m tcp —dport 22 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A OUTPUT -o lo -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A OUTPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A OUTPUT -p icmp -m icmp —icmp-type any -m state —state NEW -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m tcp —dport 25 -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m multiport —dports 20,21,22,43,80,443,3306,8080 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 161 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 123 -j ACCEPT</p>
+<p>-A LOG_ACCEPT -j LOG —log-prefix &quot;[ACCEPT] : &quot; —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_ACCEPT -j ACCEPT</p>
+<p>-A LOG_DROP -j LOG —log-prefix &quot;[DROP] : &quot; —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_DROP -j DROP</p>
+<p>COMMIT</p>
+<p>&nbsp;</p>
+<p>默认规则为禁止，并且对出去的包也作了限制，LOG_ACCEPT、LOG_DROP是调防火墙用的。</p>
+<p>ftp(vsftpd)需要配合以下参数:</p>
+<p>listen_port=21</p>
+<p>pasv_enable=YES</p>
+<p>pasv_min_port=58000</p>
+<p>pasv_max_port=58129</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" data-url="http://blog.veryi.com/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

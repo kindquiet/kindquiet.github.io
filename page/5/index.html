@@ -1,0 +1,543 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-05-23T03:00:35.000Z" class="post__time">五月 23, 2012</time><h1 class="post__title"><a href="/2012/05/23/w/vg-e9-87-8d-e5-90-8d-e5-92-8clv-e4-b8-8d-e8-83-bdmount-e7-9a-84-e5-a4-84-e7-90-86/">vg重名和lv不能mount的处理</a></h1></header><div class="post__main"><p>以下在centos 6 amd64/x86_64 linux测试通过。</p>
+<p>lvs</p>
+<pre><code>&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Attr&amp;nbsp;&amp;nbsp; LSize&amp;nbsp;&amp;nbsp; Origin Snap%&amp;nbsp; Move Log Copy%&amp;nbsp; Convert
+
+&amp;nbsp; lv_home VolGroup -wi-ao <span class="number">409.39</span>g&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; lv_root VolGroup -wi<span class="comment">---&amp;nbsp; 50.00g&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; </span>
+
+&amp;nbsp; lv_swap VolGroup -wi<span class="comment">---&amp;nbsp;&amp;nbsp; 5.88g&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; </span>
+</code></pre><p>pvs</p>
+<pre><code>&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Fmt&amp;nbsp; Attr PSize&amp;nbsp;&amp;nbsp; PFree
+
+&amp;nbsp; /dev/sda2&amp;nbsp; VolGroup lvm2 a<span class="comment">--&amp;nbsp; 931.02g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+&amp;nbsp; /dev/sdb2&amp;nbsp; VolGroup lvm2 a<span class="comment">--&amp;nbsp; 465.27g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+pvremove /dev/sdb2 -ff
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+Really WIPE LABELS <span class="keyword">from</span> physical volume &amp;quot;/dev/sdb2&amp;quot; <span class="keyword">of</span> volume group &amp;quot;VolGroup&amp;quot; [y/n]? y
+
+&amp;nbsp; WARNING: Wiping physical volume label <span class="keyword">from</span> /dev/sdb2 <span class="keyword">of</span> volume group &amp;quot;VolGroup&amp;quot;
+
+&amp;nbsp; Can&amp;<span class="comment">#39;t open /dev/sdb2 exclusively - not removing. Mounted filesystem?</span>
+
+vgdisplay 
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+&amp;nbsp; <span class="comment">--- Volume group ---</span>
+
+&amp;nbsp; VG Name&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VolGroup
+
+&amp;nbsp; System ID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; Format&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; lvm2
+
+&amp;nbsp; Metadata Areas&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Metadata Sequence No&amp;nbsp; <span class="number">4</span>
+
+&amp;nbsp; VG Access&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="command">read</span>/<span class="command">write</span>
+
+&amp;nbsp; VG Status&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; resizable
+
+&amp;nbsp; MAX LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>
+
+&amp;nbsp; Open LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Max PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Act PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; VG Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">465.27</span> GiB
+
+&amp;nbsp; PE Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4.00</span> MiB
+
+&amp;nbsp; Total PE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">119109</span>
+
+&amp;nbsp; Alloc PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">119109</span> / <span class="number">465.27</span> GiB
+
+&amp;nbsp; Free&amp;nbsp; PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span> / <span class="number">0</span>&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; VG UUID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; <span class="comment">--- Volume group ---</span>
+
+&amp;nbsp; VG Name&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VolGroup
+
+&amp;nbsp; System ID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; Format&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; lvm2
+
+&amp;nbsp; Metadata Areas&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Metadata Sequence No&amp;nbsp; <span class="number">4</span>
+
+&amp;nbsp; VG Access&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="command">read</span>/<span class="command">write</span>
+
+&amp;nbsp; VG Status&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; resizable
+
+&amp;nbsp; MAX LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>
+
+&amp;nbsp; Open LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>
+
+&amp;nbsp; Max PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Act PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; VG Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">931.02</span> GiB
+
+&amp;nbsp; PE Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4.00</span> MiB
+
+&amp;nbsp; Total PE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">238341</span>
+
+&amp;nbsp; Alloc PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">238341</span> / <span class="number">931.02</span> GiB
+
+&amp;nbsp; Free&amp;nbsp; PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span> / <span class="number">0</span>&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; VG UUID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+卷组更名：
+
+vgrename <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES vg01
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+
+&amp;nbsp; WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+&amp;nbsp; Volume group &amp;quot;VolGroup&amp;quot; successfully renamed <span class="keyword">to</span> &amp;quot;vg01&amp;quot;
+</code></pre><p>报警消失，恢复正常。</p>
+<p>vgs</p>
+<pre><code>&amp;nbsp; VG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment">#PV #LV #SN Attr&amp;nbsp;&amp;nbsp; VSize&amp;nbsp;&amp;nbsp; VFree</span>
+
+&amp;nbsp; VolGroup&amp;nbsp;&amp;nbsp; <span class="number">1</span>&amp;nbsp;&amp;nbsp; <span class="number">3</span>&amp;nbsp;&amp;nbsp; <span class="number">0</span> wz<span class="comment">--n- 931.02g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+&amp;nbsp; vg01&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>&amp;nbsp;&amp;nbsp; <span class="number">3</span>&amp;nbsp;&amp;nbsp; <span class="number">0</span> wz<span class="comment">--n- 465.27g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+pvs
+
+&amp;nbsp; PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Fmt&amp;nbsp; Attr PSize&amp;nbsp;&amp;nbsp; PFree
+
+&amp;nbsp; /dev/sda2&amp;nbsp; VolGroup lvm2 a<span class="comment">--&amp;nbsp; 931.02g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+&amp;nbsp; /dev/sdb2&amp;nbsp; vg01&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; lvm2 a<span class="comment">--&amp;nbsp; 465.27g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+mount&amp;nbsp; /dev/VolGroup/lv_home /opt/ -t ext4
+
+mount: special device /dev/VolGroup/lv_home <span class="keyword">does</span> <span class="keyword">not</span> exist
+
+mkfs -t ext4 /dev/VolGroup/lv_home
+
+mke2fs <span class="number">1.41</span><span class="number">.12</span> (<span class="number">17</span>-May-<span class="number">2010</span>)
+
+Could <span class="keyword">not</span> stat /dev/VolGroup/lv_home <span class="comment">--- No such file or directory</span>
+
+The device apparently <span class="keyword">does</span> <span class="keyword">not</span> exist; did you specify <span class="keyword">it</span> correctly?
+
+vgs
+
+&amp;nbsp; VG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment">#PV #LV #SN Attr&amp;nbsp;&amp;nbsp; VSize&amp;nbsp;&amp;nbsp; VFree</span>
+
+&amp;nbsp; VolGroup&amp;nbsp;&amp;nbsp; <span class="number">1</span>&amp;nbsp;&amp;nbsp; <span class="number">3</span>&amp;nbsp;&amp;nbsp; <span class="number">0</span> wz<span class="comment">--n- 931.02g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+&amp;nbsp; vg01&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>&amp;nbsp;&amp;nbsp; <span class="number">3</span>&amp;nbsp;&amp;nbsp; <span class="number">0</span> wz<span class="comment">--n- 465.27g&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 </span>
+
+vgdisplay 
+
+<span class="comment">--- Volume group ---</span>
+
+&amp;nbsp; VG Name&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; VolGroup
+
+&amp;nbsp; System ID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; Format&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; lvm2
+
+&amp;nbsp; Metadata Areas&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Metadata Sequence No&amp;nbsp; <span class="number">4</span>
+
+&amp;nbsp; VG Access&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="command">read</span>/<span class="command">write</span>
+
+&amp;nbsp; VG Status&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; resizable
+
+&amp;nbsp; MAX LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>
+
+&amp;nbsp; Open LV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>
+
+&amp;nbsp; Max PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>
+
+&amp;nbsp; Cur PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; Act PV&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>
+
+&amp;nbsp; VG Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">931.02</span> GiB
+
+&amp;nbsp; PE Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4.00</span> MiB
+
+&amp;nbsp; Total PE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">238341</span>
+
+&amp;nbsp; Alloc PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">238341</span> / <span class="number">931.02</span> GiB
+
+&amp;nbsp; Free&amp;nbsp; PE / Size&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span> / <span class="number">0</span>&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; VG UUID&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+
+逻辑卷没有激活：
+
+lvscan 
+
+&amp;nbsp; inactive&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/VolGroup/lv_home&amp;#39; [875.14 GiB] inherit</span>
+
+激活卷组：
+
+vgchange -ay /dev/VolGroup
+
+&amp;nbsp; <span class="number">3</span> logical volume(s) <span class="keyword">in</span> volume group &amp;quot;VolGroup&amp;quot; now active
+
+lvscan 
+
+&amp;nbsp; inactive&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/vg01/lv_root&amp;#39; [50.00 GiB] inherit</span>
+
+&amp;nbsp; inactive&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/vg01/lv_home&amp;#39; [409.39 GiB] inherit</span>
+
+&amp;nbsp; inactive&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/vg01/lv_swap&amp;#39; [5.88 GiB] inherit</span>
+
+&amp;nbsp; ACTIVE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/VolGroup/lv_root&amp;#39; [50.00 GiB] inherit</span>
+
+&amp;nbsp; ACTIVE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/VolGroup/lv_swap&amp;#39; [5.88 GiB] inherit</span>
+
+&amp;nbsp; ACTIVE&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;/dev/VolGroup/lv_home&amp;#39; [875.14 GiB] inherit</span>
+
+mount /dev/vg01/lv_home /home/
+
+df -m
+
+/dev/mapper/vg01-lv_home
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">412641</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">199</span>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">391482</span>&amp;nbsp;&amp;nbsp; <span class="number">1</span>% /home
+
+mount
+
+/dev/mapper/vg01-lv_home <span class="function_start"><span class="keyword">on</span></span> /home type ext4 (rw)
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/05/23/w/vg-e9-87-8d-e5-90-8d-e5-92-8clv-e4-b8-8d-e8-83-bdmount-e7-9a-84-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-05-23T02:23:31.000Z" class="post__time">五月 23, 2012</time><h1 class="post__title"><a href="/2012/05/23/w/gpt-e5-88-86-e5-8c-ba-e4-b8-8d-e8-83-bd-e7-94-a8-e7-89-a9-e7-90-86-e7-a1-ac-e7-9b-98-e5-88-9b-e5-bb-bapv/">gpt分区不能用物理硬盘创建pv</a></h1></header><div class="post__main"><p>LUN只是一个逻辑的东西。在存储设备内部，LUN与物理硬盘的关系，如同主机中逻辑卷与物理硬盘的关系，也就是好像LV和PV的关系，在不同范畴。可以理解为LUN就是在做完RAID之后的逻辑盘上分出来的logic driver。但不同的是，LUN在主机上看来是一个物理硬盘。</p>
+<pre><code>一个硬盘在能够被LVM使用之前一定要初始化，可以使用pvcreate命令将PVRA的信息写入到硬盘当中，而这样被写入了PVRA信息的硬盘，就叫做PV。
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 注意：如果是启动盘，还应该加上<span class="attribute">-B</span>的选项。这样做将会在硬盘头保留<span class="number">2912</span>KB的空间给LVM表头（LVM <span class="keyword">header</span>），相关的信息，可以参考LVM的结构信息。如果你想要做启动盘的镜像的话，可以参考根盘镜像。
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 将硬盘初始化以后，就可以将该PV添加到已经存在的VG当中去了。
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 对于磁盘阵列，在硬盘初始化的时候，使用的设备是<span class="subst">&amp;</span>ldquo;rdsk<span class="subst">&amp;</span>rdquo;，而在将PV添加到已经存在的VG的过程中，使用的设备是<span class="subst">&amp;</span>ldquo;dsk<span class="subst">&amp;</span>rdquo;。对于<span class="subst">&amp;</span>ldquo;rdsk<span class="subst">&amp;</span>rdquo;和<span class="subst">&amp;</span>ldquo;dsk<span class="subst">&amp;</span>rdquo;的区别，应该有非常清晰的认识，如果觉得不清楚，可以查看相关资料。以下操作在centos <span class="number">6</span>测试通过。
+</code></pre><p>gtp分区格式：</p>
+<pre><code>parted <span class="regexp">/dev/</span>sdb
+
+GNU Parted <span class="number">2.1</span>
+
+Using <span class="regexp">/dev/</span>sdb
+
+(parted) mkpart pri ext4 <span class="number">1</span> <span class="number">500</span>g&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+(parted) p&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+Model: ATA ST3500841A (scsi)
+
+Disk <span class="regexp">/dev/</span>sdb: <span class="number">500</span>GB
+
+Sector <span class="keyword">size</span> (logical<span class="regexp">/physical): 512B/</span><span class="number">512</span>B
+
+Partition Table: gpt
+
+Number&amp;nbsp; Start&amp;nbsp;&amp;nbsp; End&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">Size</span>&amp;nbsp;&amp;nbsp; <span class="keyword">File</span> system&amp;nbsp; Name&amp;nbsp; Flags
+
+&amp;nbsp;<span class="number">1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1049</span>kB&amp;nbsp; <span class="number">500</span>GB&amp;nbsp; <span class="number">500</span>GB&amp;nbsp; ext4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; pri
+
+pvcreate <span class="regexp">/dev/</span>sdb1
+
+&amp;nbsp; Writing physical volume data to disk &amp;quot;<span class="regexp">/dev/</span>sdb1&amp;quot;
+
+&amp;nbsp; Physical volume &amp;quot;<span class="regexp">/dev/</span>sdb1&amp;quot; successfully created
+</code></pre><p>不能创建pv：&nbsp; </p>
+<pre><code>pvcreate /<span class="built_in">dev</span>/sdb
+
+&amp;nbsp; Device /<span class="built_in">dev</span>/sdb <span class="built_in">not</span> found (<span class="built_in">or</span> ignored <span class="keyword">by</span> filtering).
+</code></pre><p>改为msdos分区表：</p>
+<pre><code>parted /dev/sdb
+
+GNU Parted <span class="number">2.1</span>
+
+Using /dev/sdb
+
+Welcome <span class="keyword">to</span> GNU Parted<span class="subst">!</span> <span class="keyword">Type</span> <span class="subst">&amp;</span><span class="variable">#39</span>;help<span class="subst">&amp;</span><span class="variable">#39</span>; <span class="keyword">to</span> view a <span class="built_in">list</span> of commands<span class="built_in">.
+
+</span>(parted) mklabel msdos<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 
+
+Warning: The existing disk label <span class="keyword">on</span> /dev/sdb will be destroyed <span class="literal">and</span> <span class="literal">all</span> <span class="built_in">data</span> <span class="keyword">on</span> this disk will be lost<span class="built_in">. </span><span class="keyword">Do</span> you want <span class="keyword">to</span> continue<span class="subst">?</span>
+
+Yes/No<span class="subst">?</span> y<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; 
+
+成功创建物理卷pv：
+
+pvcreate /dev/sdb
+
+<span class="subst">&amp;</span>nbsp; Writing physical volume <span class="built_in">data</span> <span class="keyword">to</span> disk <span class="subst">&amp;</span>quot;/dev/sdb<span class="subst">&amp;</span>quot;
+
+<span class="subst">&amp;</span>nbsp; Physical volume <span class="subst">&amp;</span>quot;/dev/sdb<span class="subst">&amp;</span>quot; successfully created
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/05/23/w/gpt-e5-88-86-e5-8c-ba-e4-b8-8d-e8-83-bd-e7-94-a8-e7-89-a9-e7-90-86-e7-a1-ac-e7-9b-98-e5-88-9b-e5-bb-bapv/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-04-19T10:18:23.000Z" class="post__time">四月 19, 2012</time><h1 class="post__title"><a href="/2012/04/19/w/logroate-e5-af-bc-e8-87-b4-e7-b3-bb-e7-bb-9f-e9-ab-98-e8-b4-9f-e8-bd-bd-e5-a4-84-e7-90-86/">logroate导致系统高负载处理</a></h1></header><div class="post__main"><p>&nbsp; 一台centos服务器变得极慢，好不容易ssh远程连接上，发现有大量logrotate进程。<span>紧急响应，</span>当务之急恢复系统，首先结束logrotate进程：</p>
+<p>pkill logrotate</p>
+<p>查看/var/log目录，发现一个目录下有大量文件（原因是配置文件错误，修改日志配置）。用rm -f无法删除，改用命令：</p>
+<p>ls | xargs rm -f</p>
+<p>删除。</p>
+<p>&nbsp;</p>
+<p>清空logrotate状态文件：</p>
+<p>&gt; /var/lib/logrotate.status</p>
+<p>&nbsp;</p>
+<p>执行日志档案轮替</p>
+<p>logrotate -v /etc/logrotate.conf</p>
+<p>系统恢复正常。</p>
+<p>logrotate命令可以自动替换，压缩，删除，邮寄日志文件</p>
+<pre><code>-<span class="ruby"><span class="symbol">f:</span>强行启动记录文件维护操作
+</span>
+-<span class="ruby">s 状态文件，指定状态文件，默认为 /var/lib/logrotate.status
+</span>
+-<span class="ruby"><span class="symbol">v:</span> 显示命令执行过程
+</span>
+logrotate 配置文件/etc/logrotate.conf ，配置日志文件的处理方式。
+</code></pre><p>每天定时执行配置文件/etc/cron.daily/logrotate</p>
+</div><footer class="post__foot u-cf"><a href="/2012/04/19/w/logroate-e5-af-bc-e8-87-b4-e7-b3-bb-e7-bb-9f-e9-ab-98-e8-b4-9f-e8-bd-bd-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-04-10T10:02:12.000Z" class="post__time">四月 10, 2012</time><h1 class="post__title"><a href="/2012/04/10/w/samba-e6-9c-8d-e5-8a-a1-e4-b8-8d-e8-bf-9e-e6-8e-a5-e6-89-93-e5-8d-b0-e6-9c-ba-e9-94-99-e8-af-af-e4-bf-a1-e6-81-af-e5-85-b3-e9-97-ad/">samba服务不连接打印机错误信息关闭</a></h1></header><div class="post__main"><p>centos 6.2没有打印机，系统日志有大量samba信息：</p>
+<p>Apr&nbsp; 8 03:45:56 smbd[14866]: [2012/04/08 03:45:56.734889,&nbsp; 0] printing/print_cups.c:109(cups_connect)</p>
+<pre><code><span class="constant">Apr&amp;</span>nbsp; <span class="number">8</span> <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56</span> smbd[<span class="number">14866</span>]<span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="constant">Unable </span>to connect to <span class="constant">CUPS </span>server <span class="symbol">localhost:</span><span class="number">631</span> - <span class="constant">Connection </span>refused
+
+<span class="constant">Apr&amp;</span>nbsp; <span class="number">8</span> <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56</span> smbd[<span class="number">1787</span>]<span class="symbol">:</span> [<span class="number">2012</span>/<span class="number">04</span>/08 <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56.735377</span>,&amp;nbsp; <span class="number">0</span>] printing/print_cups.<span class="symbol">c:</span><span class="number">468</span>(cups_async_callback)
+
+<span class="constant">Apr&amp;</span>nbsp; <span class="number">8</span> <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56</span> smbd[<span class="number">1787</span>]<span class="symbol">:&amp;nbsp</span>;&amp;nbsp; failed to retrieve printer <span class="symbol">list:</span> <span class="constant">NT_STATUS_UNSUCCESSFUL</span>
+
+<span class="constant">Apr&amp;</span>nbsp; <span class="number">8</span> <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56</span> smbd[<span class="number">1787</span>]<span class="symbol">:</span> [<span class="number">2012</span>/<span class="number">04</span>/08 <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56.736338</span>,&amp;nbsp; <span class="number">0</span>] smbd/server.<span class="symbol">c:</span><span class="number">281</span>(remove_child_pid)
+
+<span class="constant">Apr&amp;</span>nbsp; <span class="number">8</span> <span class="number">03</span><span class="symbol">:</span><span class="number">45</span><span class="symbol">:</span><span class="number">56</span> smbd[<span class="number">1787</span>]<span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="constant">Could </span><span class="keyword">not</span> find child <span class="number">14866</span> -- ignoring
+</code></pre><p>关闭方法，修改/etc/samba/smb.conf</p>
+<p>printing = bsd</p>
+<pre><code>printcap <span class="variable">name =</span> /dev/<span class="constant">null</span>
+
+或者
+
+;&amp;nbsp;&amp;nbsp; load <span class="variable">printers =</span> yes
+
+load <span class="variable">printers =</span> no
+
+;&amp;nbsp;&amp;nbsp; <span class="variable">printing =</span> cups
+
+<span class="variable">printing =</span> bsd
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/04/10/w/samba-e6-9c-8d-e5-8a-a1-e4-b8-8d-e8-bf-9e-e6-8e-a5-e6-89-93-e5-8d-b0-e6-9c-ba-e9-94-99-e8-af-af-e4-bf-a1-e6-81-af-e5-85-b3-e9-97-ad/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-02-21T01:51:26.000Z" class="post__time">二月 21, 2012</time><h1 class="post__title"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/">nice调整SSHD的启动优先级别</a></h1></header><div class="post__main"><p>centos linux服务器远程连接无响应，有可能是由于apache或者是mysql等服务过载，或者受到dos等攻击造成服务器无响应。</p>
+<pre><code>为避免强制重启，可以调高sshd优先级。使用-2优先级是希望sshd服务的优先级高于apache等的0，但低于<span class="keyword">log</span>等的-5。
+
+要运行的命令作为 nice 的一个参数。而其另一个参数 -<span class="keyword">n</span> 可用来设置优先级别。默认情况下 nice 将设置优先级为 10。
+
+查看启动脚本
+
+vim /etc/init.<span class="keyword">d</span>/sshd 
+
+修改里面的
+
+<span class="label">$SSHD</span> <span class="label">$OPTIONS</span> &amp;amp;&amp;amp; success || failure
+
+为
+
+nice -<span class="keyword">n</span> -2 <span class="label">$SSHD</span> <span class="label">$OPTIONS</span> &amp;amp;&amp;amp; success || failure
+
+或者
+
+sed -i &amp;#39;s/<span class="label">$SSHD</span> <span class="label">$OPTIONS</span>/nice -<span class="keyword">n</span> -2 <span class="label">$SSHD</span> <span class="label">$OPTIONS</span>/&amp;#39; /etc/init.<span class="keyword">d</span>/sshd
+
+sudo /etc/init.<span class="keyword">d</span>/sshd restart
+
+查看优先级
+
+ps -aeo cmd,pid,nice |grep sshd
+</code></pre><p>系统中运行的每个进程都有一个优先级(亦称&ldquo;nice 值&rdquo;)，其范围从 -20 (最高优先级)到 19 (最低优先级)。默认情况下，进程的优先级是 0 (&ldquo;基本&rdquo;调度优先级)。优先级比较大的进程(nice 值比较小，最低到 -20)相对优先级比较小的进程(直到 19)将比较频繁地被调度运行，因此就拥有更多的进程周期。一般用户只能降低它们自己进程的优先级别，并限于 0 到 19 之间。超级用户(root)可以将任何进程的优先级设定为任何值&nbsp; </p>
+<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 renice 命令。其语法为：
+
+renice 优先级 [[-p] pid <span class="keyword">...</span>] [[-g] pgrp <span class="keyword">...</span>] [[-u] 用户名 <span class="keyword">...</span>]
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-01-09T09:43:37.000Z" class="post__time">一月 9, 2012</time><h1 class="post__title"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">DNS劫持与RBL使用的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 使用opendns nameserver 208.67.220.220 208.67.222.222可以解决dns <span class="body">hijacking，缺点是web浏览时可能不会解析到最快的ip地址。电信、联通nameserver 如202.106.196.115 202.106.0.20 202.106.46.151多被劫持。导致邮件服务器使用rbl服务阻挡全部邮件。解决办法之一是用返回码验证。postfix修改main.cf：</span></p>
+<p><span class="body">&nbsp; reject_rbl_client cblless.anti-spam.org.cn=127.0.8.5,</span></p>
+<pre><code>&amp;nbsp; reject_rbl_client zen.spamhaus.org=127.0.0.2,<span class="tag">&lt;/<span class="title">span</span>&gt;</span><span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"body"</span>&gt;</span> <span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+</code></pre><p><span class="body">…</span></p>
+<p>关于RBL的原理。目前用于垃圾邮件过滤的RBL服务，应该称之为基于DNS的实时黑名单查询，也就是说，这个服务是通过DNS协议来完成的。</p>
+<p>　　具体而言，当一个客户端希望查询某个IP地址（如1.2.3.4）是否在某个RBL（如cbl.anti-spam.org.cn）中 是，其实际上是查询如下地址是否存在解析： 4.3.2.1.cbl.anti-spam.org.cn. （IP地址逆转附加在RBL地址后）。DNS的解析分为几种类型，对于RBL查询，通常是查询这个地址是否存在A记录、TXT记录或者任意（ANY）记 录。</p>
+<p>　　如果该地址被列入了这个RBL，那么查询会返回一个具体的解析结果，根据RBL和查询的不同，可以返回一段文本，也可以返回一个或几个IP地 址，也可以同时返回文本和IP。返回的文本通常是一个说明，用来说明这个IP地址被列入了哪个RBL，具体信息去哪里查询等。返回的IP地址并不具有实际 意义，只是标识该查询有结果，通常这个IP地址是一个保留IP段的地址，如127.0.0.1、127.0.0.2等。</p>
+<p>　　如果该地址没有被列入这个RBL，那么该查询会返回一个查询错误（NXDOMAIN），表示该地址未列入。</p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong><font face="宋体">微码</font></strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
+<p>准备工作：</p>
+<p>制作可引导移动硬盘，<a href="http://veryi.com/w/257.html" target="_blank" rel="external">参考http://veryi.com/w/257.html</a>；</p>
+<p>下载bios镜像，复制到移动硬盘相应目录。</p>
+<p>编辑menu.lst，添加：</p>
+<p>title bios CD ISO</p>
+<pre><code>&amp;nbsp; fallback <span class="number">8</span>
+
+&amp;nbsp; find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
+
+&amp;nbsp; <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (<span class="number">0xff</span>)
+
+&amp;nbsp; savedefault <span class="comment">--wait=2</span>
+
+title bios DOS IMG
+
+&amp;nbsp; find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (fd0)+<span class="number">1</span>
+
+&amp;nbsp; rootnoverify (fd0)
+</code></pre><p>文件名和目录要对应。</p>
+<p>升级过程：</p>
+<p>要保证供电稳定，启动服务器，按F12，选usb启动。然后选择cd iso或dos img加载。后面步骤参考</p>
+<p><a href="http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK" target="_blank" rel="external">http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK</a></p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T06:33:28.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/">AMD X4 631 必须使用独立显卡</a></h1></header><div class="post__main"><p>&nbsp; &nbsp; 一台新组装的pc机开机黑屏不显示，不报警，也没有滴的一声。配置为 AMD Athlon(tm) II X4 631 Quad-Core Processor，asus F1A55-M LX主板、A55 FCH（Hudson D2）芯片组。想当然认为是主板或cpu有问题。看到cpu盒子上写着&ldquo;需要独立显卡-Requires Discrete GPU&rdquo;，最后终于明白，这种主板上只是按照了vga的接口，而没有集成显示控制芯片，631又屏蔽了内部集成的显卡，不安装独立显卡，系统当然不会显示。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T05:57:06.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/">windows 7设置静态ip地址不生效</a></h1></header><div class="post__main"><p>&nbsp; windows 7设置静态ip地址不生效，ipconfig显示为一个以169开头的ip，开始以为是设置方法不对。最后找到原因：ip地址冲突，手工设定的ip地址不生效。系统不提示ip地址冲突，机子就自己给自己设置一个169.254.<em>.</em>的ip。所以用了不少时间查找原因。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-01T07:32:41.000Z" class="post__time">十二月 1, 2011</time><h1 class="post__title"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/">centos 6 server dhcpd、squid和网络排错</a></h1></header><div class="post__main"><p>服务器需要停止的服务：</p>
+<pre><code>NetworkManager
+
+dnsmasq
+
+域名不能解析，resolv.conf被修改
+
+cat /etc/resolv.conf
+
+# Generated <span class="keyword">by</span> NetworkManager
+
+chkconfig dnsmasq off
+
+chkconfig --list dnsmasq
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: ** Ignoring requests <span class="keyword">on</span> eth0.&amp;nbsp; <span class="keyword">If</span> this <span class="keyword">is</span> <span class="keyword">not</span> what
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; you want, please <span class="keyword">write</span> a subnet declaration
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">in</span> your dhcpd.conf file <span class="keyword">for</span> the network segment
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> which <span class="keyword">interface</span> eth0 <span class="keyword">is</span> attached. **
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: <span class="keyword">Not</span> configured <span class="keyword">to</span> listen <span class="keyword">on</span> any interfaces!
+
+在subnet里定义的网段要与你的网卡IP所处网段一致,
+
+实际情况是网卡eth0没启动。
+
+chkconfig --list dhcpd
+
+centos <span class="number">6</span> 启动eth0 网卡时报错：
+
+Error: Connection activation failed: Device <span class="keyword">not</span> managed <span class="keyword">by</span> NetworkManager
+
+<span class="number">1</span>\. <span class="keyword">Remove</span> Network Manager <span class="keyword">from</span> startup Services.
+
+chkconfig NetworkManager off
+
+chkconfig --list NetworkManager
+
+<span class="number">2</span>\. <span class="keyword">Add</span> <span class="keyword">Default</span> Net Manager
+
+chkconfig network <span class="keyword">on</span>
+
+chkconfig --list network
+
+Stop NetworkManager first
+
+service NetworkManager stop
+
+<span class="keyword">and</span> <span class="keyword">then</span> start <span class="keyword">Default</span> Manager
+
+service network start
+
+<span class="keyword">or</span> you can change it easy:
+
+system-config-network 
+
+uncheck the box that sets the eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="keyword">and</span> <span class="keyword">set</span> IP info <span class="keyword">from</span> there.
+
+system-config-services 
+
+stop <span class="keyword">and</span> disable NetworkManager , start <span class="keyword">and</span> enable network
+
+you have problem because both <span class="keyword">of</span> NetworkManager <span class="keyword">and</span> Network <span class="keyword">using</span> same Network driver <span class="keyword">and</span> <span class="keyword">default</span> network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared after restart.
+
+squid Version <span class="number">3.2</span>.<span class="number">0.13</span>: ERROR: No
+
+<span class="keyword">forward</span>-proxy ports configured.
+
+&amp;gt; #http/https ports
+
+&amp;gt; http_port <span class="number">33070</span> transparent
+
+&amp;gt;
+
+So, only one port, <span class="keyword">and</span> its a NAT traffic receiving port. Looks like 
+
+Squid was right, &amp;quot;no <span class="keyword">forward</span>-proxy ports configured&amp;quot;.
+
+Should <span class="keyword">not</span> be <span class="keyword">on</span> every request, that <span class="keyword">is</span> a sign <span class="keyword">of</span> some other problem 
+
+happening. Just <span class="keyword">on</span> the ones which need <span class="keyword">to</span> produce internal URLs (ie 
+
+error page icons, FTP directory icons, cache manager requests, etc). 
+
+Squid requires a <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> the URL it tells the browser <span class="keyword">to</span> 
+
+fetch those icons <span class="keyword">from</span>. A NAT <span class="keyword">or</span> TROXY receiving port <span class="keyword">is</span> somewhat 
+
+vulnerable <span class="keyword">to</span> forgery attacks <span class="keyword">and</span> Squid now avoids publishing its 
+
+details. Accel ports have some problematic cases <span class="keyword">in</span> the parser <span class="keyword">and</span> <span class="keyword">until</span> 
+
+those are figured <span class="keyword">out</span> properly they are avoided <span class="keyword">as</span> well. Which just 
+
+leaves the regular <span class="keyword">old</span> <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> now.
+
+Adding &amp;quot;http_port <span class="number">3128</span>&amp;quot; <span class="keyword">or</span> somesuch <span class="keyword">is</span> enough <span class="keyword">to</span> avoid this message
+
+http:<span class="comment">//web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

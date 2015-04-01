@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>Linux时区和时间 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="Linux时区和时间"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-04-16T05:49:21.000Z" class="post__time">四月 16, 2010</time><h1 class="post__title"><a href="/2010/04/16/w/linux-e6-97-b6-e5-8c-ba-e5-92-8c-e6-97-b6-e9-97-b4/">Linux时区和时间</a></h1></header><div class="post__main"><p>如果服务器时区设置错误，比如不是CST而是EDT，用户可能会抱怨白天发布的文章，显示却是半夜。</p>
+<pre><code>查看当前时区
+
+date -R
+
+查看硬件bios时间
+
+hwclock -r
+
+Linux的系统时区是通过符号连接<span class="regexp">/etc/</span>localtime来得到的。可以通过tzselect命令来设置时区。如果没有该命令，
+
+复制相应的时区文件，替换系统时区文件；或者创建链接文件
+
+cp <span class="regexp">/usr/</span>share<span class="regexp">/zoneinfo/</span>$主时区<span class="regexp">/$次时区 /</span>etc/localtime
+
+在中国可以使用：
+
+cp <span class="regexp">/usr/</span>share<span class="regexp">/zoneinfo/</span>Asia<span class="regexp">/Shanghai /</span>etc/localtime
+
+也可以通过命令
+
+ln &amp;ndash;s <span class="regexp">/usr/</span>share<span class="regexp">/zoneinfo/</span>Asia<span class="regexp">/Shanghai /</span>etc/localtime
+
+来将时区设置为亚洲的上海。
+
+配置文件<span class="regexp">/etc/</span>sysconfig<span class="regexp">/clock可用来设置用户选择何种方式显示时间。如果硬件时钟为本地时间，则UTC设为0，并且不用设置环境变量TZ。如果硬件时钟为UTC时间，则要设置UTC为1，并设置环境变量TZ（或配置文件/</span>etc<span class="regexp">/TZ）为时区信息，如&amp;ldquo;Asia/</span>Shanghai&amp;rdquo;。
+
+cat <span class="regexp">/etc/</span>sysconfig/clock 
+
+# The ZONE parameter is only evaluated by system-config-date.
+
+# The timezone of the system is defined by the contents of <span class="regexp">/etc/</span>localtime.
+
+ZONE=&amp;quot;Asia/Shanghai&amp;quot;
+
+UTC=<span class="literal">false</span>
+
+ARC=<span class="literal">false</span>
+
+将当前时间和日期写入BIOS，避免重启后失效
+
+hwclock -w
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/04/16/w/linux-e6-97-b6-e5-8c-ba-e5-92-8c-e6-97-b6-e9-97-b4/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/04/16/w/linux-e6-97-b6-e5-8c-ba-e5-92-8c-e6-97-b6-e9-97-b4/" data-url="http://blog.veryi.com/2010/04/16/w/linux-e6-97-b6-e5-8c-ba-e5-92-8c-e6-97-b6-e9-97-b4/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/04/27/w/e5-81-a5-e5-ba-b7-e7-b1-bb-e4-bc-98-e7-a7-80-e5-9b-be-e4-b9-a6-e5-92-8c-e4-b8-ad-e5-8c-bb-e7-b1-bb-e7-bb-8f-e5-85-b8-e5-9b-be-e4-b9-a6/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-04-27T02:05:00.000Z" class="post__time">四月 27, 2011</time><h1 class="post__title"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">Vsftpd服务器故障排除</a></h1></header><div class="post__main"><p>打开调试日志：</p>
+<p>dual_log_enable=yes</p>
+<pre><code><span class="built_in">log</span>_ftp_protocol=yes
+
+VSFTPd与<span class="built_in">log</span>有关的选项
+
+VSFTPd_<span class="built_in">log</span>_file
+
+xferlog_<span class="built_in">enable</span>
+
+xferlog_std_format
+
+xferlog_file
+
+dual_<span class="built_in">log</span>_<span class="built_in">enable</span>
+
+syslog_<span class="built_in">enable</span>
+
+<span class="built_in">log</span>_ftp_protocol
+
+no_<span class="built_in">log</span>_lock
+
+在介绍Vsftpd服务器故障排除之前，我们来看看vsftp中关于日志记录的参数。
+
+xferlog_<span class="built_in">enable</span>=yes/no //是否启用 xferlog 日志格式
+
+xferlog_std_format=yes/no //是否采用标准格式记录日志
+
+xferlog_file=/path/to/logfile //xferlog 日志文件所在位置，默认为/var/<span class="built_in">log</span>/xferlog
+
+上面的参数设置记录xferlog日志的格式。这是早期Wu-ftpd服务的日志格式，它会记录上传和下载的动作。
+
+VSFTPd也有专有的日志格式，用下列参数设置：
+
+dual_<span class="built_in">log</span>_<span class="built_in">enable</span>=yes/no //是否采用VSFTPd自己的日志记录方式
+
+<span class="built_in">log</span>_ftp_protocol=yes/no //是否记录所有的ftp命令日志 
+
+VSFTPd_<span class="built_in">log</span>_file=/path/to/logfile //指定VSFTPd 日志文件位置，默认为/var/<span class="built_in">log</span>/vsftpd.log ，xferlog_<span class="built_in">enable</span>的默认值为no（VSFTPd提供的配置文件模版将其值改为了yes），dual_<span class="built_in">log</span>_<span class="built_in">enable</span>的默认值也为no，就是说默认情况下VSFTPd是不记录日志的。我们也可以将日志信息写入系统日志/var/<span class="built_in">log</span>/messages中，使用如下参数：
+
+syslog_<span class="built_in">enable</span>=yes/no
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-16T07:46:13.000Z" class="post__time">三月 16, 2011</time><h1 class="post__title"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/">mysql 写入优化</a></h1></header><div class="post__main"><p>查看mysql slow_query_log日志发现有大量写入操作很慢</p>
+<pre><code>mysqldumpslow -s t -t 10 veryi-slow.log
+
+Count: 11459&amp;nbsp; Time=11268628044.73s (129127208764609s)&amp;nbsp; <span class="operator"><span class="keyword">Lock</span>=<span class="number">0.00</span>s (<span class="number">0</span>s)&amp;nbsp;</span> Rows=0.0 (0), root[root]@localhost
+
+&amp;nbsp; <span class="operator"><span class="keyword">UPDATE</span> <span class="string">`veryi`</span>.<span class="string">`article`</span> <span class="keyword">SET</span> <span class="string">`view_count`</span>=<span class="string">`view_count`</span>+N <span class="keyword">WHERE</span> <span class="string">`article_id`</span>=N
+
+my.cnf配置为
+
+innodb_flush_method=O_DIRECT
+
+innodb_flush_log_at_trx_commit=<span class="number">2</span>
+
+修改为
+
+innodb_flush_method=O_DIRECT
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+后速度明显提高，写入操作从slow_query_log里面消失。</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-15T08:41:53.000Z" class="post__time">三月 15, 2011</time><h1 class="post__title"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/">wordpress在nginx上固定链接</a></h1></header><div class="post__main"><p>Nginx服务器下如何设置才能使永久链接生效而不致报404页面找不到的错误。由于Nginx不支持Apache的.htaccess文件，要实现持久连接静态化，我们必须手工配置Nginx的文件,伪静态化配置的重写规则，假设wordpress放在w目录：</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location /w/ {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># enable search for precompressed files ending in .gz</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># nginx needs to be complied using &amp;uml;C-with-http_gzip_static_module</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; gzip_static on;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if the requested file exists, return it immediately</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># all other requests go to Wordpress</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite . /w/<span class="keyword">index</span>.php <span class="keyword">last</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; include php.conf;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+后台管理的固定链接的设置：
+
+/<span class="variable">%post_id</span><span class="variable">%.</span>html
+
+网上提供的以下配置不成功
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.html){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.html <span class="keyword">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.php){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.php;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-f <span class="variable">$request_filename</span>){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) /<span class="keyword">index</span>.php;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-24T07:47:14.000Z" class="post__time">一月 24, 2011</time><h1 class="post__title"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/">千兆网络必须使用六类线</a></h1></header><div class="post__main"><p>cisc3750 10/100/1000BaseTX自适应交换机，25号端口灯是绿色的</p>
+<pre><code>show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
+
+GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
+
+&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+
+&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">100000</span> Kbit, DLY <span class="number">100</span> usec, 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">2</span>/<span class="number">255</span>, rxload <span class="number">100</span>/<span class="number">255</span>
+
+&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+
+&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+
+&amp;nbsp; Full-duplex, <span class="number">100</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+
+端口设置：
+
+!
+
+interface GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span>
+
+!
+
+联想r520服务器，千兆网卡，操作系统是centos <span class="number">5</span>，驱动是千兆的，交换机和服务器在一个机柜，但是<span class="number">25</span>号端口不能上到千兆。强行设成<span class="number">1000</span>M就会断网。
+
+网络跳线更换为千兆<span class="number">6</span>类线以后：
+
+show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
+
+GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
+
+&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+
+&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">1000000</span> Kbit, DLY <span class="number">10</span> usec, 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">1</span>/<span class="number">255</span>, rxload <span class="number">23</span>/<span class="number">255</span>
+
+&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+
+&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+
+&amp;nbsp; Full-duplex, <span class="number">1000</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+
+已经变成千兆了。
+</code></pre><p>附：</p>
+<p><span style="font-family: Arial,Helvetica,Geneva,Sans-serif; font-size: x-small; color: rgb(0, 0, 128);">CAT-5 is rated to 100M </span></p>
+<pre><code>CAT-<span class="number">5</span>e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">350</span>M 
+
+CAT-<span class="number">6</span> <span class="keyword">and</span> CAT6e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">550</span>M <span class="keyword">or</span> <span class="number">1000</span>M depending <span class="function_start"><span class="keyword">on</span></span> your source 
+
+CAT-<span class="number">7</span> <span class="keyword">is</span> supposedly rated <span class="keyword">to</span> <span class="number">700</span>M <span class="keyword">or</span> presumably <span class="number">1000</span>M &lt;/span&gt;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-05T02:24:06.000Z" class="post__time">一月 5, 2011</time><h1 class="post__title"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/">cisco Catalyst 3750 Series交换机端口限速</a></h1></header><div class="post__main"><p>switch的型号是3750G，使用qos进行流量控制：</p>
+<p>端口限速：</p>
+<pre><code>config t
+
+mls qos
+
+access-list <span class="number">2</span> permit <span class="keyword">any</span>
+
+#access-list <span class="number">2</span> permit <span class="number">0.0</span>.<span class="number">0.0</span> <span class="number">0.0</span>.<span class="number">0.0</span> <span class="comment">//限速不起作用</span>
+
+<span class="keyword">class</span>-map match-all <span class="number">2</span>M-rate 
+
+&amp;nbsp; match access-<span class="keyword">group</span> <span class="number">2</span> <span class="comment">//绑定访问列表2,将符合列表2的流归为2M-rate这个类里</span>
+
+! 
+
+policy-map <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; <span class="keyword">class</span> <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; police <span class="number">2000000</span> <span class="number">200000</span> exceed-action drop&amp;nbsp;&amp;nbsp; <span class="comment">//限速2M</span>
+
+<span class="keyword">interface</span> GigabitEthernet1<span class="regexp">/0/</span><span class="number">9</span>&amp;nbsp; 
+
+<span class="keyword">description</span> &amp;quot;<span class="number">2</span>M-<span class="number">201100104</span>&amp;quot;&amp;nbsp; 
+
+service-policy input <span class="number">2</span>M-rate
+
+查看：
+
+show policy-map 
+
+show <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+
+show run <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+
+show run
+
+show conf
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-12-13T03:38:26.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/">centos 5.5 x86_64 编译安装httpd-2.2.17、php-5.3.4、memcache扩展</a></h1></header><div class="post__main"><p>Apache是世界使用排名第一的Web服务器软件。同时也是最稳定、安全的服务器之一。</p>
+<pre><code>yum install zlib zlib-devel -y
+
+yum install opensll openssl-devel -y
+
+groupadd -g <span class="number">1000</span> vgroup
+
+useradd -u <span class="number">1000</span> -g vgroup -d <span class="regexp">/dev/</span><span class="literal">null</span> -s <span class="regexp">/bin/</span><span class="literal">false</span> vuser
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/httpd/httpd-2.2.17.tar.bz2</span>
+
+tar xfj httpd-<span class="number">2.2</span><span class="number">.17</span>.tar.bz2 -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-<span class="number">2.2</span><span class="number">.17</span>
+
+make clean
+
+CHOST=&amp;quot;x86_64-pc-linux-gnu&amp;quot;
+
+CFLAGS=&amp;quot;-march=native -O2 -pipe -fomit-frame-pointer&amp;quot;
+
+CXXFLAGS=&amp;quot;${CFLAGS}&amp;quot;
+
+.<span class="regexp">/configure --prefix=/</span>usr<span class="regexp">/local/</span>httpd \
+
+--with-mpm=worker \
+
+--enable-expires --enable-headers --enable-rewrite&amp;nbsp; --enable-deflate --enable-vhost-alias \
+
+--enable-so \
+
+--enable-ssl \
+
+--enable-cache --enable-file-cache --enable-mem-cache --enable-disk-cache --enable-<span class="keyword">static</span>-support --enable-<span class="keyword">static</span>-htpasswd --enable-<span class="keyword">static</span>-htdigest --enable-<span class="keyword">static</span>-rotatelogs --enable-<span class="keyword">static</span>-logresolve --enable-<span class="keyword">static</span>-htdbm --enable-<span class="keyword">static</span>-ab --enable-<span class="keyword">static</span>-checkgid --disable-userdir \
+
+--enable-suexec --with-suexec-caller=vuser --with-suexec-logfile=<span class="regexp">/var/</span>log<span class="regexp">/httpd/</span>suexec.log --with-suexec-docroot=<span class="regexp">/usr/</span>local/www --with-suexec-uidmin=<span class="number">500</span> --with-suexec-gidmin=<span class="number">100</span> 
+
+对于<span class="number">32</span>位系统：
+
+CHOST=&amp;quot;i686-pc-linux-gnu&amp;quot; 
+
+相对来说，prefork方式速度要稍高于worker，然而它需要的cpu和memory资源也稍多于woker。
+
+--enable-module=most --enable-proxy --enable-proxy-ajp --enable-forward --enable-proxy-connect --enable-proxy-http --enable-so --enable-deflate --enable-headers --enable-include
+
+上面的配置，用到了其他一些模块，说不定以后会用到，如支持ssi的include模块
+<span class="label">
+error:</span> APR version <span class="number">1.2</span><span class="number">.0</span> or later is required
+
+yum install apr
+
+或者
+<span class="label">
+http:</span><span class="comment">//apr.apache.org/download.cgi</span>
+
+apr-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+
+apr-util-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+
+./configure
+
+.<span class="regexp">/configure --with-apr=/</span>usr<span class="regexp">/local/</span>apr/
+
+--with-apr=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span> --with-apr-util=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>
+
+设置自启动
+
+[ -f <span class="regexp">/etc/</span>init.d<span class="regexp">/httpd ] || cp support/</span>apachectl <span class="regexp">/etc/</span>init.d/httpd
+
+#apachectl=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl
+
+#httpd=${HTTPD-<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/httpd}
+
+vim <span class="regexp">/etc/</span>init.d/httpd
+
+# vi <span class="regexp">/etc/</span>init.d/httpd(在第两行之后添加如下内容)
+
+#!<span class="regexp">/bin/</span>sh
+
+#
+
+# Startup script <span class="keyword">for</span> the Apache Web Server
+
+# <span class="string">chkconfig:</span> - <span class="number">85</span> <span class="number">15</span>
+
+# <span class="string">description:</span> Apache is a World Wide Web server. It is used to serve \
+
+# HTML files and CGI.
+
+# <span class="string">processname:</span> httpd
+
+# <span class="string">pidfile:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>log/httpd.pid
+
+# <span class="string">config:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+或者
+
+sed -i &amp;#<span class="number">39</span>;s%apachectl=<span class="regexp">/usr/</span>sbin<span class="regexp">/apachectl%apachectl=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apachectl%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+sed -i &amp;#<span class="number">39</span>;s%httpd=${HTTPD-<span class="regexp">/usr/</span>sbin<span class="regexp">/httpd}%httpd=${HTTPD-/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>httpd}%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/
+
+sed -i &amp;#<span class="number">39</span>;s%#Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%&amp;#<span class="number">39</span>; httpd.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerTokens Full/</span>ServerTokens Prod<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerSignature On/</span>ServerSignature Off<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+chkconfig --add httpd
+
+chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/httpd
+
+chkconfig --level <span class="number">345</span> httpd on 
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/&amp;lt;IfModule mime_module&amp;gt;/</span>a\&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php .php\
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php-source .phps&amp;#<span class="number">39</span>; \
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+sed -i -e &amp;#<span class="number">39</span>;s<span class="regexp">/User daemon/</span>User vuser<span class="regexp">/&amp;#39; -e &amp;#39;s/</span>Group daemon<span class="regexp">/Group vgroup/</span>&amp;#<span class="number">39</span>;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+vim&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl graceful
+
+php5安装
+
+yum install curl-devel -y
+
+yum install libxml2-devel -y
+
+yum install gettext-devel -y
+
+yum install libjpeg-devel -y
+
+yum install libpng-devel -y
+
+yum install freetype-devel -y
+
+yum install gmp-devel -y
+
+yum install libmcrypt-devel -y
+
+yum install&amp;nbsp; libtool-ltdl-devel -y
+
+yum install libevent-devel -y
+
+yum install libtidy-devel -y
+
+yum install libtool-ltdl libtool -y
+
+#<span class="regexp">/usr/</span>bin/<span class="string">ld:</span> cannot find -lltdl
+
+#ldconfig -p |grep ltdl
+
+#yum install libtool-ltdl.x86_64 libtool.x86_64 -y
+
+wget <span class="string">http:</span><span class="comment">//cn.php.net/get/php-5.3.4.tar.bz2/from/ca.php.net/mirror</span>
+
+cd <span class="regexp">/mnt/</span>backup<span class="regexp">/soft/</span>
+
+tar xfj php-<span class="number">5.3</span><span class="number">.4</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>php-<span class="number">5.3</span><span class="number">.4</span>
+
+make clean
+
+export PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+#no fpm
+
+#config file locate apache directory --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf
+
+make clean
+
+.<span class="regexp">/configure --with-apxs2=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf --prefix=<span class="regexp">/usr/</span>local<span class="regexp">/php --with-mysqli=/</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_config --with-mysql=<span class="regexp">/usr/</span>local/mysql&amp;nbsp; --with-curl --with-zlib --enable-ftp&amp;nbsp; --with-mcrypt --enable-inline-optimization --disable-debug \
+
+--with-gd --enable-gd-native-ttf --enable-gd-jis-conv --with-iconv-dir= --with-freetype-dir --with-jpeg-dir --with-png-dir \
+
+--with-libxml-dir=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libxml --enable-xml --enable-exif --enable-soap --enable-zip --with-openssl --enable-mbstring --with-mhash --with-tidy --enable-mbstring --with-pdo-mysql=<span class="regexp">/usr/</span>local/mysql \
+
+--enable-sockets --with-gettext \
+
+--enable-sqlite-utf8 
+
+make -j6 &amp;amp;&amp;amp; make install
+
+Wrote PEAR system config file <span class="string">at:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>etc/pear.conf
+
+You may want to <span class="string">add:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib/php to your php.ini include_path
+
+\cp php.ini-production <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/pecl install memcache
+
+wget <span class="string">http:</span><span class="comment">//pecl.php.net/get/memcache-2.2.6.tgz</span>
+
+tar xzf memcache-<span class="number">2.2</span><span class="number">.6</span>.tgz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcache-<span class="number">2.2</span><span class="number">.6</span>
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/phpize
+
+.<span class="regexp">/configure --with-php-config=/</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php-config --with-apxs=<span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apxs --enable-memcache
+
+make &amp;amp;&amp;amp; make install
+
+提示：Installing shared <span class="string">extensions:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+然后修改php.ini
+
+把
+
+extension_dir = &amp;quot;./&amp;quot;
+
+修改为
+
+extension_dir = &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/php/</span><span class="regexp">/lib/</span>php<span class="regexp">/extensions/</span>no-debug-non-zts-<span class="number">20060613</span>&amp;quot;
+
+并添加一行
+
+extension=memcache.so
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20060613/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-12-13T02:37:27.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/">centos 5.5 安装 mysql-5.1.53-linux-x86_64  及主从复制集群配置</a></h1></header><div class="post__main"><p>设置Mysql的主从复制的主要用途：</p>
+<pre><code><span class="number">1</span> 做备份机器，一旦主服务器崩溃，可以直接启用从服务器作为主服务器
+
+<span class="number">2</span> 可以直接锁定从服务器的表只读，然后做备份数据，这样不会影响主服务器的服务
+
+<span class="number">3</span> 可以处理读写数据库的负载均衡
+
+要点：
+
+从服务器一般需要设置只读，否则容易产生错误导致同步失败
+
+wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.53-linux-x86_64-glibc23.tar.gz/from/http://mysql.mirror.tw/</span>
+
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23.tar.gz
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s&amp;nbsp; mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23 mysql
+
+tar -C <span class="regexp">/usr/</span>local -xzf&amp;nbsp; mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23.tar.gz 
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23 mysql
+
+cd <span class="regexp">/usr/</span>local/mysql
+
+cp support-files/my-huge.cnf my.cnf
+
+mv <span class="regexp">/etc/</span>my.cnf ~/
+
+mv <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld ~/
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
+
+vim&amp;nbsp; my.cnf
+
+server-id = <span class="number">8108</span>
+
+max_allowed_packet = <span class="number">64</span>M
+
+max_connections=<span class="number">800</span>
+
+character-set-server=utf8
+
+expire_logs_days = <span class="number">60</span>
+
+binlog_format=mixed
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+default_table_type = INNODB
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">4</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+slow_query_log
+
+#slow_query_log_file=mysql-slow.log
+
+long_query_time=<span class="number">1</span>
+
+log-error=mysqld.log
+
+[mysqld_safe]
+
+log-error=<span class="regexp">/var/</span>log/mysqld.log
+
+pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
+
+#--------------------------------------
+
+# <span class="number">32</span>G RAM
+
+max_allowed_packet = <span class="number">64</span>M
+
+innodb_buffer_pool_size = <span class="number">24</span>G
+
+#-------------------------------------
+
+<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
+
+<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+#chmod -R u+rw data
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
+
+chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
+
+#<span class="regexp">/sbin/</span>chkconfig --del mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld stop
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld start
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe &amp;amp;
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+或者
+
+vim <span class="regexp">/etc/</span>profile
+
+PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+PATH=<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span><span class="string">bin:</span>$PATH
+
+tail -<span class="number">50</span> <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>*.err
+
+slave上的配置
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值，必须保证唯一性：
+
+vim&amp;nbsp; my.cnf
+
+server-id = <span class="number">8168</span>
+
+max_connections=<span class="number">600</span>
+
+character-set-server=utf8
+
+binlog_format = &amp;quot;ROW&amp;quot;
+
+default_table_type = innodb
+
+relay-log-purge=<span class="number">1</span>
+
+#slave-skip-errors=<span class="number">1062</span>,<span class="number">1053</span>
+
+skip-slave-start
+
+replicate-ignore-db=mysql
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+在master服务器上配置复制账号权限：
+
+GRANT REPLICATION SLAVE ON *.* TO &amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;@&amp;#<span class="number">39</span>;%&amp;#<span class="number">39</span>; IDENTIFIED BY &amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;;
+
+flush privileges;
+
+在slave服务器上配置master服务器信息：
+
+CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span><span class="number">.8</span><span class="number">.108</span>&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
+
+start slave;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-30T06:54:19.000Z" class="post__time">十一月 30, 2010</time><h1 class="post__title"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">一台pc服务器的黑屏故障排除</a></h1></header><div class="post__main"><p>开机显示器亮一下显示显卡型号后黑屏，不报警，不能启动。因为听不到&ldquo;滴&rdquo;的自检通过声音而且没有显示，仍然判断为显卡故障，更换显卡以后正常。</p>
+<pre><code>这里需要了解一下POST自检是按什么顺序进行检测的：
+
+POST自检测过程大致为：加电－<span class="built_in">CPU</span>－ROM－BIOS－System Clock－DMA－64KB RAM－IRQ－显卡等。检测显卡以前的过程称过关键部件测试，如果关键部件有问题，计算机会处于挂起状态，习惯上称为核心故障。
+
+另一类故障称为非关键性故障，检测完显卡后，计算机将对64KB以上内存、I／O口、软硬盘驱动器、键盘、即插即用设备、CMOS设置等进行检测，并在屏幕上显示各种信息和出错报告。
+
+附件：个人计算机的启动过程
+
+我们在按下启动键时，首先启动的应是电源（因为如果没有电源供电，那么主板上所有的配件都是无法工作的）。但是为了保证安全使用，电源部分采取了一系列安全保护措施；因此开关电源从起振到稳定之间会有一段时间的延迟，等待各组电压都稳定下来后，电源各部分会输出一个检测信号，这个信号为高电平时表示该部分电压正常，这些部分包括输入电压和各组输出电压。这些信号总和的结果就是一个POWER GOOD信号（也称为POWER OK或PWR OK信号）；如果主板接受不到这个信号，那么时钟芯片会持续向<span class="built_in">CPU</span>发送复位（RESET）信号（与我们按下RESER键相当），<span class="built_in">CPU</span>就不会工作。 
+
+当<span class="built_in">CPU</span>接受到正常的POWER GOOD信号，主板和<span class="built_in">CPU</span>就启动了吗？其实主板此时，还要根据<span class="built_in">CPU</span>的VID0－VID3引脚的定义组合，将<span class="built_in">CPU</span>所提供的VID0－VID3信号送到电源管理模块的相应的端口；如果主板BIOS具有可设定<span class="built_in">CPU</span>电压的功能，主板会按时设定的电压与VID的对应关系产生新的VID信号并送到电源管理模块芯片，电源管理模块将根据设定并通过DAC电压将其转换为基准电压，再经过场效应管轮流导通和关闭，将能量通过电感线圈送到<span class="built_in">CPU</span>，最后再经过调节电路使用输出电压与设定电压值相当。 
+
+由于<span class="built_in">CPU</span>还要根据自己所需要的频率，通过IC总线来检测主板频率发生器所设置的频率是否支持；因为电脑要进行正确的数据传送以及正常的运行，没有时钟信号是不行的，时钟信号在电路中的主要作用就是同步；因为在数据传送过程中，对时序都有着严格的要求，只有这样才能保证数据在传输过程不出差错。时钟信号首先设定了一个基准，我们可以用它来确定其它信号的宽度，另外时钟信号能够保证收发数据双方的同步。对于<span class="built_in">CPU</span>而言，时钟信号作为基准，<span class="built_in">CPU</span>内部的所有信号处理都要以它作为标尺，这样它就确定<span class="built_in">CPU</span>指令的执行速度；如<span class="built_in">CPU</span>本身的频率无法适应频率发生器所提供的高频率，也是无法正常工作的。因此只有当接受到POWER GOOD信号，和相应的得到<span class="built_in">CPU</span>工作的电压时以及相应的时钟频率后，<span class="built_in">CPU</span>才能正常的工作，也就是开始执行BIOS程序。 
+
+POST上电自检：是微机接通电源后，系统进行的一个自我检查的例行程序。这个过程通常称为POST上电自检（Power On Self <span class="keyword">Test</span>）。对系统的几乎所有的硬件进行检测。 
+
+POST是如何进行自检测的？ 
+
+主板在接通电源后，系统首先由(Power On Self <span class="keyword">Test</span>,上电自检)程序来对内部各个设备进行检查。在我们按下起动键（电源开关）时，系统的控制权就交由BIOS来完成，由于此时电压还不稳定，主板控制芯片组会向<span class="built_in">CPU</span>发出并保持一个RESET(重置)信号，让<span class="built_in">CPU</span>初始化，同时等待电源发出的POWER GOOD信号(电源准备好信号)。当电源开始稳定供电后(当然从不稳定到稳定的过程也只是短暂的瞬间)，芯片组便撤去RESET信号(如果是手动按下计算机面板上的Reset按钮来重启机器，那么松开该按钮时芯片组就会撤去RESET信号)，<span class="built_in">CPU</span>马上就从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。
+
+系统BIOS的启动代码首先要做的事情就是进行POST(Power On Self <span class="keyword">Test</span>，加电自检)，由于电脑的硬件设备很多（包括存储器、中断、扩展卡），因此要检测这些设备的工作状态是否正常。 这一过程是逐一进行的，BIOS厂商对每一个设备都给出了一个检测代码（称为POST CODE即开机自我检测代码），在对某个设置进行检测时，首先将对应的POST CODE写入<span class="number">80H</span>（地址）诊断端口，当该设备检测通过，则接着送另一个设置的POST CODE，对此设置进行测试。如果某个设备测试没有通过，则此POST CODE会在<span class="number">80H</span>处保留下来，检测程序也会中止，并根据已定的报警声进行报警（BIOS厂商对报警声也分别作了定义，不同的设置出现故障，其报警声也是不同的，我们可以根据报警声的不同，分辨出故障所在。 
+
+POST自检响铃次数是如何定义的？ 
+
+POST上电自检还会通过报警声响次数的方式来指出检测到的故障。但需要注意：由于目前主板BIOS类型大致可分为AWARD公司、AMI公司、PHOENIX公司（AWARD已与PHOENIX合并），因此不同类型的BIOS，其自检响铃次数所定义的自检错误是不一致的，因此一定要分清。 
+
+POST自检发现错误后如何提示？ 
+
+POST自检如发现有错误，将按两种情况处理：对于严重故障(致命性故障)则停机，此时由于各种初始化操作还没完成，不能给出任何提示或信号；对于非严重故障则给出提示或声音报警信号（以上介绍），等待用户处理。通过BIOS自检功能（POST自检），我们就可以方便的侦测出主板的故障所在，以便正确的解决。 
+
+如我们按下电源键后，只有电源指示灯亮，电脑屏幕没有任何反映，也没有报警声；那么针对这种情况，我们又应如何解决呢？ 
+
+屏幕没有显示，也没有报警声，我们就无法从POST自检功能得到相应的信息；大家都知道，计算机是一个复杂而且精密的产品组合，因此一个环节出现问题，可能都无法启动机器（我们主要谈硬件方面）。因此，如出现黑屏，无报警声响的故障现象，我们就应根据电脑的启动过程来分析问题所在了。 
+
+如何判断、解决故障所在？ 
+
+因为如接受不到POWER GOOD信号，系统就一直处理RESET（复位）循环中，因此主板也就无法启动，相应的其它硬件，如显卡也无法工作，显示器由于接受不到显卡传出的信号，因此也就没有显示，一直处于待机状态。此时，我们应检测电源，不要以为电源灯亮，就表明电正常，因为只要有一路信号有故障（该部分电路不正常或还未稳定），输入出的POWER GOOD信号都为低电平，即表示电源部分有故障或还未进入稳定状状；虽然电源指示灯亮，但由于主板接受不到正常的POWER GOOD信号，也无法启动。我们检测电源的方法是，使用可正常工作的电源测试。如电源为ATX型我们可用导线将<span class="number">13</span>与<span class="number">14</span>脚短接，如电源风扇能正常运行，则表明电源是完好的，则故障应在主板上。 
+
+更换正常电源后，如系统还是没有工作的显象，应按以上主板启动过程，测试<span class="built_in">CPU</span>的电源管理模块和频率发生器。但由于我们不可能有完善的设备来测试主板上的电源和频率模块（大多数电脑爱好者不可能有此类设置，和具有相应的检测能力）。因此我们对此还要采用排除法，即在其它正常主板上测试<span class="built_in">CPU</span>。测试排除<span class="built_in">CPU</span>的故障外，还应检测主板频率设置问题。电脑爱好者为使用或测试<span class="built_in">CPU</span>的超频能力，会通过调整主板外频的方式（目前<span class="built_in">CPU</span>已经锁频，只能设置外频，而无法设置倍频），来调高<span class="built_in">CPU</span>的工作频率。如果<span class="built_in">CPU</span>无法适应高工作频率，虽然电源供电正常，主板也是无法启动的。 
+
+排除了其它硬件的问题，为会么系统仍不可启动？ 
+
+如果硬件一切正常（经测试），那么在POST上电自检测后，<span class="built_in">CPU</span>会从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。由于BIOS是连接操作系统和硬件之间的桥梁，为计算机提供最低级的、最直接的硬件控制，计算机的原始操作都是依照固化在BIOS里的内容（指令）来完成的。因此如BIOS文件破坏或BIOS芯片损坏，都会直接的影响主板的启动。 
+
+如果屏幕显示BIOS ROM checksum error-System halted(BIOS 程序代码在进行总和检查 ( checksum ) 时发现错误)的提示时，应是读取BIOS时，校验总和出错，因此无法启机器。这种问题通常是因为 BIOS 程序代码更新不完全所造成的，解决办法重新刷写烧坏主板 BIOS。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-12T03:56:55.000Z" class="post__time">十一月 12, 2010</time><h1 class="post__title"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/">windows不能搜索中文汉字修复</a></h1></header><div class="post__main"><p>重新安装搜索组件:打开系统盘\Windows\inf 在inf里面找srchasst.inf，用鼠标右击-安装</p>
+<pre><code>手动选择安装盘的路径 到i386点击确定。
+
+打开注册表依次<span class="special">&amp;</span>ldquo;HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Explorer</span><span class="command">\CabinetState</span><span class="special">&amp;</span>rdquo;在CabinetState里新建字符串<span class="special">&amp;</span>ldquo;Use Search Asst<span class="special">&amp;</span>rdquo;，设置其值为<span class="special">&amp;</span>ldquo;NO<span class="special">&amp;</span>rdquo;。
+
+在运行命令里输入regsvr32 offfilt.dll
+</code></pre><p>&ldquo;确定&rdquo;－出现成功提示后点OK,同样方法运行</p>
+<pre><code>regsvr32 <span class="keyword">Query</span>.dll
+
+&amp;ldquo;regsvr32 jscript.dll&amp;rdquo;
+
+&amp;ldquo;regsvr32 vbscript.dll&amp;rdquo;。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-19T03:42:34.000Z" class="post__time">十月 19, 2010</time><h1 class="post__title"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/">彻底禁用RealPlayer播放器软件更新检测计划任务</a></h1></header><div class="post__main"><p>RealPlayer 会私自安装两个RealPlayer播放器软件更新检测计划任务,并且一打开RealPlayer播放器,会在任务管理器中加载一个realsched.exe进程,关闭RealPlayer后这个进程仍然会存在,并且每次自动添加一个启动项目TkBellExe.</p>
+<pre><code>RealPlayer启动项目:
+
+TkBellExe
+
+注册表位置: HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+关联路径文件:C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+RealPlayer计划任务
+
+文件路径: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+注册表位置: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+方法:
+
+开始<span class="command">\运</span>行<span class="command">\mmc</span>.exe
+
+找到Task Scheduler服务项,右键<span class="command">\停</span>止(如在启动状态进行这一步)<span class="command">\属</span>性<span class="command">\启</span>动类型(设置为已禁用)
+
+删除文件: C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+删除注册表项: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+重启系统再操作:
+
+删除文件: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\目</span>录中以Real开头的.job文件
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/8/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

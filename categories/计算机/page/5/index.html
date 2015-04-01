@@ -1,0 +1,768 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong><font face="宋体">微码</font></strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
+<p>准备工作：</p>
+<p>制作可引导移动硬盘，<a href="http://veryi.com/w/257.html" target="_blank" rel="external">参考http://veryi.com/w/257.html</a>；</p>
+<p>下载bios镜像，复制到移动硬盘相应目录。</p>
+<p>编辑menu.lst，添加：</p>
+<p>title bios CD ISO</p>
+<pre><code>&amp;nbsp; fallback <span class="number">8</span>
+
+&amp;nbsp; find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
+
+&amp;nbsp; <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (<span class="number">0xff</span>)
+
+&amp;nbsp; savedefault <span class="comment">--wait=2</span>
+
+title bios DOS IMG
+
+&amp;nbsp; find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
+
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+
+&amp;nbsp; chainloader (fd0)+<span class="number">1</span>
+
+&amp;nbsp; rootnoverify (fd0)
+</code></pre><p>文件名和目录要对应。</p>
+<p>升级过程：</p>
+<p>要保证供电稳定，启动服务器，按F12，选usb启动。然后选择cd iso或dos img加载。后面步骤参考</p>
+<p><a href="http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK" target="_blank" rel="external">http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK</a></p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T06:33:28.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/">AMD X4 631 必须使用独立显卡</a></h1></header><div class="post__main"><p>&nbsp; &nbsp; 一台新组装的pc机开机黑屏不显示，不报警，也没有滴的一声。配置为 AMD Athlon(tm) II X4 631 Quad-Core Processor，asus F1A55-M LX主板、A55 FCH（Hudson D2）芯片组。想当然认为是主板或cpu有问题。看到cpu盒子上写着&ldquo;需要独立显卡-Requires Discrete GPU&rdquo;，最后终于明白，这种主板上只是按照了vga的接口，而没有集成显示控制芯片，631又屏蔽了内部集成的显卡，不安装独立显卡，系统当然不会显示。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T05:57:06.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/">windows 7设置静态ip地址不生效</a></h1></header><div class="post__main"><p>&nbsp; windows 7设置静态ip地址不生效，ipconfig显示为一个以169开头的ip，开始以为是设置方法不对。最后找到原因：ip地址冲突，手工设定的ip地址不生效。系统不提示ip地址冲突，机子就自己给自己设置一个169.254.<em>.</em>的ip。所以用了不少时间查找原因。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-01T07:32:41.000Z" class="post__time">十二月 1, 2011</time><h1 class="post__title"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/">centos 6 server dhcpd、squid和网络排错</a></h1></header><div class="post__main"><p>服务器需要停止的服务：</p>
+<pre><code>NetworkManager
+
+dnsmasq
+
+域名不能解析，resolv.conf被修改
+
+cat /etc/resolv.conf
+
+# Generated <span class="keyword">by</span> NetworkManager
+
+chkconfig dnsmasq off
+
+chkconfig --list dnsmasq
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: ** Ignoring requests <span class="keyword">on</span> eth0.&amp;nbsp; <span class="keyword">If</span> this <span class="keyword">is</span> <span class="keyword">not</span> what
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; you want, please <span class="keyword">write</span> a subnet declaration
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">in</span> your dhcpd.conf file <span class="keyword">for</span> the network segment
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> which <span class="keyword">interface</span> eth0 <span class="keyword">is</span> attached. **
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: <span class="keyword">Not</span> configured <span class="keyword">to</span> listen <span class="keyword">on</span> any interfaces!
+
+在subnet里定义的网段要与你的网卡IP所处网段一致,
+
+实际情况是网卡eth0没启动。
+
+chkconfig --list dhcpd
+
+centos <span class="number">6</span> 启动eth0 网卡时报错：
+
+Error: Connection activation failed: Device <span class="keyword">not</span> managed <span class="keyword">by</span> NetworkManager
+
+<span class="number">1</span>\. <span class="keyword">Remove</span> Network Manager <span class="keyword">from</span> startup Services.
+
+chkconfig NetworkManager off
+
+chkconfig --list NetworkManager
+
+<span class="number">2</span>\. <span class="keyword">Add</span> <span class="keyword">Default</span> Net Manager
+
+chkconfig network <span class="keyword">on</span>
+
+chkconfig --list network
+
+Stop NetworkManager first
+
+service NetworkManager stop
+
+<span class="keyword">and</span> <span class="keyword">then</span> start <span class="keyword">Default</span> Manager
+
+service network start
+
+<span class="keyword">or</span> you can change it easy:
+
+system-config-network 
+
+uncheck the box that sets the eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="keyword">and</span> <span class="keyword">set</span> IP info <span class="keyword">from</span> there.
+
+system-config-services 
+
+stop <span class="keyword">and</span> disable NetworkManager , start <span class="keyword">and</span> enable network
+
+you have problem because both <span class="keyword">of</span> NetworkManager <span class="keyword">and</span> Network <span class="keyword">using</span> same Network driver <span class="keyword">and</span> <span class="keyword">default</span> network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared after restart.
+
+squid Version <span class="number">3.2</span>.<span class="number">0.13</span>: ERROR: No
+
+<span class="keyword">forward</span>-proxy ports configured.
+
+&amp;gt; #http/https ports
+
+&amp;gt; http_port <span class="number">33070</span> transparent
+
+&amp;gt;
+
+So, only one port, <span class="keyword">and</span> its a NAT traffic receiving port. Looks like 
+
+Squid was right, &amp;quot;no <span class="keyword">forward</span>-proxy ports configured&amp;quot;.
+
+Should <span class="keyword">not</span> be <span class="keyword">on</span> every request, that <span class="keyword">is</span> a sign <span class="keyword">of</span> some other problem 
+
+happening. Just <span class="keyword">on</span> the ones which need <span class="keyword">to</span> produce internal URLs (ie 
+
+error page icons, FTP directory icons, cache manager requests, etc). 
+
+Squid requires a <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> the URL it tells the browser <span class="keyword">to</span> 
+
+fetch those icons <span class="keyword">from</span>. A NAT <span class="keyword">or</span> TROXY receiving port <span class="keyword">is</span> somewhat 
+
+vulnerable <span class="keyword">to</span> forgery attacks <span class="keyword">and</span> Squid now avoids publishing its 
+
+details. Accel ports have some problematic cases <span class="keyword">in</span> the parser <span class="keyword">and</span> <span class="keyword">until</span> 
+
+those are figured <span class="keyword">out</span> properly they are avoided <span class="keyword">as</span> well. Which just 
+
+leaves the regular <span class="keyword">old</span> <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> now.
+
+Adding &amp;quot;http_port <span class="number">3128</span>&amp;quot; <span class="keyword">or</span> somesuch <span class="keyword">is</span> enough <span class="keyword">to</span> avoid this message
+
+http:<span class="comment">//web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-11-11T06:06:17.000Z" class="post__time">十一月 11, 2011</time><h1 class="post__title"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/">一起艰难的网络故障排除-不可忽视的路由表</a></h1></header><div class="post__main"><p>某个ip[221.6.209.46]不能访问我们的网站[121.12.49.36]，检查路由器、防火墙、交换机，操作系统linux iptables，hosts.deny，应用系统的访问控制列表。都没有发现对此ip的限制。</p>
+<p>和IDC机房多次报故障，机房说没有限制，让我们检查路由器、防火墙、交换机和操作系统…我们也说没限制。</p>
+<pre><code>直到最后查看路由表才发现问题所在：
+
+Tracing route to [121.12.49.36]
+
+over a maximum of 30 hops:
+
+&amp;nbsp; 1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp; 221.76.209.41
+
+...可以到达机房的路由器
+
+traceroute 221.6.209.46 -<span class="keyword">n</span>
+
+traceroute to 221.6.209.46 (221.6.209.46), 30 hops max, 40 byte packets
+
+没有响应，说明根本没有出去。
+
+netstat -rn
+
+Kernel IP routing <span class="keyword">table</span>
+
+Destination&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Gateway&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Genmask&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Flags&amp;nbsp;&amp;nbsp; MSS <span class="keyword">Window</span>&amp;nbsp; irtt Iface
+
+172.16.1.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.255.255.0&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth1
+
+169.254.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.255.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth1
+
+221.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth0
+
+0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 121.12.49.1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; UG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth0
+
+route del -<span class="keyword">net</span> 221.0.0.0/8 
+
+traceroute 221.76.209.46 -<span class="keyword">n</span>
+
+traceroute to 221.76.209.46 (221.76.209.46), 30 hops max, 40 byte packets
+
+&amp;nbsp;1&amp;nbsp; 121.12.49.1&amp;nbsp; 0.490 ms&amp;nbsp; 0.922 ms&amp;nbsp; 1.131 ms
+
+&amp;nbsp;2&amp;nbsp; 121.12.55.17&amp;nbsp; 0.318 ms&amp;nbsp; 0.342 ms&amp;nbsp; 0.363 ms
+
+&amp;nbsp;3&amp;nbsp; 110.96.72.97&amp;nbsp; 1.292 ms&amp;nbsp; 1.334 ms&amp;nbsp; 1.410 ms
+
+&amp;nbsp;4&amp;nbsp; 61.233.9.213&amp;nbsp; 1.360 ms&amp;nbsp; 1.357 ms&amp;nbsp; 1.341 ms
+
+&amp;nbsp;5&amp;nbsp; 61.237.97.58&amp;nbsp; 10.237 ms&amp;nbsp; 10.252 ms&amp;nbsp; 10.238 ms
+
+&amp;nbsp;6&amp;nbsp; 61.237.124.10&amp;nbsp; 10.250 ms&amp;nbsp; 10.305 ms&amp;nbsp; 10.355 ms
+
+&amp;nbsp;7&amp;nbsp; 222.39.46.194&amp;nbsp; 10.106 ms&amp;nbsp; 10.189 ms&amp;nbsp; 10.095 ms
+
+&amp;nbsp;8&amp;nbsp; 222.39.162.214&amp;nbsp; 10.585 ms&amp;nbsp; 10.505 ms&amp;nbsp; 10.562 ms
+
+&amp;nbsp;9&amp;nbsp; 221.76.208.2&amp;nbsp; 12.346 ms&amp;nbsp; 12.464 ms&amp;nbsp; 12.643 ms
+
+10&amp;nbsp; 221.76.209.34&amp;nbsp; 11.679 ms&amp;nbsp; 11.890 ms&amp;nbsp; 12.019 ms
+
+添加/删除路由的命令示例：
+
+route add -<span class="keyword">net</span> 221.0.0.0/8 dev eth0
+
+route add -<span class="keyword">net</span> 192.57.66.0 netmask 255.255.255.0 gw ipx4
+
+route add -<span class="keyword">net</span> 224.0.0.0 netmask 240.0.0.0 dev eth0
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-11-07T09:11:36.000Z" class="post__time">十一月 7, 2011</time><h1 class="post__title"><a href="/2011/11/07/w/e6-b6-b2-e6-99-b6-e6-98-be-e7-a4-ba-e5-99-a8-e9-80-89-e8-b4-ad-e6-8c-87-e5-8d-97-e7-bb-8f-e6-b5-8e-e5-ae-9e-e7-94-a8-e5-9e-8b-e6-98-be-e7-a4-ba-e5-99-a8-e5-af-bc-e8-b4-ad/">液晶显示器选购指南-经济实用型显示器导购</a></h1></header><div class="post__main"><p>要点：</p>
+<pre><code>双接口，vga加数字接口DVI-D 、hdmi；
+
+led背光；
+
+电源外置，散热效果好，电源坏了容易维修；
+
+环保，低功耗；
+
+高性价比；
+
+广角屏；
+
+对于办公上网的用户，建议点距不低于<span class="number">0</span>.<span class="number">27</span>，推荐点距是 <span class="number">0</span>.<span class="number">285</span>；
+
+分辨率：支持FHD192<span class="number">0</span>&amp;<span class="keyword">times</span>;<span class="number">1080</span> 
+
+亮度、对比度、响应时间，现在在售的基本都达标了。
+
+我选的是Aoc/冠捷 超薄IPS硬屏+LED I2351FE 
+
+附：液晶显示器常见、尺寸、分辨率、点距
+
+<span class="number">12.1</span>英寸 (<span class="number">800</span>&amp;<span class="keyword">times</span>;<span class="number">600</span>) - <span class="number">0</span>.<span class="number">308</span>mm
+
+<span class="number">12.1</span>英寸 (<span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>) - <span class="number">0</span>.<span class="number">240</span>mm
+
+<span class="number">12.1</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>) - <span class="number">0</span>.<span class="number">204</span>mm
+
+<span class="number">13.3</span>英寸 (<span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>) - <span class="number">0</span>.<span class="number">264</span>mm
+
+<span class="number">13.3</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>) - <span class="number">0</span>.<span class="number">224</span>mm
+
+<span class="number">14.1</span>英寸 (<span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>) - <span class="number">0</span>.<span class="number">279</span>mm
+
+<span class="number">14.1</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>) - <span class="number">0</span>.<span class="number">237</span>mm
+
+<span class="number">14.1</span>英寸 (<span class="number">1400</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">204</span>mm
+
+<span class="number">14.1</span>英寸 (<span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>) - <span class="number">0</span>.<span class="number">211</span>mm
+
+<span class="number">15</span>英寸 (<span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>) - <span class="number">0</span>.<span class="number">297</span>mm
+
+<span class="number">15</span>英寸 (<span class="number">1400</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">218</span>mm
+
+<span class="number">15</span>英寸 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">190</span>mm
+
+<span class="number">16</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">248</span>mm
+
+<span class="number">17</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">264</span>mm
+
+<span class="number">17</span>英寸宽屏 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>) - <span class="number">0</span>.<span class="number">2895</span>mm
+
+<span class="number">17.4</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">270</span>mm
+
+<span class="number">18</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">281</span>mm
+
+<span class="number">19</span>英寸 (<span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">294</span>mm
+
+<span class="number">19</span>英寸 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">242</span>mm
+
+<span class="number">19</span>英寸宽屏 (<span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>) - <span class="number">0</span>.<span class="number">285</span>mm
+
+<span class="number">19</span>英寸宽屏 (<span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">243</span>mm
+
+<span class="number">20.1</span>英寸 (<span class="number">1200</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">312</span>mm
+
+<span class="number">20.1</span>英寸 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">255</span>mm
+
+<span class="number">20.1</span>英寸宽屏 (<span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">258</span>mm
+
+<span class="number">20.1</span>英寸 (<span class="number">2560</span>&amp;<span class="keyword">times</span>;<span class="number">2048</span>) - <span class="number">0</span>.<span class="number">156</span>mm
+
+<span class="number">20.8</span>英寸 (<span class="number">2048</span>&amp;<span class="keyword">times</span>;<span class="number">1536</span>) - <span class="number">0</span>.<span class="number">207</span>mm
+
+<span class="number">21.3</span>英寸 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">270</span>mm
+
+<span class="number">21.3</span>英寸 (<span class="number">2048</span>&amp;<span class="keyword">times</span>;<span class="number">1536</span>) - <span class="number">0</span>.<span class="number">210</span>mm
+
+<span class="number">21.6</span>英寸宽屏 (<span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">276</span>mm
+
+<span class="number">22</span>英寸宽屏 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1024</span>) - <span class="number">0</span>.<span class="number">294</span>mm
+
+<span class="number">22</span>英寸宽屏 (<span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>) - <span class="number">0</span>.<span class="number">282</span>mm
+
+<span class="number">22.2</span>英寸 (<span class="number">3840</span>&amp;<span class="keyword">times</span>;<span class="number">2400</span>) - <span class="number">0</span>.<span class="number">1245</span>mm
+
+<span class="number">23</span>英寸宽屏 (<span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">258</span>mm
+
+<span class="number">23.1</span>英寸 (<span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">294</span>mm
+
+<span class="number">23.6</span>英寸 (<span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1080</span>)宽屏屏幕比例<span class="number">16</span>:<span class="number">9</span> - <span class="number">0</span>.<span class="number">272</span>mm
+
+<span class="number">24</span>英寸宽屏 (<span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">270</span>mm
+
+<span class="number">27</span>英寸宽屏 (<span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>) - <span class="number">0</span>.<span class="number">303</span>mm
+
+<span class="number">30</span>英寸宽屏 (<span class="number">2560</span>&amp;<span class="keyword">times</span>;<span class="number">1600</span>) - <span class="number">0</span>.<span class="number">250</span>mm
+
+============================
+
+各种LCD点距（笔记本）
+
+各类屏幕点距，比较特殊的如<span class="number">11.1</span>寸，<span class="number">8.9</span>寸，<span class="number">10.6</span>寸等规格没有列出
+
+普屏 <span class="number">1024</span>*<span class="number">768</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">12.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">24.5872</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">240</span>
+
+<span class="number">13.3</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">27.0256</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">264</span>
+
+<span class="number">14.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">28.6512</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">280</span>
+
+<span class="number">15.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30.6832</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">300</span>
+
+高分普屏 <span class="number">1400</span>*<span class="number">1050</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">14.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">28.6512</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">205</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; （看着有点辛苦了）
+
+<span class="number">15.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30.6832</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">219</span>
+
+高分普屏 <span class="number">1600</span>*<span class="number">1200</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">15.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30.6832</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">1918</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; （点距最小的普屏）
+
+宽屏：
+
+普分宽屏&amp;nbsp;&amp;nbsp; <span class="number">1280</span>*<span class="number">800</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">12.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">26.062</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">204</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; （比<span class="number">14</span>寸高分还要小）
+
+<span class="number">13.3</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">28.647</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">224</span>
+
+<span class="number">14.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30.37</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">237</span>
+
+<span class="number">15.4</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">33.170368</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">259</span>
+
+<span class="number">17</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">36.61664</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">286</span>
+
+高分宽屏&amp;nbsp;&amp;nbsp; <span class="number">1440</span>*<span class="number">900</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">14.1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30.37</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">211</span>
+
+<span class="number">15.4</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">33.170368</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">230</span>
+
+<span class="number">17</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">36.61664</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">254</span>
+
+HDTV宽屏&amp;nbsp;&amp;nbsp; <span class="number">1920</span>*<span class="number">1200</span> 分辨率
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 屏宽 （cm）&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 点距（mm）
+
+<span class="number">17</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">36.61664</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">191</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; （点距最小的宽屏）
+
+<span class="number">19</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">40.92448</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">213</span>
+
+<span class="number">20</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">43.0784</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>.<span class="number">224</span>
+
+----------------------------------------------------------------------------
+
+各尺寸屏幕的点距
+
+<span class="number">23</span>〃, <span class="number">2048</span>&amp;<span class="keyword">times</span>;<span class="number">1152</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">249</span>mm
+
+<span class="number">7</span>〃, <span class="number">800</span>&amp;<span class="keyword">times</span>;<span class="number">480</span>, <span class="number">15</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">19</span>mm &amp;<span class="keyword">lt</span>;==== <span class="number">7</span>〃 Eee PC
+
+<span class="number">8.9</span>〃, <span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">600</span>, 点距:<span class="number">0</span>.<span class="number">19</span>mm &amp;<span class="keyword">lt</span>;==== 众多Netbook
+
+<span class="number">10.2</span>〃, <span class="number">1024</span>&amp;<span class="keyword">times</span>;<span class="number">600</span>, 点距:<span class="number">0</span>.<span class="number">218</span>mm &amp;<span class="keyword">lt</span>;==== Asus/MSI/HP <span class="number">10.2</span>〃 Netbook
+
+<span class="number">15</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">720</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">259</span>mm &amp;<span class="keyword">lt</span>;==== AOC/BenQ monitor
+
+<span class="number">17</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">720</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">291</span>mm &amp;<span class="keyword">lt</span>;==== Gateway/Samsung/Viewsonic monitors
+
+<span class="number">8.9</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">15</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">151</span>mm &amp;<span class="keyword">lt</span>;==== HP <span class="number">2133</span>
+
+<span class="number">10.6</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">15</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">18</span>mm &amp;<span class="keyword">lt</span>;==== Fujitsu LifeBook P7230WG
+
+<span class="number">12.1</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">15</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">206</span>mm &amp;<span class="keyword">lt</span>;====Fujitsu Lifebook B6220T
+
+<span class="number">12.1</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">204</span>mm &amp;<span class="keyword">lt</span>;==== 众多<span class="number">12</span>〃 NB
+
+<span class="number">13.3</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">224</span>mm &amp;<span class="keyword">lt</span>;==== Dell M133<span class="number">0</span>、Asus W6/W7
+
+<span class="number">14.1</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">237</span>mm &amp;<span class="keyword">lt</span>;==== 这几年来主流宽屏幕笔记型计算机常见尺寸
+
+<span class="number">15.4</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">800</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">259</span>mm &amp;<span class="keyword">lt</span>;==== 这几年来主流宽屏幕笔记型计算机常见尺寸
+
+<span class="number">15.2</span>〃, <span class="number">1152</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">15</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">279</span>mm &amp;<span class="keyword">lt</span>;==== Apple PowerBook G4 Titanium
+
+<span class="number">15.2</span>〃, <span class="number">1280</span>&amp;<span class="keyword">times</span>;<span class="number">854</span>, <span class="number">15</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">251</span>mm &amp;<span class="keyword">lt</span>;==== Apple PowerBook G4 Titanium/Aluminum
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+<span class="number">15.2</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">960</span>, <span class="number">15</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">223</span>mm &amp;<span class="keyword">lt</span>;==== Apple PowerBook G4 Aluminum
+
+<span class="number">13.4</span>〃, <span class="number">1366</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">217</span>mm
+
+<span class="number">14</span>〃 , <span class="number">1366</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">227</span>mm &amp;<span class="keyword">lt</span>;====面板厂正在推、供主流笔电用的<span class="number">16</span>:<span class="number">9</span>面板
+
+<span class="number">15.6</span>〃, <span class="number">1366</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">252</span>mm &amp;<span class="keyword">lt</span>;==== 面板厂正在推、供主流笔电用的<span class="number">16</span>:<span class="number">9</span>面板
+
+<span class="number">16.0</span>〃, <span class="number">1366</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">259</span>mm &amp;<span class="keyword">lt</span>;==== 面板厂正在推、供主流笔电用的<span class="number">16</span>:<span class="number">9</span>面板
+
+<span class="number">18.5</span>〃, <span class="number">1366</span>&amp;<span class="keyword">times</span>;<span class="number">768</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">3</span>mm
+
+<span class="number">13.3</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">199</span>mm &amp;<span class="keyword">lt</span>;==== Lenovo X30<span class="number">0</span>
+
+<span class="number">14.1</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">211</span>mm &amp;<span class="keyword">lt</span>;==== HP Compaq <span class="number">6910</span>p
+
+<span class="number">15.4</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">23</span>mm &amp;<span class="keyword">lt</span>;==== Asus M5<span class="number">0</span>/M51 NB
+
+<span class="number">17.0</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">255</span>mm
+
+<span class="number">19.0</span>〃, <span class="number">1440</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">284</span>mm
+
+<span class="number">13.1</span>〃, <span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">181</span>mm &amp;<span class="keyword">lt</span>;==== Sony VAIO VGN-Z11WN/B
+
+<span class="number">16.4</span>〃, <span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">226</span>mm &amp;<span class="keyword">lt</span>;==== Sony VAIO&amp;nbsp;&amp;nbsp; VGN-FW140E/H、VGN-FW15T&amp;hellip;等
+
+<span class="number">20.0</span>〃, <span class="number">1600</span>&amp;<span class="keyword">times</span>;<span class="number">900</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">276</span>mm
+
+<span class="number">18.4</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">945</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">243</span>mm &amp;<span class="keyword">lt</span>;==== Toshiba Dynabook Qosmio GX/<span class="number">79</span>G
+
+<span class="number">15.4</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">197</span>mm &amp;<span class="keyword">lt</span>;==== Asus G1/G1S/G1Sn等NB
+
+<span class="number">17.0</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">219</span>mm &amp;<span class="keyword">lt</span>;==== HP Compaq <span class="number">8710</span>w
+
+<span class="number">19.0</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">243</span>mm
+
+<span class="number">20.1</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">258</span>mm
+
+<span class="number">21.0</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">269</span>mm
+
+<span class="number">21.6</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">276</span>mm
+
+<span class="number">22.0</span>〃, <span class="number">1680</span>&amp;<span class="keyword">times</span>;<span class="number">1050</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">282</span>mm
+
+<span class="number">16.0</span>〃, <span class="number">1920</span>X108<span class="number">0</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">184</span>mm &amp;<span class="keyword">lt</span>;==== 某些新的<span class="number">16</span>〃笔电会配这种面板，如Gateway
+
+<span class="number">18.4</span>〃,<span class="number">1920</span>X108<span class="number">0</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">213</span>mm &amp;<span class="keyword">lt</span>;==== Acer/Sony <span class="number">18.4</span>〃 NB
+
+<span class="number">21.5</span>〃,<span class="number">1920</span>X108<span class="number">0</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">248</span>mm
+
+<span class="number">23.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1080</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">266</span>mm
+
+<span class="number">24.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1080</span>, <span class="number">16</span>:<span class="number">9</span>, 点距:<span class="number">0</span>.<span class="number">276</span>mm
+
+<span class="number">15.4</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">173</span>mm &amp;<span class="keyword">lt</span>;==== Dell Latitude D81<span class="number">0</span>
+
+<span class="number">17.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">191</span>mm &amp;<span class="keyword">lt</span>;==== 相当多的高阶<span class="number">17</span>〃笔电，如Asus G2S/M7<span class="number">0</span>
+
+<span class="number">22.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">247</span>mm
+
+<span class="number">23.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">258</span>mm
+
+<span class="number">24.0</span>〃, <span class="number">1920</span>&amp;<span class="keyword">times</span>;<span class="number">1200</span>, <span class="number">16</span>:<span class="number">10</span>, 点距:<span class="number">0</span>.<span class="number">27</span>mm
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/11/07/w/e6-b6-b2-e6-99-b6-e6-98-be-e7-a4-ba-e5-99-a8-e9-80-89-e8-b4-ad-e6-8c-87-e5-8d-97-e7-bb-8f-e6-b5-8e-e5-ae-9e-e7-94-a8-e5-9e-8b-e6-98-be-e7-a4-ba-e5-99-a8-e5-af-bc-e8-b4-ad/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-09-30T03:45:42.000Z" class="post__time">九月 30, 2011</time><h1 class="post__title"><a href="/2011/09/30/w/e9-87-8d-e8-a3-85-e7-b3-bb-e7-bb-9f-e9-a1-bb-e5-81-9a-e5-a5-bd-e5-a4-87-e4-bb-bd/">重装系统须做好备份</a></h1></header><div class="post__main"><p>重装windows系统需要备份的内容：</p>
+<p>我的文档；</p>
+<p>桌面所有内容；</p>
+<p>firefox、ie书签；</p>
+<p>其它如putty、ftp书签。</p>
+<p>平时文档或数据不要放在C盘或系统盘。</p>
+<p>总之，backup很重要。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/09/30/w/e9-87-8d-e8-a3-85-e7-b3-bb-e7-bb-9f-e9-a1-bb-e5-81-9a-e5-a5-bd-e5-a4-87-e4-bb-bd/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-09-23T08:37:14.000Z" class="post__time">九月 23, 2011</time><h1 class="post__title"><a href="/2011/09/23/w/e6-9d-bf-e8-bd-bdraid1-e5-ae-89-e8-a3-85centos-6-x86-64-linux-e7-b3-bb-e7-bb-9f/">板载raid1安装centos 6 x86_64 linux系统</a></h1></header><div class="post__main"><p>由于centos 6标准内核不包含raid驱动，需要单独安装或者在安装是加载，服务器是惠普ProLiant DL120 G7，阵列是HP Smart Array B110i SATA-3G RAID控制器（RAID 0/1/1+0）,。</p>
+<pre><code>进到BIOS里配置好raid。
+
+在hp网站下载
+
+Driver Diskette <span class="keyword">for</span> HP Smart Array B110i SATA RAID Controller <span class="keyword">for</span> Red Hat Enterprise Linux 6 (AMD64/EM64T) 。
+
+输出到<span class="keyword">u</span>盘上
+
+<span class="keyword">For</span> a USB key <span class="keyword">for</span> Red Hat and SuSE
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; dd <span class="keyword">if</span>=hpahcisr-1.2.6-7.rhel6.x86_64.dd&amp;nbsp; of=/dev/sd?
+
+解压出了一个dd.img文件
+
+At <span class="keyword">boot</span> prompt <span class="keyword">type</span> &amp;ldquo;linux nostorage&amp;rdquo;
+
+光驱放入安装光盘，在安装界面的第一个画面输入 ：linux nostorage&amp;nbsp; （用linux text dd 不成功）
+
+安装程序启动，会提示是否需要加载，按Yes，在弹出的对话框里找到含有驱动的USB设备，选中拷贝好的.img文件，确定，驱动加载完毕，安装程序提示是否需要继续加载其他驱动，如无其他设备，选择<span class="keyword">No</span>，返回安装界面，按正常步骤操作即可，安装过程中会发现安装程序能正常识别到raid驱动设备了；
+
+接下来，将<span class="keyword">U</span>盘拔出，因为<span class="keyword">U</span>盘符占用/dev/sda,不拔出linux会把<span class="keyword">U</span>盘当硬盘的，这样系统直至安装结束。
+
+yum -y <span class="keyword">update</span> 升级，如果升级了内核，新的内核不会自动添加raid驱动的，重启后就进不了系统了，所以升级完毕切记不要忙着重启 , 以CentOS升级到6.0举例：
+
+b110i.ko 是驱动模块，如果更新前的内核里不包含这个文件可以在驱动的.img文件里找到：
+
+&amp;nbsp;
+
+<span class="keyword">mkdir</span> ~/b110i&amp;nbsp; 
+
+<span class="keyword">mkdir</span> /mnt/tmp&amp;nbsp; 
+
+mount -o loop dd.img /mnt/tmp&amp;nbsp; 
+
+<span class="keyword">cd</span> /mnt/tmp&amp;nbsp; 
+
+cp modules.cgz ~/b110i&amp;nbsp; 
+
+<span class="keyword">cd</span> ~/b110i&amp;nbsp; 
+
+gunzip -S .cgz modules.cgz&amp;nbsp; 
+
+cpio -ivd &amp;lt; modules&amp;nbsp; 
+
+cp 2.6.18-194.el5/x86_64/b110i.ko /lib/modules/2.6.18-238.12.1.el5/updates/b110i.ko #注意根据实际版本情况适当调整&amp;nbsp; 
+
+depmod -v 2.6.18-238.12.1.el5&amp;nbsp; 
+
+mv /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img.backup&amp;nbsp; 
+
+mkinitrd /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img 2.6.18-238.12.1.el5 
+
+参考http:<span class="comment">//coralzd.blog.51cto.com/90341/580046</span>
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/09/23/w/e6-9d-bf-e8-bd-bdraid1-e5-ae-89-e8-a3-85centos-6-x86-64-linux-e7-b3-bb-e7-bb-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-09-14T08:06:12.000Z" class="post__time">九月 14, 2011</time><h1 class="post__title"><a href="/2011/09/14/w/e5-a6-82-e4-bd-95-e5-ae-8c-e5-85-a8-e5-81-9c-e6-ad-a2qmail-e7-9a-84-e6-9c-8d-e5-8a-a1-e8-bf-9b-e7-a8-8b/">如何完全停止qmail的服务进程</a></h1></header><div class="post__main"><p>qmailctl stop</p>
+<pre><code>vpopmailctl stop
+
+vi <span class="regexp">/etc/</span>inittab
+
+#<span class="string">SV:</span><span class="number">123456</span>:<span class="string">respawn:</span><span class="regexp">/command/</span>svscanboot
+
+注解掉。
+
+kill -<span class="number">1</span> <span class="number">1</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/09/14/w/e5-a6-82-e4-bd-95-e5-ae-8c-e5-85-a8-e5-81-9c-e6-ad-a2qmail-e7-9a-84-e6-9c-8d-e5-8a-a1-e8-bf-9b-e7-a8-8b/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-08-09T03:17:05.000Z" class="post__time">八月 9, 2011</time><h1 class="post__title"><a href="/2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/">Linux下源代码编译安装MySQL 5.5.16完整安装教程</a></h1></header><div class="post__main"><p>以下安装在centos5.6、Yellow Dog Linux release 6.2 (Pyxis)通过测试。</p>
+<p>MySQL 最新的版本5.5.16需要cmake编译安装</p>
+<pre><code><span class="number">1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql <span class="number">5.5</span><span class="number">.16</span>编译安装
+
+安装所需要系统库相关库文件
+
+yum install -y gcc gcc-c++ gcc-g77 autoconf automake zlib* fiex* libxml* ncurses-devel libmcrypt* libtool-ltdl-devel*
+
+#yum install -y cmake
+
+创建mysql安装目录和数据存放目录　
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+创建用户和用户组与赋予数据存放目录权限
+
+groupadd -g <span class="number">502</span> mysql
+
+useradd -u <span class="number">502</span> -g mysql mysql
+
+chown mysql.mysql -R <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+安装cmake
+
+（mysql5<span class="number">.5</span>以后是通过cmake来编译的）
+
+下载解压cmake-<span class="number">2.8</span><span class="number">.5</span>.tar.gz
+
+wget <span class="string">http:</span><span class="comment">//www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz</span>
+
+tar zxf cmake-<span class="number">2.8</span><span class="number">.5</span>.tar.gz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>cmake-<span class="number">2.8</span><span class="number">.5</span>
+
+./configure
+
+make -j6 &amp;amp;&amp;amp; make install
+
+安装mysql <span class="number">5.5</span><span class="number">.16</span>
+
+wget <span class="string">http:</span><span class="comment">//mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.16.tar.gz</span>
+
+tar zxf mysql-<span class="number">5.5</span><span class="number">.16</span>.tar.gz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+编译mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+CFLAGS=&amp;quot;-O3&amp;quot; CXX=gcc
+
+CXXFLAGS=&amp;quot;-O3 -felide-constructors -fno-exceptions -fno-rtti&amp;quot;
+
+<span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>cmake -DCMAKE_INSTALL_PREFIX=<span class="regexp">/usr/</span>local/mysql \
+
+-DMYSQL_UNIX_ADDR=<span class="regexp">/tmp/</span>mysql.sock \
+
+-DDEFAULT_CHARSET=utf8 \
+
+-DDEFAULT_COLLATION=utf8_general_ci \
+
+-<span class="string">DWITH_EXTRA_CHARSETS:</span>STRING=all \
+
+-DWITH_MYISAM_STORAGE_ENGINE=<span class="number">1</span> \
+
+-DWITH_INNOBASE_STORAGE_ENGINE=<span class="number">1</span> \
+
+-DWITH_READLINE=<span class="number">1</span> \
+
+-DENABLED_LOCAL_INFILE=<span class="number">1</span> \
+
+-DMYSQL_DATADIR=<span class="regexp">/opt/</span>data/mysql \
+
+-DMYSQL_TCP_PORT=<span class="number">3306</span>
+
+#-DWITH_MEMORY_STORAGE_ENGINE=<span class="number">1</span> \
+
+#-DMYSQL_USER=mysql \
+
+-DCMAKE_INSTALL_PREFIX=<span class="regexp">/home/</span>mysql/mysql -DEXTRA_CHARSETS=all
+
+CMake <span class="string">Warning:</span>
+
+&amp;nbsp; Manually-specified variables were not used by the <span class="string">project:</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; MYSQL_USER
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; WITH_MEMORY_STORAGE_ENGINE
+
+nohup make -j6 &amp;amp;&amp;amp; make install
+
+复制配置文件
+
+mv <span class="regexp">/etc/</span>my.cnf <span class="regexp">/etc/</span>my.cnf-`date +%F`
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc
+
+cp support-files<span class="regexp">/my-medium.cnf /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/etc/</span>my.cnf
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+mkdir log run tmp data
+
+chgrp -R mysql.mysql *
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+vim etc/my.cnf
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">8</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+初始化数据库
+
+(执行前 需要chmod <span class="number">755</span> scripts/mysql_install_db 赋给文件执行权限)
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+sh .<span class="regexp">/scripts/</span>mysql_install_db&amp;nbsp; --user=mysql&amp;nbsp; --basedir=<span class="regexp">/usr/</span>local<span class="regexp">/mysql --datadir=/</span>opt<span class="regexp">/data/</span>mysql/
+
+注：#basedir mysql安装路径 datadir 数据库文件储存路径
+
+设置mysqld的开机启动:
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/init.d/</span>mysqld
+
+chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/mysqld
+
+chkconfig mysqld on
+
+chkconfig --list mysqld 
+
+配置环境
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+或者
+
+vim <span class="regexp">/etc/</span>profile
+
+PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+PATH=<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span><span class="string">bin:</span>$PATH
+
+启动mysql服务
+
+<span class="regexp">/etc/</span>init.d<span class="regexp">/mysqld start&amp;nbsp; /</span>/服务器端开关
+
+启动完成之后用ps -ef |grep mysql 命令查看是否启动
+
+<span class="number">2</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql安全设置
+
+设置root帐户的密码
+
+mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
+
+删除本机匿名连接的空密码帐号
+
+本机登录mysql
+
+mysql -uroot -p
+
+然后输入上面设置的密码，登录后在mysql的命令行中执行：
+
+use mysql;
+
+<span class="comment">//update user set password=&amp;#39;veryi.com&amp;#39; where host = &amp;#39;127.0.0.1&amp;#39;;</span>
+
+delete from user where user=&amp;quot;&amp;quot;;
+
+delete from user where password=&amp;quot;&amp;quot;;
+
+flush privileges;
+
+quit
+
+&amp;nbsp;
+</code></pre><p>测试字符集：</p>
+<p>mysql&gt; set names gbk;</p>
+<pre><code>Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)
+
+mysql<span class="subst">&amp;</span><span class="literal">gt</span>; <span class="built_in">set</span> names gb2312;
+
+Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

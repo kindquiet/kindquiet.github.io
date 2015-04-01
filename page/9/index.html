@@ -1,0 +1,344 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-11-30T06:54:19.000Z" class="post__time">十一月 30, 2010</time><h1 class="post__title"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">一台pc服务器的黑屏故障排除</a></h1></header><div class="post__main"><p>开机显示器亮一下显示显卡型号后黑屏，不报警，不能启动。因为听不到&ldquo;滴&rdquo;的自检通过声音而且没有显示，仍然判断为显卡故障，更换显卡以后正常。</p>
+<pre><code>这里需要了解一下POST自检是按什么顺序进行检测的：
+
+POST自检测过程大致为：加电－<span class="built_in">CPU</span>－ROM－BIOS－System Clock－DMA－64KB RAM－IRQ－显卡等。检测显卡以前的过程称过关键部件测试，如果关键部件有问题，计算机会处于挂起状态，习惯上称为核心故障。
+
+另一类故障称为非关键性故障，检测完显卡后，计算机将对64KB以上内存、I／O口、软硬盘驱动器、键盘、即插即用设备、CMOS设置等进行检测，并在屏幕上显示各种信息和出错报告。
+
+附件：个人计算机的启动过程
+
+我们在按下启动键时，首先启动的应是电源（因为如果没有电源供电，那么主板上所有的配件都是无法工作的）。但是为了保证安全使用，电源部分采取了一系列安全保护措施；因此开关电源从起振到稳定之间会有一段时间的延迟，等待各组电压都稳定下来后，电源各部分会输出一个检测信号，这个信号为高电平时表示该部分电压正常，这些部分包括输入电压和各组输出电压。这些信号总和的结果就是一个POWER GOOD信号（也称为POWER OK或PWR OK信号）；如果主板接受不到这个信号，那么时钟芯片会持续向<span class="built_in">CPU</span>发送复位（RESET）信号（与我们按下RESER键相当），<span class="built_in">CPU</span>就不会工作。 
+
+当<span class="built_in">CPU</span>接受到正常的POWER GOOD信号，主板和<span class="built_in">CPU</span>就启动了吗？其实主板此时，还要根据<span class="built_in">CPU</span>的VID0－VID3引脚的定义组合，将<span class="built_in">CPU</span>所提供的VID0－VID3信号送到电源管理模块的相应的端口；如果主板BIOS具有可设定<span class="built_in">CPU</span>电压的功能，主板会按时设定的电压与VID的对应关系产生新的VID信号并送到电源管理模块芯片，电源管理模块将根据设定并通过DAC电压将其转换为基准电压，再经过场效应管轮流导通和关闭，将能量通过电感线圈送到<span class="built_in">CPU</span>，最后再经过调节电路使用输出电压与设定电压值相当。 
+
+由于<span class="built_in">CPU</span>还要根据自己所需要的频率，通过IC总线来检测主板频率发生器所设置的频率是否支持；因为电脑要进行正确的数据传送以及正常的运行，没有时钟信号是不行的，时钟信号在电路中的主要作用就是同步；因为在数据传送过程中，对时序都有着严格的要求，只有这样才能保证数据在传输过程不出差错。时钟信号首先设定了一个基准，我们可以用它来确定其它信号的宽度，另外时钟信号能够保证收发数据双方的同步。对于<span class="built_in">CPU</span>而言，时钟信号作为基准，<span class="built_in">CPU</span>内部的所有信号处理都要以它作为标尺，这样它就确定<span class="built_in">CPU</span>指令的执行速度；如<span class="built_in">CPU</span>本身的频率无法适应频率发生器所提供的高频率，也是无法正常工作的。因此只有当接受到POWER GOOD信号，和相应的得到<span class="built_in">CPU</span>工作的电压时以及相应的时钟频率后，<span class="built_in">CPU</span>才能正常的工作，也就是开始执行BIOS程序。 
+
+POST上电自检：是微机接通电源后，系统进行的一个自我检查的例行程序。这个过程通常称为POST上电自检（Power On Self <span class="keyword">Test</span>）。对系统的几乎所有的硬件进行检测。 
+
+POST是如何进行自检测的？ 
+
+主板在接通电源后，系统首先由(Power On Self <span class="keyword">Test</span>,上电自检)程序来对内部各个设备进行检查。在我们按下起动键（电源开关）时，系统的控制权就交由BIOS来完成，由于此时电压还不稳定，主板控制芯片组会向<span class="built_in">CPU</span>发出并保持一个RESET(重置)信号，让<span class="built_in">CPU</span>初始化，同时等待电源发出的POWER GOOD信号(电源准备好信号)。当电源开始稳定供电后(当然从不稳定到稳定的过程也只是短暂的瞬间)，芯片组便撤去RESET信号(如果是手动按下计算机面板上的Reset按钮来重启机器，那么松开该按钮时芯片组就会撤去RESET信号)，<span class="built_in">CPU</span>马上就从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。
+
+系统BIOS的启动代码首先要做的事情就是进行POST(Power On Self <span class="keyword">Test</span>，加电自检)，由于电脑的硬件设备很多（包括存储器、中断、扩展卡），因此要检测这些设备的工作状态是否正常。 这一过程是逐一进行的，BIOS厂商对每一个设备都给出了一个检测代码（称为POST CODE即开机自我检测代码），在对某个设置进行检测时，首先将对应的POST CODE写入<span class="number">80H</span>（地址）诊断端口，当该设备检测通过，则接着送另一个设置的POST CODE，对此设置进行测试。如果某个设备测试没有通过，则此POST CODE会在<span class="number">80H</span>处保留下来，检测程序也会中止，并根据已定的报警声进行报警（BIOS厂商对报警声也分别作了定义，不同的设置出现故障，其报警声也是不同的，我们可以根据报警声的不同，分辨出故障所在。 
+
+POST自检响铃次数是如何定义的？ 
+
+POST上电自检还会通过报警声响次数的方式来指出检测到的故障。但需要注意：由于目前主板BIOS类型大致可分为AWARD公司、AMI公司、PHOENIX公司（AWARD已与PHOENIX合并），因此不同类型的BIOS，其自检响铃次数所定义的自检错误是不一致的，因此一定要分清。 
+
+POST自检发现错误后如何提示？ 
+
+POST自检如发现有错误，将按两种情况处理：对于严重故障(致命性故障)则停机，此时由于各种初始化操作还没完成，不能给出任何提示或信号；对于非严重故障则给出提示或声音报警信号（以上介绍），等待用户处理。通过BIOS自检功能（POST自检），我们就可以方便的侦测出主板的故障所在，以便正确的解决。 
+
+如我们按下电源键后，只有电源指示灯亮，电脑屏幕没有任何反映，也没有报警声；那么针对这种情况，我们又应如何解决呢？ 
+
+屏幕没有显示，也没有报警声，我们就无法从POST自检功能得到相应的信息；大家都知道，计算机是一个复杂而且精密的产品组合，因此一个环节出现问题，可能都无法启动机器（我们主要谈硬件方面）。因此，如出现黑屏，无报警声响的故障现象，我们就应根据电脑的启动过程来分析问题所在了。 
+
+如何判断、解决故障所在？ 
+
+因为如接受不到POWER GOOD信号，系统就一直处理RESET（复位）循环中，因此主板也就无法启动，相应的其它硬件，如显卡也无法工作，显示器由于接受不到显卡传出的信号，因此也就没有显示，一直处于待机状态。此时，我们应检测电源，不要以为电源灯亮，就表明电正常，因为只要有一路信号有故障（该部分电路不正常或还未稳定），输入出的POWER GOOD信号都为低电平，即表示电源部分有故障或还未进入稳定状状；虽然电源指示灯亮，但由于主板接受不到正常的POWER GOOD信号，也无法启动。我们检测电源的方法是，使用可正常工作的电源测试。如电源为ATX型我们可用导线将<span class="number">13</span>与<span class="number">14</span>脚短接，如电源风扇能正常运行，则表明电源是完好的，则故障应在主板上。 
+
+更换正常电源后，如系统还是没有工作的显象，应按以上主板启动过程，测试<span class="built_in">CPU</span>的电源管理模块和频率发生器。但由于我们不可能有完善的设备来测试主板上的电源和频率模块（大多数电脑爱好者不可能有此类设置，和具有相应的检测能力）。因此我们对此还要采用排除法，即在其它正常主板上测试<span class="built_in">CPU</span>。测试排除<span class="built_in">CPU</span>的故障外，还应检测主板频率设置问题。电脑爱好者为使用或测试<span class="built_in">CPU</span>的超频能力，会通过调整主板外频的方式（目前<span class="built_in">CPU</span>已经锁频，只能设置外频，而无法设置倍频），来调高<span class="built_in">CPU</span>的工作频率。如果<span class="built_in">CPU</span>无法适应高工作频率，虽然电源供电正常，主板也是无法启动的。 
+
+排除了其它硬件的问题，为会么系统仍不可启动？ 
+
+如果硬件一切正常（经测试），那么在POST上电自检测后，<span class="built_in">CPU</span>会从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。由于BIOS是连接操作系统和硬件之间的桥梁，为计算机提供最低级的、最直接的硬件控制，计算机的原始操作都是依照固化在BIOS里的内容（指令）来完成的。因此如BIOS文件破坏或BIOS芯片损坏，都会直接的影响主板的启动。 
+
+如果屏幕显示BIOS ROM checksum error-System halted(BIOS 程序代码在进行总和检查 ( checksum ) 时发现错误)的提示时，应是读取BIOS时，校验总和出错，因此无法启机器。这种问题通常是因为 BIOS 程序代码更新不完全所造成的，解决办法重新刷写烧坏主板 BIOS。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-25T02:02:34.000Z" class="post__time">十一月 25, 2010</time><h1 class="post__title"><a href="/2010/11/25/w/shell-e7-bc-96-e7-a8-8b-e8-84-9a-e6-9c-ac-e5-91-bd-e5-90-8d-e8-a6-81-e8-b0-a8-e6-85-8e/">shell编程脚本命名要谨慎</a></h1></header><div class="post__main"><p>一个自动启动程序的脚本，如果检测到进程没有了就自动重启。程序不会写pid到硬盘文件，只能通过ps取得pid，在调试的时候出现各种不能解释的现象。突然意识到bash shell和程序同名，所以产生不可控的结果，将脚本改名，一切正常。</p>
+</div><footer class="post__foot u-cf"><a href="/2010/11/25/w/shell-e7-bc-96-e7-a8-8b-e8-84-9a-e6-9c-ac-e5-91-bd-e5-90-8d-e8-a6-81-e8-b0-a8-e6-85-8e/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-12T03:56:55.000Z" class="post__time">十一月 12, 2010</time><h1 class="post__title"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/">windows不能搜索中文汉字修复</a></h1></header><div class="post__main"><p>重新安装搜索组件:打开系统盘\Windows\inf 在inf里面找srchasst.inf，用鼠标右击-安装</p>
+<pre><code>手动选择安装盘的路径 到i386点击确定。
+
+打开注册表依次<span class="special">&amp;</span>ldquo;HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Explorer</span><span class="command">\CabinetState</span><span class="special">&amp;</span>rdquo;在CabinetState里新建字符串<span class="special">&amp;</span>ldquo;Use Search Asst<span class="special">&amp;</span>rdquo;，设置其值为<span class="special">&amp;</span>ldquo;NO<span class="special">&amp;</span>rdquo;。
+
+在运行命令里输入regsvr32 offfilt.dll
+</code></pre><p>&ldquo;确定&rdquo;－出现成功提示后点OK,同样方法运行</p>
+<pre><code>regsvr32 <span class="keyword">Query</span>.dll
+
+&amp;ldquo;regsvr32 jscript.dll&amp;rdquo;
+
+&amp;ldquo;regsvr32 vbscript.dll&amp;rdquo;。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-19T03:42:34.000Z" class="post__time">十月 19, 2010</time><h1 class="post__title"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/">彻底禁用RealPlayer播放器软件更新检测计划任务</a></h1></header><div class="post__main"><p>RealPlayer 会私自安装两个RealPlayer播放器软件更新检测计划任务,并且一打开RealPlayer播放器,会在任务管理器中加载一个realsched.exe进程,关闭RealPlayer后这个进程仍然会存在,并且每次自动添加一个启动项目TkBellExe.</p>
+<pre><code>RealPlayer启动项目:
+
+TkBellExe
+
+注册表位置: HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+关联路径文件:C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+RealPlayer计划任务
+
+文件路径: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+注册表位置: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+方法:
+
+开始<span class="command">\运</span>行<span class="command">\mmc</span>.exe
+
+找到Task Scheduler服务项,右键<span class="command">\停</span>止(如在启动状态进行这一步)<span class="command">\属</span>性<span class="command">\启</span>动类型(设置为已禁用)
+
+删除文件: C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+删除注册表项: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+重启系统再操作:
+
+删除文件: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\目</span>录中以Real开头的.job文件
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-18T09:26:06.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/">FreeBSD使用smbclient访问Windows资源</a></h1></header><div class="post__main"><p>安装应用程序: Packages 和 Ports</p>
+<pre><code>http:<span class="comment">//www.freebsd.org/doc/zh_CN/books/handbook/ports-using.html</span>
+
+安装samba
+
+<span class="keyword">find</span> <span class="regexp">/usr/</span>ports -name samba -<span class="keyword">print</span>
+
+cd <span class="regexp">/usr/</span>ports<span class="regexp">/net/</span>samba3
+
+make config
+
+make install
+</code></pre><p>mount windows共享目录:</p>
+<p>smbclient -L 10.8.88.9 -U username</p>
+<pre><code><span class="title">smbclient</span> //<span class="number">10.8.88.9</span>/developer-home -U username
+
+mount_smbfs -N -I <span class="number">10.8.88.9</span> //username<span class="variable">@NetBIOSname</span>/developer-home /mnt/win/
+
+vi ~/.nsmbrc
+
+[NetBIOSname:username]
+
+password=<span class="number">888888</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-18T03:06:55.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/aeacyyc/">佛说吉祥经</a></h1></header><div class="post__main"><p>佛说吉祥经</p>
+<pre><code>如是我闻。一时佛住舍卫国祗陀园给孤独精舍。时已夜深,有一天神，殊胜光明，遍照园中，来至佛所，恭敬礼拜，站立一旁，以偈白佛言：众天神与人，渴望得利益，思虑求幸福，请示最吉祥。
+
+世尊如是答言：
+
+勿近愚痴人，应与智者交，尊敬有德者，是为最吉祥。
+
+居住适宜处，往昔有德行，置身于正道，是为最吉祥。
+
+多闻工艺精，严持诸禁戒，言谈悦人心，是为最吉祥。
+
+奉养父母亲，爱护妻与子，从业要无害，是为最吉祥。
+
+布施好品德，帮助众亲眷，行为无暇疵，是为最吉祥。
+
+邪行须禁止，克己不饮酒，美德坚不移，是为最吉祥。
+
+恭敬与谦让，知足并感恩，及时闻教法，是为最吉祥。
+
+忍耐与顺从，得见众沙门，适时论信仰，是为最吉祥。
+
+自制净生活，领悟八正道，实证涅盘法，是为最吉祥。
+
+八风不动心，无忧无污染，宁静无烦恼，是为最吉祥。
+
+依此行持者，无往而不胜，一切处得福，是为最吉祥。
+
+名词解释：
+
+【邪行】 <span class="comment">(一)</span>全称欲邪行。又作邪淫。为十恶之一。于非境、非道、非处、非时行淫，概称为邪行。<span class="comment">(二)</span>邪语、邪业、邪命或身邪行、口邪形、意邪形等合称&amp;lsquo;三邪形&amp;rsquo;。前三者为八邪支之部分，系属于色业（即身业、语业）而别立者。后三者为违背正道之三业之行，包括杀、盗、邪淫、鞭杖、系缚、自淫、诳他、贪、恚、 邪见等。<span class="comment">(三)</span>印度九十六种外道之行法，亦总称为邪行。
+
+【沙门】又作沙门那、沙闻那、娑门、桑门、丧门。意思是勤劳、功劳、劬劳、勤恳、静志、净志、息止、息心、息恶、勤息、修道、贫道、乏道。为出家者之总 称，通于内、外二道。亦即指剃除须发，止息诸恶，善调身心，勤行诸善，期以行趣涅槃之出家修道者。沙门可分类为下列四种：<span class="comment">(一)</span>胜道沙门，又作行道殊胜， 如佛或独觉；以能自觉之故。<span class="comment">(二)</span>示道沙门，又作说道沙门、善说道义，指说道无误者，如舍利弗等；以能常随佛转大法轮之故。<span class="comment">(三)</span>命道沙门，又作活道沙 门、依道生活，指依道而生者，如阿难等；以虽居&amp;lsquo;学位&amp;rsquo;然同于&amp;lsquo;无学&amp;rsquo;，多闻善持，具净戒禁，传法身慧命于世之故。<span class="comment">(四)</span>污道沙门，又作坏道沙门、为道作 秽，指污染圣道而伪善者，如莫喝落迦比丘；以盗他财物之故。又沙门有四果之别，称四沙门果，即须陀洹果（三结断）、斯陀含果（三结断，贪恚痴薄）、阿那含 果（五下分结尽）、阿罗汉果（贪恚痴永尽，一切烦恼永尽）。
+
+【八正道】八种求趣涅槃之正道。又作八圣道、八支正道、八圣道分、八道行、八直行、八正、八道、八支、八法、八路。乃三十七道品中，最能代表佛教之实践法门，即八种通向涅槃解脱之正确方法或途径。释尊转法轮时，所说离乐欲及苦行之二边，趋向中道者，即指此八正道。八者即：<span class="comment">(一)</span>正见，又作谛见。即见苦是苦，集是集，灭是灭，道是道，有善恶业，有善恶业报，有此世彼世，有父母，世有真人往至善处，去善向善，于此世彼世自觉自证成就。<span class="comment">(二)</span>正思惟，又作正志、正分别、正觉或谛念。即谓无欲觉、恚觉及害觉。<span class="comment">(三)</span>正语，又作正言、谛语。即离妄言、两舌、恶口、绮语等。<span class="comment">(四)</span>正业，又作正行、谛行。即离杀生、不与取等。<span class="comment">(五)</span>正命，又作谛受。即舍咒术等邪命，如法求衣服、饮食、床榻、汤药等诸生活之具。<span class="comment">(六)</span>正精进，又作正方便、正治、谛法、谛治。发愿已生之恶法令断，未生之恶法令不起，未生之善法令生，已生之善法令增长满具。即谓能求方便精勤。<span class="comment">(七)</span>正念，又作谛意。即以自共相观身、受、心、法等四者。<span class="comment">(八)</span>正定，又作谛定。即离欲恶不善之法，成就初禅乃至四禅。
+
+　八圣道乃众生从迷界之此岸渡到悟界之彼岸所持之力，故以船、筏为譬，有八道船、八筏之称；又如车轮之辐、毂、辋相互助车转动，故亦譬称八轮。又此为圣者游行之所，故又作八游行、八由行。反之，邪见、邪思、邪语、邪业、邪命、邪精进、邪念、邪定，称为八邪、八邪行。［中阿含卷七分别圣谛经、四谛论卷四、大毗婆沙论卷九十六］
+
+【涅槃】又作泥洹、泥曰、涅槃那、涅隶槃那、抳缚南、匿缚喃。意译作灭、寂灭、灭度、寂、无生。与择灭、离系、解脱等词同义。或作般涅槃（般，为梵语 pari 之音译，完全之义，意译作圆寂）、大般涅槃（大，即殊胜之意。又作大圆寂）。原来指吹灭，或表吹灭之状态；其后转指燃烧烦恼之火灭尽，完成悟智（即菩提） 之境地。此乃超越生死（迷界）之悟界，亦为佛教终极之实践目的，故表佛教之特征而列为法印之一，称&amp;lsquo;涅槃寂静&amp;rsquo;。
+
+八风不动心，无忧无污染，宁静无烦恼，是为最吉祥。
+
+依此行持者，无往而不胜，一切处得福，是为最吉祥。
+
+【八风】 又作八法、八世风。谓此八法，为世间所爱所憎，能煽动人心，故以风为喻，称为八风。苟心所有主，安住正法，不为爱憎所惑乱，则不为八风所能动。八风，即：
+</code></pre><p>(一)利，利乃利益，谓凡有益于我，皆称为利。</p>
+<pre><code><span class="comment">(二)</span>衰，衰即衰灭，谓凡有减损于我，皆称为衰。
+
+<span class="comment">(三)</span>毁，毁即毁谤，谓因恶其人，构合异语，而讪谤之。
+
+<span class="comment">(四)</span>誉，誉即赞誉，谓因喜其人，虽不对面，亦必以善言赞誉。
+
+<span class="comment">(五)</span>称，称即称道，谓因推重其人，凡于众中必称道其善。
+
+<span class="comment">(六)</span>讥，讥即讥诽，谓因恶其人，本无其事，妄为实有，对众明说。
+
+<span class="comment">(七)</span>苦，苦即逼迫之意。谓或遇恶缘恶境，身心受其逼迫。
+
+<span class="comment">(八)</span>乐，乐即欢悦之意。谓或遇好缘好境，身心皆得欢悦。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/aeacyyc/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-18T03:02:38.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/e9-80-9a-e8-ae-af-e6-95-b0-e7-a0-81-e4-ba-a7-e5-93-81-e5-ad-98-e5-82-a8-e5-8d-a1-e7-ae-80-e4-bb-8b-ef-bc-9asm-e5-8d-a1-e3-80-81cf/">通讯数码产品存储卡简介：SM卡、CF卡、XD卡、SD卡、mini SD 卡、MMC卡、TF卡</a></h1></header><div class="post__main"><p>CF卡（Compact Flash）</p>
+<pre><code><span class="keyword">CF</span>卡全称Compact Flash Card，是SanDisk公司于1994年首先推出。由于这项技术的开放性，一经推出就得到了业界的广泛支持。随后有一百多家厂商联合起来，于1995 年成立了袖珍闪存协会，即CFA（Compact Flash Association）。在CFA的大力推广下，<span class="keyword">CF</span>标准得到了空前的发展和繁荣，成为当时移动存储介质的标准接口。直到现在，依然有很多数码相机生产厂商采用<span class="keyword">CF</span>卡作为存储介质，而且它还广泛应用在手持电脑、电视机顶盒甚至多媒体手机中。
+
+存储容量大，成本低，兼容性好，这些都是<span class="keyword">CF</span>卡的优点，缺点则是体积较大。另外，<span class="keyword">CF</span>卡还有<span class="keyword">TYPE</span> &amp;Iota;和<span class="keyword">TYPE</span> Ⅱ两种接口，目前数码相机上使用较多的是<span class="keyword">CF</span> <span class="keyword">TYPE</span> &amp;Iota;接口。
+
+<span class="keyword">CF</span>卡具有PCMCIA-ATA功能，并与之兼容；<span class="keyword">CF</span>卡重量只有14g，仅纸板火柴般大小（43mm&amp;times;36mm&amp;times;3.3mm），是一种固态产品，也就是工作时没有运动部件。
+
+<span class="keyword">CF</span>卡采用闪存（flash）技术，是一种稳定的存储解决方案，不需要电池来维持其中存储的数据。对所保存的数据来说，<span class="keyword">CF</span>卡比传统的磁盘驱动器安全性和保护性都更高；比传统的磁盘驱动器及Ⅲ型PC卡的可靠性高5到10倍，而且<span class="keyword">CF</span>卡的用电量仅为小型磁盘驱动器的5%。这些优异的条件使得大多数数码相机选择<span class="keyword">CF</span>卡作为其首选存储介质。
+
+<span class="keyword">CF</span>卡作为世界范围内的存储行业标准，保证<span class="keyword">CF</span>产品的兼容，保证<span class="keyword">CF</span>卡的向后兼容性；随着<span class="keyword">CF</span>卡越来越被广泛应用，各厂商积极提高<span class="keyword">CF</span>卡的技术，促进新一代体小质轻、低能耗先进移动设备的推出，进而提高工作效率。CFA总部在加拿大的Palo Alto，其成员有权免费得到<span class="keyword">CF</span>卡、<span class="keyword">CF</span>商标和<span class="keyword">CF</span>技术详情。
+
+<span class="keyword">CF</span>卡有以下缺点：
+
+容量有限。虽然容量在成倍提高，但仍赶不上数码相机的像素发展。目前的5百万像素以上产品已经是流行的高端产品最低规格，而民用主流市场也达到3百万像素级别。普通民用的JPEG压缩格式下，容量尚可，但是专业级的TIFF（RAW）格式文件还是放不下几张图像数据。 
+
+体积较大。与其他种类的存储卡相比，<span class="keyword">CF</span>卡的体积略微偏大，这也限制了使用<span class="keyword">CF</span>卡的数码相机体积，所以现下流行的超薄数码相机大多放弃了<span class="keyword">CF</span>卡，而改用体积更为小巧的SD卡。
+
+性能限制。<span class="keyword">CF</span>卡的工作温度一般是0-40摄氏度。因此0度以下的环境中，数码相机基本可以说变成了&amp;ldquo;废物&amp;rdquo;。即使是专业机也不能幸免。虽然目前军用的<span class="keyword">CF</span>卡耐寒能力达到－40摄氏度，可是什么时候普及，价格什么时候跌到普通老百姓可以承受的地步还不得而知。
+
+SM卡（Smart Media）
+
+又被称为固态软盘卡（Solid State Floppy Disk Cards,SSFDC），SM卡是由东芝公司在1995年11月发布的Flash <span class="keyword">Memory</span>存贮卡，三星公司在1996年购买了生产和销售许可，这两家公司成为主要的SM卡厂商。
+
+SM卡的尺寸为37mm&amp;times;45mm&amp;times;0.76mm，由于SM卡本身没有控制电路，而且由塑胶制成（被分成了许多薄片），因此SM卡的体积小非常轻薄，在 2002年以前被广泛应用于数码产品当中，比如奥林巴斯的老款数码相机以及富士的老款数码相机多采用SM存储卡。但由于SM卡的控制电路是集成在数码产品当中（比如数码相机），这使得数码相机的兼容性容易受到影响。
+
+Smart Media为了节省自身的成本，存贮卡上只有Flash <span class="keyword">Memory</span>模块和接口，而并没有包括控制芯片，使用SmartMedia的设备必须自己装置控制机构，因此兼容性就相对较差。
+
+目前新推出的数码相机中都已经没有采用SM存储卡的产品了。
+
+MMC卡（Multi Media Card，多媒体存储卡）
+
+MMC由SanDisk和Siemens公司在1997年发起，与传统的移动存储卡相比，其最明显的外在特征是尺寸更加微缩&amp;mdash;&amp;mdash;只有普通的邮票大小(是 <span class="keyword">CF</span>卡尺寸的1/5左右)，外形尺寸只有32mm&amp;times;24mm&amp;times;1.4mm，而其重量不超过2g。
+
+MMC在设计之初是瞄准手机和寻呼机市场，之后因其小尺寸等独特优势而迅速被引进更多的应用领域，如数码相机、PDA、MP3播放器、笔记本电脑、便携式游戏机、数码摄像机乃至手持式GPS等。另外，由于采用更低的工作电压，驱动电压为2.7-3.6V。MMC比<span class="keyword">CF</span>和SM等上代产品更加省电。
+
+随着MMC卡的发展，出现了技术含量更高的RS-MMC和MMC Micro卡。
+
+RS-MMC (Reduced Size MMC) ，每一片RS-MMC都包含一个机械式的扩展器，可以把RS-MMC转换成标准的MMC，适用于所有兼容MMC或SD卡的设备。
+
+MMC micro存储卡对大多数用户来说还是一个比较陌生的名词，其标准由三星制定，目前主要为三星特定机型使用，因此国内用户接触到这种存储卡的机会并非很多。实际大小约为RS-MMC体积的三分之一小。支持1.8V/3.3V两种工作电压，其针脚为10pin。产品本身具有较强的影音功能和较低的耗电量，非常适合用于手机、MP3、PDA等小型数码设备中。
+
+SD卡（Secure Digital <span class="keyword">Memory</span> Card）
+
+SD卡是一种基于半导体快闪记忆器的新一代记忆设备。SD卡由日本松下、东芝及美国SanDisk公司于1999年8月共同开发研制。大小犹如一张邮票的SD记忆卡，重量只有2克，但却拥有高记忆容量、快速数据传输率、极大的移动灵活性以及很好的安全性。
+
+SD卡在24mm&amp;times;32mm&amp;times;2.1mm的体积内结合了SanDisk快闪记忆卡控制与MLC（Multilevel Cell）技术和 Toshiba（东芝）0.16u及0.13u的NAND技术，通过9针的接口界面与专门的驱动器相连接，不需要额外的电源来保持其上记忆的信息。而且它是一体化固体介质，没有任何移动部分，所以不用担心机械运动的损坏。
+
+SD卡数据传送和物理规范由MMC发展而来，大小和MMC差不多，尺寸为32mm&amp;times;24mm&amp;times;2.1mm。长宽和MMC一样，只是厚了0.7mm，以容纳更大容量的存贮单元。SD卡与MMC卡保持着向上兼容，也就是说，MMC可以被新的SD设备存取，兼容性则取决于应用软件，但SD卡却不可以被MMC设备存取。（SD卡外型采用了与MMC厚度一样的导轨式设计，以使SD设备可以适合MMC）
+
+SD接口除了保留MMC的7针外，还在两边加多了2针，作为数据线。采用了NAND型Flash <span class="keyword">Memory</span>，基本上和SmartMedia的一样，平均数据传输率能达到2MB/s。SD卡的结构能保证数字文件传送的安全性，也很容易重新格式化，所以有着广泛的应用领域，音乐、电影、新闻等多媒体文件都可以方便地保存到SD卡中。因此不少数码相机支持SD卡。
+
+XD卡（XD-PICTURE CARD）
+
+XD卡是由富士和奥林巴斯联合推出的专为数码相机使用的小型存储卡，采用单面18针接口。
+
+XD取自于&amp;ldquo;Extreme Digital&amp;rdquo;，是&amp;ldquo;极限数字&amp;rdquo;的意思。外形尺寸为20mm&amp;times;25mm&amp;times;1.7mm，总体积只有0.85立方厘米，约为2克重。XD卡的缺点是兼容性差。
+
+记忆棒（<span class="keyword">Memory</span> Stick）
+
+<span class="keyword">Memory</span> Stick记忆棒，是Sony公司开发研制的，尺寸为：50mm&amp;times;21.5mm&amp;times;2.8mm，重4克。
+
+和很多Flash <span class="keyword">Memory</span>存储卡不同，<span class="keyword">Memory</span> Stick规范是非公开的，没有什么标准化组织。采用了Sony自己的外型、协议、物理格式和版权保护技术，要使用它的规范就必须和Sony谈判签订许可。<span class="keyword">Memory</span> Stick也包括了控制器在内，采用10针接口，数据总线为串行，最高频率可达20MHz，电压为2.7伏到3.6伏，电流平均为45mA。可以看出这个规格和差不多同一时间出现的MMC颇为相似。
+
+记忆棒的缺点一是兼容性差，二是容量尚不够大。
+
+miniSD卡
+
+miniSD卡是在数码相机，PDA等所用的Flash <span class="keyword">Memory</span> Card（中文名：快闪存储卡）基础上发展出的一种更小更适合小型手机用的存储卡。尽管miniSD卡的外形大小及接口形状与原来的SD卡不同，但接口等电气标准相同，以确保兼容性。将miniSD插入专用适配器，可通过原来的SD卡插槽读写miniSD卡。不过，不具备像SD卡那样防写入的锁定功能。
+
+miniSD卡的接口比SD卡的9个还多2个，有11条信号线。多出的2条信号线是为未来扩展性能准备的。比如，可用于非接触型IC等近距离无线通信的天线连接等。剩下的9条信号线是与原来SD卡相同标准的信号线。 
+
+miniSD卡可以存储数码照片、音频、MP3文件和其他数据文件，旨在满足现在流行的多媒体手机的需要。
+
+◆体积比SD卡小60%以上。
+
+◆搭配适配器之后，适用于附SD卡槽的数码产品上。
+
+◆产品特征： 高速数据读写、备份； 高存储容量； 非挥发性固态、掉电数据自动保存；无转动部件，延长电池使用时间；用户自选式机械写保护开关； 可承受工作震动率 2000 Gs。
+
+◆尺寸：21.5mm*20mm*1.4mm
+
+TranFlash卡
+
+TransFlash卡即micro SD卡，简称T-flash卡或TF卡，是采用SD架构设计而成，约为SD卡的1/4，尺寸为15 x 11 x 1mm，同手指甲大小。利用适配器可以在使用SD作为存储介质的设备上使用。TransFlash主要是为照像手机拍摄大幅图像以及能够下载较大的视频片段而开发研制的。TransFlash卡可以用来储存个人数据，例如数字照片、MP3、游戏及用于手机的应用和个人数据等，还内设置版权保护管理系统，让下载的音乐、影像及游戏受保护；未来推出的新型TransFlash还备有加密功能，保护个人数据、财政纪录及健康医疗文件。体积小巧的 TransFlash让制造商无须顾虑电话体积即可采用此设计，而另一项弹性运用是可以让供货商在交货前随时按客户不同需求做替换，这个优点是嵌入式闪存所没有的。内设版权保护管理系统，适用于多项多媒体应用。
+
+Trans-flash Card为SD Card产品协会的一员， SDA 协会于 2004 年年底正式更名为：Micro SD Card。 Micro SD记忆卡采用最先进的SLC控制技术，让资料拥有高超的传输速度！搭配上转接卡更能够完全相容市面上所有支援SD记忆卡的数位产品。在Micro SD面市前之前，行动电话制造商都采用嵌入式记忆体，虽然这类模组容易装设，然而容量被限制住了。无法再有升级空间。Micro SD仿效 SIM卡的应用模式，即是同一张卡可以应用在不同型号的行动电话内，让行动电话制造商不用再为插卡式的研发设计而伤脑筋啦。 Micro SD足以堪称可移动式的储存IC 。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/e9-80-9a-e8-ae-af-e6-95-b0-e7-a0-81-e4-ba-a7-e5-93-81-e5-ad-98-e5-82-a8-e5-8d-a1-e7-ae-80-e4-bb-8b-ef-bc-9asm-e5-8d-a1-e3-80-81cf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-09T02:25:35.000Z" class="post__time">十月 9, 2010</time><h1 class="post__title"><a href="/2010/10/09/w/aeamuleied2kiaoe-firefox3/">关联amule（ed2k）和 Firefox3</a></h1></header><div class="post__main"><p>1.在firefox的地址栏输入about:config ,回车后出现一个警告窗口，点击继续</p>
+<pre><code><span class="number">2</span>.新建一个字符串：network<span class="class">.protocol-handler</span><span class="class">.app</span><span class="class">.ed2k</span> 值：/usr/bin/ed2k
+
+<span class="number">3</span>.新建一个布尔串：network<span class="class">.protocol-handler</span><span class="class">.external</span><span class="class">.ed2k</span> 值：true
+
+最后一步：打开首选项，在应用程序设置里面，指定ed2k到/usr/bin/ed2k，重启即可。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/09/w/aeamuleied2kiaoe-firefox3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-09T02:21:20.000Z" class="post__time">十月 9, 2010</time><h1 class="post__title"><a href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/">Centos中文环境支持</a></h1></header><div class="post__main"><p>安装字体：</p>
+<pre><code>yum <span class="keyword">install</span> fonts-chinese fonts-ISO8859-<span class="number">2</span>-<span class="number">75</span>dpi
+</code></pre><p>对于centos6以后版本：</p>
+<p><span style="color: rgb(255, 0, 0);">yum -y groupinstall chinese-support</span></p>
+<pre><code>编辑 .bash_profile 
+
+添加
+
+<span class="built_in">export</span> LANG=&amp;quot;zh_CN.UTF-<span class="number">8</span>&amp;quot;
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-09-20T03:58:13.000Z" class="post__time">九月 20, 2010</time><h1 class="post__title"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/">web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法</a></h1></header><div class="post__main"><p>&nbsp; cpu速度越来越快也更便宜，IDC机房带宽很昂贵，所以用cpu来换取带宽。</p>
+<pre><code>apche启用mod_deflate压缩：
+
+&amp;lt;ifmodule mod_deflate.c&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; DeflateCompressionLevel <span class="number">9</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetOutputFilter DEFLATE
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:gif|jpe?g|png)$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:exe|t?gz|zip|bz2|sit|rar)$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.pdf$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span> gzip-only-text/html
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span><span class="string">\.0[678]</span> <span class="literal">no</span>-gzip
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch <span class="string">\bMSIE</span> !<span class="literal">no</span>-gzip !gzip-only-text/html
+
+&amp;lt;/ifmodule&amp;gt;
+
+nginx 启用gzip压缩：
+
+http {
+
+&amp;nbsp;&amp;nbsp; gzip&amp;nbsp; <span class="literal">on</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_min_length&amp;nbsp; <span class="number">1000</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_buffers&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span> <span class="number">8k</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_types&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; text/plain application/x-javascript text/css text/html application/xml;
+
+&amp;nbsp;&amp;nbsp; }
+
+压缩效果测试
+
+不使用压缩:
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+
+size_download=64031
+
+使用 Accept-Encoding 头：
+
+curl http://</span>veryi.com/w/<span class="number">1.html</span> --silent -H &amp;quot;<span class="attribute">Accept-Encoding</span>: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}<span class="string">\n&amp;quot;</span> --output /dev/<span class="literal">null</span>
+
+size_download=<span class="number">20012</span>
+
+比较数字就可以知道压缩效果。
+
+使用 HTTP <span class="number">1.0</span> 测试：
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --http1.0 -H &amp;quot;Accept-Encoding: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+
+size_download=64031
+
+[参考](http://</span>dev.nuclearrooster.com<span class="pi">/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>)：<span class="attribute">http</span>:<span class="pi">//dev.nuclearrooster.com/2009/11/08/checking-gzipdeflate-server-responses-with-curl/
+
+&amp;nbsp;</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

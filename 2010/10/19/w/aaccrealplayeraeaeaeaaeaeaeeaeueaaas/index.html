@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>彻底禁用RealPlayer播放器软件更新检测计划任务 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="彻底禁用RealPlayer播放器软件更新检测计划任务"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-10-19T03:42:34.000Z" class="post__time">十月 19, 2010</time><h1 class="post__title"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/">彻底禁用RealPlayer播放器软件更新检测计划任务</a></h1></header><div class="post__main"><p>RealPlayer 会私自安装两个RealPlayer播放器软件更新检测计划任务,并且一打开RealPlayer播放器,会在任务管理器中加载一个realsched.exe进程,关闭RealPlayer后这个进程仍然会存在,并且每次自动添加一个启动项目TkBellExe.</p>
+<pre><code>RealPlayer启动项目:
+
+TkBellExe
+
+注册表位置: HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+关联路径文件:C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+RealPlayer计划任务
+
+文件路径: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+注册表位置: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+方法:
+
+开始<span class="command">\运</span>行<span class="command">\mmc</span>.exe
+
+找到Task Scheduler服务项,右键<span class="command">\停</span>止(如在启动状态进行这一步)<span class="command">\属</span>性<span class="command">\启</span>动类型(设置为已禁用)
+
+删除文件: C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
+
+C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
+
+删除注册表项: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
+
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
+
+重启系统再操作:
+
+删除文件: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\目</span>录中以Real开头的.job文件
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/" data-url="http://blog.veryi.com/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

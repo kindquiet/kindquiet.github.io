@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>iptables 匹配多个ip地址 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="iptables 匹配多个ip地址"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-07-13T06:13:48.000Z" class="post__time">七月 13, 2010</time><h1 class="post__title"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/">iptables 匹配多个ip地址</a></h1></header><div class="post__main"><p>如果有一组目的ip不走squid透明代理，端口为3128，比如测试服务器、本地地址等，不需要cache，如何实现？</p>
+<pre><code>/etc/sysconfig/iptables
+
+<span class="comment">*nat</span>
+
+:PREROUTING ACCEPT [0:0]
+
+:POSTROUTING ACCEPT [0:0]
+
+:OUTPUT ACCEPT [0:0]
+
+-A PREROUTING -i eth0 -p tcp -<span class="keyword">m</span> <span class="keyword">mark</span> --<span class="keyword">mark</span> 0x3 -<span class="keyword">m</span> tcp --dport 80 -j REDIRECT --to-ports 3128
+
+-A POSTROUTING -s 172.16.8.0/255.255.254.0 -o eth1 -j SNAT --to-source 123.127.42.168
+
+COMMIT&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+<span class="comment">*mangle</span>
+
+:PREROUTING ACCEPT [0:0]
+
+:<span class="keyword">INPUT</span> ACCEPT [0:0]
+
+:FORWARD ACCEPT [0:0]
+
+:OUTPUT ACCEPT [0:0]
+
+:POSTROUTING ACCEPT [0:0]
+
+-A PREROUTING -<span class="keyword">d</span> a.b.c.0/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+-A PREROUTING -<span class="keyword">d</span> a.b.c.0/255.255.255.192 -j <span class="literal">RETURN</span>
+
+-A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+-A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/255.255.255.192 -j <span class="literal">RETURN</span>
+
+-A PREROUTING -<span class="keyword">d</span> 172.16.8.0/255.255.254.0 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+-A PREROUTING -<span class="keyword">d</span> 172.16.8.0/255.255.254.0 -j <span class="literal">RETURN</span>
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="literal">RETURN</span>
+
+COMMIT
+
+脚本：
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp --dport 53 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x1
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp --dport 53 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> a.b.c.0/26 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> a.b.c.0/26 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/26 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/26 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> 172.16.8.0/23 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> 172.16.8.0/23 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x6
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span>&amp;nbsp; -t mangle -A PREROUTING -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x7
+
+<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -j <span class="literal">RETURN</span>
+
+<span class="label">$IPTABLES</span> -t nat -A POSTROUTING -s 172.16.8.0/23 -o <span class="label">$INET_LINK</span> -j SNAT --to <span class="label">$INET_IP</span>
+
+<span class="label">$IPTABLES</span> -t nat -A PREROUTING -i <span class="label">$LAN_LINK</span> -p tcp -<span class="keyword">m</span> <span class="keyword">mark</span> --<span class="keyword">mark</span> 0x3 -<span class="keyword">m</span> tcp --dport 80 -j REDIRECT --to-ports 3128
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/" data-url="http://blog.veryi.com/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/07/06/w/e8-80-81-e6-97-a7-e7-b3-bb-e7-bb-9f-e8-af-b7-e8-b0-a8-e6-85-8e-e5-8d-87-e7-ba-a7gcc/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

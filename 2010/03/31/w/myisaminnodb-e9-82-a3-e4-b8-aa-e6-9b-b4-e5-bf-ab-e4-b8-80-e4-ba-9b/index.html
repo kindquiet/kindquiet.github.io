@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>myisam,innodb那个更快一些 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="myisam,innodb那个更快一些"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-03-31T09:23:38.000Z" class="post__time">三月 31, 2010</time><h1 class="post__title"><a href="/2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/">myisam,innodb那个更快一些</a></h1></header><div class="post__main"><p>mysqlslap -hlocalhost -uroot —engine=innodb —auto-generate-sql-write-number=100000 —auto-generate-sql-guid-primary —concurrency=5,50,500 —number-of-queries=500000 —iterations=2 —number-char-cols=10 —number-int-cols=10 —auto-generate-sql —create-schema=sbtest —auto-generate-sql-load-type=mixed</p>
+<pre><code>Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine innodb
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">96.510</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">95.215</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">97.805</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">5</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">100000</span>
+
+Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine innodb
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">97.762</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">96.139</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">99.386</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">50</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">10000</span>
+
+Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine innodb
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">142.323</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">140.955</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">143.691</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">500</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">1000</span>
+
+<span class="comment">------------------------------------- </span>
+
+&amp;nbsp;mysqlslap -hlocalhost -uroot <span class="comment">--engine=myisam --auto-generate-sql-write-number=100000 --auto-generate-sql-guid-primary --concurrency=5,50,500 --number-of-queries=500000 --iterations=2 --number-char-cols=10 --number-int-cols=10 --auto-generate-sql --create-schema=sbtest --auto-generate-sql-load-type=mixed</span>
+
+Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine myisam
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">117.924</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">114.445</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">121.404</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">5</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">100000</span>
+
+Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine myisam
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">162.244</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">161.278</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">163.211</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">50</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">10000</span>
+
+Benchmark
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Running <span class="keyword">for</span> engine myisam
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">209.235</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Minimum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">202.708</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Maximum <span class="built_in">number</span> <span class="operator">of</span> <span class="built_in">seconds</span> <span class="built_in">to</span> run all queries: <span class="number">215.762</span> <span class="built_in">seconds</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="operator">of</span> clients running queries: <span class="number">500</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; Average <span class="built_in">number</span> <span class="operator">of</span> queries per client: <span class="number">1000</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/" data-url="http://blog.veryi.com/2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/04/16/w/linux-e6-97-b6-e5-8c-ba-e5-92-8c-e6-97-b6-e9-97-b4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

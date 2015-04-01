@@ -1,0 +1,152 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>linux系统apache tomcat虚拟主机安装配置 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="linux系统apache tomcat虚拟主机安装配置"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-11-24T01:36:33.000Z" class="post__time">十一月 24, 2009</time><h1 class="post__title"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/">linux系统apache tomcat虚拟主机安装配置</a></h1></header><div class="post__main"><p>&nbsp; 多年不用tomcat，应一朋友要求，搭建一个java环境的虚拟主机，经过多次测试，现在把可以正常运行的配置记录下来。</p>
+<p>安装jdk</p>
+<pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>
+
+sh /mnt/mysql/jdk-<span class="number">6</span>u14-linux-i586.bin 
+
+ln <span class="operator">-s</span> jdk1.<span class="number">6.0</span>_14/ jdk
+
+<span class="built_in">echo</span> &amp;quot;<span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk
+
+<span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span>
+
+<span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib&amp;quot; &amp;gt;&amp;gt; /etc/profile.d/java.sh
+
+chmod +x /etc/profile.d/java.sh
+</code></pre><p>安装tomcat</p>
+<p>wget <a href="http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz" target="_blank" rel="external">http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz</a></p>
+<pre><code>tar xzf apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>.tar.gz -C <span class="regexp">/usr/</span>local/
+
+cd <span class="regexp">/usr/</span>local/
+
+ln -s apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>/ tomcat
+
+vi ~/.bash_profile
+
+TOMCAT_HOME=<span class="regexp">/usr/</span>local/tomcat
+
+export PATH TOMCAT_HOME
+
+source ~/.bash_profile
+
+安装jk connector
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/tomcat/tomcat-connectors/jk/source/jk-1.2.28/tomcat-connectors-1.2.28-src.tar.gz</span>
+
+tar xfz tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src/
+
+cd native/
+
+.<span class="regexp">/configure --with-apxs=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs
+
+make
+
+cp apache-<span class="number">2.0</span><span class="regexp">/mod_jk.so /</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/modules/</span>
+</code></pre><p>&nbsp;</p>
+<p>apche配置</p>
+<p>vim /usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
+<p>LoadModule jk_module modules/mod_jk.so</p>
+<pre><code>Include /usr/<span class="keyword">local</span>/httpd/conf/mod_jk.conf
+
+&amp;<span class="keyword">lt</span>;VirtualHost *:<span class="number">80</span>&amp;<span class="keyword">gt</span>;
+
+JkMountCopy On
+
+&amp;nbsp;&amp;nbsp; ServerName edu.veryi.com
+
+DirectoryIndex <span class="keyword">index</span>.jsp <span class="keyword">index</span>.html <span class="keyword">index</span>.jsp <span class="keyword">index</span>.htm
+
+&amp;nbsp;&amp;nbsp; DocumentRoot /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT
+
+&amp;nbsp;&amp;nbsp; <span class="comment">#DocumentRoot /usr/local/www/edu.veryi.com/html</span>
+
+&amp;nbsp;<span class="comment">#&amp;lt;Directory /usr/local/www/edu.veryi.com&amp;gt;</span>
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;Directory /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp; Order allow,deny
+
+&amp;nbsp;&amp;nbsp; Allow from all
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;<span class="regexp">/Directory&amp;gt;
+
+&amp;nbsp; CustomLog &amp;quot;|/usr</span><span class="regexp">/local/sbin</span><span class="regexp">/cronolog /var</span><span class="regexp">/log/httpd</span><span class="regexp">/edu.veryi.com-access_log.%Y%m%d&amp;quot; combined
+
+&amp;nbsp; ErrorDocument 404 /missing</span>.html
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/VirtualHost&amp;gt;</span>
+</code></pre><hr>
+<p>vim /usr/local/httpd/conf/mod_jk.conf</p>
+<pre><code>JkWorkersFile /usr/<span class="keyword">local</span>/httpd/conf/workers.properties
+
+<span class="comment"># Where to put jk logs</span>
+
+JkLogFile /usr/<span class="keyword">local</span>/httpd/logs/mod_jk.<span class="keyword">log</span>
+
+<span class="comment"># Set the jk log level [debug/error/info]</span>
+
+JkLogLevel info
+
+<span class="comment"># Select the log format</span>
+
+JkLogStampFormat &amp;quot;[<span class="variable">%a</span> <span class="variable">%b</span> <span class="variable">%d</span> <span class="variable">%H</span>:<span class="variable">%M</span>:<span class="variable">%S</span> <span class="variable">%Y</span>]&amp;quot;
+
+<span class="comment"># JkOptions indicate to send SSL KEY SIZE,</span>
+
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+
+<span class="comment"># JkRequestLogFormat set the request format</span>
+
+JkRequestLogFormat &amp;quot;<span class="variable">%w</span> <span class="variable">%V</span> <span class="variable">%T</span>&amp;quot;
+
+<span class="comment"># servlet 和jsp请求通过ajp13的协议送给Tomcat</span>
+
+JkMount /servlet/* worker1
+
+JkMount /*.jsp worker1
+</code></pre><hr>
+<p>/usr/local/httpd/conf/workers.properties</p>
+<pre><code><span class="comment"># Defining a worker named worker1 and of type ajp13</span>
+
+worker.<span class="variable">list=</span>worker1
+
+<span class="comment"># Set properties for worker1</span>
+
+worker.worker1.<span class="variable">type=</span>ajp13
+
+worker.worker1.<span class="variable">host=</span>localhost
+
+worker.worker1.<span class="variable">port=</span><span class="number">8009</span>
+
+<span class="comment">#worker.worker1.lbfactor=50</span>
+
+<span class="comment">#worker.worker1.socket_keepalive=1</span>
+
+<span class="comment">#worker.worker1.socket_timeout=300</span>
+</code></pre><p>&nbsp;</p>
+<p>tomcat配置</p>
+<p>vim /usr/local/tomcat/conf/server.xml</p>
+<p>&nbsp; &lt;Host name=&quot;edu.veryi.com&quot; </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">unpackWARs=</span>&amp;quot;<span class="constant">true</span>&amp;quot; <span class="variable">autoDeploy=</span>&amp;quot;<span class="constant">true</span>&amp;quot;&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Context <span class="variable">path=</span>&amp;quot;&amp;quot; <span class="variable">docBase=</span>&amp;quot;/usr/local/tomcat/webapps/ROOT&amp;quot; /&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Valve <span class="variable">className=</span>&amp;quot;org.apache.catalina.valves.AccessLogValve&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_access_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">pattern=</span>&amp;quot;common&amp;quot; <span class="variable">resolveHosts=</span>&amp;quot;<span class="constant">false</span>&amp;quot;/&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Logger <span class="variable">className=</span>&amp;quot;org.apache.catalina.logger.FileLogger&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_file_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">timestamp=</span>&amp;quot;<span class="constant">true</span>&amp;quot;/&amp;gt;
+
+&amp;nbsp; &amp;lt;/Host&amp;gt;
+</code></pre><p>&nbsp; &lt;Host name=&quot;class.veryi.com&quot; appBase=&quot;&quot;</p>
+<pre><code><span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; unpackWARs<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; autoDeploy<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; xmlValidation<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; xmlNamespaceAware<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Alias<span class="subst">&amp;</span><span class="literal">gt</span>;veryi<span class="built_in">.</span>com<span class="subst">&amp;</span><span class="literal">lt</span>;/Alias<span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Context path<span class="subst">=&amp;</span>quot;<span class="subst">&amp;</span>quot; docBase<span class="subst">=&amp;</span>quot;/webapps/ROOT<span class="subst">&amp;</span>quot; reloadable<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot; workDir<span class="subst">=&amp;</span>quot;work<span class="subst">&amp;</span>quot; <span class="subst">/</span><span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;/Host<span class="subst">&amp;</span><span class="literal">gt</span>;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/12/18/w/e5-bf-8d-e7-9a-84-e4-ba-8c-e7-a7-8d-e5-a2-83-e7-95-8c/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/11/17/w/e4-b8-ba-e5-96-9c-e6-ac-a2-e6-97-85-e8-a1-8c-e5-92-8c-e9-aa-91-e8-bd-a6-e4-b8-8a-e7-8f-ad-e7-9a-84-e6-9c-8b-e5-8f-8b-e6-8e-a8-e8-8d-90-e4-b8-80-e6-ac-be-e9-9f-b3-e7-ae-b1-e8-bd-bb-e9-aa-91-e5-85-b5u/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

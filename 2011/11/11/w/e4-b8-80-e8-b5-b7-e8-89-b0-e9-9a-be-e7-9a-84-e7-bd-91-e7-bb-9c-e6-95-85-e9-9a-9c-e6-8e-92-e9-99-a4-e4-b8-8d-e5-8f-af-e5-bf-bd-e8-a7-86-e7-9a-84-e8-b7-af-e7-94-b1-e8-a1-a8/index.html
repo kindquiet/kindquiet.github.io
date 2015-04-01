@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>一起艰难的网络故障排除-不可忽视的路由表 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="一起艰难的网络故障排除-不可忽视的路由表"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-11-11T06:06:17.000Z" class="post__time">十一月 11, 2011</time><h1 class="post__title"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/">一起艰难的网络故障排除-不可忽视的路由表</a></h1></header><div class="post__main"><p>某个ip[221.6.209.46]不能访问我们的网站[121.12.49.36]，检查路由器、防火墙、交换机，操作系统linux iptables，hosts.deny，应用系统的访问控制列表。都没有发现对此ip的限制。</p>
+<p>和IDC机房多次报故障，机房说没有限制，让我们检查路由器、防火墙、交换机和操作系统…我们也说没限制。</p>
+<pre><code>直到最后查看路由表才发现问题所在：
+
+Tracing route to [121.12.49.36]
+
+over a maximum of 30 hops:
+
+&amp;nbsp; 1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1 ms&amp;nbsp; 221.76.209.41
+
+...可以到达机房的路由器
+
+traceroute 221.6.209.46 -<span class="keyword">n</span>
+
+traceroute to 221.6.209.46 (221.6.209.46), 30 hops max, 40 byte packets
+
+没有响应，说明根本没有出去。
+
+netstat -rn
+
+Kernel IP routing <span class="keyword">table</span>
+
+Destination&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Gateway&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Genmask&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Flags&amp;nbsp;&amp;nbsp; MSS <span class="keyword">Window</span>&amp;nbsp; irtt Iface
+
+172.16.1.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.255.255.0&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth1
+
+169.254.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.255.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth1
+
+221.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 255.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">U</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth0
+
+0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 121.12.49.1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0.0.0.0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; UG&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 0&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 0 eth0
+
+route del -<span class="keyword">net</span> 221.0.0.0/8 
+
+traceroute 221.76.209.46 -<span class="keyword">n</span>
+
+traceroute to 221.76.209.46 (221.76.209.46), 30 hops max, 40 byte packets
+
+&amp;nbsp;1&amp;nbsp; 121.12.49.1&amp;nbsp; 0.490 ms&amp;nbsp; 0.922 ms&amp;nbsp; 1.131 ms
+
+&amp;nbsp;2&amp;nbsp; 121.12.55.17&amp;nbsp; 0.318 ms&amp;nbsp; 0.342 ms&amp;nbsp; 0.363 ms
+
+&amp;nbsp;3&amp;nbsp; 110.96.72.97&amp;nbsp; 1.292 ms&amp;nbsp; 1.334 ms&amp;nbsp; 1.410 ms
+
+&amp;nbsp;4&amp;nbsp; 61.233.9.213&amp;nbsp; 1.360 ms&amp;nbsp; 1.357 ms&amp;nbsp; 1.341 ms
+
+&amp;nbsp;5&amp;nbsp; 61.237.97.58&amp;nbsp; 10.237 ms&amp;nbsp; 10.252 ms&amp;nbsp; 10.238 ms
+
+&amp;nbsp;6&amp;nbsp; 61.237.124.10&amp;nbsp; 10.250 ms&amp;nbsp; 10.305 ms&amp;nbsp; 10.355 ms
+
+&amp;nbsp;7&amp;nbsp; 222.39.46.194&amp;nbsp; 10.106 ms&amp;nbsp; 10.189 ms&amp;nbsp; 10.095 ms
+
+&amp;nbsp;8&amp;nbsp; 222.39.162.214&amp;nbsp; 10.585 ms&amp;nbsp; 10.505 ms&amp;nbsp; 10.562 ms
+
+&amp;nbsp;9&amp;nbsp; 221.76.208.2&amp;nbsp; 12.346 ms&amp;nbsp; 12.464 ms&amp;nbsp; 12.643 ms
+
+10&amp;nbsp; 221.76.209.34&amp;nbsp; 11.679 ms&amp;nbsp; 11.890 ms&amp;nbsp; 12.019 ms
+
+添加/删除路由的命令示例：
+
+route add -<span class="keyword">net</span> 221.0.0.0/8 dev eth0
+
+route add -<span class="keyword">net</span> 192.57.66.0 netmask 255.255.255.0 gw ipx4
+
+route add -<span class="keyword">net</span> 224.0.0.0 netmask 240.0.0.0 dev eth0
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/" data-url="http://blog.veryi.com/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/11/26/w/e8-af-ab-e5-90-be-e4-b9-a1-e5-88-9d-e5-8f-91-e5-bf-83-e5-ad-a6-e4-bd-9b-e8-80-85-e4-b9-a6-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-ab/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/11/07/w/e6-b6-b2-e6-99-b6-e6-98-be-e7-a4-ba-e5-99-a8-e9-80-89-e8-b4-ad-e6-8c-87-e5-8d-97-e7-bb-8f-e6-b5-8e-e5-ae-9e-e7-94-a8-e5-9e-8b-e6-98-be-e7-a4-ba-e5-99-a8-e5-af-bc-e8-b4-ad/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

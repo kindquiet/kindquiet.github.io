@@ -1,0 +1,289 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos linux 上flv/swf视频服务器架设 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos linux 上flv/swf视频服务器架设"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-03-02T08:20:14.000Z" class="post__time">三月 2, 2010</time><h1 class="post__title"><a href="/2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/">centos linux 上flv/swf视频服务器架设</a></h1></header><div class="post__main"><p>在互联网上播放视频有两种方式，一种是通过HTTP协议访问视频文件；另外一种就是采用专门的流媒体服务器如red5。以下为在centos 5服务器上支持拖放的视频服务器安装配置。</p>
+<p>web服务器安装：</p>
+<pre><code>wget http:<span class="regexp">//sysoev</span>.ru/nginx/nginx-<span class="number">0</span>.<span class="number">7.65</span>.tar.gz
+
+tar zxf nginx-<span class="number">0</span>.<span class="number">7.65</span>.tar.gz -C /usr/<span class="keyword">local</span>/src
+
+cd /usr/<span class="keyword">local</span>/src/nginx-<span class="number">0</span>.<span class="number">7.65</span>
+
+groupadd www
+
+useradd -d /var/www/nginx -g www www
+
+./configure --prefix=<span class="regexp">/usr/local</span><span class="regexp">/nginx --user=www --group=www --with-http_flv_module --with-http_gzip_static_module --with-http_stub_status_module --with-cc=gcc --with-cc-opt=&amp;quot; -O3&amp;quot;
+
+make &amp;amp;&amp;amp; make install
+
+cd /usr</span><span class="regexp">/local/nginx</span><span class="regexp">/conf
+
+cat nginx.conf
+
+user www;
+
+worker_processes&amp;nbsp; 1;
+
+error_log&amp;nbsp; logs/error</span>.<span class="keyword">log</span>;
+
+pid&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; logs/nginx.pid;
+
+events {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; worker_connections&amp;nbsp; <span class="number">1024</span>;
+
+}
+
+http {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; include&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mime.types;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; default_type&amp;nbsp; application/octet-stream;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; sendfile&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; on;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; keepalive_timeout&amp;nbsp; <span class="number">65</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; server {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">listen</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">81</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; server_name&amp;nbsp; localhost;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; root&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/var/www</span><span class="regexp">/nginx;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; index&amp;nbsp;&amp;nbsp; index.html;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; charset utf-8;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; # important!
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.flv {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; flv;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; error_page&amp;nbsp;&amp;nbsp; 500 502 503 504&amp;nbsp; /</span><span class="number">50</span><span class="keyword">x</span>.html;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location = <span class="regexp">/50x.html {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; root&amp;nbsp;&amp;nbsp; html;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+}
+
+启动
+
+/usr</span><span class="regexp">/local/nginx</span><span class="regexp">/sbin/nginx</span> 
+
+重启
+
+/usr/<span class="keyword">local</span>/nginx/sbin/nginx -<span class="keyword">s</span> reload
+
+<span class="keyword">mkdir</span> -p /var/www/nginx
+
+cd /var/www/nginx
+
+其次，需要有一个能够播放Flv视频的播放器，很显然，它还需要能够嵌入到网页中。目前比较流行的，功能上也还比较完善的一个Flv播放器就是 JW FLV Media Player（也称为 jwplayer）。网址是：
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; http:<span class="regexp">//www</span>.longtailvideo.com/players/jw-flv-player/
+
+下载mediaplayer-viral.zip并解压到/var/www/nginx
+
+将播放器嵌入到你的视频播放网页中。嵌入的方式有两种：
+
+直接嵌入，使用Object/Embed代码嵌入：
+
+cat&amp;nbsp; <span class="keyword">index</span>.html
+
+&amp;<span class="keyword">lt</span>;html&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;head&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html; charset=UTF-<span class="number">8</span>&amp;quot;&amp;<span class="keyword">gt</span>;&amp;<span class="keyword">lt</span>;title&amp;<span class="keyword">gt</span>;veryi.com&amp;<span class="keyword">lt</span>;<span class="regexp">/title&amp;gt;
+
+&amp;lt;/head</span>&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;body&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;h3&amp;<span class="keyword">gt</span>;start&amp;<span class="keyword">lt</span>;<span class="regexp">/h3&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;p&amp;gt;click to play &amp;lt;/p</span>&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;!-- START OF THE PLAYER EMBEDDING TO COPY-PASTE --&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;object id=&amp;quot;player&amp;quot; classid=&amp;quot;clsid:D27CDB6E-AE6D-<span class="number">11</span>cf-<span class="number">96</span>B8-<span class="number">444553540000</span>&amp;quot; name=&amp;quot;player&amp;quot; width=&amp;quot;<span class="number">400</span>&amp;quot; height=&amp;quot;<span class="number">315</span>&amp;quot;&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;param name=&amp;quot;movie&amp;quot; value=&amp;quot;player-viral.swf&amp;quot; <span class="regexp">/&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;param name=&amp;quot;allowfullscreen&amp;quot; value=&amp;quot;true&amp;quot; /</span>&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;param name=&amp;quot;allowscriptaccess&amp;quot; value=&amp;quot;always&amp;quot; <span class="regexp">/&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;param name=&amp;quot;flashvars&amp;quot; value=&amp;quot;file=snatch1.flv&amp;quot; /</span>&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;embed
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; type=&amp;quot;application/<span class="keyword">x</span>-shockwave-flash&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; id=&amp;quot;player2&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; name=&amp;quot;player2&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; src=&amp;quot;player-viral.swf&amp;quot; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; width=&amp;quot;<span class="number">400</span>&amp;quot; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; height=&amp;quot;<span class="number">315</span>&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; allowscriptaccess=&amp;quot;always&amp;quot; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; allowfullscreen=&amp;quot;true&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; flashvars=&amp;quot;file=snatch1.flv&amp;quot; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;/object</span>&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;!-- END OF THE PLAYER EMBEDDING --&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/body&amp;gt;
+
+&amp;lt;/html</span>&amp;<span class="keyword">gt</span>;
+
+使用swfobject来嵌入Flash：
+
+swfobject是一个很小的JavaScript脚本（<span class="number">10</span>k），该脚本引入了一个swfobject对象，用于在网页内嵌入Flash，并避免了上述的安全提示。swfobject已经得到了广泛的使用和好评。
+
+swfobject在jwplayer包中也包含了一个，不过是很旧的<span class="number">1.5</span>版，建议使用最新的版本。本文写作时，最新的版本是<span class="number">2.2</span>。 swfobject可以从此下载（只需要其中的swfobject.js文件）：
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; http:<span class="regexp">//code</span>.google.com/p/swfobject/
+
+使用swfobject嵌入的代码如下：
+
+&amp;<span class="keyword">lt</span>;html&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;head&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;script type=&amp;quot;text/JavaScript&amp;quot; src=&amp;quot;swfobject.js&amp;quot;&amp;<span class="keyword">gt</span>;&amp;<span class="keyword">lt</span>;<span class="regexp">/script&amp;gt;
+
+&amp;lt;script type=&amp;quot;text/</span>JavaScript&amp;quot;&amp;<span class="keyword">gt</span>;
+
+function createPlayer() {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; var flashvars = {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; file:&amp;quot;snatch1.flv&amp;quot;,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; type:&amp;quot;http&amp;quot;,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; image:&amp;quot;preview.jpg&amp;quot;,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; autostart:&amp;quot;false&amp;quot;,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; streamer:&amp;quot;start&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; var params = {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; allowfullscreen:&amp;quot;true&amp;quot;,&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; allowscriptaccess:&amp;quot;always&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; var attributes = {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; id:&amp;quot;player1&amp;quot;,&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; name:&amp;quot;player1&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; swfobject.embedSWF(&amp;quot;player-viral.swf&amp;quot;, &amp;quot;placeholder1&amp;quot;, &amp;quot;<span class="number">320</span>&amp;quot;, &amp;quot;<span class="number">196</span>&amp;quot;, &amp;quot;<span class="number">9.0</span>.<span class="number">115</span>&amp;quot;, false, flashvars, params, attributes);
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/script&amp;gt;
+
+&amp;nbsp;
+
+&amp;lt;/head</span>&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;body onload=&amp;quot;createPlayer();&amp;quot;&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="keyword">lt</span>;div id=&amp;quot;placeholder1&amp;quot;&amp;<span class="keyword">gt</span>;&amp;<span class="keyword">lt</span>;<span class="regexp">/div&amp;gt;
+
+&amp;lt;/body</span>&amp;<span class="keyword">gt</span>;
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/html&amp;gt;
+
+附，媒体转换：
+
+FFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。它包括了目前领先的音/</span>视频编码库libavcodec,安装，使用http:<span class="regexp">//dag</span>.wieers.com/或者http:<span class="regexp">//www</span>.atrpms.net/的源：
+
+yum install ffmpeg -<span class="keyword">y</span>
+
+yum install ffmpeg-devel -<span class="keyword">y</span>
+
+转换dvd的MPEG-<span class="number">2</span>格式的音频和视频数据VOB格式文件：
+
+ffmpeg -i VTS_01_3.VOB -f flv -ar <span class="number">22050</span> -<span class="keyword">s</span> qvga -r <span class="number">15</span> -<span class="keyword">y</span> snatch1.flv
+
+对ffmpeg无法解析的文件格式(wmv9，rm，rmvb等),
+
+可以先用别的工具（mencoder）转换为 avi(ffmpeg能解析的)格式.
+
+./mencoder /input/a.rmvb -oac lavc -lavcopts acodec=mp3:abitrate=<span class="number">64</span> -ovc xvid -xvidencopts bitrate=<span class="number">600</span> -of avi -o /output/a.avi
+
+然后执行./ffmpeg -i &amp;quot;<span class="regexp">/opt/input</span><span class="regexp">/a.avi&amp;quot; -y -ab 32 -ar 22050 -b 800000 -s 640*480 /opt</span><span class="regexp">/output/a</span>.flv&amp;quot;就可以了。
+
+如果运行ffmpeg出现错误
+
+lame: output buffer too small (buffer <span class="keyword">index</span>: <span class="number">9405</span>, free bytes: <span class="number">387</span>)
+
+解决方法：
+
+wget http:<span class="regexp">//dl</span>.atrpms.net/all/lame-<span class="number">3.97</span>-<span class="number">16.0</span>.el5.i386.rpm
+
+wget http:<span class="regexp">//dl</span>.atrpms.net/all/libmp3lame<span class="number">0</span>-<span class="number">3.97</span>-<span class="number">16.0</span>.el5.i386.rpm
+
+rpm -hUv --nodeps --oldpackage libmp3lame<span class="number">0</span>-<span class="number">3.97</span>-<span class="number">16.0</span>.el5.i386.rpm&amp;nbsp; lame-<span class="number">3.97</span>-<span class="number">16.0</span>.el5.i386.rpm
+
+To prevent updating libmp3lame<span class="number">0</span> <span class="keyword">and</span> lame again <span class="keyword">when</span> running &amp;lsquo;yum update&amp;rsquo;, be sure to edit /etc/yum.conf <span class="keyword">and</span> exclude these packages. Add the following line:
+
+exclude=lame* libmp3lame*
+
+(ffmpeg参数说明)：
+
+控制画面参数
+
+-r &amp;<span class="keyword">lt</span>;数值&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 帧速率(非标准数值会导致音画不同步【标准值为<span class="number">15</span>或<span class="number">29.97</span>】)
+
+-b &amp;<span class="keyword">lt</span>;比特率&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 指定压缩比特率
+
+控制声音参数
+
+-ac &amp;<span class="keyword">lt</span>;数值&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 设定声道数：<span class="number">1</span>为单声道，<span class="number">2</span>为立体声
+
+-ar &amp;<span class="keyword">lt</span>;采样率&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 设定声音采样率(<span class="number">8000</span>，<span class="number">11025</span>，<span class="number">22050</span>)
+
+-ab &amp;<span class="keyword">lt</span>;比特率&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 设定声音比特率(-ac设为立体声时要以一半比特率来设置，比如<span class="number">192</span>kbps的就设成<span class="number">96</span>)
+
+-vol &amp;<span class="keyword">lt</span>;百分比&amp;<span class="keyword">gt</span>; &amp;nbsp;&amp;nbsp;&amp;nbsp; 设定音量大小，比如设定<span class="number">200</span>就会比原来的音量大<span class="number">2</span>倍
+
+参考：
+
+http:<span class="regexp">//linux</span>.cn/home/space-<span class="number">3</span>-<span class="keyword">do</span>-blog-id-<span class="number">136</span>.html
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/" data-url="http://blog.veryi.com/2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/03/03/w/e5-a4-a9-e5-9c-86-e5-9c-b0-e6-96-b9-e5-8f-a4-e4-ba-ba-e8-ae-a4-e4-b8-ba-e5-9c-b0-e6-98-af-e6-96-b9-e7-9a-84-e5-90-97-ef-bc-9f/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/01/12/w/e4-bf-ae-e6-94-b9-e9-82-ae-e4-bb-b6smtp-e7-ab-af-e5-8f-a3-e8-a7-a3-e5-86-b3isp-e5-b0-81-e9-94-8125-e7-ab-af-e5-8f-a3-e4-b8-8d-e8-83-bd-e5-8f-91-e4-bf-a1/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

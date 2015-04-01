@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>nginx php 502 bad gateway 解决方法 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="nginx php 502 bad gateway 解决方法"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
+<pre><code>phpMyAdmin &amp;ndash; Error
+
+Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
+</code></pre><p>502 bad gateway</p>
+<p>查看nginx error log：</p>
+<p>[error]&nbsp; recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://127.0.0.1:9000&quot;, host: &quot;mysql.veryi.com&quot;</p>
+<p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
+<p>其他可能：</p>
+<p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
+<pre><code>http
+
+{
+
+fastcgi_connect_timeout <span class="number">300</span>;
+
+fastcgi_send_timeout <span class="number">300</span>;
+
+fastcgi_<span class="built_in">read</span>_timeout <span class="number">300</span>;
+
+}
+
+php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以加大php.ini的memory_<span class="built_in">limit</span>为<span class="number">64</span>M。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" data-url="http://blog.veryi.com/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

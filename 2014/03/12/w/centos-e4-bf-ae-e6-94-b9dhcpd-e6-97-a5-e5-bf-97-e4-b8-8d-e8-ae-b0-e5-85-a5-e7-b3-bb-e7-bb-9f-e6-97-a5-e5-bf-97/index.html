@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos修改dhcpd日志不记入系统日志 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos修改dhcpd日志不记入系统日志"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2014-03-12T07:40:01.000Z" class="post__time">三月 12, 2014</time><h1 class="post__title"><a href="/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/">centos修改dhcpd日志不记入系统日志</a></h1></header><div class="post__main"><p>编辑dhcp服务配置文件</p>
+<pre><code><span class="keyword">vim</span> /etc/dhcp/dhcpd.<span class="keyword">conf</span>&amp;nbsp;&amp;nbsp; 在末尾加入
+
+<span class="built_in">log</span>-facility&amp;nbsp; local4;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;
+
+编辑 rsyslog服务配置文件，修改/var/<span class="built_in">log</span>/<span class="keyword">messages</span>加入local4.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
+
+<span class="keyword">vim</span> /etc/rsyslog.<span class="keyword">conf</span>&amp;nbsp;&amp;nbsp; 加入
+
+# Save dhcpd <span class="keyword">messages</span> also <span class="keyword">to</span> dhcpd.<span class="built_in">log</span>
+
+local4.*&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/dhcpd.<span class="built_in">log</span>
+
+#*.info;mail.none;authpriv.none;cron.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
+
+*.info;mail.none;authpriv.none;cron.none;local4.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
+</code></pre><p>重启&nbsp; rsyslog 服务</p>
+<pre><code>service rsyslog restart
+
+重启 dhcpd 服务
+
+service dhcpd restart
+
+tail -f /<span class="keyword">var</span>/<span class="keyword">log</span>/dhcpd.<span class="keyword">conf</span>
+
+tail -f /<span class="keyword">var</span>/<span class="keyword">log</span>/messges
+</code></pre><p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/" data-url="http://blog.veryi.com/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2014/03/14/w/rhel yum upgrade/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/11/29/w/e5-90-ac-e9-97-bb-e9-9a-8f-e8-bd-ac-e4-bf-ae-e5-bf-83-e8-a6-81-ef-bc-8c-e5-b0-91-e5-8a-9b-e5-8d-b3-e8-84-b1-e7-94-9f-e6-ad-bb-e5-9f-8e/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

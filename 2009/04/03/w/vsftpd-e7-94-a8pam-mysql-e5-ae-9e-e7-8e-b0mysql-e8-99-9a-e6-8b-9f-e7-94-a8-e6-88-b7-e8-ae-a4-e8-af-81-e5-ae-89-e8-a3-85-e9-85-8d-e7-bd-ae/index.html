@@ -1,0 +1,282 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>vsftpd用pam_mysql实现mysql虚拟用户认证安装配置 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="vsftpd用pam_mysql实现mysql虚拟用户认证安装配置"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-03T07:22:19.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">vsftpd用pam_mysql实现mysql虚拟用户认证安装配置</a></h1></header><div class="post__main"><p>vsftpd已经很安全了，但是使用系统用户不方便管理，以下是在Linux系统中用pam_mysql实现mysql虚拟用户认证的安装配置过程。</p>
+<p>系统环境：</p>
+<pre><code>cat /etc/redhat-<span class="operator"><span class="keyword">release</span>
+
+CentOS <span class="keyword">release</span> <span class="number">5.2</span> (Final)
+
+vsftpd是CentOS（RedHat <span class="keyword">AS</span>）自带的。
+
+建立用于存放vsftpd虚拟用户的<span class="keyword">Schema</span>的过程：
+
+mysql -uroot -ppass
+
+<span class="keyword">create</span> <span class="keyword">database</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> vsftpd.* <span class="keyword">to</span> vsftpd@localhost <span class="keyword">identified</span> <span class="keyword">by</span> &amp;quot;</span>veryi.com&amp;quot; ;
+
+<span class="operator"><span class="keyword">use</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> users (
+
+&amp;nbsp;</span>id int AUTO_INCREMENT NOT NULL,
+
+&amp;nbsp;name char(16) binary NOT NULL,
+
+&amp;nbsp;passwd char(48) binary NOT NULL,
+
+&amp;nbsp;primary key(id)
+
+&amp;nbsp;);
+
+<span class="operator"><span class="keyword">describe</span> users;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">logs</span> (msg <span class="built_in">varchar</span>(<span class="number">255</span>),
+
+&amp;nbsp;</span>user char(16),
+
+&amp;nbsp;pid int,
+
+&amp;nbsp;host char(32),
+
+&amp;nbsp;rhost char(32),
+
+&amp;nbsp;logtime timestamp
+
+&amp;nbsp;);
+
+<span class="operator"><span class="keyword">describe</span> <span class="keyword">logs</span>;</span>
+
+插入用户信息：
+
+<span class="operator"><span class="keyword">insert</span> <span class="keyword">into</span> users (name,passwd) <span class="keyword">values</span>(&amp;#<span class="number">39</span>;</span>veryi&amp;#39;,password(&amp;#39;veryi.com&amp;#39;));
+
+<span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> users;</span>
+
+这里，用户密码这个字段的长度是48。这是根据MySQL加密函数的返回值的长度确定的。关于PASSWORD函数返回值的长度，可以参考这个：[http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html](http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html)
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">encrypt</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| 4Wwn2AXFYb.So&amp;nbsp; |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">password</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| *F3A2A51A9B0F2BE2468926B4132313728C250DBF |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">md5</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| acbd18db4cc2f85cedef654fccc4a4d8 |
+
+编译安装pam_mysql
+
+下载:
+
+wget -b [http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz](http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz)
+
+tar xfz pam_mysql-0.7RC1.tar.gz -C /usr/local/src
+
+cd&amp;nbsp; /usr/local/src/pam_mysql-0.7RC1
+
+./configure <span class="comment">--with-openssl --with-mysql=/usr/local/mysql</span>
+
+make &amp;amp;&amp;amp; make <span class="operator"><span class="keyword">install</span>
+
+加上<span class="comment">--with-openssl可以避免make时报有关md5.h的编译错误</span>
+
+vi /etc/pam.d/vsftpd.mysql
+
+auth&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; required&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+account required&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+vi /etc/security/pam_mysql.conf
+
+users.host=localhost
+
+users.database=vsftpd
+
+users.db_user=vsftpd
+
+users.db_passwd=veryi.com
+
+users.table=users
+
+users.user_column=name
+
+users.password_column=passwd
+
+users.password_crypt=2
+
+verbose=0
+
+log.enabled=0
+
+log.table=logs
+
+log.message_column=msg
+
+log.pid_column=pid
+
+log.user_column=user
+
+log.host_column=host
+
+log.rhost_column=rhost
+
+log.time_column=logtime
+
+建立/etc/vsftpd/vsftpd.mysql.conf（同样，不影响已有的vsftpd服务，执行service vsftpd restart时会启动两个vsftpd服务，端口不一样）
+
+主要的设置如下：
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+l
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+local_enable=YES
+
+write_enable=YES
+
+local_umask=002
+
+dirmessage_enable=YES
+
+xferlog_enable=YES
+
+xferlog_std_format=YES
+</code></pre><p>xferlog_file=/var/log/ftp/vsftpd.log</p>
+<pre><code><span class="constant">ftpd_banner</span>=veryi.com, thank you
+
+<span class="constant">listen</span>=YES
+
+<span class="constant">pam_service_name</span>=vsftpd
+
+<span class="constant">userlist_enable</span>=YES
+
+<span class="constant">chroot_local_user</span>=YES
+
+<span class="constant">chroot_list_enable</span>=YES
+
+<span class="constant">chroot_list_file</span>=/etc/vsftpd.chroot_list
+
+<span class="constant">tcp_wrappers</span>=YES
+
+<span class="constant">max_clients</span>=100
+
+<span class="constant">max_per_ip</span>=8
+
+<span class="constant">listen_port</span>=21
+
+<span class="constant">pasv_enable</span>=YES
+
+<span class="constant">pasv_min_port</span>=58000
+
+<span class="constant">pasv_max_port</span>=58129
+
+<span class="constant">guest_enable</span>=YES
+
+<span class="constant">guest_username</span>=vsftpdguest
+
+<span class="constant">virtual_use_local_privs</span>=YES
+
+<span class="constant">anonymous_enable</span>=no
+
+<span class="constant">pam_service_name</span>=vsftpd.mysql
+
+<span class="constant">user_config_dir</span>=/etc/vsftpd/vsftpd_user_conf
+
+<span class="constant">hide_ids</span>=YES
+
+<span class="constant">ssl_enable</span>=YES
+
+<span class="constant">ssl_tlsv1</span>=YES
+
+<span class="constant">rsa_cert_file</span>=/etc/vsftpd/vsftpd.pem
+
+<span class="constant">force_local_data_ssl</span>=NO
+
+<span class="constant">force_local_logins_ssl</span>=NO
+
+建立日志目录:
+</code></pre><p>mkdir /var/log/ftp</p>
+<pre><code>重新启动vsftpd
+
+<span class="regexp">/etc/i</span>nit.d<span class="regexp">/vsftpd restart</span>
+</code></pre><p>创建虚拟用户</p>
+<pre><code>VSFTPD采用PAM方式验证虚拟用户。由于虚拟用户的用户名/口令被单独保存，因此在验证时，VSFTPD需要用一个系统用户的身份来读取数据库文件或数据库服务器以完成验证，这就是VSFTPD的guest用户。这正如同匿名用户也需要有一个系统用户ftp一样。我们也可以把guest用户看成是虚拟用户在系统中的代表。下面在系统中添加vsftpdguest用户，作为VSFTPD的guest。
+
+useradd vsftpdguest
+
+当虚拟用户登录后，所在的位置为vsftpdguest的自家目录<span class="regexp">/home/</span>vsftpdguest。如果要让虚拟用户登录到<span class="regexp">/var/</span>ftp等其他目录，修改vsftpdguest的自家目录即可。
+
+无论是哪个虚拟用户，登录后所在的目录都是<span class="regexp">/home/</span>vsftpdguest。
+
+虚拟用户的个人目录:
+
+mkdir -p <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+cd <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+vi veryi
+
+local_root=<span class="regexp">/usr/</span>local/www
+
+修改目录权限:
+
+chown -R vsftpdguest.vsftpdguest <span class="regexp">/usr/</span>local/www
+</code></pre><p>&nbsp;</p>
+<p>日志轮询和分析统计:</p>
+<p>cat ftp_stats.sh</p>
+<pre><code><span class="shebang">#!/bin/sh
+</span>
+<span class="comment">#writed by dayu*veryi.com</span>
+
+<span class="comment">#</span>
+
+<span class="built_in">export</span> PATH=/bin:/usr/bin
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+/etc/init.d/vsftpd stop
+
+mv vsftpd.log vsftpd.`date +%F`.log
+
+/etc/init.d/vsftpd start
+
+<span class="built_in">cd</span> /var/www/cgi-bin/awstats
+
+./awstats.pl -update -config=ftp.veryi.com
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+bzip2 vsftpd.`date +%F`.log
+</code></pre><p>&nbsp;</p>
+<p>加入cron每天自动执行:</p>
+<p>crontab -e</p>
+<p>0 4 <em> </em> * /home/yang/work/ftp_stats.sh</p>
+<pre><code>附调试时困扰了很长时间的一个问题
+
+Q：
+
+<span class="function"><span class="title">pam_mysql_check_passwd</span><span class="params">()</span></span> returning <span class="number">6</span>.
+
+A：
+
+vsftpd pam_mysql
+
+crypt=<span class="number">0</span> 成功
+
+crypt=<span class="number">2</span> 不能登录，原因，centos <span class="number">5.2</span>自带的mysql启动，二进制安装的最新mysqld没有启动。
+</code></pre><p>Q:</p>
+<p>configure: error: Cannot find pam headers. Please check if your system is ready for pam module development.</p>
+<p>A:</p>
+<p>yum install pam-devel -y</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/03/w/e5-b9-b8-e7-a6-8f-e4-ba-ba-e7-94-9f-e8-ae-b2-e5-ba-a7/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

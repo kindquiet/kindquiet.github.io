@@ -1,0 +1,657 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。<span>mysql文档中说明:</span><span>除了</span><span>二进制备份，你也应该周期性地用<strong><span>mysqldump</span></strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</span></p>
+<p>&nbsp;可以一周执行一次。</p>
+<p>&nbsp;crontab -e</p>
+<p>0 2 <em> </em> 5 /home/work/mysqlflbk.sh</p>
+<p>&nbsp;</p>
+<p>&nbsp;#!/bin/sh</p>
+<h1 id="writed_by_dayu@veryi-com">writed by dayu@veryi.com</h1><p>#</p>
+<p>&nbsp;export PATH=/bin:/usr/bin</p>
+<p>Dbamail=dayu@veryi.com</p>
+<p>Dbhostname=<code>hostname</code></p>
+<p>Interval=14</p>
+<p>website=&quot;newblog.cersp.com&quot;</p>
+<p>DATE=<code>date +%Y%m%d</code></p>
+<p>DbUser=root</p>
+<p>DbPasswd=pass</p>
+<p>BackupPath=/opt/backup</p>
+<p>LogFile=/var/log/mysql/mysqld.log</p>
+<p>DbPath=/usr/local/mysql/data</p>
+<p>DbName=<code>mysql -uroot -pnew_pass -e &amp;quot;show databases;&amp;quot; |grep -v \+|grep -v Database</code></p>
+<p>[ -d /var/log/mysql ] || ( mkdir -p /var/log/mysql ;chmod 777 /tmp/logs )</p>
+<p>[ -d /opt/backup ] || mkdir -p /opt/backup</p>
+<p>echo &quot;—————————————————————-&quot; &gt; $LogFile</p>
+<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
+<p>echo &quot;—————————————&quot; &gt;&gt; $LogFile</p>
+<p>cd /opt/backup</p>
+<p>for a in $DbName</p>
+<p>do</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /usr/local/mysql/bin/mysqldump -u$DbUser -p$DbPasswd \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; —default-character-set=utf8 —opt \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $a &gt; $a.$DATE.sql \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&amp; echo &quot;$a successful backup&quot; &gt;&gt; $LogFile \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || echo &quot;$a bakup failed&quot; | mail -s &quot;$Dbhostname db bakup failed.&quot; $Dbamail</p>
+<p>done</p>
+<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
+<p>for a in $DbName</p>
+<p>do</p>
+<p>&nbsp;&nbsp;&nbsp; bzip2 $a.$DATE.sql</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; find . -name &quot;$a.*.bz2&quot; -type f -mtime +$Interval -exec rm -f {} \;</p>
+<p>done</p>
+<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
+<p>mysqldump 的一些主要参数说明：</p>
+<p>&nbsp;—compatible=name</p>
+<p>导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号隔开。</p>
+<p>—complete-insert，-c</p>
+<p>导出的数据采用包含字段名的完整 INSERT 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数。</p>
+<p>—default-character-set=charset</p>
+<p>指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。</p>
+<p>—disable-keys</p>
+<p>在 INSERT 语句的开头和结尾增加 /<em>!40000 ALTER TABLE table DISABLE KEYS </em>/; 和 /<em>!40000 ALTER TABLE table ENABLE KEYS </em>/; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</p>
+<p>—extended-insert = true|false</p>
+<p>默认总是导出一个长的insert语句，如果需要导出的sql中，每条记录对应一个insert语句，在不支持insert多值的数据库中，可以很方便的进行迁移，只需要加—extented-insert=false即可。</p>
+<p>—hex-blob</p>
+<p>使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。</p>
+<p>—lock-all-tables，-x</p>
+<p>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 —single-transaction 和 —lock-tables 选项。</p>
+<p>—lock-tables</p>
+<p>它和 —lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 —single-transaction 选项。</p>
+<p>—no-create-info，-t</p>
+<p>只导出数据，而不添加 CREATE TABLE 语句。</p>
+<p>&nbsp;—no-data，-d</p>
+<p>不导出任何数据，只导出数据库表结构。</p>
+<p>—opt</p>
+<p>这只是一个快捷选项，等同于同时添加 —add-drop-tables —add-locking —create-option —disable-keys —extended-insert —lock-tables —quick —set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 —skip-opt 禁用。注意，如果运行 mysqldump 没有指定 —quick 或 —opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</p>
+<p>—quick，-q</p>
+<p>该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。</p>
+<p>—routines，-R</p>
+<p>导出存储过程以及自定义函数。</p>
+<p>—single-transaction</p>
+<p>该选项在导出数据之前提交一个 BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 InnoDB 和 BDB。</p>
+<p>本选项和 —lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</p>
+<p>要想导出大表的话，应结合使用 —quick 选项。</p>
+<p>—triggers</p>
+<p>同时导出触发器。该选项默认启用，用 —skip-triggers 禁用它。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-27T02:47:07.000Z" class="post__time">三月 27, 2009</time><h1 class="post__title"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/">linux服务器samba源代码安装设置</a></h1></header><div class="post__main"><p>操作系统：</p>
+<p>cat /etc/redhat-release</p>
+<p>CentOS release 4.5 (Final)</p>
+<p>&nbsp;</p>
+<p>安装</p>
+<p>cd /usr/local/src/</p>
+<p>wget <a href="http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz" target="_blank" rel="external">http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz</a></p>
+<p>tar xfz samba-3.3.2.tar.gz</p>
+<p>cd /usr/local/src/samba-3.3.2/source</p>
+<p>./configure &ndash;prefix=/usr/local/samba/</p>
+<p>make -j6 &amp;&amp; make install</p>
+<p>&nbsp;</p>
+<p>系统默认语言:</p>
+<p>cat /etc/sysconfig/i18n</p>
+<p>LANG=&quot;zh_CN.UTF-8&quot;</p>
+<pre><code><span class="constant">LC_ALL</span>=&amp;quot;zh_CN.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
+
+<span class="constant">LANGUAGE</span>=&amp;quot;zh_CN.<span class="constant">GB18030</span><span class="symbol">:zh_CN</span>.<span class="constant">GB2312</span><span class="symbol">:zh_CN</span><span class="symbol">:en_US</span>.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
+</code></pre><p>SUPPORTED=&rdquo;zh_HK.UTF-8:zh_HK:zh:zh_CN.UTF-8:zh_CN:zh:zh_SG.UTF-8:zh_SG:zh:zh_TW.UTF-8:zh_TW:zh:en_US.UTF-8:en_US:en&rdquo;</p>
+<p>SYSFONT=&rdquo;latarcyrheb-sun16&Prime;</p>
+<p>&nbsp;</p>
+<p>vi /etc/ld.so.conf</p>
+<p>添加 :</p>
+<p>/usr/local/samba/lib</p>
+<p><span id="ArticleContent1_ArticleContent1_lblContent">更新动态链接库</span>缓存:</p>
+<p>ldconfig</p>
+<p>&nbsp;</p>
+<p>cd /usr/local/samba/lib</p>
+<p>vi smb.conf</p>
+<p>[global]</p>
+<p>&nbsp;&nbsp; DISPLAY CHARSET= utf8</p>
+<p>&nbsp;&nbsp; #UNIX CHARSET = cp936</p>
+<p>&nbsp;&nbsp;&nbsp; unix charset = UTF-8</p>
+<p>&nbsp;&nbsp; DOS CHARSET = utf8</p>
+<p>&nbsp;&nbsp; workgroup = workgroup</p>
+<p>&nbsp;&nbsp; server string = veryi.com samba server</p>
+<p>&nbsp;&nbsp; security = user</p>
+<p>&nbsp;&nbsp; load printers = no</p>
+<p>&nbsp;&nbsp; log level = 2</p>
+<p>&nbsp;&nbsp; log file = /var/log/samba/%m.%I.log</p>
+<p>&nbsp;&nbsp; max log size = 5000</p>
+<p>&nbsp;&nbsp;&nbsp; announce as = NT</p>
+<p>&nbsp;&nbsp;&nbsp; announce version = 4.0</p>
+<p>&nbsp;&nbsp;&nbsp; browse list = yes</p>
+<p>&nbsp;&nbsp; encrypt passwords = yes</p>
+<p>&nbsp;&nbsp; smb passwd file = /etc/samba/smbpasswd</p>
+<p>&nbsp;&nbsp; dns proxy = no</p>
+<p>&nbsp;&nbsp; socket options = TCP_NODELAY SO_RCVBUF=8192 SO_SNDBUF=8192</p>
+<p>&nbsp; interfaces = 192.168.6.0/24</p>
+<p>&nbsp;&nbsp; local master = yes</p>
+<p>&nbsp;&nbsp; os level = 89</p>
+<p>&nbsp;&nbsp; time server&nbsp; = yes</p>
+<p>&nbsp;&nbsp; domain master = yes</p>
+<p>&nbsp;&nbsp; preferred master = yes</p>
+<p>&nbsp;&nbsp; domain logons = yes</p>
+<p>&nbsp;&nbsp; wins support = yes</p>
+<p>[homes]</p>
+<p>&nbsp;&nbsp; comment = Home Directories</p>
+<p>&nbsp;&nbsp; browseable = no</p>
+<p>&nbsp;&nbsp; writable = yes</p>
+<p>&nbsp;&nbsp; valid users = %S</p>
+<p>&nbsp;&nbsp; create mode = 0664</p>
+<p>&nbsp;&nbsp; directory mode = 0775</p>
+<p>&nbsp;&nbsp; map to guest = bad user</p>
+<p>[work]</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comment = web application root</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path = /home/work</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; write list = veryi</p>
+<p>[printers]</p>
+<p>&nbsp;&nbsp; comment = All Printers</p>
+<p>&nbsp;&nbsp; path = /usr/spool/samba</p>
+<p>&nbsp;&nbsp; browseable = no</p>
+<p>&nbsp;&nbsp; guest ok = no</p>
+<p>&nbsp;&nbsp; writable = no</p>
+<p>&nbsp;&nbsp; printable = yes</p>
+<h1 id="如果是rpm、yum安装配置文件在/etc/samba目录下。">如果是rpm、yum安装配置文件在/etc/samba目录下。</h1><p>添加用户：</p>
+<p>smbpasswd -a user01</p>
+<p>&nbsp;</p>
+<p>启动脚本（redhat）：</p>
+<p>vi /etc/init.d/smb</p>
+<h1 id="!/bin/sh">!/bin/sh</h1><p>#</p>
+<h1 id="chkconfig:_-_91_35">chkconfig: - 91 35</h1><h1 id="description:_Starts_and_stops_the_Samba_smbd_and_nmbd_daemons_\">description: Starts and stops the Samba smbd and nmbd daemons \</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_used_to_provide_SMB_network_services-">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used to provide SMB network services.</h1><p>#</p>
+<h1 id="pidfile:_/var/run/samba/smbd-pid">pidfile: /var/run/samba/smbd.pid</h1><h1 id="pidfile:_/var/run/samba/nmbd-pid">pidfile: /var/run/samba/nmbd.pid</h1><h1 id="config:&nbsp;_/etc/samba/smb-conf">config:&nbsp; /etc/samba/smb.conf</h1><h1 id="Source_function_library-">Source function library.</h1><p>if [ -f /etc/init.d/functions ] ; then</p>
+<p>&nbsp; . /etc/init.d/functions</p>
+<p>elif [ -f /etc/rc.d/init.d/functions ] ; then</p>
+<p>&nbsp; . /etc/rc.d/init.d/functions</p>
+<p>else</p>
+<p>&nbsp; exit 0</p>
+<p>fi</p>
+<h1 id="Avoid_using_root&rsquo;s_TMPDIR">Avoid using root&rsquo;s TMPDIR</h1><p>unset TMPDIR</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>. /etc/sysconfig/network</p>
+<p>if [ -f /etc/sysconfig/samba ]; then</p>
+<p>&nbsp;&nbsp; . /etc/sysconfig/samba</p>
+<p>fi</p>
+<p>&nbsp;</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0</p>
+<h1 id="Check_that_smb-conf_exists-">Check that smb.conf exists.</h1><h1 id="[_-f_/etc/samba/smb-conf_]_||_exit_0">[ -f /etc/samba/smb.conf ] || exit 0</h1><p>[ -f /usr/local/samba/lib/smb.conf ] || exit 0</p>
+<h1 id="Options_to_smbd">Options to smbd</h1><p>SMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
+<h1 id="Options_to_nmbd">Options to nmbd</h1><p>NMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
+<p>RETVAL=0</p>
+<p>start() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/smbd $SMBDOPTIONS</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/nmbd $NMBDOPTIONS</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; touch /var/lock/subsys/smb || \</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=1</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>stop() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc nmbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; rm -f /var/lock/subsys/smb</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo &ldquo;&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>restart() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
+<p>}</p>
+<p>reload() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Reloading smb.conf file: &rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd -HUP</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
+<p>}</p>
+<p>&nbsp;</p>
+<p>rhstatus() {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status smbd</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status nmbd</p>
+<p>}</p>
+<h1 id="Allow_status_as_non-root-">Allow status as non-root.</h1><p>if [ &quot;$1&quot; = status ]; then</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit $?</p>
+<p>fi</p>
+<h1 id="Check_that_we_can_write_to_it&hellip;_so_non-root_users_stop_here">Check that we can write to it&hellip; so non-root users stop here</h1><h1 id="[_-w_/etc/samba/smb-conf_]_||_exit_0">[ -w /etc/samba/smb.conf ] || exit 0</h1><p>case &ldquo;$1&Prime; in</p>
+<p>&nbsp; start)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; stop)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; restart)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; restart</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; reload)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reload</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; status)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; condrestart)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ -f /var/lock/subsys/smb ] &amp;&amp; restart || :</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
+<p>&nbsp; *)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo $&rdquo;Usage: $0 {start|stop|restart|reload|status|condrestart}&rdquo;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1</p>
+<p>esac</p>
+<p>exit $?</p>
+<p>增加执行属性:</p>
+<p>chmod +x /etc/init.d/smb</p>
+<p>mkdir -p /var/log/samba</p>
+<p>&nbsp;</p>
+<p>启动：</p>
+<p>/etc/init.d/smb start</p>
+</div><footer class="post__foot u-cf"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-26T01:00:06.000Z" class="post__time">三月 26, 2009</time><h1 class="post__title"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/">笔记本电脑不花钱的降温降噪音方法</a></h1></header><div class="post__main"><p>把我去年笔记本电脑降噪音方法写出来。</p>
+<p>天气热了，旭日420的风扇声音吵得人无法安心工作，用speadfan软件(<a href="http://www.almico.com/speedfan.php" target="_blank" rel="external">http://www.almico.com/speedfan.php</a>) 检测，cpu温度75度以上，但不死机。给联想打电话，说明去年夏天很安静，使用不到一年。说可能需要清灰，并建议如果可以找到发票，证明购机不到一年，可以上门。或者送到联想服务站。 发票不好找，去服务站没时间，忍无可忍，自己动手丰衣足食：</p>
+<p>1、拔掉外界电源，拔掉电池！！这个是必须做的，至少你修不好但不至于修坏。不知道如何拆电池？您还是送到维修站吧。 </p>
+<p>2、打开风扇盖，拆下覆盖风扇的金属盖，拆下风扇，发现风扇的出风口已经完全被很细的绒毛堵上，清理干净。 </p>
+<p>3、安装风扇，别忘了按上风扇电源。安装时先把所有的螺丝都装上，但不要拧紧，然后逐个螺丝拧紧一点，直到完全拧紧。  开机后检测，cpu温度在50度以下，如果不贴到出风口上，是不会听到噪音的。即使你用上百元的散热器，降温也不会超过5度，而且带来了更大的电力浪费和更多的噪音源。</p>
+<p>清灰的降温效果比笔记本散热器要好用的多，值得试一试。还你一个清静的夏天。如果使用频繁，建议每半年清灰一次。 其他采用风扇降温的笔记本电脑也可以如法清理。如果你从来没有拆过笔记本电脑，那您还是请专业人士来完成吧。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T09:18:35.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/">MySQL完全备份、增量备份与恢复</a></h1></header><div class="post__main"><p>场景：每周日执行一次完全备份，每天下午1点执行增量备份</p>
+<pre><code>[ 配置 ]
+
+执行增量备份的前提条件是MySQL打开log-bin 日志开关，例如在my.ini或my.cnf中
+
+加入
+
+log-bin=/opt/data/mysql-bin
+
+&amp;ldquo;log-bin=&amp;rdquo;后的字符串为日志记载目录，一般建议放在不同于mysql数据目录的磁盘上。
+
+[ 完全备份]
+
+假定星期日下午1点执行完全备份，适用于MyISAM存储引擎。
+
+mysqldump &amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span> &amp;ndash;</span><span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> &amp;ndash;</span>master-data=2 -u root -p test &amp;gt; backup_sunday_1_PM.sql
+
+对于InnoDB 将&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span>替换为&amp;ndash;</span>single-transaction
+
+&amp;ndash;<span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> 为结束当前日志，生成新日志文件
+
+&amp;ndash;</span>master-data=2 选项将会在输出SQL中记录下完全备份后新日志文件的名称，
+
+用于日后恢复时参考，例如输出的备份SQL文件中含有：
+
+&amp;ndash; <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=&amp;rsquo;</span>mysql-bin.000002&amp;prime;, MASTER_LOG_POS=106;
+
+<span class="comment">--master-data[=value]</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Write the binary log filename and position to the output. This option requires the RELOAD privilege and the binary log must be
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; enabled. If the option value is equal to 1, the position and filename are written to the dump output in the form of a <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement. If the dump is from a master server and you <span class="operator"><span class="keyword">use</span> it <span class="keyword">to</span> <span class="keyword">set</span> up a <span class="keyword">slave</span> <span class="keyword">server</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> statement causes the
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; slave to <span class="operator"><span class="keyword">start</span> <span class="keyword">from</span> the correct <span class="keyword">position</span> <span class="keyword">in</span> the masters <span class="built_in">binary</span> <span class="keyword">logs</span>. <span class="keyword">If</span> the <span class="keyword">option</span> <span class="keyword">value</span> <span class="keyword">is</span> equal <span class="keyword">to</span> <span class="number">2</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement is written as an SQL comment. (This is the default action if value is omitted.)
+
+其他说明：
+
+如果 mysqldump加上&amp;ndash;<span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span> 则清除以前的日志，以释放空间。但是如果服务器配置为镜像的复制主服务器，用mysqldump &amp;ndash;</span><span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span>删掉MySQL二进制日志很危险，因为从服务器可能还没有完全处理该二进制日志的内容。在这种情况下，使用 <span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span>更为安全。
+
+[ 增量备份 ]
+
+每日定时使用 mysqladmin <span class="keyword">flush</span>-<span class="keyword">logs</span>来创建新日志，并结束前一日志写入过程。并
+
+把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span><span class="number">.000002</span> , &amp;hellip;</span>
+
+[ 从备份中恢复 ]
+
+* 恢复完全备份
+
+mysql -u root -p &amp;lt; backup_sunday_1_PM.sql
+
+* 恢复增量备份
+
+mysqlbinlog mysql-bin.000002 &amp;hellip; | mysql -u root -p
+
+注意此次恢复过程亦会写入日志文件，如果数据量很大，建议先关闭日志功能
+
+参考：http://bbs.bitscn.com /171622
+
+常用参数：
+
+&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span>, -l
+
+<span class="keyword">Lock</span> <span class="keyword">all</span> <span class="keyword">tables</span> <span class="keyword">before</span> dumping them. The <span class="keyword">tables</span> <span class="keyword">are</span> locked <span class="keyword">with</span> <span class="keyword">READ</span> <span class="keyword">LOCAL</span> <span class="keyword">to</span> allow <span class="keyword">concurrent</span> inserts <span class="keyword">in</span> the <span class="keyword">case</span> <span class="keyword">of</span> MyISAM
+
+<span class="keyword">tables</span>. <span class="keyword">For</span> transactional <span class="keyword">tables</span> such <span class="keyword">as</span> <span class="keyword">InnoDB</span> <span class="keyword">and</span> BDB, &amp;ndash;</span>single-transaction is a much better option, because it does not need
+
+to <span class="operator"><span class="keyword">lock</span> the <span class="keyword">tables</span> <span class="keyword">at</span> <span class="keyword">all</span>.
+
+Please note that <span class="keyword">when</span> dumping multiple <span class="keyword">databases</span>, &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> locks <span class="keyword">tables</span> <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">database</span> separately. Therefore, this
+
+<span class="keyword">option</span> does <span class="keyword">not</span> guarantee that the <span class="keyword">tables</span> <span class="keyword">in</span> the dump file <span class="keyword">are</span> logically <span class="keyword">consistent</span> <span class="keyword">between</span> <span class="keyword">databases</span>. <span class="keyword">Tables</span> <span class="keyword">in</span> different
+
+<span class="keyword">databases</span> may be dumped <span class="keyword">in</span> completely different states.
+
+&amp;ndash;</span>no-data, -d
+
+<span class="operator"><span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">write</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">row</span> information (that <span class="keyword">is</span>, <span class="keyword">do</span> <span class="keyword">not</span> dump <span class="keyword">table</span> contents). This <span class="keyword">is</span> very useful <span class="keyword">if</span> you want <span class="keyword">to</span> dump <span class="keyword">only</span> the
+
+<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> statement <span class="keyword">for</span> the <span class="keyword">table</span>.
+
+&amp;ndash;</span>extended-<span class="operator"><span class="keyword">insert</span> &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> &amp;ndash;</span>quick &amp;ndash;<span class="operator"><span class="keyword">set</span>-<span class="keyword">charset</span>. It should give you a <span class="keyword">fast</span> dump operation <span class="keyword">and</span> produce a dump file that can
+
+be reloaded <span class="keyword">into</span> a MySQL <span class="keyword">server</span> quickly.
+
+The &amp;ndash;</span>opt option is enabled by default. <span class="operator"><span class="keyword">Use</span> &amp;ndash;</span>skip-opt to disable it.&amp;nbsp; See the discussion at the beginning of this section for
+
+information about selectively enabling or disabling certain of the options affected by &amp;ndash;opt.
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--compatible=name</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--complete-insert，-c</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出的数据采用包含字段名的完整 <span class="operator"><span class="keyword">INSERT</span> 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--default-character-set=charset</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--disable-keys</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 告诉 mysqldump 在 <span class="operator"><span class="keyword">INSERT</span> 语句的开头和结尾增加 <span class="comment">/*!40000 ALTER TABLE table DISABLE KEYS */</span>;</span> 和 <span class="comment">/*!40000 ALTER TABLE table ENABLE KEYS */</span>; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--extended-insert = true|false</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 默认情况下，mysqldump 开启 <span class="comment">--complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--hex-blob</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-all-tables，-x</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 <span class="comment">--single-transaction 和 --lock-tables 选项。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-tables</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它和 <span class="comment">--lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--no-create-info，-t</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 只导出数据，而不添加 <span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 语句。
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--no-data，-d</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 不导出任何数据，只导出数据库表结构。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--opt</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 这只是一个快捷选项，等同于同时添加 <span class="comment">--add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--quick，-q</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--routines，-R</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出存储过程以及自定义函数。
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--single-transaction</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出数据之前提交一个 <span class="operator"><span class="keyword">BEGIN</span> <span class="keyword">SQL</span>语句，<span class="keyword">BEGIN</span> 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 <span class="keyword">InnoDB</span> 和 BDB。
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 本选项和 <span class="comment">--lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 要想导出大表的话，应结合使用 <span class="comment">--quick 选项。</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--triggers</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T07:30:54.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">设置WordPress固定链接不生效的可能原因</a></h1></header><div class="post__main"><p>apache设置Permalinks以后，除了首页，所有的页面都变成了404错误。</p>
+<p>多方查找原因，发现是.htaccess文件未生效。在apache配置文件中设置WordPress目录权限为AllowOverride All:</p>
+<p>&nbsp;&lt;Directory /www/veryi.com/w&gt;</p>
+<pre><code><span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; AllowOverride <span class="literal">All</span>
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="keyword">Order</span> allow,deny
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; Allow from <span class="literal">all</span>
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span><span class="literal">lt</span>;/Directory<span class="subst">&amp;</span><span class="literal">gt</span>;
+
+访问正常。
+</code></pre><p>附固定链接设置方法：</p>
+<p>linux服务器，登陆WordPress，单击&ldquo;设置&rdquo;。然后单击&ldquo;设置&rdquo;的下级分类&lsquo;固定链接&rsquo;在常规设置中选择&ldquo;自定义&rdquo;，然后在&ldquo;自定义结构&rdquo;中填入你想设置的永久链接结构。我用的是:</p>
+<p>/%post_id%.html</p>
+<p>Windows服务器下设置WordPress固定链接伪静态，只要主机支持自定义404页面，无需安装插件，就能让Win主机像Linux 那样，方便使用WordPress的固定链接为静态化地址格式。</p>
+<p>&lt;?php</p>
+<pre><code>header(<span class="special">&amp;</span>rdquo;HTTP/1.1 200 OK<span class="special">&amp;</span>rdquo;);
+
+<span class="formula">$ori_qs = $</span>_SERVER<span class="special">[</span><span class="special">&amp;</span><span class="special">#</span>39;QUERY_STRING<span class="special">&amp;</span><span class="special">#</span>39;<span class="special">]</span>;
+
+<span class="formula">$pattern = <span class="special">&amp;</span>lsquo;/<span class="special">[</span>^;<span class="special">]</span>+;<span class="special">[</span>^:<span class="special">]</span>+:<span class="command">\/</span><span class="command">\/</span><span class="special">[</span>^<span class="command">\/</span><span class="special">]</span>+(<span class="command">\/</span><span class="special">[</span>^<span class="command">\?</span><span class="special">]</span>*)(?:<span class="command">\?</span>(.*))?/i<span class="special">&amp;</span>rsquo;;</span>
+</code></pre><p>preg_match($pattern, $ori_qs, $matches);</p>
+<pre><code><span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;PATH_INFO&amp;#39;] = $matches[1] . &amp;lsquo;?&amp;rsquo; . $matches[2];</span>
+
+<span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;REQUEST_URI&amp;#39;] = $_SERVER[&amp;#39;PATH_INFO&amp;#39;];</span>
+
+<span class="variable">$query_args</span> = explode(&amp;rsquo;&amp;amp;&amp;rsquo;, <span class="variable">$matches</span>[<span class="number">2</span>]);
+
+<span class="keyword">unset</span>(<span class="variable">$_GET</span>);
+
+<span class="keyword">foreach</span> (<span class="variable">$query_args</span> <span class="keyword">as</span> <span class="variable">$arg</span>)
+
+{
+
+<span class="variable">$the_arg</span> = explode(&amp;rsquo;=&amp;<span class="comment">#39;, $arg);</span>
+
+<span class="variable">$_GET</span>[<span class="variable">$the_arg</span>[<span class="number">0</span>]] = <span class="variable">$the_arg</span>[<span class="number">1</span>];
+
+}
+
+<span class="keyword">include</span>(&amp;rsquo;index.php&amp;rsquo;);
+
+?&amp;gt;
+</code></pre><p>设置固定链接（Permalink）伪静态步骤：</p>
+<pre><code><span class="number">1</span><span class="string">\.</span> 将以上代码保存为 <span class="number">404.php</span>，并上传至主机根目录。
+
+<span class="number">2</span><span class="string">\.</span> 设置 <span class="number">404</span> 自定义错误页为 <span class="number">404.php</span>。
+
+<span class="number">3</span><span class="string">\.</span> 进入 WordPress 控制面板，设置（Options）- 固定链接（Permalinks）,选择固定链接格式。
+</code></pre><p>nginx静态链接还需要设置重写规则：&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location /w/ {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># enable search for precompressed files ending in .gz</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># nginx needs to be complied using &amp;ndash;-with-http_gzip_static_module</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; gzip_static on;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if the requested file exists, return it immediately</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_file</span> &amp;<span class="comment">#39;&amp;#39;;</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> <span class="variable">$request_uri</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$request_method</span> = POST) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># Using pretty permalinks, so bypass the cache for any query string</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$query_string</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$http_cookie</span> ~* &amp;quot;comment_author_|wordpress|wp-postpass_&amp;quot; ) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if we haven&amp;#39;t bypassed the cache, specify our supercache file</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$supercache_uri</span> ~ ^(.+)$) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_file</span> /w/wp-content/cache/supercache/<span class="variable">$http_host</span>/<span class="variable">$1index</span>.html;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># only rewrite to the supercache file if it actually exists</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$document_root</span><span class="variable">$supercache_file</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite ^(.*)$ <span class="variable">$supercache_file</span> <span class="built_in">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># all other requests go to Wordpress</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!<span class="operator">-e</span> <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite . /w/index.php last;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-19T00:02:21.000Z" class="post__time">三月 19, 2009</time><h1 class="post__title"><a href="/2009/03/19/w/e6-9c-80-e5-a5-bd-e7-94-a8-e7-9a-84-e4-bc-98-e7-a7-80-e5-bc-80-e6-ba-90-e5-85-8d-e8-b4-b9-e8-bd-af-e4-bb-b6-e6-8e-a8-e8-8d-90/">最好用的优秀开源/免费软件推荐</a></h1></header><div class="post__main"><p><span style="font-size: 10.5pt; font-family: '宋体';">Ver<span style="font-family: 宋体;">：0.02    2009/03/19</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">用盗版软件的理由很多，但就象窃书不算偷一样可笑。如果说有开源软件或freeware可以代替盗版软件，功能差不多，甚至更好用，恐怕没有谁愿意用盗版。以下是一些经过长期使用确认优秀的软件，有的仅限个人</span></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">非商业用途</span></span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">使用，基本包含了常用电脑软件。如有更好建议，请发邮件acy@163.com</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">1、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">操作系统：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">如果你是用品牌电脑，一般会oem操作系统。如果没有，可以用linux。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">2、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">办公软件：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">软件名称: WPS Office 2007 个人版</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">系统需求: Windows 2000/XP/Vista</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">软件大小: 28M</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://wps.kingsoft.com/down/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://wps.kingsoft.com/down/</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">WPS Office 2007<span style="font-family: 宋体;">个人版对个人用户永久免费，包含WPS文字、WPS表格、WPS演示三大功能模块，与MS Office无障碍兼容。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它同类软件：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">OpenOffice</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">可以创建pdf格式文件。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">IBM Lotus Symphony</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">3、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">杀毒软件：</span></span></p>
+<p><span style="font-weight: bold; font-size: 21pt; font-family: 'Times New Roman';">avast! HOME EDITION</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://www.avast.com/eng/download-avast-home.html" target="_blank" rel="external"><span style="font-weight: normal; font-size: 12pt; font-family: 'Times New Roman';">http://www.avast.com/eng/download-avast-home.html</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">有中文版，防毒效果明显，至少我的电脑没中过毒。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">4、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">防火墙：</span></span></p>
+<p><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">Sunbelt Personal Firewall free<br></span></p>
+<p></p><p style="margin-bottom: 13.95pt; margin-top: 13.95pt;"><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';"><strong>下载地址</strong><br></span></p>
+<p></p><p style="margin-bottom: 13.95pt; margin-top: 13.95pt;"><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';"><a href="http://www.sunbeltsoftware.com/home-home-office/sunbelt-personal-firewall/" target="_blank" rel="external">http://www.sunbeltsoftware.com/home-home-office/sunbelt-personal-firewall/</a><br></span></p>
+<p></p><p style="margin-bottom: 0pt; margin-top: 0pt; text-align: left;"><span><a href="http://www.tallemu.com/downloads.html" target="_blank" rel="external"></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">性能一流,免费版的功能已经足够用了。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它同类软件：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">COMODO</span><span style="font-size: 10.5pt; font-family: '宋体';"> </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';">Internet Security</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://www.personalfirewall.comodo.com/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.personalfirewall.comodo.com/</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">5、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它安全相关：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">360<span style="font-family: 宋体;">安全卫士，上网的用户建议安装。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">6、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">压缩解压</span></span></p>
+<p><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">7-Zip</span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> </span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://www.7-zip.org/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10.5pt; font-family: '宋体'; text-decoration: underline;">http://www.7-zip.org/</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">压缩比高，支撑文件格式多。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">7、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">虚拟光驱</span></span></p>
+<p><span><a href="http://static.slysoft.com/SetupVirtualCloneDrive.exe" target="_blank" rel="external"><span style="color: #0000ff; font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman'; text-decoration: underline;">Virtual CloneDrive</span></a></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> (Freeware)</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://www.slysoft.com/en/download.html" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.slysoft.com/en/download.html</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">8、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">上网浏览</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">Mozilla Firefox</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://www.mozillaonline.com/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.mozillaonline.com/</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">上网速度更快，更安全</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">9、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">光盘刻录</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">CDBurnerXP</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://cdburnerxp.se/download.php" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://cdburnerxp.se/download.php</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">10、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">词典翻译</span></span></p>
+<p><span style="color: #ff9900; font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">Lingoes <span style="font-family: 宋体;">灵格斯词霸</span></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> </span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.lingoes.cn/zh/translator/download.htm" target="_blank" rel="external">http://www.lingoes.cn/zh/translator/download.htm</a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">11、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">磁盘碎片整理</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">Smart Defrag</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.iobit.com/iobitsmartdefrag.html?Str=download" target="_blank" rel="external">http://www.iobit.com/iobitsmartdefrag.html?Str=download</a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">12、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">笔记软件</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">Evernote</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://www.evernote.com/about/download/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.evernote.com/about/download/</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率。</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">13、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">剪切板增强</span></span></p>
+<p><span style="color: #0000a0; font-weight: bold; font-size: 12pt; font-family: 'Times';">CLCL</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.nakka.com/soft/clcl/index_eng.html" target="_blank" rel="external">http://www.nakka.com/soft/clcl/index_eng.html</a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">14、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">图像处理制作编辑</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">Gimp</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><a href="http://www.gimp.org/downloads/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.gimp.org/downloads/</span></a></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">盗版photoshop的最佳替代品</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">15、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">图像浏览</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">FastStone Image Viewer</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://www.faststone.org/FSViewerDownload.htm" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.faststone.org/FSViewerDownload.htm</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-style: italic; font-size: 10.5pt; font-family: 'Times New Roman';">FastStone Image Viewer</span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> <span style="font-family: 宋体;">是一款免费（非商业用途）且小巧的看图软件</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">16、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">屏幕截图</span></span></p>
+<p><span style="font-weight: bold; font-size: 10pt; font-family: 'Verdana';">FastStone Capture</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.faststone.org/FSCapturerDownload.htm" target="_blank" rel="external">http://www.faststone.org/FSCapturerDownload.htm</a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">17、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">邮件收发</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">Foxmail</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://fox.foxmail.com.cn/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://fox.foxmail.com.cn/</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">18、</span><span style="font-size: 10.5pt; font-family: '宋体';">ftp<span style="font-family: 宋体;">工具</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">FileZilla</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
+<p><span><a href="http://filezilla-project.org/download.php?type=client" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://filezilla-project.org/download.php?type=client</span></a></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">服务器版也很好用</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">19、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">远程登录</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">putty</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">20、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">媒体播放</span></span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">foobar2000</span></p>
+<p><span style="font-size: 10.5pt; font-family: '宋体';">KMPlayer</span></p>
+</div><footer class="post__foot u-cf"><a href="/2009/03/19/w/e6-9c-80-e5-a5-bd-e7-94-a8-e7-9a-84-e4-bc-98-e7-a7-80-e5-bc-80-e6-ba-90-e5-85-8d-e8-b4-b9-e8-bd-af-e4-bb-b6-e6-8e-a8-e8-8d-90/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/13/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><span title="Next" class="page-menu__link icon-arrow-right page-menu__link--disabled">next</span></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

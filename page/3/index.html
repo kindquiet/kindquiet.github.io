@@ -1,0 +1,569 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-18T03:12:53.000Z" class="post__time">七月 18, 2013</time><h1 class="post__title"><a href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/">centos Linux 禁止和开启ping</a></h1></header><div class="post__main"><p>禁止ping：</p>
+<pre><code>echo <span class="number">1</span> &amp;gt; /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
+</code></pre><p>允许ping：</p>
+<pre><code>echo <span class="number">0</span> &amp;gt; /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
+
+防火墙/etc/sysconfig/iptables添加
+
+-A <span class="type">INPUT</span> -p icmp -m icmp --icmp-<span class="keyword">type</span> echo-request -m state --state <span class="type">NEW</span> -j <span class="type">ACCEPT</span>
+</code></pre><p>/etc/init.d/iptables restart</p>
+<p>iptables -L -nv</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">7</span>&amp;nbsp;&amp;nbsp; <span class="number">588</span> ACCEPT&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; icmp --&amp;nbsp; *&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; *&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; state NEW icmp <span class="class"><span class="keyword">type</span> 8</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p>&nbsp; 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
+<p>升级一下：</p>
+<pre><code># yum <span class="keyword">update</span> -<span class="literal">y</span>
+</code></pre><h1 id="cat_/etc/issue-net">cat /etc/issue.net</h1><pre><code>CentOS release <span class="number">6.4</span> (Final)
+
+Kernel <span class="string">\r</span> <span class="literal">on</span> an <span class="string">\m</span>
+
+<span class="comment"># uname -a</span>
+
+Linux veryi.com <span class="number">2.6</span>.<span class="number">32</span>-<span class="number">358.11</span>.<span class="number">1.el</span>6.x86_64 <span class="comment">#1 SMP Wed Jun 12 03:34:52 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux</span>
+</code></pre><h1 id="yum_install_vim_-y">yum install vim -y</h1><p>vim /etc/sysconfig/iptables</p>
+<pre><code># Firewall configuration written by system-config-firewall
+
+# Manual customization of this file is not recommended.
+
+<span class="strong">*filter
+
+</span><span class="attribute">:INPUT ACCEPT [0:0]</span>
+
+<span class="attribute">:FORWARD ACCEPT [0:0]</span>
+
+<span class="attribute">:OUTPUT ACCEPT [0:0]</span>
+
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+-A INPUT -p icmp -j ACCEPT
+
+-A INPUT -i lo -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+COMMIT
+</code></pre><p>重启</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/iptables restart</span>
+</code></pre><p>vi /etc/selinux/config</p>
+<p>&nbsp;</p>
+<pre><code>安装mysql
+
+yum install wget <span class="attribute">-y</span>
+
+wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
+
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span><span class="subst">&amp;</span>nbsp; mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+
+cd /usr/<span class="built_in">local</span>
+
+ln <span class="attribute">-s</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="subst">/</span> mysql
+
+cd /usr/<span class="built_in">local</span>/mysql
+
+mkdir <span class="attribute">-p</span> /usr/<span class="built_in">local</span>/mysql/etc<span class="subst">/</span>
+
+cp support<span class="attribute">-files</span>/my<span class="attribute">-innodb</span><span class="attribute">-heavy</span><span class="subst">-</span><span class="number">4</span>G<span class="built_in">.</span>cnf etc/my<span class="built_in">.</span>cnf
+
+mv /etc/my<span class="built_in">.</span>cnf ~/my<span class="built_in">.</span>cnf<span class="subst">-</span><span class="string">`date +%F`</span>
+
+mv /etc/rc<span class="built_in">.</span>d/init<span class="built_in">.</span>d/mysqld ~/mysqld<span class="subst">-</span><span class="string">`date +%F`</span>
+
+cd /usr/<span class="built_in">local</span>/mysql/etc<span class="subst">/</span>
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/max_connect_errors <span class="subst">=</span> <span class="number">10</span>/max_connect_errors <span class="subst">=</span> <span class="number">1000</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/default<span class="attribute">-storage</span><span class="attribute">-engine</span> <span class="subst">=</span> MYISAM<span class="subst">/</span><span class="variable">#default</span><span class="attribute">-storage</span><span class="attribute">-engine</span> <span class="subst">=</span> MYISAM<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/tmp_table_size <span class="subst">=</span> <span class="number">64</span>M<span class="subst">/</span><span class="variable">#tmp_table_size</span> <span class="subst">=</span> <span class="number">64</span>M<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/innodb_flush_log_at_trx_commit <span class="subst">=</span> <span class="number">1</span><span class="subst">/</span><span class="variable">#innodb_flush_log_at_trx_commit</span> <span class="subst">=</span> <span class="number">1</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/max_allowed_packet <span class="subst">=</span> <span class="number">1</span>M<span class="subst">/</span><span class="variable">#max_allowed_packet</span> <span class="subst">=</span> <span class="number">1</span>M<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/<span class="keyword">skip</span><span class="attribute">-locking</span>/<span class="keyword">skip</span><span class="attribute">-external</span><span class="attribute">-locking</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/default<span class="attribute">-character</span><span class="attribute">-set</span>/character<span class="attribute">-set</span><span class="attribute">-server</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/log_slow_queries/slow_query_log<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;<span class="subst">/</span><span class="subst">\</span><span class="preprocessor">[</span>mysqldump<span class="subst">\</span><span class="preprocessor">]</span><span class="markup">/i\
+
+character-set-server=utf8 \
+
+#innodb_file_per_table=1 \
+
+expire_logs_days = 60 \
+
+innodb_flush_log_at_trx_commit=0 \
+
+innodb_flush_method=O_DIRECT \
+
+innodb_data_home_dir = /opt/data/mysql/ \
+
+innodb_log_group_home_dir = /opt/data/mysql/ \
+
+#tmp_table_size = 512M \
+
+#max_heap_table_size=128M \
+
+log-error=mysqld.log \
+
+long_query_time = 2 \
+
+&amp;#39; my.cnf</span>
+</code></pre><p>vim&nbsp; my.cnf</p>
+<p>/usr/sbin/groupadd -g 200 mysql</p>
+<pre><code><span class="regexp">/usr/</span>sbin/useradd -u <span class="number">200</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+\cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/init.d/</span>mysqld
+
+chmod +x <span class="regexp">/etc/</span>init.d/mysqld
+
+<span class="regexp">/etc/</span>init.d/mysqld restart
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.sock
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+. <span class="regexp">/etc/</span>profile
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql -u root -veryi.com
+</code></pre><p>Welcome to the MySQL monitor.&nbsp; Commands end with ; or \g.</p>
+<pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
+
+Server <span class="property">version</span>: <span class="number">5.5</span><span class="number">.32</span>-<span class="command">log</span> MySQL Community Server (GPL)
+</code></pre><p>mysql&gt; \s</p>
+<hr>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql&amp;nbsp; Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
+</code></pre><p>&nbsp;</p>
+<p>安装php5.5 httpd2.2.15，添加yum源：</p>
+<pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
+
+rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
+
+yum repolist
+</code></pre><p>yum —enablerepo=remi,remi-test install httpd php php-common -y</p>
+<p>php -v</p>
+<pre><code>PHP 5.5.0 (<span class="keyword">cli</span>) (built: Jul 12 2013 19:03:02)
+
+<span class="keyword">Copyright</span> (c) 1997-2013 The PHP <span class="literal">Group</span>
+
+Zend Engine v2.5.0-dev, <span class="keyword">Copyright</span> (c) 1998-2013 Zend Technologies
+</code></pre><p>httpd -v</p>
+<pre><code>Server <span class="property">version</span>: Apache/<span class="number">2.2</span><span class="number">.15</span> (Unix)
+</code></pre><p>设置自启动：</p>
+<p>chkconfig —list httpd</p>
+<pre><code>chkconfig <span class="comment">--level 345 httpd on</span>
+
+chkconfig <span class="comment">--list mysqld</span>
+</code></pre><p>vim /etc/httpd/conf/httpd.conf</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/httpd restart</span>
+</code></pre><p>cd /var/www/</p>
+<pre><code>chown apache.apache html/ -<span class="literal">R</span>
+
+安装php扩展
+
+yum --noplugins --enablerepo=remi,remi-<span class="keyword">test</span> install php-pecl-apc php-<span class="keyword">cli</span> php-pear php-pdo php-mysql php-pgsql php-pecl-mongo php-sqlite php-pecl-memcache php-pecl-memcached php-gd php-mbstring php-mcrypt php-xml -<span class="literal">y</span>
+
+/etc/init.<span class="keyword">d</span>/httpd restart
+</code></pre><p>Q&amp;A：</p>
+<pre><code>yum通过代理升级：
+
+export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>&amp;quot;
+</code></pre><p>装了epel的扩展后，执行yum报错：</p>
+<pre><code><span class="string">Error:</span> Cannot retrieve metalink <span class="keyword">for</span> <span class="string">repository:</span> epel. Please verify its path and <span class="keyword">try</span> again
+
+编辑<span class="regexp">/etc/</span>yum.repos.d/epel.repo，做如下改动，取消http行的注释（https行可不注释）：
+
+baseurl=<span class="string">http:</span><span class="comment">//download.fedoraproject.org/pub/epel/6/$basearch</span>
+
+#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6&amp;amp;arch=$basearch</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php&nbsp; （这两个如果没有下面代码可以不用修改）</p>
+<p>vim uc_server/data/config.inc.php</p>
+<pre><code>vim config/config_global<span class="built_in">.</span>php
+
+vim config/config_ucenter<span class="built_in">.</span>php
+
+找到类似以下代码：
+
+<span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERPW<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">256955</span>f2e034sad74f0e2953572ea360<span class="subst">&amp;</span><span class="variable">#39</span>;);
+
+<span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERSALT<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">217804</span><span class="subst">&amp;</span><span class="variable">#39</span>;);
+</code></pre><p>然后用以下代码替换</p>
+<pre><code><span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERPW<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">047099</span>adb883dc19616dae0ef2adc5b6<span class="subst">&amp;</span><span class="variable">#39</span>;);
+
+<span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERSALT<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">311254</span><span class="subst">&amp;</span><span class="variable">#39</span>;);
+
+修改完后，Ucenter创始人的密码就变为:<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="number">123456789</span> ，这时可以<span class="subst">&amp;</span>ldquo;网址/uc_server/admin<span class="built_in">.</span>php<span class="subst">&amp;</span>quot;登录到Ucenter里再把密码改为自己想要的就可以了。
+</code></pre><p>安全提问config/config_global.php</p>
+<pre><code>&amp;nbsp;$admincp = <span class="keyword">array</span>();
+
+&amp;nbsp;$admincp[<span class="string">'forcesecques'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 管理人员必须设置安全提问才能进入系统设置, 0=否, 1=是[安全]</span>
+
+&amp;nbsp;$admincp[<span class="string">'checkip'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 后台管理操作是否验证管理员的 IP, 1=是[安全], 0=否。仅在管理员无法登陆后台时设置 0。</span>
+
+&amp;nbsp;$admincp[<span class="string">'tpledit'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 是否允许在线编辑论坛模板 1=是 0=否[安全]</span>
+
+&amp;nbsp;$admincp[<span class="string">'runquery'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台运行 SQL 语句 1=是 0=否[安全]</span>
+
+&amp;nbsp;$admincp[<span class="string">'dbimport'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台恢复论坛数据&amp;nbsp; 1=是 0=否[安全]</span>
+
+&amp;nbsp;
+
+以下测试无效：
+
+<span class="keyword">select</span> * <span class="keyword">from</span> bbs_ucenter_members <span class="keyword">where</span> username=&amp;<span class="string">#39</span>;admin&amp;<span class="string">#39</span>;;
+
+update bbs_ucenter_members <span class="keyword">set</span> password=md5(&amp;<span class="string">#39</span>;<span class="number">123456789</span>&amp;<span class="string">#39</span>;) <span class="keyword">where</span> username=&amp;<span class="string">#39</span>;admin&amp;<span class="string">#39</span>; ;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-06T08:19:23.000Z" class="post__time">六月 6, 2013</time><h1 class="post__title"><a href="/2013/06/06/w/e5-be-ae-e4-bf-a1-e5-b8-b8-e7-94-a8-e6-8a-80-e5-b7-a7/">微信常用技巧</a></h1></header><div class="post__main"><p>微信在朋友圈，点显示更多，可以展开。进入我的相册，文字显示不完整，后面的都看不到，如何展开？</p>
+<pre><code>答案是 点击右下角桃心留言图标，就可以展开，看到所有的文字了。
+</code></pre><p>Q:如何在朋友圈里发纯文字？</p>
+<pre><code><span class="label">A:</span>在朋友圈页面顶部的相机图标上长按，就可以只发文字不发图像了。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/06/06/w/e5-be-ae-e4-bf-a1-e5-b8-b8-e7-94-a8-e6-8a-80-e5-b7-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-05-24T09:12:01.000Z" class="post__time">五月 24, 2013</time><h1 class="post__title"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/">postfix反垃圾邮件设置</a></h1></header><div class="post__main"><p>增加防止发件人身份伪造的配置：</p>
+<h1 id="smtpd_related_config">smtpd related config</h1><pre><code><span class="constant">smtpd_recipient_restrictions</span> =
+
+&amp;nbsp; permit_mynetworks,
+
+&amp;nbsp; permit_sasl_authenticated,
+
+<span class="comment">#&amp;nbsp; reject_non_fqdn_hostname,</span>
+
+&amp;nbsp; reject_non_fqdn_sender,
+
+&amp;nbsp; reject_non_fqdn_recipient,
+
+&amp;nbsp; reject_unauth_destination,
+
+&amp;nbsp; reject_unauth_pipelining,
+
+&amp;nbsp; reject_invalid_hostname
+</code></pre><p>&nbsp;</p>
+<p>smtpd_sender_restrictions =</p>
+<pre><code>&amp;nbsp; permit_mynetworks,
+
+&amp;nbsp; check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
+
+&amp;nbsp; permit_sasl_authenticated,
+
+&amp;nbsp; reject_sender_login_mismatch,
+
+&amp;nbsp; reject_authenticated_sender_login_mismatch,
+
+&amp;nbsp; reject_unauthenticated_sender_login_mismatch,
+
+&amp;nbsp; reject_unknown_sender_domain
+</code></pre><h1 id="SMTP_AUTH_config_here">SMTP AUTH config here</h1><pre><code><span class="setting">broken_sasl_auth_clients = <span class="value"><span class="keyword">yes</span></span></span>
+
+<span class="setting">smtpd_sasl_auth_enable = <span class="value"><span class="keyword">yes</span></span></span>
+
+<span class="setting">smtpd_sasl_security_options = <span class="value">noanonymous</span></span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-03-07T01:41:05.000Z" class="post__time">三月 7, 2013</time><h1 class="post__title"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/">公共dns服务</a></h1></header><div class="post__main"><p>推荐opendns的dns服务器，最好选当地的dns服务。</p>
+<pre><code>openDNS
+
+208.67.220.220 
+
+208.67.222.220
+
+微软DNS
+
+4.2.2.1 
+
+4.2.2.2
+
+comodoDNS
+
+156.154.70.25&amp;nbsp; 
+
+156.154.71.25
+
+谷歌DNS
+
+8.8.8.8&amp;nbsp; 
+
+8.8.4.4
+
+诺顿DNS
+
+198.153.192.40(过滤不安全网页)
+
+198.153.194.40(同上)
+
+198.153.192.50(过滤不安全网页+色情)
+
+198.153.194.50(同上)
+
+198.153.192.60(过滤不安全网页+色情+非家庭友好)
+
+198.153.194.60(同上)
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
+<pre><code>phpMyAdmin &amp;ndash; Error
+
+Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
+</code></pre><p>502 bad gateway</p>
+<p>查看nginx error log：</p>
+<p>[error]&nbsp; recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://127.0.0.1:9000&quot;, host: &quot;mysql.veryi.com&quot;</p>
+<p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
+<p>其他可能：</p>
+<p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
+<pre><code>http
+
+{
+
+fastcgi_connect_timeout <span class="number">300</span>;
+
+fastcgi_send_timeout <span class="number">300</span>;
+
+fastcgi_<span class="built_in">read</span>_timeout <span class="number">300</span>;
+
+}
+
+php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以加大php.ini的memory_<span class="built_in">limit</span>为<span class="number">64</span>M。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T10:35:11.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/">RPM命令详解</a></h1></header><div class="post__main"><div class="content mod-cs-content text-content clearfix" id="content">yum、rpm 常用命令<br><br>　　1.安装一个包<br><br>　　# rpm -ivh<br><br>　　2.升级一个包<br><br>　　# rpm -Uvh<br><br>　　3.移走一个包<br><br>　　# rpm -e<br><br>yum remove<br><br>　　4.安装参数<br><br>　　—force 即使覆盖属于其它包的文件也强迫安装<br><br>　　—nodeps 如果该RPM包的安装依赖其它包，即使其它包没装，也强迫安装。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.查询一个包是否被安装<br><br>　　# rpm -q &lt; rpm package name&gt;<br><br>　　6.得到被安装的包的信息<br><br>　　# rpm -qi &lt; rpm package name&gt;<br><br>　　7.列出该包中有哪些文件<br><br>　　# rpm -ql &lt; rpm package name&gt;<br><br>　　8.列出服务器上的一个文件属于哪一个RPM包<br><br>　　#rpm -qf<br><br>　　9.可综合好几个参数一起用<br><br>　　# rpm -qil &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;<br><br>　　10.列出所有被安装的rpm package<br><br>　　# rpm -qa<br><br>　　11.列出一个未被安装进系统的RPM包文件中包含有哪些文件？<br><br>　　# rpm -qilp &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;<br><br>　　&lt;&gt;<br><br>　　一、安装<br><br>　　命令格式：<br><br>　　rpm -i ( or —install) options file1.rpm … fileN.rpm<br><br>　　参数：<br><br>　　file1.rpm … fileN.rpm 将要安装的RPM包的文件名<br><br>　　详细选项：<br><br>　　-h (or —hash) 安装时输出hash记号 (<code>#&amp;#39;&amp;#39;)
+
+　　--test 只对安装进行测试，并不实际安装。
+
+　　--percent 以百分比的形式输出安装的进度。
+
+　　--excludedocs 不安装软件包中的文档文件
+
+　　--includedocs 安装文档
+
+　　--replacepkgs 强制重新安装已经安装的软件包
+
+　　--replacefiles 替换属于其它软件包的文件
+
+　　--force 忽略软件包及文件的冲突
+
+　　--noscripts 不运行预安装和后安装脚本
+
+　　--prefix 将软件包安装到由 指定的路径下
+
+    --ignorearch 不校验软件包的结构
+
+　　--ignoreos 不检查软件包运行的操作系统
+
+　　--nodeps 不检查依赖性关系
+
+　　--ftpproxy 用 作为 FTP代理
+
+　　--ftpport 指定FTP的端口号为
+
+　　通用选项
+
+　　-v 显示附加信息
+
+　　-vv 显示调试信息
+
+　　--root 让RPM将指定的路径做为&amp;quot;根目录&amp;quot;，这样预安装程序和后安
+
+　　装程序都会安装到这个目录下
+
+　　--rcfile 设置rpmrc文件为
+
+　　--dbpath 设置RPM 资料库存所在的路径为
+
+　　二、删除
+
+　　命令格式：
+
+　　rpm -e ( or --erase) options pkg1 ... pkgN
+
+　　参数
+
+　　pkg1 ... pkgN ：要删除的软件包
+
+　　详细选项
+
+　　--test 只执行删除的测试
+
+　　--noscripts 不运行预安装和后安装脚本程序
+
+　　--nodeps 不检查依赖性
+
+　　通用选项
+
+　　-vv 显示调试信息
+
+　　--root 让RPM将指定的路径做为&amp;quot;根目录&amp;quot;，这样预安装程序和后安装
+
+　　程序都会安装到这个目录下
+
+　　--rcfile 设置rpmrc文件为
+
+　　--dbpath 设置RPM 资料库存所在的路径为
+
+　　三、升级
+
+　　命令格式
+
+　　rpm -U ( or --upgrade) options file1.rpm ... fileN.rpm
+
+　　参数
+
+　　file1.rpm ... fileN.rpm 软件包的名字
+
+　　详细选项
+
+　　-h (or --hash) 安装时输出hash记号 (</code>#&#39;&#39;)<br><br>　　—oldpackage 允许&quot;升级&quot;到一个老版本<br><br>　　—test 只进行升级测试<br><br>　　—excludedocs 不安装软件包中的文档文件<br><br>　　—includedocs 安装文档<br><br>　　—replacepkgs 强制重新安装已经安装的软件包<br><br>　　—replacefiles 替换属于其它软件包的文件<br><br>　　—force 忽略软件包及文件的冲突<br><br>　　—percent 以百分比的形式输出安装的进度。<br><br>—noscripts 不运行预安装和后安装脚本<br><br>　　—prefix 将软件包安装到由 指定的路径下<br><br>　　—ignorearch 不校验软件包的结构<br><br>　　—ignoreos 不检查软件包运行的操作系统<br><br>　　—nodeps 不检查依赖性关系<br><br>　　—ftpproxy 用 作为 FTP代理<br><br>　　—ftpport 指定FTP的端口号为<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　四、查询<br><br>　　命令格式：<br><br>　　rpm -q ( or —query) options<br><br>　　参数：<br><br>　　pkg1 … pkgN ：查询已安装的软件包<br><br>　　详细选项<br><br>　　-p (or ``-&#39;&#39;) 查询软件包的文件<br><br>　　-f 查询属于哪个软件包<br><br>　　-a 查询所有安装的软件包<br><br>　　—whatprovides 查询提供了 功能的软件包<br><br>　　-g 查询属于 组的软件包<br><br>　　—whatrequires 查询所有需要 功能的软件包<br><br>　　信息选项<br><br>　　显示软件包的全部标识<br><br>　　-i 显示软件包的概要信息<br><br>　　-l 显示软件包中的文件列表<br><br>　　-c 显示配置文件列表<br><br>　　-d 显示文档文件列表<br><br>　　-s 显示软件包中文件列表并显示每个文件的状态<br><br>　　—scripts 显示安装、卸载、校验脚本<br><br>　　—queryformat (or —qf) 以用户指定的方式显示查询信息<br><br>　　—dump 显示每个文件的所有已校验信息<br><br>　　—provides 显示软件包提供的功能<br><br>　　—requires (or -R) 显示软件包所需的功能<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　五、校验已安装的软件包<br><br>　　命令格式：<br><br>　　rpm -V ( or —verify, or -y) options<br><br>　　参数<br><br>　　pkg1 … pkgN 将要校验的软件包名<br><br>　　软件包选项<br><br>　　-p Verify against package file<br><br>　　-f 校验所属的软件包<br><br>　　-a Verify 校验所有的软件包<br><br>　　-g 校验所有属于组 的软件包<br><br>　　详细选项<br><br>　　—noscripts 不运行校验脚本<br><br>　　—nodeps 不校验依赖性<br><br>　　—nofiles 不校验文件属性<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　六、校验软件包中的文件<br><br>　　语法：<br><br>　　rpm -K ( or —checksig) options file1.rpm … fileN.rpm<br><br>　　参数：<br><br>　　file1.rpm … fileN.rpm 软件包的文件名<br><br>　　Checksig—详细选项<br><br>　　—nopgp 不校验PGP签名<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　七、其它RPM选项<br><br>　　—rebuilddb 重建RPM资料库<br><br>　　—initdb 创建一个新的RPM资料库<br><br>　　—quiet 尽可能的减少输出<br><br>　　—help 显示帮助文件<br><br>　　—version 显示RPM的当前版本<br><br></div></div><footer class="post__foot u-cf"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T10:15:03.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/">印光大师文钞中关于汇集本和汇集问题的开示</a></h1></header><div class="post__main"><p>一、增广文钞卷一复永嘉某居士书二</p>
+<pre><code>（原文）流通佛法，大非易事。翻译经论，皆非聊尔从事。故译场之中，有主译者，译语者，证义者，润文者，岂敢随自心裁，传布佛经。王龙舒大弥陀经，自宋至明末，人多受持。由云栖以犹有不恰当处，故此后渐就湮没。魏承贯之学识，不及龙舒，其自任过于龙舒。因人之迹以施功，故易为力。岂承贯超越龙舒之上耶。莲池尚不流通王本，吾侪何敢流通魏本，以启人妄改佛经之端。及辟佛之流，谓佛经皆后人编造，初非真实从佛国译来者。然此经此论，若真修上士观之，亦有大益。以但取其益，而不染其弊。若下士观之，则未得其益，先受其损。以徒效其改经斥古之愆，不法其直捷专精之行耳。观机设教，对症发药。教不契机，与药不对症等耳。敢以一二可取，而遂普令流通，以贻下士之罪愆乎。
+
+1、翻译佛经是高僧大德集体智慧的作业，不敢随自心裁，传布佛经。因此，类似王耕心《弥陀衷论》随自心裁的解释佛经和下文王本、魏本随自心裁的汇集佛经都是不可行的。
+
+2、王本由莲池大师指出有不恰当处后，不再流通。
+
+3、魏承贯之学识，不及龙舒，其自任过于龙舒。其汇集没有超越王本，莲池尚不流通王本，吾侪何敢流通魏本，以避免两大流弊：启人妄改佛经之端。及辟佛之流，谓佛经皆后人编造，初非真实从佛国译来者。
+
+二、三编卷二复王子立居士书一
+
+人贵自知，不可妄说过分大话。观汝之疑议，看得译经绝无其难，只要识得外国文，就好做译人。译人若教他译经，还是同不懂外国话的一样。你要据梵本，梵本不是铁铸的。须有能分别梵本文义，或的确，或传久讹谬之智眼，方可译经。
+
+然非一人所能。以故译经场中，许多通家。有译文者，有证义者。其预译场之人，均非全不通佛法之人。汝完全认做为外国人译话，正如读书人识字，圣人深奥之文，了不知其是何意义。此种妄话，切勿再说。再说虽令无知识者误佩服，难免有正见者深痛惜。光一向不以为悦人耳目而误人。若不以光言为非，则守分修持。否则不妨各行各道。他日陌路相逢，交臂而去，不须问你是何人，我是谁。
+
+1、人贵自知，不可妄说过分大话。根据后两书，这里当是指王居士要根据梵本学习或翻译无量寿经。
+
+2、翻译佛经的条件和要求：须有能分别梵本文义，或的确，或传久讹谬之智眼，方可译经。然非一人所能。以故译经场中，许多通家。有译文者，有证义者。其预译场之人，均非全不通佛法之人。
+
+3、翻译佛经不同于普通外语翻译：汝完全认做为外国人译话，正如读书人识字，圣人深奥之文，了不知其是何意义。
+
+4、结论：此种妄话，切勿再说。再说虽令无知识者误佩服，难免有正见者深痛惜。
+
+三、三编卷二复王子立居士书二
+
+一 无量寿经有五译。
+
+初译于后汉月支支娄迦谶，三卷，文繁，名佛说无量清净平等觉经。
+
+次译于吴月支支谦，有二卷，名佛说阿弥陀经。以日诵之经，亦名佛说阿弥陀经，故外面加一大字以别之。又有赵宋王龙舒居士，会前二译及第三译，并第五赵宋译，四部取要录之，名大阿弥陀经。当时大兴，后因莲池大师指其有不依经文之失，从此便无人受持者。大藏内有此经，各流通处均不流通。有谓另有一种者，即此经也。
+
+第三译，即佛说无量寿经二卷，现皆受持此经，即曹魏康（国名）僧铠译。
+
+第四，即大宝积经，第十七无量寿如来会，此经王龙舒未见过，乃唐菩提流志译。前有元魏名菩提留支，非唐人，世多将留支讹引之。
+
+第五译，名佛说大乘无量寿庄严经，赵宋法贤译。原本二卷，以宋人以所译经多为荣，故分两卷，于绝不宜分处而分，今刻书本作一卷。就中无量寿如来会，文理俱好，而末后劝世之文未录，故皆以康僧铠之无量寿经为准则焉。
+
+1、介绍无量寿经有五译
+
+2、又有赵宋王龙舒居士，会前二译及第三译，并第五赵宋译，四部取要录之，名大阿弥陀经。当时大兴，后因莲池大师指其有不依经文之失，从此便无人受持者。大藏内有此经，各流通处均不流通。有谓另有一种者，即此经也。
+
+3、五译中无量寿如来会，文理俱好，而末后劝世之文未录，故皆以康僧铠之无量寿经为准则焉。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T01:29:35.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/e5-a7-9c-e6-b7-91-e6-83-a0-e5-8c-bb-e5-b8-88-e5-81-a5-e5-ba-b7-e7-b3-bb-e5-88-97-e8-ae-b2-e5-ba-a7/">姜淑惠医师健康系列讲座</a></h1></header><div class="post__main"><p>你自己就是最优秀的医师，健康掌握在你自己的手上而不是医生或医院，食物就是最好的药物，天医以减食断食为汤药。</p>
+<pre><code>姜医师说：
+
+健康为生命之泉源，因为有了健康，方能开创一切。假设以数字表示。健康为「１」，
+
+其他如学业、事业、生活、财富、艺术等均为「０」，如果徒然拥有许多「０」，
+
+却没有「１」，则一切皆是枉然。又所谓健康，不仅代表身体（<span class="keyword">Body</span>）层面，更应
+
+拓展至心理（Mind）及灵性（Spirits）更高境界，如何能令这三个层次，整体调和，
+
+深信必为廿一世纪医学及全人类所要共同奋斗的目标。
+
+后学在从事医疗工作十多年后，深感何以在人类愈趋文明进步后，唯一赖以生存之
+
+地球生态环境，却愈趋破坏？何以医学科技日新月异，人类的病痛却有增无减？每
+
+见台湾各地，街道医院林立，门庭若市，大型医院，纷纷设置，小小的台湾，生病
+
+的人竟如此多，根据统计资料显示，台湾人民所使用胃药量及每个人平均使用药物
+
+种类，均达世界之冠。为政者、习医者、患病者，皆应好好正视健康维护之重要性。
+
+除了不断增添医疗设备外，如何妥善从教育下手，改善生活环境，杜绝不当饮食习
+
+惯，树立正确的健康观念，从根本上下药，不要稍一有病，即求速效，必用打针吃
+
+药来应付。健康之维护，建立在个人的认知，所谓「上医治未病」，「防患於未然」，
+
+换言之，即是「预防胜於治疗」。预防最为重要且为根本，但却不是口号，应当落
+
+实到人人身上。我们切莫因为全民保险而有恃无恐，因为一旦身体有了疾病，就是
+
+挥不去的阴影，人生的价值已失去了泰半。试观台湾十大死因，癌症、脑中风、心
+
+臟血管疾病、糖尿病、贤臟病、‥‥‥吾人稍不加留意，就很容易步入这种陷阱中。
+
+幸运者或仅罹患一种，不幸者同时罹患数种，岂不令人痛心。因此健康端赖自救自
+
+济，此乃最根本最有效最保险的方法。诚愿藉着这片小园地，提供自己浅陋的看法，
+
+令有缘的朋友，咸能拾回自己的健康。
+</code></pre><p>&nbsp;</p>
+<p>华为网盘下载</p>
+<p><a href="http://dl.vmall.com/c09yn6esp2" target="_blank" rel="external">如何重建健康</a></p>
+<pre><code>http://dl.vmall.com/c09yn6esp2
+
+[<span class="link_label">现代饮食的危机和陷阱</span>](<span class="link_url">http://dl.vmall.com/c0f8z673q2</span>)
+
+http://dl.vmall.com/c0f8z673q2
+
+[<span class="link_label">正确地断食观</span>](<span class="link_url">http://dl.vmall.com/c0frvpu6fm</span>)
+
+http://dl.vmall.com/c0frvpu6fm
+
+[<span class="link_label">世网中的自在</span>](<span class="link_url">http://dl.vmall.com/c0gvn5l7hk</span>)
+
+http://dl.vmall.com/c0gvn5l7hk
+</code></pre><p>迅雷、p2p下载</p>
+<p>如何重建健康</p>
+<pre><code>ed2k:<span class="regexp">//</span>|file|<span class="variable">%E5</span><span class="variable">%A6</span><span class="variable">%82</span><span class="variable">%E4</span><span class="variable">%BD</span><span class="variable">%95</span><span class="variable">%E9</span><span class="variable">%87</span><span class="variable">%8D</span><span class="variable">%E5</span><span class="variable">%BB</span><span class="variable">%BA</span><span class="variable">%E5</span><span class="variable">%81</span><span class="variable">%A5</span><span class="variable">%E5</span><span class="variable">%BA</span><span class="variable">%B7</span>.<span class="variable">%E5</span><span class="variable">%A7</span><span class="variable">%9C</span><span class="variable">%E6</span><span class="variable">%B7</span><span class="variable">%91</span><span class="variable">%E6</span><span class="variable">%83</span><span class="variable">%A0</span>.zip|<span class="number">79084102</span>|b7d3685f89f511de1cda07d6eb6572e3|<span class="regexp">/
+
+现代饮食的危机和陷阱
+
+ed2k:/</span><span class="regexp">/|file|%E7%8E%B0%E4%BB%A3%E9%A5%AE%E9%A3%9F%E7%9A%84%E5%8D%B1%E6%9C%BA%E5%92%8C%E9%99%B7%E9%98%B1.%E5%A7%9C%E6%B7%91%E6%83%A0.zip|85034019|ecf1f33e5bb4381d5f9437ee99e3c11f|/</span>
+
+正确地断食观
+
+ed2k:<span class="regexp">//</span>|file|<span class="variable">%E6</span><span class="variable">%AD</span><span class="variable">%A3</span><span class="variable">%E7</span><span class="variable">%A1</span><span class="variable">%AE</span><span class="variable">%E5</span><span class="variable">%9C</span><span class="variable">%B0</span><span class="variable">%E6</span><span class="variable">%96</span><span class="variable">%AD</span><span class="variable">%E9</span><span class="variable">%A3</span><span class="variable">%9F</span><span class="variable">%E8</span><span class="variable">%A7</span><span class="variable">%82</span>.<span class="variable">%E5</span><span class="variable">%A7</span><span class="variable">%9C</span><span class="variable">%E6</span><span class="variable">%B7</span><span class="variable">%91</span><span class="variable">%E6</span><span class="variable">%83</span><span class="variable">%A0</span>.zip|<span class="number">77798002</span>|f53954bf5eb1c2ab20b74891b37920d4|<span class="regexp">/
+
+世网中的自在
+
+ed2k:/</span><span class="regexp">/|file|%E4%B8%96%E7%BD%91%E4%B8%AD%E7%9A%84%E8%87%AA%E5%9C%A8.%E5%A7%9C%E6%B7%91%E6%83%A0.zip|91837394|6f16ec13b95b5572ba67b05805d7ab18|/</span>
+
+作者介绍：姜淑惠医师，道证法师的同学，<span class="number">1956</span>年生，&amp;ldquo;中国医药学院&amp;rdquo;中医系、医学研究所硕士班毕业。&amp;ldquo;中央研究院&amp;rdquo;从事生物医学研究所细胞免 疫学，及预防医学研究所中药免疫功能研究。拥有中、西医执照资格，并广泛涉猎欧洲、印度及中国西藏医学，学识背景扎实丰富。 从小即十分仰史怀哲，<span class="number">9</span>岁的时候，母亲罹患癌症病逝，更影响了她日后行医时认真、慈善，与患者感同身受的态度。苦口婆心的她，不断倡导正确的健康观。她认 为疾病与饮食有密切的关系，尤其饮食是一辈子的事，每个人都应该好好认识周边的食物，重视&amp;ldquo;吃的效率&amp;rdquo;。 她不仅兢兢业业地在学术领域钻研，更长期研读各类人文典籍，希望在深入探讨生命科学之后，人类未来的生活会更加幸福美满。 曾任中国台湾省立桃园医院主治医师，目前任职台中澄清医院，并经常往返于美国、新西兰、澳大利亚、新加坡等地举办大型的健康讲座。此外，还在台中成立&amp;ldquo;健 康之道&amp;rdquo;中心，作为落实预防医学及培训志愿者的基地。她是一位主张素食、生食、断食饮食改革，尊重生命，以人为本，非常具有环保概念的医生。 她深信医生的使命在于教育、指导及咨询；医生最极至的境界，就是做好预防医学的工作。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/12/25/w/e5-a7-9c-e6-b7-91-e6-83-a0-e5-8c-bb-e5-b8-88-e5-81-a5-e5-ba-b7-e7-b3-bb-e5-88-97-e8-ae-b2-e5-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/2/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>Linux下源代码编译安装MySQL 5.5.16完整安装教程 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="Linux下源代码编译安装MySQL 5.5.16完整安装教程"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-08-09T03:17:05.000Z" class="post__time">八月 9, 2011</time><h1 class="post__title"><a href="/2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/">Linux下源代码编译安装MySQL 5.5.16完整安装教程</a></h1></header><div class="post__main"><p>以下安装在centos5.6、Yellow Dog Linux release 6.2 (Pyxis)通过测试。</p>
+<p>MySQL 最新的版本5.5.16需要cmake编译安装</p>
+<pre><code><span class="number">1</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql <span class="number">5.5</span><span class="number">.16</span>编译安装
+
+安装所需要系统库相关库文件
+
+yum install -y gcc gcc-c++ gcc-g77 autoconf automake zlib* fiex* libxml* ncurses-devel libmcrypt* libtool-ltdl-devel*
+
+#yum install -y cmake
+
+创建mysql安装目录和数据存放目录　
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+创建用户和用户组与赋予数据存放目录权限
+
+groupadd -g <span class="number">502</span> mysql
+
+useradd -u <span class="number">502</span> -g mysql mysql
+
+chown mysql.mysql -R <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+安装cmake
+
+（mysql5<span class="number">.5</span>以后是通过cmake来编译的）
+
+下载解压cmake-<span class="number">2.8</span><span class="number">.5</span>.tar.gz
+
+wget <span class="string">http:</span><span class="comment">//www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz</span>
+
+tar zxf cmake-<span class="number">2.8</span><span class="number">.5</span>.tar.gz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>cmake-<span class="number">2.8</span><span class="number">.5</span>
+
+./configure
+
+make -j6 &amp;amp;&amp;amp; make install
+
+安装mysql <span class="number">5.5</span><span class="number">.16</span>
+
+wget <span class="string">http:</span><span class="comment">//mirrors.sohu.com/mysql/MySQL-5.5/mysql-5.5.16.tar.gz</span>
+
+tar zxf mysql-<span class="number">5.5</span><span class="number">.16</span>.tar.gz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+编译mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+CFLAGS=&amp;quot;-O3&amp;quot; CXX=gcc
+
+CXXFLAGS=&amp;quot;-O3 -felide-constructors -fno-exceptions -fno-rtti&amp;quot;
+
+<span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>cmake -DCMAKE_INSTALL_PREFIX=<span class="regexp">/usr/</span>local/mysql \
+
+-DMYSQL_UNIX_ADDR=<span class="regexp">/tmp/</span>mysql.sock \
+
+-DDEFAULT_CHARSET=utf8 \
+
+-DDEFAULT_COLLATION=utf8_general_ci \
+
+-<span class="string">DWITH_EXTRA_CHARSETS:</span>STRING=all \
+
+-DWITH_MYISAM_STORAGE_ENGINE=<span class="number">1</span> \
+
+-DWITH_INNOBASE_STORAGE_ENGINE=<span class="number">1</span> \
+
+-DWITH_READLINE=<span class="number">1</span> \
+
+-DENABLED_LOCAL_INFILE=<span class="number">1</span> \
+
+-DMYSQL_DATADIR=<span class="regexp">/opt/</span>data/mysql \
+
+-DMYSQL_TCP_PORT=<span class="number">3306</span>
+
+#-DWITH_MEMORY_STORAGE_ENGINE=<span class="number">1</span> \
+
+#-DMYSQL_USER=mysql \
+
+-DCMAKE_INSTALL_PREFIX=<span class="regexp">/home/</span>mysql/mysql -DEXTRA_CHARSETS=all
+
+CMake <span class="string">Warning:</span>
+
+&amp;nbsp; Manually-specified variables were not used by the <span class="string">project:</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; MYSQL_USER
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; WITH_MEMORY_STORAGE_ENGINE
+
+nohup make -j6 &amp;amp;&amp;amp; make install
+
+复制配置文件
+
+mv <span class="regexp">/etc/</span>my.cnf <span class="regexp">/etc/</span>my.cnf-`date +%F`
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc
+
+cp support-files<span class="regexp">/my-medium.cnf /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/etc/</span>my.cnf
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+mkdir log run tmp data
+
+chgrp -R mysql.mysql *
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+vim etc/my.cnf
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">8</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+初始化数据库
+
+(执行前 需要chmod <span class="number">755</span> scripts/mysql_install_db 赋给文件执行权限)
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>mysql-<span class="number">5.5</span><span class="number">.16</span>
+
+sh .<span class="regexp">/scripts/</span>mysql_install_db&amp;nbsp; --user=mysql&amp;nbsp; --basedir=<span class="regexp">/usr/</span>local<span class="regexp">/mysql --datadir=/</span>opt<span class="regexp">/data/</span>mysql/
+
+注：#basedir mysql安装路径 datadir 数据库文件储存路径
+
+设置mysqld的开机启动:
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/init.d/</span>mysqld
+
+chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/mysqld
+
+chkconfig mysqld on
+
+chkconfig --list mysqld 
+
+配置环境
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+或者
+
+vim <span class="regexp">/etc/</span>profile
+
+PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+PATH=<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span><span class="string">bin:</span>$PATH
+
+启动mysql服务
+
+<span class="regexp">/etc/</span>init.d<span class="regexp">/mysqld start&amp;nbsp; /</span>/服务器端开关
+
+启动完成之后用ps -ef |grep mysql 命令查看是否启动
+
+<span class="number">2</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql安全设置
+
+设置root帐户的密码
+
+mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
+
+删除本机匿名连接的空密码帐号
+
+本机登录mysql
+
+mysql -uroot -p
+
+然后输入上面设置的密码，登录后在mysql的命令行中执行：
+
+use mysql;
+
+<span class="comment">//update user set password=&amp;#39;veryi.com&amp;#39; where host = &amp;#39;127.0.0.1&amp;#39;;</span>
+
+delete from user where user=&amp;quot;&amp;quot;;
+
+delete from user where password=&amp;quot;&amp;quot;;
+
+flush privileges;
+
+quit
+
+&amp;nbsp;
+</code></pre><p>测试字符集：</p>
+<p>mysql&gt; set names gbk;</p>
+<pre><code>Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)
+
+mysql<span class="subst">&amp;</span><span class="literal">gt</span>; <span class="built_in">set</span> names gb2312;
+
+Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/" data-url="http://blog.veryi.com/2011/08/09/w/linux-e4-b8-8b-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85mysql-5-5-14-e5-ae-8c-e6-95-b4-e5-ae-89-e8-a3-85-e6-95-99-e7-a8-8b/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/09/06/w/e7-9c-9f-e7-9a-84-e6-9c-89-e5-89-8d-e4-b8-96-e4-bb-8a-e7-94-9f-e5-90-97-ef-bc-9f/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/08/05/w/centos-4-e5-8d-87-e7-ba-a7-e5-88-b04-9/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

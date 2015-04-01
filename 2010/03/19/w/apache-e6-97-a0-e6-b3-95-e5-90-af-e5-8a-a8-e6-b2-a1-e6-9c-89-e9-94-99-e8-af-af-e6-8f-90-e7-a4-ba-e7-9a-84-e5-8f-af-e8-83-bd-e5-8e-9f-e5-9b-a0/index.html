@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>apache无法启动没有错误提示的可能原因 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="apache无法启动没有错误提示的可能原因"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-03-19T06:01:58.000Z" class="post__time">三月 19, 2010</time><h1 class="post__title"><a href="/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">apache无法启动没有错误提示的可能原因</a></h1></header><div class="post__main"><p>环境:CentOS 5,Apache/2.2</p>
+<pre><code>apache运行正常，重启后不能启动，没有任何错误提示。
+
+排错过程：
+
+检查硬盘分区，空闲容量还很多；
+
+检查错误日志，没有新的内容；
+
+怀疑有人修改配置文件，注释部分内容；
+
+最终找到了原因，原来是apache的error_<span class="built_in">log</span>达到了<span class="number">2147483647</span> byte，清空error_<span class="built_in">log</span>，正常启动。
+
+同样，access_<span class="built_in">log</span>文件超过<span class="number">2</span>G也会导致不能启动。
+
+当时没有注意<span class="number">2147483647</span>这个数字就是<span class="number">2</span>G-<span class="number">1</span>，其实，从启动是日志中没有任何内容也可以推理问题和日志文件有关。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" data-url="http://blog.veryi.com/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/03/31/w/myisaminnodb-e9-82-a3-e4-b8-aa-e6-9b-b4-e5-bf-ab-e4-b8-80-e4-ba-9b/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/03/04/w/linux-e7-9a-84-e4-b8-ad-e6-96-87-e5-a4-84-e7-90-86-e5-92-8c-e6-96-87-e4-bb-b6-e5-90-8d-e4-b9-b1-e7-a0-81-e8-bd-ac-e6-8d-a2/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

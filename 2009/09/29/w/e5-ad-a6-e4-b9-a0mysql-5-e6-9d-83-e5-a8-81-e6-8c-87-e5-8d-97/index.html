@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>学习mysql 5 权威指南 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="学习mysql 5 权威指南"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-09-29T07:17:31.000Z" class="post__time">九月 29, 2009</time><h1 class="post__title"><a href="/2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/">学习mysql 5 权威指南</a></h1></header><div class="post__main"><p>mysql 5.1.39，建立一个存储过程</p>
+<p>BEGIN</p>
+<p>&nbsp;&nbsp;&nbsp; IF ISNULL(s) THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN ‘’;</p>
+<p>&nbsp;&nbsp;&nbsp; ELSEIF n&lt;15 THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN LEFT(s, n);</p>
+<p>&nbsp;&nbsp;&nbsp; ELSE</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IF CHAR_LENGTH(s) &lt;= n THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN s;</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ELSE</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN CONCAT(LEFT(s, n-10), ‘ … ‘, RIGHT(s, 5));</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; END IF;</p>
+<p>&nbsp;&nbsp;&nbsp; END IF;</p>
+<p>END</p>
+<p>ERROR 1418 (HY000): This function has none of DETERMINISTIC, NO SQL, or READS SQL DATA in its declaration and binary logging is enabled (you <em>might</em> want to use the less safe log_bin_trust_function_creators variable)</p>
+<p>&nbsp;</p>
+<p>解决:</p>
+<p>mysql&gt; set global log_bin_trust_routine_creators=1;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/" data-url="http://blog.veryi.com/2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/11/17/w/e4-b8-ba-e5-96-9c-e6-ac-a2-e6-97-85-e8-a1-8c-e5-92-8c-e9-aa-91-e8-bd-a6-e4-b8-8a-e7-8f-ad-e7-9a-84-e6-9c-8b-e5-8f-8b-e6-8e-a8-e8-8d-90-e4-b8-80-e6-ac-be-e9-9f-b3-e7-ae-b1-e8-bd-bb-e9-aa-91-e5-85-b5u/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/09/28/w/e5-a6-82-e4-bd-95-e5-b0-81-e5-bc-80-e5-bf-83-e7-bd-91/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

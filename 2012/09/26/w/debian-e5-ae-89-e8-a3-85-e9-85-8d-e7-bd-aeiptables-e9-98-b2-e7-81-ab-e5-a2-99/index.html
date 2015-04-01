@@ -1,0 +1,118 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>Debian安装配置Iptables防火墙 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="Debian安装配置Iptables防火墙"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-09-26T03:34:00.000Z" class="post__time">九月 26, 2012</time><h1 class="post__title"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/">Debian安装配置Iptables防火墙</a></h1></header><div class="post__main"><p>debian默认安装没有开启防火墙。</p>
+<pre><code>第一步:使用如下命令安装:
+
+sudo apt-get <span class="operator"><span class="keyword">install</span> iptables
+
+第二步:查看Iptables目前的配置信息
+
+可以使用如下命令查看
+
+sudo iptables -L
+
+第三步:配置Iptables
+
+配置Iptables,我们先把一个基本的Iptables的规则文章保存起来,这个规则文章做为测试用
+
+sudo vim /etc/iptables.test.rules
+
+然后在这个文章中输入如下规则内容,这个内容是debian官方给出的基本配置
+
+*filter
+
+# Allows <span class="keyword">all</span> loopback (lo0) traffic <span class="keyword">and</span> <span class="keyword">drop</span> <span class="keyword">all</span> traffic <span class="keyword">to</span> <span class="number">127</span>/<span class="number">8</span> that doesn&amp;#<span class="number">39</span>;</span>t <span class="operator"><span class="keyword">use</span> lo0
+
+-A <span class="keyword">INPUT</span> -i lo -j ACCEPT
+
+-A <span class="keyword">INPUT</span> -i ! lo -d <span class="number">127.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span> -j REJECT
+
+# Accepts <span class="keyword">all</span> established inbound connections
+
+-A <span class="keyword">INPUT</span> -m state <span class="comment">--state ESTABLISHED,RELATED -j ACCEPT</span>
+
+# Allows <span class="keyword">all</span> outbound traffic
+
+# You could modify this <span class="keyword">to</span> <span class="keyword">only</span> allow certain traffic
+
+-A <span class="keyword">OUTPUT</span> -j ACCEPT
+
+# Allows HTTP <span class="keyword">and</span> HTTPS connections <span class="keyword">from</span> anywhere (the normal ports <span class="keyword">for</span> websites)
+
+-A <span class="keyword">INPUT</span> -m state <span class="comment">--state NEW -m tcp -p tcp --dport 9090 -j ACCEPT</span>
+
+-A <span class="keyword">INPUT</span> -p tcp <span class="comment">--dport 80 -j ACCEPT</span>
+
+-A <span class="keyword">INPUT</span> -p tcp <span class="comment">--dport 443 -j ACCEPT</span>
+
+# Allows SSH connections <span class="keyword">for</span> script kiddies
+
+# THE -dport <span class="built_in">NUMBER</span> <span class="keyword">IS</span> THE SAME ONE YOU <span class="keyword">SET</span> UP <span class="keyword">IN</span> THE SSHD_CONFIG FILE
+
+-A <span class="keyword">INPUT</span> -p tcp -m state <span class="comment">--state NEW --dport 22 -j ACCEPT</span>
+
+# <span class="keyword">Now</span> you should <span class="keyword">read</span> up <span class="keyword">on</span> iptables rules <span class="keyword">and</span> consider whether ssh access 
+
+# <span class="keyword">for</span> everyone <span class="keyword">is</span> really desired. Most likely you will <span class="keyword">only</span> allow access <span class="keyword">from</span> certain IPs.
+
+# Allow ping
+
+-A <span class="keyword">INPUT</span> -p icmp -m icmp <span class="comment">--icmp-type 8 -j ACCEPT</span>
+
+# <span class="keyword">log</span> iptables denied calls (access via &amp;#<span class="number">39</span>;</span>dmesg&amp;#39; command)
+
+-A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix &amp;quot;iptables denied: &amp;quot; --log-level 7</span>
+
+# Reject all other inbound - default deny unless explicitly allowed policy:
+
+-A INPUT -j REJECT
+
+-A FORWARD -j REJECT
+
+<span class="operator"><span class="keyword">COMMIT</span>
+
+保存本文件,然后把本规则加载,使之生效,注意,iptables不需要重启,加载一次规则就成了
+
+sudo iptables-<span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.test.rules
+
+然后再查看最新的配置,应该所有的设置都生效了.
+
+sudo iptables -L
+
+第四:保存生效的配置,让系统重启的时候自动加载有效配置
+
+iptables提供了保存当前运行的规则功能
+
+iptables-save &amp;gt; /etc/iptables.up.rules
+
+注意,如果当前用户不是root,即使使用了sudo,也会提示你没有权限,无法保存,所以执行本命令,你必须使用root用户.
+
+可以使用sudo -i快速转到root,使用完成,请及时使用su username切换到普通帐户.
+
+为了重启服务器后,规则自动加载,我们创建如下文件:
+
+sudo vim /etc/network/if-pre-up.d/iptables
+
+内容如下:
+
+#!/bin/bash
+
+/sbin/iptables-<span class="operator"><span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.up.rules
+
+最后,设置本文章具体可执行仅限
+
+chmod +x /etc/network/if-pre-up.d/iptables
+
+第五:其它
+
+如果你想设置某ip段可以访问所有服务,你需要在iptables.test.rules文件中加入
+
+-A INPUT -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
+
+然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/" data-url="http://blog.veryi.com/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/09/19/w/linux-e5-8f-96-e6-b6-88-e5-b1-8f-e8-94-bdvim-e3-80-81less-e5-92-8cmtr-e7-ad-89-e9-80-80-e5-87-ba-e6-b8-85-e5-b1-8f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>linux NTP（Network Time Protocol）服务器配置 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="linux NTP（Network Time Protocol）服务器配置"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-05-12T02:11:58.000Z" class="post__time">五月 12, 2009</time><h1 class="post__title"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/">linux NTP（Network Time Protocol）服务器配置</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 服务器记录文件以及其后的报告中的数据来评估组织的活动，包括防火墙和VPN安全相关的活动，带宽的使用，以及其他各种各样的记录、管理、确认、授权和会计职能。由于服务器记录的是来自不同主机的信息，因此时间的准确性显得非常必要，否则的话就可能出现不同的事件顺序和故障排除的根源问题，使得与时间有关的一切数据都变得毫无意义。即使是在路由器里，像路由器配置改变、接口状态、调制解调器事件、安全警报、环境条件、CPU处理过载等主要的配置事件和系统错误信息，都要有准确的时间戳，这些数据才有意义。</p>
+<p>网络时间协议简介</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NTP（Network Time Protocol）是由美国德拉瓦大学的David L. Mills教授于1985年提出，除了可以估算封包在网络上的往返延迟外，还可独立地估算计算机时钟偏差，从而实现在网络上的高精准度计算机校时，它是设计用来在Internet上使不同的机器能维持相同时间的一种通讯协定。时间服务器（time server）是利用NTP的一种服务器，通过它可以使网络中的机器维持时间同步。在大多数的地方，NTP可以提供1-50ms的可信赖性的同步时间源和网络工作路径。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 网络时间协议（NTP）的详细说明在RFC-1305[Mills 1992]中。RFC-1305对 NTP协议自动机在事件、状态、转变功能和行为方面给出了明确的说明。它以合适的算法以增强时钟的准确性，并且减轻多个由于同步源而产生的差错，实现了准确性低于毫秒的时间服务，以满足目前因特网中路径量测的需要。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NTP 是一个跨越广域网或局域网的复杂的同步时间协议，它通常可获得毫秒级的精度。RFC2030[Mills 1996]描述了SNTP（Simple Network Time Protocol），目的是为了那些不需要完整NTP实现复杂性的主机，它是NTP的一个子集。通常让局域网上的若干台主机通过因特网与其他的NTP主机同步时钟，接着再向局域网内其他客户端提供时间同步服务。</p>
+<ul>
+<li>网络时间服务的工作模式</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Sever/Client mode：用户向一个多几个服务器提出服务请求，根据所交换的信息，从中选择认为最准确的时间，并调整本地的时钟。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Multicast/Broadcast mode：此种模式是适用于用在高速的LAN上。利用一个或多个服务器在固定的周期向某个多播地址做广播。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Symmetric mode：二个以上的Server互相进行时间消息的通讯，可以互相校正对方的时间，以维持整个subnet的时间一致性。</p>
+<ul>
+<li>保持网络节点时间同步的机制</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o ntpdate 命令：此命令被用来立即同步客户端和服务器的时间。这是同步客户端和服务器的时间的最快方式。系统每次启动的时候会使用这个命令，用来确保客户端和服务器的时间的同步。这个命令通常指定一个NTP服务器作为一个参数，客户端的时钟被设置为和服务器的时间匹配。当这个命令使用多个NTP服务器作为参数时，客户端会使用最低级的NTP服务器。如果级别相等，客户端会使用加权平均数。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o ntpd守护进程：此进程在后台持续运行，并且会定时校验客户端的时钟和NTP服务器的时间。xntpd守护进程通常是在系统启动的时候启动。因为客户端的时钟可能产生漂移，以致与实际的NTP时钟有差异。xntpd守护进程会周期性地发送一个NTP服务器的网络请求，并且与客户端的时钟对比，在必要的时候修正客户端的时间，同时将时间差存到名为/etc/ntp.drift文件。默认的xntpd时间检查的间隔为64秒，在第一次检查的时候，客户端的时钟和NTP服务器上的时钟的差异会被记录下来，同时依靠这个时间差异来计划下一次检查。如果这个时间差异很大，下一次的时间检查会很快发生。如果这个差异很小，下一次的检查到来的时间会相应的延长。这样就避免每次都去查询网络中的时间服务器，从而可以减轻网络负载。查询NTP服务器的次数会慢慢变少。直到达到NTP请求的最小值。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o 注：在命令行方式下，可以采用&quot;ntpd -q&quot;或者&quot;ntpdate [-b]&nbsp; pool.ntp.org&quot;进行对时。使用ntpd进行时间同步时，应事先配置好ntp.conf文件。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
+<h1 id="yum_update_ntp">yum update ntp</h1><p>vi /etc/ntp.conf</p>
+<p>restrict default nomodify notrap noquery</p>
+<h1 id="restrict_default_ignore_//忽略所有ntp要求封包">restrict default ignore //忽略所有ntp要求封包</h1><p>//如果restric 后面不带参数，表示可以允许全部权限</p>
+<p>restrict 127.0.0.1</p>
+<p>restrict 192.168.6.0 mask 255.255.255.0 nomodify notrap</p>
+<h1 id="—-_OUR_TIMESERVERS_——-">—- OUR TIMESERVERS ——-</h1><p>server 0.pool.ntp.org</p>
+<p>server 1.pool.ntp.org</p>
+<p>server 2.pool.ntp.org</p>
+<p>server pool.ntp.org</p>
+<p>server 3.cn.pool.ntp.org</p>
+<p>server 0.asia.pool.ntp.org</p>
+<p>server&nbsp; 127.127.1.0&nbsp;&nbsp;&nbsp;&nbsp; # local clock</p>
+<p>fudge&nbsp;&nbsp; 127.127.1.0 stratum 10</p>
+<p>//driftfile 选项，则指定了用来保存系统时钟频率偏差的文件, ntpd程序使用它来自动地补偿时钟的自然漂移， 从而使时钟即使在切断了外来时源的情况下，仍能保持相当的准确度</p>
+<p>driftfile /var/lib/ntp/drift</p>
+<p>broadcastdelay&nbsp; 0.008</p>
+<p>keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /etc/ntp/keys</p>
+<p>logfile /var/log/ntp.log</p>
+<p>/etc/init.d/ntpd restart</p>
+<p>chkconfig —level 345 ntpd on</p>
+<p>&nbsp;&nbsp;&nbsp; 使用下面的命令检查时间服务器同步的状态：</p>
+<p>ntpq -p</p>
+<p>&nbsp;&nbsp;&nbsp; 一个可以证明同步问题的证据是所有远程服务器的jitter值是4000并且delay和reach的值是0。</p>
+<p>&nbsp;&nbsp;&nbsp; 可能的原因有：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 配置文件中的restrict default ignore没有被注释</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 有防火墙阻断了与server之间的通讯</p>
+<p>&nbsp;&nbsp;&nbsp; 此外每次重启NTP服务器之后大约要3－5分钟客户端才能与server建立正常的通讯连接，否则你执行ntpdate ip的时候将返回：</p>
+<p>&nbsp;ntpdate: no server suitable for synchronization found</p>
+<p>&nbsp;</p>
+<hr>
+<p>网络内其它服务器时间的同步:</p>
+<p>每一刻钟同步一次</p>
+<p>crontab -e</p>
+<p><em>/15 </em> <em> </em> * root /usr/sbin/ntpdate 192.168.6.153 &gt; /dev/null 2&gt;&amp;1</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/05/12/w/e4-bd-8e-e6-b6-88-e8-b4-b9-e9-ab-98-e7-a6-8f-e5-88-a9-ef-bc-9a-e9-80-9a-e5-be-80-e7-94-9f-e6-80-81-e6-96-87-e6-98-8e-e4-b9-8b-e8-b7-af/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>企业级网管开源软件Nagios 远程监控软件的配置 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="企业级网管开源软件Nagios 远程监控软件的配置"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-24T06:12:50.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/">企业级网管开源软件Nagios 远程监控软件的配置</a></h1></header><div class="post__main"><p>创建nagios用户及其组，让nagios的运行用户为nagios 而不是root。再把目录/usr/local/nagios的属主设置为nagios，以保证系统的安全。</p>
+<p>1、添加系统帐户nagios: useradd nagios 就很容易的把用户和组nagios添加到系统。有的类型的linux发行版添加用户和组要麻烦一些-需要要添加组，然后再执行 useradd -g nagios nagios这样的操作。在实际的运用场景，nagios用户并没有必要作为系统用户来登录linux系统，因此可以不必设置nagios的用户密码，甚至可以把nagios用户的登录shell设置成/bin/false。</p>
+<p>2、更改目录属组：chown -R nagios.nagios /usr/local/nagios 。请注意，有的unix/linux的版本用户和属组分隔符号不是&ldquo;.&rdquo;,可能会是这样的形式 chown -R nagios:nagios /usr/local/nagios 。</p>
+<p>3、sendmail。看看sendmail是否正常运行？我们需要使用sendmail来发送故障报警信息，所以这个包必须能够正常工作。Sendmail分为服务器和客户端两部分，有2种发送报警邮件的方式：</p>
+<p>（1）nagios所在的机器通过sendmail客户端程序把邮件发送到专门的邮件服务器，再由邮件服务器把消息发送到用户邮箱。</p>
+<p>&nbsp;</p>
+<p>（2）邮件客户端和服务器端就用nagios所在系统sendmail。第一种方式用起来非常规范，但更麻烦，例如需要做地址解析、修改邮件服务器的配置；另外还有一个问题-它还依赖别的系统，增加了故障点和复杂度。第二种方法十分简单，只需启动sendmail服务即可，而且它不再依赖于别的系统和服务。在我工作的实际场景，这两种方法都使用，用专门的邮件服务器会有发送延迟的情况（因为邮件服务器要处理很多其他用户邮件的收发）；而直接用sendmail做服务器和客户端就异常简单和方便了。非常幸运的是，几乎所有的linux/unix发行版都默认安装并启动了sendmail。</p>
+<p>&nbsp;</p>
+<p>4、手机短信发送工具。如果有自己的短信通道，直接把发送短信的客户端程序sms_send拷贝到目录/usr/local/bin/下。如果没有短信下发的网关通道，那怎么办呢？网络上有很多短信发送的客户端程序，很有名的就是smsclient,把它下载下来，解包后安装。不要忘记购买手机modem和手机卡，modem只支持SIM卡而不支持 cdma。安装完smsclient软件和硬件modem后，测试一下是否正常。如果没有modem又怎么办？办法还是有的：让你的手机号可以接受邮件，这需要你去营业厅开通这项功能。短信报警功能是最有用的功能，我们不可能成天盯着监视屏幕，也不可能成天接受电子邮件，但我们的手机却可以24小时在线，只要被监控对象发生故障，马上就可以收到故障报警短信。还可以用中国移动的飞信。建议启用nagios的短信故障报警功能。</p>
+<p>配置</p>
+<p>&nbsp;</p>
+<p>一、apache 配置</p>
+<p>&nbsp;</p>
+<p>第一步是修改apache的配置文件httpd.conf,这里的文件路径是 /usr/local/httpd/conf/httpd.conf 。把apache的运行用户和运行组改成nagios。</p>
+<p>vi /usr/local/httpd/conf/httpd.conf</p>
+<p>&nbsp;</p>
+<p>修改:</p>
+<p>&nbsp;</p>
+<p>User nagios</p>
+<p>&nbsp;</p>
+<p>Group nagios</p>
+<p>&nbsp;</p>
+<p>添加:</p>
+<p>&nbsp;</p>
+<p>Alias /nagios/cgi-bin/images/ &quot;/usr/local/nagios/share/images/&quot;</p>
+<p>&nbsp;</p>
+<p>&lt;Directory &quot;/usr/local/nagios/share/images/&quot;&gt;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Options None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
+<p>&nbsp;</p>
+<p>&lt;/Directory&gt;</p>
+<p>&nbsp;</p>
+<p>ScriptAlias /nagios/cgi-bin/ &quot;/usr/local/nagios/sbin/&quot;</p>
+<p>&nbsp;</p>
+<p>&lt;Directory &quot;/usr/local/nagios/sbin/&quot;&gt;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Options None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthName &quot;Nagios Access&quot;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthType Basic</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Require valid-user</p>
+<p>&nbsp;</p>
+<p>&lt;/Directory&gt;</p>
+<p>&nbsp;</p>
+<p>Alias /nagios/ &quot;/usr/local/nagios/share/&quot;</p>
+<p>&nbsp;</p>
+<p>&lt;Directory &quot;/usr/local/nagios/share/&quot;&gt;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Options None</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthName &quot;Nagios Access&quot;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthType Basic</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; Require valid-user</p>
+<p>&nbsp;</p>
+<p>&lt;/Directory&gt;</p>
+<p>2、设置访问权限</p>
+<p>&nbsp;</p>
+<p>在/usr/local/nagios/share目录下</p>
+<p>&nbsp;</p>
+<p>/usr/local/httpd/bin/htpasswd -c&nbsp; /usr/local/nagios/etc/htpasswd.users sushixiaoti</p>
+<p>&nbsp;</p>
+<p>这个apache目录根据安装目录的不同而不同,用htpasswd这个命令生成用户名和密码。-c是生成用户验证文件.</p>
+<p>&nbsp;</p>
+<p>如果还要添加更多的用户，执行命令 htpasswd 就不需要选项 &ldquo;-c&rdquo;,否则就会覆盖所有已经生成的行。</p>
+<p>&nbsp;</p>
+<p>配置完成后，执行/usr/local/httpd/bin/apachctl -t&nbsp; 检查apache配置文件是否有语法错误。</p>
+<p>&nbsp;</p>
+<p>用/usr/local/httpd/bin/apachctl restart&nbsp; 把apache启动，然后从浏览器输入nagios 的访问地址（如：<a href="http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：" target="_blank" rel="external">http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;输入用htpasswd创建的用户名和密码测试一下，没有问题的话，进行下一步配置操作。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>二、nagios配置</p>
+<p>&nbsp;</p>
+<p>配置nagios</p>
+<p>&nbsp;</p>
+<p>刚安装完成的nagios，其配置文件的目录是/usr/local/nagios/etc，从nagios2.6版开始，不用修改配置文件localhost.cfg就可以直接运行../bin/nagios -v nagios.cfg验证程序是否能正常运行。</p>
+<p>1、修改配置文件</p>
+<p>&nbsp;</p>
+<p>Nagios的主配置文件是nagios.cfg:</p>
+<p>&nbsp;</p>
+<p>cd /usr/local/nagios/etc</p>
+<p>&nbsp;</p>
+<p>vi nagios.cfg</p>
+<p>&nbsp;</p>
+<p>log_file=/usr/local/nagios/var/nagios.log</p>
+<p>&nbsp;</p>
+<p>cfg_file=/usr/local/nagios/etc/objects/commands.cfg</p>
+<p>&nbsp;</p>
+<p>cfg_file=/usr/local/nagios/etc/objects/contacts.cfg</p>
+<p>&nbsp;</p>
+<p>cfg_file=/usr/local/nagios/etc/objects/timeperiods.cfg</p>
+<p>&nbsp;</p>
+<p>cfg_file=/usr/local/nagios/etc/objects/templates.cfg</p>
+<p>&nbsp;</p>
+<p>cfg_file=/usr/local/nagios/etc/objects/localhost.cfg</p>
+<p>&nbsp;</p>
+<p>cfg_dir=/usr/local/nagios/etc/servers</p>
+<p>&nbsp;</p>
+<p>object_cache_file=/usr/local/nagios/var/objects.cache</p>
+<p>&nbsp;</p>
+<p>precached_object_file=/usr/local/nagios/var/objects.precache</p>
+<p>&nbsp;</p>
+<p>resource_file=/usr/local/nagios/etc/resource.cfg</p>
+<p>&nbsp;</p>
+<p>status_file=/usr/local/nagios/var/status.dat</p>
+<p>&nbsp;</p>
+<p>status_update_interval=10</p>
+<p>&nbsp;</p>
+<p>nagios_user=nagios</p>
+<p>&nbsp;</p>
+<p>nagios_group=nagios</p>
+<p>&nbsp;</p>
+<p>check_external_commands=1</p>
+<p>&nbsp;</p>
+<p>command_check_interval=-1</p>
+<p>&nbsp;</p>
+<p>command_file=/usr/local/nagios/var/rw/nagios.cmd</p>
+<p>&nbsp;</p>
+<p>external_command_buffer_slots=4096</p>
+<p>&nbsp;</p>
+<p>lock_file=/usr/local/nagios/var/nagios.lock</p>
+<p>&nbsp;</p>
+<p>temp_file=/usr/local/nagios/var/nagios.tmp</p>
+<p>&nbsp;</p>
+<p>temp_path=/tmp</p>
+<p>&nbsp;</p>
+<p>event_broker_options=-1</p>
+<p>&nbsp;</p>
+<p>log_rotation_method=d</p>
+<p>&nbsp;</p>
+<p>log_archive_path=/usr/local/nagios/var/archives</p>
+<p>&nbsp;</p>
+<p>use_syslog=1</p>
+<p>&nbsp;</p>
+<p>log_notifications=1</p>
+<p>&nbsp;</p>
+<p>log_service_retries=1</p>
+<p>&nbsp;</p>
+<p>log_host_retries=1</p>
+<p>&nbsp;</p>
+<p>log_event_handlers=1</p>
+<p>&nbsp;</p>
+<p>log_initial_states=0</p>
+<p>&nbsp;</p>
+<p>log_external_commands=1</p>
+<p>&nbsp;</p>
+<p>log_passive_checks=1</p>
+<p>&nbsp;</p>
+<p>service_inter_check_delay_method=s</p>
+<p>&nbsp;</p>
+<p>max_service_check_spread=30</p>
+<p>&nbsp;</p>
+<p>service_interleave_factor=s</p>
+<p>&nbsp;</p>
+<p>host_inter_check_delay_method=s</p>
+<p>&nbsp;</p>
+<p>max_host_check_spread=30</p>
+<p>&nbsp;</p>
+<p>max_concurrent_checks=0</p>
+<p>&nbsp;</p>
+<p>check_result_reaper_frequency=10</p>
+<p>&nbsp;</p>
+<p>max_check_result_reaper_time=30</p>
+<p>&nbsp;</p>
+<p>check_result_path=/usr/local/nagios/var/spool/checkresults</p>
+<p>&nbsp;</p>
+<p>max_check_result_file_age=3600</p>
+<p>&nbsp;</p>
+<p>cached_host_check_horizon=15</p>
+<p>&nbsp;</p>
+<p>cached_service_check_horizon=15</p>
+<p>&nbsp;</p>
+<p>enable_predictive_host_dependency_checks=1</p>
+<p>&nbsp;</p>
+<p>enable_predictive_service_dependency_checks=1</p>
+<p>&nbsp;</p>
+<p>soft_state_dependencies=0</p>
+<p>&nbsp;</p>
+<p>auto_reschedule_checks=0</p>
+<p>&nbsp;</p>
+<p>auto_rescheduling_interval=30</p>
+<p>&nbsp;</p>
+<p>auto_rescheduling_window=180</p>
+<p>&nbsp;</p>
+<p>sleep_time=0.25</p>
+<p>&nbsp;</p>
+<p>service_check_timeout=60</p>
+<p>&nbsp;</p>
+<p>host_check_timeout=30</p>
+<p>&nbsp;</p>
+<p>event_handler_timeout=30</p>
+<p>&nbsp;</p>
+<p>notification_timeout=30</p>
+<p>&nbsp;</p>
+<p>ocsp_timeout=5</p>
+<p>&nbsp;</p>
+<p>perfdata_timeout=5</p>
+<p>&nbsp;</p>
+<p>retain_state_information=1</p>
+<p>&nbsp;</p>
+<p>state_retention_file=/usr/local/nagios/var/retention.dat</p>
+<p>&nbsp;</p>
+<p>retention_update_interval=60</p>
+<p>&nbsp;</p>
+<p>use_retained_program_state=1</p>
+<p>&nbsp;</p>
+<p>use_retained_scheduling_info=1</p>
+<p>&nbsp;</p>
+<p>retained_host_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>retained_service_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>retained_process_host_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>retained_process_service_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>retained_contact_host_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>retained_contact_service_attribute_mask=0</p>
+<p>&nbsp;</p>
+<p>interval_length=60</p>
+<p>&nbsp;</p>
+<p>use_aggressive_host_checking=0</p>
+<p>&nbsp;</p>
+<p>execute_service_checks=1</p>
+<p>&nbsp;</p>
+<p>accept_passive_service_checks=1</p>
+<p>&nbsp;</p>
+<p>execute_host_checks=1</p>
+<p>&nbsp;</p>
+<p>accept_passive_host_checks=1</p>
+<p>&nbsp;</p>
+<p>enable_notifications=1</p>
+<p>&nbsp;</p>
+<p>enable_event_handlers=1</p>
+<p>&nbsp;</p>
+<p>process_performance_data=0</p>
+<p>&nbsp;</p>
+<p>obsess_over_services=0</p>
+<p>&nbsp;</p>
+<p>obsess_over_hosts=0</p>
+<p>&nbsp;</p>
+<p>translate_passive_host_checks=0</p>
+<p>&nbsp;</p>
+<p>passive_host_checks_are_soft=0</p>
+<p>&nbsp;</p>
+<p>check_for_orphaned_services=1</p>
+<p>&nbsp;</p>
+<p>check_for_orphaned_hosts=1</p>
+<p>&nbsp;</p>
+<p>check_service_freshness=1</p>
+<p>&nbsp;</p>
+<p>service_freshness_check_interval=60</p>
+<p>&nbsp;</p>
+<p>check_host_freshness=0</p>
+<p>&nbsp;</p>
+<p>host_freshness_check_interval=60</p>
+<p>&nbsp;</p>
+<p>additional_freshness_latency=15</p>
+<p>&nbsp;</p>
+<p>enable_flap_detection=1</p>
+<p>&nbsp;</p>
+<p>low_service_flap_threshold=5.0</p>
+<p>&nbsp;</p>
+<p>high_service_flap_threshold=20.0</p>
+<p>&nbsp;</p>
+<p>low_host_flap_threshold=5.0</p>
+<p>&nbsp;</p>
+<p>high_host_flap_threshold=20.0</p>
+<p>&nbsp;</p>
+<p>date_format=us</p>
+<p>&nbsp;</p>
+<p>p1_file=/usr/local/nagios/bin/p1.pl</p>
+<p>&nbsp;</p>
+<p>enable_embedded_perl=1</p>
+<p>&nbsp;</p>
+<p>use_embedded_perl_implicitly=1</p>
+<p>&nbsp;</p>
+<p>illegal_object_name_chars=`~!$%^&amp;*|’&quot;&lt;&gt;?,()=</p>
+<p>&nbsp;</p>
+<p>illegal_macro_output_chars=`~$&amp;|’&quot;&lt;&gt;</p>
+<p>&nbsp;</p>
+<p>use_regexp_matching=0</p>
+<p>&nbsp;</p>
+<p>use_true_regexp_matching=0</p>
+<p>&nbsp;</p>
+<p>admin_email=nagios@localhost</p>
+<p>&nbsp;</p>
+<p>admin_pager=pagenagios@localhost</p>
+<p>&nbsp;</p>
+<p>daemon_dumps_core=0</p>
+<p>&nbsp;</p>
+<p>use_large_installation_tweaks=0</p>
+<p>&nbsp;</p>
+<p>enable_environment_macros=1</p>
+<p>&nbsp;</p>
+<p>debug_level=0</p>
+<p>&nbsp;</p>
+<p>debug_verbosity=1</p>
+<p>&nbsp;</p>
+<p>debug_file=/usr/local/nagios/var/nagios.debug</p>
+<p>&nbsp;</p>
+<p>max_debug_file_size=1000000</p>
+<p>改check_external_commands =0为</p>
+<p>&nbsp;</p>
+<p>check_external_commands=1</p>
+<p>&nbsp;</p>
+<p>//这行的作用是允许执行在web界面下重启nagios、停止主机/服务检查等操作。把command_check_interval的值从默认的1改成</p>
+<p>&nbsp;</p>
+<p>command_check_interval=15s</p>
+<p>&nbsp;</p>
+<p>//Note: By setting this value to -1, Nagios will check for external commands as often as possible.</p>
+<p>第二个要修改的配置文件是cgi.cfg，它的作用是控制相关cgi脚本。</p>
+<p>&nbsp;</p>
+<p>vi cgi.cfg</p>
+<p>&nbsp;</p>
+<p>main_config_file=/usr/local/nagios/etc/nagios.cfg</p>
+<p>&nbsp;</p>
+<p>physical_html_path=/usr/local/nagios/share</p>
+<p>&nbsp;</p>
+<p>url_html_path=/nagios</p>
+<p>&nbsp;</p>
+<p>show_context_help=0</p>
+<p>&nbsp;</p>
+<p>use_pending_states=1</p>
+<p>&nbsp;</p>
+<p>use_authentication=1</p>
+<p>&nbsp;</p>
+<p>use_ssl_authentication=0</p>
+<p>&nbsp;</p>
+<p>authorized_for_system_information=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_configuration_information=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_system_commands=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_all_services=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_all_hosts=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_all_service_commands=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>authorized_for_all_host_commands=nagiosadmin,sushixiaoti</p>
+<p>&nbsp;</p>
+<p>default_statusmap_layout=5</p>
+<p>&nbsp;</p>
+<p>default_statuswrl_layout=4</p>
+<p>&nbsp;</p>
+<p>ping_syntax=/bin/ping -n -U -c 5 $HOSTADDRESS$</p>
+<p>&nbsp;</p>
+<p>refresh_rate=90</p>
+<p>&nbsp;</p>
+<p>escape_html_tags=1</p>
+<p>&nbsp;</p>
+<p>action_url_target=_blank</p>
+<p>&nbsp;</p>
+<p>notes_url_target=_blank</p>
+<p>&nbsp;</p>
+<p>lock_author_names=1</p>
+<p>&nbsp;</p>
+<p>//确保use_authentication=1。把 use_authentication的值设置成&rdquo;0&rdquo;来取消验证是一个十分糟糕的想法。接下来修改default_user_name=sushixiaoti</p>
+<p>上述用户名是执行命令</p>
+<p>&nbsp;</p>
+<p>/usr/local/httpd/bin/htpasswd -c /usr/local/nagios/etc/htpasswd sushixiaoti</p>
+<p>&nbsp;</p>
+<p>所生成的。</p>
+<p>&nbsp;</p>
+<p>nagios 3的其它配置文件在objects目录下:</p>
+<p>&nbsp;</p>
+<p>cd&nbsp; objects</p>
+<p>&nbsp;</p>
+<p>vi contacts.cfg</p>
+<p>&nbsp;</p>
+<p>添加</p>
+<p>&nbsp;</p>
+<p>define contact {</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; system administrator</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti@veryi.com</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-contact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from generic-contact template (defined above)</p>
+<p>&nbsp;</p>
+<p>}</p>
+<p>&nbsp;</p>
+<p>define contactgroup{</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contactgroup_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nagios info</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;</p>
+<h1 id="contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_//不要有空格">contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //不要有空格</h1><p>vi commands.cf</p>
+<p>&nbsp;</p>
+<p>添加</p>
+<p>&nbsp;</p>
+<h1 id="NRPE_COMMAND">NRPE COMMAND</h1><p>&nbsp;</p>
+<p>#</p>
+<p>&nbsp;</p>
+<h6 id="#">#</h6><p>&nbsp;</p>
+<h1 id="\’check_nrpe_\’_command_definition">\’check_nrpe \’ command definition</h1><p>&nbsp;</p>
+<p>#</p>
+<p>&nbsp;</p>
+<p>define command{</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_name check_nrpe</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;</p>
+<p>define command{</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_name check_rdisk</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$ $ARG3$ $ARG4$</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>运行程序</p>
+<p>&nbsp;</p>
+<p>/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg</p>
+<p>&nbsp;</p>
+<p>来检查所有配置文件的正确性。</p>
+<p>启动nagios</p>
+<p>&nbsp;</p>
+<p>/usr/local/nagios/bin/nagios -d /usr/local/nagios/etc/nagios.cfg</p>
+<p>&nbsp;</p>
+<p>mkdir -p /var/log/nagios</p>
+<p>&nbsp;</p>
+<p>chown nagios.nagios /var/log/nagios</p>
+<p>chmod +x /etc/init.d/nagios</p>
+<p>nagios 最基本的安装配置已经完成，只有对本地主机的监控。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/linux config nagios-3/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

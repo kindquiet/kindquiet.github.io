@@ -1,0 +1,60 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>squid优化 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="squid优化"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-06-25T00:34:06.000Z" class="post__time">六月 25, 2009</time><h1 class="post__title"><a href="/2009/06/25/w/squid-e4-bc-98-e5-8c-96/">squid优化</a></h1></header><div class="post__main"><p>/usr/local/squid/bin/squidclient -p 3128 -h localhost mgr:io</p>
+<pre><code><span class="status">HTTP/1.0 <span class="number">200</span> OK</span>
+
+<span class="http"><span class="attribute">Server</span>: <span class="string">squid/3.0.STABLE15</span>
+
+<span class="elixir"><span class="constant">HTTP I/O</span>
+
+number of <span class="symbol">reads:</span> <span class="number">18985956</span>
+
+<span class="constant">Read Histogram:</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">766</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">38574</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9769</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">5</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">8</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30168</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9</span>-&amp;nbsp;&amp;nbsp; <span class="number">16</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">10200</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp; <span class="number">17</span>-&amp;nbsp;&amp;nbsp; <span class="number">32</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">31835</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp; <span class="number">33</span>-&amp;nbsp;&amp;nbsp; <span class="number">64</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">32801</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;&amp;nbsp; <span class="number">65</span>-&amp;nbsp; <span class="number">128</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">113799</span>&amp;nbsp; <span class="number">1</span>%
+
+&amp;nbsp; <span class="number">129</span>-&amp;nbsp; <span class="number">256</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">457726</span>&amp;nbsp; <span class="number">2</span>%
+
+&amp;nbsp; <span class="number">257</span>-&amp;nbsp; <span class="number">512</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">1161065</span>&amp;nbsp; <span class="number">6</span>%
+
+&amp;nbsp; <span class="number">513</span>- <span class="number">1024</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">2114155</span> <span class="number">11</span>%
+
+&amp;nbsp;<span class="number">1025</span>- <span class="number">2048</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">4009525</span> <span class="number">21</span>%
+
+&amp;nbsp;<span class="number">2049</span>- <span class="number">4096</span><span class="symbol">:&amp;nbsp</span>; <span class="number">10975545</span> <span class="number">58</span>%
+
+&amp;nbsp;<span class="number">4097</span>- <span class="number">8192</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">26</span>&amp;nbsp; <span class="number">0</span>%
+
+&amp;nbsp;<span class="number">8193</span>-<span class="number">16384</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>&amp;nbsp; <span class="number">0</span>%
+
+<span class="number">16385</span>-<span class="number">32768</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>&amp;nbsp; <span class="number">0</span>%
+
+vim squid.conf
+
+minimum_object_size <span class="number">64</span> <span class="constant">KB</span>
+
+maximum_object_size <span class="number">8192</span> <span class="constant">KB</span>
+
+maximum_object_size_in_memory <span class="number">4096</span> <span class="constant">KB</span></span></span>
+</code></pre><p>&nbsp;</p>
+<p>/usr/local/squid/sbin/squid -k reconfigure</p>
+</div><footer class="post__foot u-cf"><a href="/2009/06/25/w/squid-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/06/25/w/squid-e4-bc-98-e5-8c-96/" data-url="http://blog.veryi.com/2009/06/25/w/squid-e4-bc-98-e5-8c-96/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/06/30/w/mysql-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e4-b8-8d-e6-88-90-e5-8a-9f-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

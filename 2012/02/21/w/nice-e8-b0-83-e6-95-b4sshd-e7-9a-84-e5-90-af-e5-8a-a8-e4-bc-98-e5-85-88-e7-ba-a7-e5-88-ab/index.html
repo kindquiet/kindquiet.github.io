@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>nice调整SSHD的启动优先级别 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="nice调整SSHD的启动优先级别"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-02-21T01:51:26.000Z" class="post__time">二月 21, 2012</time><h1 class="post__title"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/">nice调整SSHD的启动优先级别</a></h1></header><div class="post__main"><p>centos linux服务器远程连接无响应，有可能是由于apache或者是mysql等服务过载，或者受到dos等攻击造成服务器无响应。</p>
+<pre><code>为避免强制重启，可以调高sshd优先级。使用-2优先级是希望sshd服务的优先级高于apache等的0，但低于<span class="keyword">log</span>等的-5。
+
+要运行的命令作为 nice 的一个参数。而其另一个参数 -<span class="keyword">n</span> 可用来设置优先级别。默认情况下 nice 将设置优先级为 10。
+
+查看启动脚本
+
+vim /etc/init.<span class="keyword">d</span>/sshd 
+
+修改里面的
+
+<span class="label">$SSHD</span> <span class="label">$OPTIONS</span> &amp;amp;&amp;amp; success || failure
+
+为
+
+nice -<span class="keyword">n</span> -2 <span class="label">$SSHD</span> <span class="label">$OPTIONS</span> &amp;amp;&amp;amp; success || failure
+
+或者
+
+sed -i &amp;#39;s/<span class="label">$SSHD</span> <span class="label">$OPTIONS</span>/nice -<span class="keyword">n</span> -2 <span class="label">$SSHD</span> <span class="label">$OPTIONS</span>/&amp;#39; /etc/init.<span class="keyword">d</span>/sshd
+
+sudo /etc/init.<span class="keyword">d</span>/sshd restart
+
+查看优先级
+
+ps -aeo cmd,pid,nice |grep sshd
+</code></pre><p>系统中运行的每个进程都有一个优先级(亦称&ldquo;nice 值&rdquo;)，其范围从 -20 (最高优先级)到 19 (最低优先级)。默认情况下，进程的优先级是 0 (&ldquo;基本&rdquo;调度优先级)。优先级比较大的进程(nice 值比较小，最低到 -20)相对优先级比较小的进程(直到 19)将比较频繁地被调度运行，因此就拥有更多的进程周期。一般用户只能降低它们自己进程的优先级别，并限于 0 到 19 之间。超级用户(root)可以将任何进程的优先级设定为任何值&nbsp; </p>
+<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 renice 命令。其语法为：
+
+renice 优先级 [[-p] pid <span class="keyword">...</span>] [[-g] pgrp <span class="keyword">...</span>] [[-u] 用户名 <span class="keyword">...</span>]
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/" data-url="http://blog.veryi.com/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/04/10/w/samba-e6-9c-8d-e5-8a-a1-e4-b8-8d-e8-bf-9e-e6-8e-a5-e6-89-93-e5-8d-b0-e6-9c-ba-e9-94-99-e8-af-af-e4-bf-a1-e6-81-af-e5-85-b3-e9-97-ad/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

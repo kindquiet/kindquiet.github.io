@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>postfix 使用DNSBL和黑名单白名单 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="postfix 使用DNSBL和黑名单白名单"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-05-24T09:19:08.000Z" class="post__time">五月 24, 2012</time><h1 class="post__title"><a href="/2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/">postfix 使用DNSBL和黑名单白名单</a></h1></header><div class="post__main"><p>使用基于dnsbl的反垃圾邮件antispam服务，将固定客户加入白名单。</p>
+<p><span class="body">编辑/etc/postfix/main.cf</span></p>
+<p><span class="body">vim /etc/postfix/main.cf</span></p>
+<p>smtpd_client_restrictions =</p>
+<pre><code><span class="subst">&amp;</span>nbsp; check_client_access hash:/etc/postfix/access,
+
+<span class="subst">&amp;</span>nbsp; reject_rbl_client cblplus<span class="built_in">.</span>anti<span class="attribute">-spam</span><span class="built_in">.</span>org<span class="built_in">.</span><span class="literal">cn</span><span class="subst">=</span><span class="number">127.0</span><span class="number">.8</span><span class="number">.6</span>,
+
+<span class="subst">&amp;</span>nbsp; reject_rbl_client zen<span class="built_in">.</span>spamhaus<span class="built_in">.</span>org<span class="subst">=</span><span class="number">127.0</span><span class="number">.0</span><span class="number">.2</span>,
+
+<span class="subst">&amp;</span>nbsp; <span class="variable">#reject_rbl_client</span> cbl<span class="built_in">.</span>abuseat<span class="built_in">.</span>org<span class="subst">=</span><span class="number">127.0</span><span class="number">.0</span><span class="number">.2</span>,
+
+<span class="subst">&amp;</span>nbsp; <span class="variable">#reject_rbl_client</span> cblless<span class="built_in">.</span>anti<span class="attribute">-spam</span><span class="built_in">.</span>org<span class="built_in">.</span><span class="literal">cn</span><span class="subst">=</span><span class="number">127.0</span><span class="number">.8</span><span class="number">.5</span>,
+</code></pre><p>编辑/etc/postfix/access</p>
+<p>1.2.3为白名单地址，</p>
+<p>拒收来自dynamic.hinet.net的地址。</p>
+<p>vim /etc/postfix/access</p>
+<p>1.2.3 OK</p>
+<pre><code><span class="keyword">dynamic</span>.apol.com.tw REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.giga.net.tw REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.hinet.net REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.seed.net.tw REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.tfn.net.tw REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.ttn.net REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+
+<span class="keyword">dynamic</span>.lsc.net.tw REJECT We can&amp;<span class="string">#39</span>;t allow <span class="keyword">dynamic</span> IP <span class="keyword">to</span> relay!
+</code></pre><p>postmap /etc/postfix/access</p>
+<p>postfix reload</p>
+</div><footer class="post__foot u-cf"><a href="/2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/" data-url="http://blog.veryi.com/2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/05/23/w/vg-e9-87-8d-e5-90-8d-e5-92-8clv-e4-b8-8d-e8-83-bdmount-e7-9a-84-e5-a4-84-e7-90-86/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

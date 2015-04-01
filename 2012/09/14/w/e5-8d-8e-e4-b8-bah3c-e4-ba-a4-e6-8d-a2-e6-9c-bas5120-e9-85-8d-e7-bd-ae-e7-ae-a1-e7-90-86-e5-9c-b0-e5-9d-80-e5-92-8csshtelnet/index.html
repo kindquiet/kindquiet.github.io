@@ -1,0 +1,238 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>华为H3C交换机S5120配置管理地址和ssh/telnet - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="华为H3C交换机S5120配置管理地址和ssh/telnet"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-09-14T02:22:56.000Z" class="post__time">九月 14, 2012</time><h1 class="post__title"><a href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/">华为H3C交换机S5120配置管理地址和ssh/telnet</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp; 使用串口连接交换机，笔记本电脑通信使用USB转串口，建议串口芯片是FT232RL的转接头。</p>
+<pre><code>交换机默认密码是<span class="constant">H</span>3C,<span class="constant">H</span>3C或者admin，admin 。 
+
+[<span class="constant">Quidway</span>] <span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span> <span class="number">4</span>
+
+[<span class="constant">Quidway</span>-ui-vty<span class="number">0</span>-<span class="number">4</span>] authentication-<span class="literal">mode</span> scheme
+
+[<span class="constant">Quidway</span>-ui-vty<span class="number">0</span>-<span class="number">4</span>] protocol inbound ssh
+
+[<span class="constant">Quidway</span>] local-<span class="keyword">user</span> client001
+
+[<span class="constant">Quidway</span>-luser-client001] <span class="literal">password</span> simple nmamtf
+
+[<span class="constant">Quidway</span>-luser-client001] <span class="keyword">service</span>-<span class="built_in">type</span> ssh
+
+[<span class="constant">Quidway</span>] ssh <span class="keyword">user</span> client001 authentication-<span class="built_in">type</span> <span class="literal">password</span>
+
+protocol inbound all 
+
+&amp;lt;h3c&amp;gt;sys
+
+[h3c]int <span class="keyword">vlan</span> <span class="number">1</span>
+
+[h3c-int-vlan1]<span class="literal">ip</span> add&amp;nbsp;&amp;nbsp; <span class="number">192.168</span>.<span class="number">12.89</span>&amp;nbsp;&amp;nbsp; <span class="number">255.255</span>.<span class="number">255.0</span>
+
+[h3c-int-vlan1]quit
+
+[h3c]local-<span class="keyword">user</span> admin
+
+[h3c-admin]<span class="literal">password</span> simple nmamtf
+
+[h3c-admin]<span class="keyword">service</span>-<span class="built_in">type</span> telnet authorization-attribute level <span class="number">3</span>
+
+[h3c-admin]quit
+
+[h3c]<span class="keyword">user</span> vty <span class="number">0</span> <span class="number">4</span>
+
+[h3c-v-<span class="number">0</span>-<span class="number">4</span>]auth s
+
+[h3c-v-<span class="number">0</span>-<span class="number">4</span>]quit
+
+[h3c]quit
+
+&amp;lt;h3c&amp;gt;save
+
+ssh <span class="keyword">user</span> admin authentication-<span class="built_in">type</span> <span class="literal">password</span>
+
+local-<span class="keyword">user</span>&amp;nbsp; admin
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="literal">password</span>&amp;nbsp; simple/cipher&amp;nbsp; admin
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">service</span>-<span class="built_in">type</span>&amp;nbsp; telnet
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; authorization-attribute level <span class="number">3</span>
+
+如果是telnet的话还加上下面的
+
+telnet&amp;nbsp; server <span class="literal">enable</span>
+
+<span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span> <span class="number">4</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; authentication-<span class="literal">mode</span> scheme
+
+display snmp-agent community
+
+&amp;lt;<span class="constant">H</span>3C&amp;gt;<span class="literal">system</span>-view
+
+<span class="constant">System</span> <span class="constant">View</span>: return to <span class="constant">User</span> <span class="constant">View</span> with <span class="constant">Ctrl</span>+<span class="constant">Z</span>.
+
+[<span class="constant">H</span>3C]snmp-agent
+
+[<span class="constant">H</span>3C]snmp-agent community read public
+
+[<span class="constant">H</span>3C]snmp-agent sys-info version v1 v2c
+
+[<span class="constant">H</span>3C]save
+
+<span class="constant">H</span>3C <span class="constant">S</span>512<span class="number">0</span> 交换机常用配置
+
+<span class="number">1</span>、配置主机名
+
+[<span class="constant">H</span>3C]systemname <span class="constant">H</span>3C
+
+<span class="number">2</span>、配置console口密码
+
+<span class="comment"># 进入系统视图。</span>
+
+&amp;lt;<span class="constant">H</span>3C&amp;gt; <span class="literal">system</span>-view
+
+<span class="comment"># 进入AUX用户界面视图。</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">user</span>-<span class="keyword">interface</span> aux <span class="number">0</span>
+
+<span class="comment"># 设置通过Console口登录交换机的用户进行Password认证。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] authentication-<span class="literal">mode</span> <span class="literal">password</span>
+
+<span class="comment"># 设置用户的认证口令为加密方式，口令为nmamtf。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] set authentication <span class="literal">password</span> cipher nmamtf
+
+<span class="comment"># 设置从AUX用户界面登录后可以访问的命令级别为2级。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] <span class="keyword">user</span> privilege level <span class="number">2</span>
+
+<span class="number">3</span>、配置<span class="constant">Telnet</span>
+
+<span class="comment"># 进入系统视图。</span>
+
+&amp;lt;<span class="constant">H</span>3C&amp;gt; <span class="literal">system</span>-view
+
+<span class="comment"># 进入VTY0用户界面视图。</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span>
+
+<span class="comment"># 设置通过VTY0口登录交换机的用户进行Password认证。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] authentication-<span class="literal">mode</span> <span class="literal">password</span>
+
+<span class="comment"># 设置用户的认证口令为密码方式，口令为nmamtf。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] set authentication <span class="literal">password</span> cipher nmamtf
+
+<span class="comment"># 设置从VTY0用户界面登录后可以访问的命令级别为2级。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] <span class="keyword">user</span> privilege level <span class="number">2</span>
+
+<span class="comment"># 设置VTY0用户界面支持Telnet协议。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] protocol inbound telnet
+
+<span class="number">4</span>、配置交换机<span class="constant">V</span>LAN <span class="number">1</span> 管理地址
+
+&amp;lt;<span class="constant">H</span>3C&amp;gt; <span class="literal">system</span>-view
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> <span class="keyword">vlan</span>-<span class="keyword">interface</span> <span class="number">1</span>
+
+[<span class="constant">H</span>3C-<span class="constant">V</span>LAN-interface1] <span class="literal">ip</span> address <span class="number">192.168</span>.<span class="number">0</span>.<span class="number">129</span> <span class="number">255.255</span>.<span class="number">255.0</span>
+
+<span class="number">5</span>、配置交换机网关地址
+
+[<span class="constant">H</span>3C]<span class="literal">ip</span> route-static <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> <span class="number">192.168</span>.<span class="number">0</span>.<span class="number">1</span>
+
+<span class="number">6</span>、配置<span class="constant">H</span>TTP服务
+
+[<span class="constant">H</span>3C] local-<span class="keyword">user</span> admin&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment">#创建http用户</span>
+
+[<span class="constant">H</span>3C-luser-admin] <span class="keyword">service</span>-<span class="built_in">type</span> telnet 
+
+[<span class="constant">H</span>3C-luser-admin] authorization-attribute level <span class="number">3</span>
+
+[<span class="constant">H</span>3C-luser-admin] <span class="literal">password</span> cipher admin&amp;nbsp; <span class="comment">#设置http用户密码,并加密显示</span>
+
+<span class="number">7</span>、配置<span class="constant">S</span>NMP
+
+[<span class="constant">H</span>3C]snmp-agent
+
+[<span class="constant">H</span>3C]snmp-agent community read public&amp;nbsp; <span class="comment">#设置snmp团体名称 ，权限为只读</span>
+
+[<span class="constant">H</span>3C]snmp-agent sys-info version v1 v2c&amp;nbsp;&amp;nbsp; <span class="comment">#设置snmp版本v1 和v2</span>
+
+<span class="number">8</span>、<span class="constant">Qos</span>端口限速
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> gigabitethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">1</span>
+
+<span class="comment"># 配置限速参数，端口进/出速率限制为5120kbps。</span>
+
+[<span class="constant">H</span>3C-<span class="constant">Gigabit</span>Ethernet1/<span class="number">0</span>/<span class="number">1</span>] qos lr inbound cir <span class="number">5120</span>
+
+[<span class="constant">H</span>3C-<span class="constant">Gigabit</span>Ethernet1/<span class="number">0</span>/<span class="number">1</span>] qos lr outbound cir <span class="number">5120</span>
+
+<span class="number">9</span>、创建<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C] <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">10</span>、删除<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C] undo <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">11</span>、将端口加入<span class="keyword">vlan</span> <span class="number">100</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C] port access <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">12</span>、查看<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C]display <span class="keyword">vlan</span> all
+
+<span class="number">12</span>、查看端口状态
+
+[<span class="constant">H</span>3C]display <span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+<span class="number">14</span>、启用端口
+
+[<span class="constant">H</span>3C]<span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C]undo shutdown
+
+<span class="number">15</span>、关闭端口
+
+[<span class="constant">H</span>3C]<span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C]shutdown
+
+<span class="number">16</span>、查看<span class="constant">M</span>AC地址列表
+
+[<span class="constant">H</span>3C]display mac-address
+
+<span class="number">17</span>、查看arp信息
+
+[<span class="constant">H</span>3C]display arp
+
+<span class="number">18</span>、查看current配置
+
+[<span class="constant">H</span>3C]display current-configuration
+
+<span class="number">19</span>、查看saved配置
+
+[<span class="constant">H</span>3C]display saved-configuration
+
+注:current 配置是保存在交换机内存里面，当交换机重启时，不会生效
+
+&amp;nbsp;&amp;nbsp; 要交换机重启时生效，必须保存在saved-configureation配置里
+
+<span class="number">20</span>、保存交换机配置
+
+[<span class="constant">H</span>3C]save 
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/" data-url="http://blog.veryi.com/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/19/w/linux-e5-8f-96-e6-b6-88-e5-b1-8f-e8-94-bdvim-e3-80-81less-e5-92-8cmtr-e7-ad-89-e9-80-80-e5-87-ba-e6-b8-85-e5-b1-8f/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

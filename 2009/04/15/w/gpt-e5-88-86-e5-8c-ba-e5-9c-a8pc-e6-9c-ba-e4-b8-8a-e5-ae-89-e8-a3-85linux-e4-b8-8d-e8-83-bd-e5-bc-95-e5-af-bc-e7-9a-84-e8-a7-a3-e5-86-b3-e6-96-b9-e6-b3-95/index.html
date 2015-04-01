@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>GPT分区在PC机上安装linux不能引导的解决方法 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="GPT分区在PC机上安装linux不能引导的解决方法"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
+<p>Your boot partition is on a disk using the GPT partitioning Scheme but this machines cannot boot using GPT.</p>
+<pre><code>用linux live CD，推荐slax <span class="function_start"><span class="keyword">on</span></span> usb disk,启动系统以后，执行:
+</code></pre><p>查看硬盘的设备名称：</p>
+<p>fdisk -l</p>
+<p>假设是/dev/sdb</p>
+<p>parted</p>
+<p>select /dev/sdb</p>
+<p>mklabel msdos</p>
+<p>quit</p>
+<p>或者运行</p>
+<pre><code>parted -s /dev/sdb mklabel msdos
+
+然后就可以正常安装了。
+
+可以用 parted -s /dev/sdc print来查看分区情况
+
+补充一些知识:
+
+目前我们可以接触到的大部分pc依然采用上世纪遗传下来的 BIOS + MBR 组合。 BIOS，基本输入输出系统 (Basic <span class="keyword">Input</span>-Output System)，是软件与硬件之间的一个接口，可以把它看作一个翻译在中文与英语之间，虽然两者完全不同，不过可以让大家了解 BIOS 所处的位置，BIOS 通常被写入一块 ROM 芯片连接在主板上，当然也有直接写入北桥的，不过相当少见。 BIOS 几乎是完全用汇编语言编写，很大程度上决定了主板的性能及稳定性。
+
+MBR，主引导记录 (Master Boot <span class="keyword">Record</span>)，也就是我们常见的分区方法，不过管理员外的最终用户很少知道它的存在，MBR 分区的标准决定了 MBR 只支持在<span class="number">2</span>TB以下 (超过 <span class="number">2</span>TB 的只能管理 <span class="number">2</span>TB) 的硬盘中创建<span class="number">4</span>个分区表项，要获得更多分区，需要次级结构--扩展分区。扩展分区可以再次被分成一个或多个逻辑磁盘，也就是普通情况下的<span class="keyword">C</span>盘以外的盘，或说第一个分区以外的部分，有些情况下 Windows 里的<span class="keyword">C</span>盘可能会是一个逻辑分区。
+
+EFI，可扩展固件接口 (Extensible Firmware Interface)，由英特尔 (Intel) 公司提出的一种替代 BIOS 的升级方案。 EFI 的位置很特殊，它不像是 BIOS 那样自己即是固件又是接口，EFI 只是一个接口，位于操作系统与平台固件之间，感觉像是公司、CEO、CEO秘书之间的关系一样，由CEO (操作系统) 下任务，CEO秘书 (EFI) 负责把任务分配下发到公司各部门经理 (平台固件)，经理们又把任务下发到具体的小组 (各类硬件) 去完成。
+
+GPT ，全局唯一标识磁盘分区表 (GUID <span class="keyword">Partition</span> <span class="keyword">Table</span>)，GUID，全局唯一标识符 (Globally <span class="keyword">Unique</span> Identifier) 。GUID 分区表 (GPT) 是作为 Extensible Firmware Interface (EFI) 计划的一部分引入的。当然，你也可以在 BIOS 的PC中使用 GPT 分区，虽然 GPT 来自以 EFI 计划，但并不依赖于 EFI。GPT 相对于以往 PC 普遍使用的主引导记录 (MBR) 分区方案更加灵活。比如可以超过 MBR 分区表项<span class="number">4</span>个的限制，在 GPT 规范里对分区的数量几乎是没有限制的，大家在网上可以查到的<span class="number">128</span>个实际上是 Windows 系统 (支持 GPT 的 Windows) 做出的限制。 GPT 对可管理磁盘大小也超过了 MBR 的<span class="number">2</span>TB (<span class="number">1</span>TB = <span class="number">1024</span>GB) 而达到了 <span class="number">18</span>EB (<span class="number">1</span>EB = <span class="number">1024</span>TB) 。在 MBR 分区方案中操作系统的引导是通过放在磁盘最开始 (第一扇区) 里的 MBR (这里的 MBR 是指主引导记录，而不是主引导记录分区方案，两者是同名的。我的猜测是为了与 GPT 分区方案区分，使用了主引导记录引导方式的名字 MBR 来命名此种分区方案，我查不到确切的资料正明我的猜测是否正确，只能大家努力区分一下了。) 。把重要的信息 (如分区信息、目录等) 放在某个扇区里是 MBR 分区方案的方法，而 GPT 把这个信息放到了分区里，Intel的解释是这样可以更加明确更加安全。 GPT 分区为了保护自己不受 MBR 方案下磁盘管理软件的危害，在磁盘的最开始位置 (第一个扇区) 建立了一个保护分区 (Protective MBR)，这种分区的类型标识为 <span class="number">0xEE</span>。苹果系统 (Mac OS X) 下这个保护分区大小为 <span class="number">200</span>MB，这个分区在 Window NT 磁盘管理器里名字叫做 GPT 保护分区。这个分区可以让不能识别 GPT 的磁盘管理软件把 GPT 磁盘看成一个未知格式的分区，而不是错误地当成一个未分区的磁盘。
+</code></pre><p>常用的 MS-DOS 分区表格式不能在一个大于 2TB 的设备上使用。要支持大于2TB</p>
+<pre><code>的设备，GPT 分区表格式必须被使用，并且必须使用 <span class="keyword">*</span>parted<span class="keyword">*</span> 工具程序来创建和
+
+管理 GPT 分区。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" data-url="http://blog.veryi.com/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

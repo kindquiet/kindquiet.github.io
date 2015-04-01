@@ -1,0 +1,773 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-25T03:57:42.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">cacti SQL Failed! Error:'1062'故障排除</a></h1></header><div class="post__main"><p>cacti日志报错：</p>
+<p>05/25/2011 11:40:01 AM - SPINE: Poller[0] ERROR: SQL Failed! Error:&#39;1062&#39;, Message:&#39;Duplicate entry &#39;3-mem_buffers-2011-05-25 11:40:01&#39; for key &#39;PRIMARY&#39;&#39;, SQL Fragment:&#39;INSERT INTO poller_output (local_data_id, rrd_name, time, output) VALUES (3,&#39;mem_buffers&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;927912&#39;),(4,&#39;mem_swap&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4192956&#39;),(5,&#39;&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;1min:0.10 5min:0.16 10min:0.23&#39;),(6,&#39;users&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4&#39;),(7,&#39;proc&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;169&#39;),(8,&#39;hdd_free&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;47949780&#39;),(8,&#39;hdd_used&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;44424292&#39;)&#39;</p>
+<pre><code>Check
+
+- <span class="regexp">/etc/</span>crontab
+
+- <span class="regexp">/etc/</span>cron.d/cacti
+
+- crontab of root and cactiuser 
+
+cat <span class="regexp">/etc/</span>crontab
+
+SHELL=<span class="regexp">/bin/</span>bash
+
+PATH=<span class="regexp">/sbin:/</span><span class="string">bin:</span><span class="regexp">/usr/</span><span class="string">sbin:</span><span class="regexp">/usr/</span>bin
+
+MAILTO=root
+
+HOME=/
+
+# run-parts
+
+<span class="number">01</span> * * * * root run-parts <span class="regexp">/etc/</span>cron.hourly
+
+<span class="number">02</span> <span class="number">4</span> * * * root run-parts <span class="regexp">/etc/</span>cron.daily
+
+<span class="number">22</span> <span class="number">4</span> * * <span class="number">0</span> root run-parts <span class="regexp">/etc/</span>cron.weekly
+
+<span class="number">42</span> <span class="number">4</span> <span class="number">1</span> * * root run-parts <span class="regexp">/etc/</span>cron.monthly
+</code></pre><p>crontab -l -u cactiuser</p>
+<pre><code>*<span class="regexp">/5 * * * * /</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php&amp;nbsp; <span class="regexp">/opt/</span>local<span class="regexp">/www/</span>html<span class="regexp">/cacti/</span>poller.php &amp;gt; <span class="regexp">/dev/</span><span class="literal">null</span> <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span>
+
+cat <span class="regexp">/etc/</span>cron.d/cacti 
+
+*<span class="regexp">/5 * * * *&amp;nbsp;&amp;nbsp;&amp;nbsp; cacti&amp;nbsp;&amp;nbsp;&amp;nbsp; php /</span>var<span class="regexp">/www/</span>cacti<span class="regexp">/poller.php &amp;amp;&amp;gt;/</span>dev/<span class="literal">null</span>
+
+注释以上语句故障排除。
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-19T00:36:41.000Z" class="post__time">五月 19, 2011</time><h1 class="post__title"><a href="/2011/05/19/w/e4-ba-94-e8-a7-82-e5-a0-82-e4-be-9b-e5-85-bb-e5-81-88-e7-bb-93-e6-96-8b-e5-81-88/">五观堂供养偈结斋偈</a></h1></header><div class="post__main"><p>因为&ldquo;食存五观&rdquo;，所以佛门的斋堂又称为&ldquo;五观堂&rdquo;。</p>
+<pre><code><span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 第一观<span class="keyword">&amp;</span><span class="tag">ldquo</span>;计功多少，量彼来处<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;好好计算一下，这一餐饭菜需要多少功夫、多少功劳、多少功德的积累才能得到；好好测量一下，这一餐所需的水、电、煤、米、菜、油、佐料等等，都是从哪里来的？是怎么来的？不是从天上掉下来的，也不是变魔术变出来的，而是多少人的汗水和心血换来的。随便举出其中任何一个环节，都充满了太多太多人的辛勤付出。当我们端在手里、吃在嘴里的时候，可曾把这其中的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;帐<span class="keyword">&amp;</span><span class="tag">rdquo</span>;好好计算过？
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 第二观<span class="keyword">&amp;</span><span class="tag">ldquo</span>;忖己德行，全缺应供<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">ldquo</span>;应供<span class="keyword">&amp;</span><span class="tag">rdquo</span>;是佛门用语，放在诸佛菩萨、高僧大德身上，就是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;应当接受众生的供养<span class="keyword">&amp;</span><span class="tag">rdquo</span>;；放在正在努力修行的普通凡夫身上，就是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;应答众生的供养以广结善缘、自他互勉<span class="keyword">&amp;</span><span class="tag">rdquo</span>;。吃饭就是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;应供<span class="keyword">&amp;</span><span class="tag">rdquo</span>;的一种方式。要好好思忖一下自己的德行，自己究竟是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;全<span class="keyword">&amp;</span><span class="tag">rdquo</span>;德呢？还是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;缺<span class="keyword">&amp;</span><span class="tag">rdquo</span>;德呢？然后根据自己在德行方面的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;全、缺<span class="keyword">&amp;</span><span class="tag">rdquo</span>;情况，来决定自己应该怎样吃这餐饭。
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 第三观<span class="keyword">&amp;</span><span class="tag">ldquo</span>;防心离过，贪等为宗<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;既要防心<span class="keyword">&amp;</span><span class="tag">ldquo</span>;离<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，又要防心<span class="keyword">&amp;</span><span class="tag">ldquo</span>;过<span class="keyword">&amp;</span><span class="tag">rdquo</span>;；防心<span class="keyword">&amp;</span><span class="tag">ldquo</span>;离<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，是防止心念离开正道；防心<span class="keyword">&amp;</span><span class="tag">ldquo</span>;过<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，是防止心念耽迷在过失上面；这些<span class="keyword">&amp;</span><span class="tag">ldquo</span>;离<span class="keyword">&amp;</span><span class="tag">rdquo</span>;和<span class="keyword">&amp;</span><span class="tag">ldquo</span>;过<span class="keyword">&amp;</span><span class="tag">rdquo</span>;都是在不知不觉当中产生出来的，所以需要随时提高警惕进行防止。而<span class="keyword">&amp;</span><span class="tag">ldquo</span>;离<span class="keyword">&amp;</span><span class="tag">rdquo</span>;和<span class="keyword">&amp;</span><span class="tag">ldquo</span>;过<span class="keyword">&amp;</span><span class="tag">rdquo</span>;一旦产生、流露出来的最明显现象就是以<span class="keyword">&amp;</span><span class="tag">ldquo</span>;贪<span class="keyword">&amp;</span><span class="tag">rdquo</span>;为首的几个<span class="keyword">&amp;</span><span class="tag">ldquo</span>;宗<span class="keyword">&amp;</span><span class="tag">rdquo</span>;（这里的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;宗<span class="keyword">&amp;</span><span class="tag">rdquo</span>;意思就是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;宗主、首领<span class="keyword">&amp;</span><span class="tag">rdquo</span>;）。相信大家都知道是哪几个<span class="keyword">&amp;</span><span class="tag">ldquo</span>;宗<span class="keyword">&amp;</span><span class="tag">rdquo</span>;吧。就是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;贪、嗔、痴、慢、疑<span class="keyword">&amp;</span><span class="tag">rdquo</span>;及其<span class="keyword">&amp;</span><span class="tag">ldquo</span>;等等<span class="keyword">&amp;</span><span class="tag">rdquo</span>;啦。
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 第四观<span class="keyword">&amp;</span><span class="tag">ldquo</span>;正事良药，为疗形枯<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;这一餐饭的性质是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;正事<span class="keyword">&amp;</span><span class="tag">rdquo</span>;之<span class="keyword">&amp;</span><span class="tag">ldquo</span>;良药<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，它的目的是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;为<span class="keyword">&amp;</span><span class="tag">rdquo</span>;了治<span class="keyword">&amp;</span><span class="tag">ldquo</span>;疗<span class="keyword">&amp;</span><span class="tag">rdquo</span>;这个<span class="keyword">&amp;</span><span class="tag">ldquo</span>;形<span class="keyword">&amp;</span><span class="tag">rdquo</span>;体、使其暂时不致<span class="keyword">&amp;</span><span class="tag">ldquo</span>;枯<span class="keyword">&amp;</span><span class="tag">rdquo</span>;萎。<span class="keyword">&amp;</span><span class="tag">ldquo</span>;正事<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，即非<span class="keyword">&amp;</span><span class="tag">ldquo</span>;邪事<span class="keyword">&amp;</span><span class="tag">rdquo</span>;；那么什么是佛法的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;正事<span class="keyword">&amp;</span><span class="tag">rdquo</span>;和佛门弟子的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;正事<span class="keyword">&amp;</span><span class="tag">rdquo</span>;呢？好好想想。<span class="keyword">&amp;</span><span class="tag">ldquo</span>;良药<span class="keyword">&amp;</span><span class="tag">rdquo</span>;可能还会<span class="keyword">&amp;</span><span class="tag">ldquo</span>;苦口<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，说明这顿饭既不是为了追求色、香、味、形的世俗感官享受，也不是为了吃得油光水滑、皮毛发亮、摇头摆尾、甚至是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;满汉全席<span class="keyword">&amp;</span><span class="tag">rdquo</span>;。只要能达到<span class="keyword">&amp;</span><span class="tag">ldquo</span>;疗形枯<span class="keyword">&amp;</span><span class="tag">rdquo</span>;的目的，足矣。
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 第五观<span class="keyword">&amp;</span><span class="tag">ldquo</span>;为成道业，应受此食<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;是为了成就道业，就应该接受此食。不是为了成就道业，就不应该接受此食。所以佛门有两副斋堂门口的对联写得很好。第一副这样写：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;五观若存金易化，三心未了水难消<span class="keyword">&amp;</span><span class="tag">rdquo</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;<span class="keyword">&amp;</span><span class="tag">mdash</span>;能够老老实实心存<span class="keyword">&amp;</span><span class="tag">ldquo</span>;五观<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，则<span class="keyword">&amp;</span><span class="tag">ldquo</span>;金易化<span class="keyword">&amp;</span><span class="tag">rdquo</span>;；如果贪、嗔、痴这<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三心<span class="keyword">&amp;</span><span class="tag">rdquo</span>;（也有说<span class="keyword">&amp;</span><span class="tag">ldquo</span>;过去、现在、未来<span class="keyword">&amp;</span><span class="tag">rdquo</span>;这<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三心<span class="keyword">&amp;</span><span class="tag">rdquo</span>;的）一点都没有<span class="keyword">&amp;</span><span class="tag">ldquo</span>;了<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，则<span class="keyword">&amp;</span><span class="tag">ldquo</span>;水难消<span class="keyword">&amp;</span><span class="tag">rdquo</span>;。第二副对联是这样写的：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;有弥勒肚皮千金易化，无维摩手段滴水难消<span class="keyword">&amp;</span><span class="tag">rdquo</span>;。哦，面对这样两位大菩萨的境界，我们一般业障凡夫就只能愧死了。
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 
+
+<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 一般居士于平日用斋时，不分早斋、或午斋，均可以合掌默诵：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;供养十方一切佛 供养十方一切法 供养十方一切僧 供养十方一切众生<span class="keyword">&amp;</span><span class="tag">rdquo</span>;三遍，<span class="keyword">&amp;</span><span class="tag">ldquo</span>;众生无边誓愿度，烦恼无尽誓愿断，法门无量誓愿学，佛道无上誓愿成来<span class="keyword">&amp;</span><span class="tag">rdquo</span>;三遍进行供养。诚心以自己将受用之饮食，发恭敬心供养佛、法、僧三宝，发广大心供养一切众生。
+
+　　为何要<span class="keyword">&amp;</span><span class="tag">ldquo</span>;供养佛法僧三宝<span class="keyword">&amp;</span><span class="tag">rdquo</span>;？因为在浮沉生死的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;冥冥大夜中<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，须仰赖<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三宝为明灯<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，以般若智慧照亮心性的大道；在流转六道的<span class="keyword">&amp;</span><span class="tag">ldquo</span>;滔滔苦海中<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，须依循<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三宝为舟航<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，修福修慧，究竟离苦得乐。因此景仰三宝、感恩三宝、并以三宝为人间最大福田，发恭敬心、菩提心而至心供养。
+
+　　为何要<span class="keyword">&amp;</span><span class="tag">ldquo</span>;供养一切法界众生<span class="keyword">&amp;</span><span class="tag">rdquo</span>;？因为人生在世，事事皆以因缘和合方得成就，食衣住行，无一不是藉助众生之力方得圆满，所谓<span class="keyword">&amp;</span><span class="tag">ldquo</span>;一粥一饭当思来处不易<span class="keyword">&amp;</span><span class="tag">rdquo</span>;是也，所以发感恩心而供养。而我今虽衣食饱暖，世上却有无数饥童饿殍，乃至广大恶道众生受罪无限，<span class="keyword">&amp;</span><span class="tag">ldquo</span>;人溺己溺，人饥己饥<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，因此发广大心、慈悲心至心供养。
+
+　　然而最高、最究竟的供养是<span class="keyword">&amp;</span><span class="tag">ldquo</span>;法供养<span class="keyword">&amp;</span><span class="tag">rdquo</span>;，亦即令之成就佛法智慧解脱的因缘。除了饮食供养，众生更需要修行佛法，解脱烦恼。因此，结斋时默诵：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;饭食已讫，当愿众生，所作皆办，具足佛法。<span class="keyword">&amp;</span><span class="tag">rdquo</span>;祝愿众生未来皆能至少达到阿罗汉圣者的境界，<span class="keyword">&amp;</span><span class="tag">ldquo</span>;所作皆办<span class="keyword">&amp;</span><span class="tag">rdquo</span>;（因修行而梵行已立、生死已尽），<span class="keyword">&amp;</span><span class="tag">ldquo</span>;具足佛法<span class="keyword">&amp;</span><span class="tag">rdquo</span>;的智慧与光明、自在与解脱。
+
+　　在道场过堂供养时，维那会带领唱诵：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;供养清净法身毗卢遮那佛、圆满报身卢舍那佛、千百亿化身释迦牟尼佛、极乐世界阿弥陀佛、当来下生弥勒尊佛、十方三世一切诸佛，大智文殊师利菩萨、大行普贤菩萨、大悲观世音菩萨、大愿地藏王菩萨、诸尊菩萨摩诃萨，摩诃般若波罗蜜。<span class="keyword">&amp;</span><span class="tag">rdquo</span>;午斋唱诵：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三德六味供佛及僧，法界有情普同供养，若饭食时，当愿众生禅悦为食，法喜充满。<span class="keyword">&amp;</span><span class="tag">rdquo</span>;
+
+　　结斋唱诵：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;萨多喃，三藐三菩陀，俱侄南，怛侄他，唵，折隶主隶，准提萨婆诃。所谓布施者，必获其利益，若为乐故施，后必得安乐。<span class="keyword">&amp;</span><span class="tag">rdquo</span>;祝愿供养法会斋饭的护法居士，因以欢喜心种此清净布施的善因，必将得到世世饮食无虞、究竟安乐的善果。然后才接着唱：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;供佛（饭食）已讫，当愿众生，所作皆办，具足佛法。<span class="keyword">&amp;</span><span class="tag">rdquo</span>;完成结斋的祝愿。
+
+　　偈中，<span class="keyword">&amp;</span><span class="tag">ldquo</span>;行人<span class="keyword">&amp;</span><span class="tag">rdquo</span>;指精进之修行者；<span class="keyword">&amp;</span><span class="tag">ldquo</span>;法界有情<span class="keyword">&amp;</span><span class="tag">rdquo</span>;指法界一切众生。<span class="keyword">&amp;</span><span class="tag">ldquo</span>;三德<span class="keyword">&amp;</span><span class="tag">rdquo</span>;乃指食物具备轻软、净洁、如法之优点；<span class="keyword">&amp;</span><span class="tag">ldquo</span>;六味<span class="keyword">&amp;</span><span class="tag">rdquo</span>;指苦、醋、甘、辛、咸、淡调配变化，滋味得宜，二者都是用来形容饮食的甘美。
+
+　　如在每天精进定课之外，斋饭饮食时又能摄心用功，以恭敬心、报恩心、慈悲心、清净心、广大心，至心供养、结斋、祝愿，发菩提心，愿与一切众生共成无上佛道，必能身心清净，法喜充满 。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/19/w/e4-ba-94-e8-a7-82-e5-a0-82-e4-be-9b-e5-85-bb-e5-81-88-e7-bb-93-e6-96-8b-e5-81-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-16T09:31:55.000Z" class="post__time">五月 16, 2011</time><h1 class="post__title"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/">postfix邮件服务器安全</a></h1></header><div class="post__main"><p>配置extmail不允许伪造不存在的本地邮件地址发邮件,不允许并仿冒他人邮件地址发送邮件</p>
+<pre><code>cd /etc/postfix/
+
+cat &amp;gt;mysql_virtual_sender_maps.cf&amp;lt;&amp;lt;EOF
+
+<span class="variable">user =</span> extmail
+
+<span class="variable">password =</span> extmail
+
+<span class="variable">hosts =</span> localhost
+
+<span class="variable">dbname =</span> extmail
+
+<span class="variable">table =</span> mailbox
+
+<span class="variable">select_field =</span> username
+
+<span class="variable">where_field =</span> username
+
+<span class="variable">additional_conditions =</span> AND <span class="variable">active =</span> &amp;<span class="comment">#39;1&amp;#39;</span>
+
+EOF
+
+vim main.cf
+
+<span class="variable">smtpd_sender_login_maps =</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql:/etc/postfix/mysql_virtual_sender_maps.cf
+
+<span class="variable">smtpd_sender_restrictions =</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; permit_mynetworks,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_sender_login_mismatch,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_authenticated_sender_login_mismatch,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_unauthenticated_sender_login_mismatch
+</code></pre><p>使配置生效</p>
+<pre><code><span class="title">postfix</span> reload
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-04-27T02:05:00.000Z" class="post__time">四月 27, 2011</time><h1 class="post__title"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">Vsftpd服务器故障排除</a></h1></header><div class="post__main"><p>打开调试日志：</p>
+<p>dual_log_enable=yes</p>
+<pre><code><span class="built_in">log</span>_ftp_protocol=yes
+
+VSFTPd与<span class="built_in">log</span>有关的选项
+
+VSFTPd_<span class="built_in">log</span>_file
+
+xferlog_<span class="built_in">enable</span>
+
+xferlog_std_format
+
+xferlog_file
+
+dual_<span class="built_in">log</span>_<span class="built_in">enable</span>
+
+syslog_<span class="built_in">enable</span>
+
+<span class="built_in">log</span>_ftp_protocol
+
+no_<span class="built_in">log</span>_lock
+
+在介绍Vsftpd服务器故障排除之前，我们来看看vsftp中关于日志记录的参数。
+
+xferlog_<span class="built_in">enable</span>=yes/no //是否启用 xferlog 日志格式
+
+xferlog_std_format=yes/no //是否采用标准格式记录日志
+
+xferlog_file=/path/to/logfile //xferlog 日志文件所在位置，默认为/var/<span class="built_in">log</span>/xferlog
+
+上面的参数设置记录xferlog日志的格式。这是早期Wu-ftpd服务的日志格式，它会记录上传和下载的动作。
+
+VSFTPd也有专有的日志格式，用下列参数设置：
+
+dual_<span class="built_in">log</span>_<span class="built_in">enable</span>=yes/no //是否采用VSFTPd自己的日志记录方式
+
+<span class="built_in">log</span>_ftp_protocol=yes/no //是否记录所有的ftp命令日志 
+
+VSFTPd_<span class="built_in">log</span>_file=/path/to/logfile //指定VSFTPd 日志文件位置，默认为/var/<span class="built_in">log</span>/vsftpd.log ，xferlog_<span class="built_in">enable</span>的默认值为no（VSFTPd提供的配置文件模版将其值改为了yes），dual_<span class="built_in">log</span>_<span class="built_in">enable</span>的默认值也为no，就是说默认情况下VSFTPd是不记录日志的。我们也可以将日志信息写入系统日志/var/<span class="built_in">log</span>/messages中，使用如下参数：
+
+syslog_<span class="built_in">enable</span>=yes/no
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-16T07:46:13.000Z" class="post__time">三月 16, 2011</time><h1 class="post__title"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/">mysql 写入优化</a></h1></header><div class="post__main"><p>查看mysql slow_query_log日志发现有大量写入操作很慢</p>
+<pre><code>mysqldumpslow -s t -t 10 veryi-slow.log
+
+Count: 11459&amp;nbsp; Time=11268628044.73s (129127208764609s)&amp;nbsp; <span class="operator"><span class="keyword">Lock</span>=<span class="number">0.00</span>s (<span class="number">0</span>s)&amp;nbsp;</span> Rows=0.0 (0), root[root]@localhost
+
+&amp;nbsp; <span class="operator"><span class="keyword">UPDATE</span> <span class="string">`veryi`</span>.<span class="string">`article`</span> <span class="keyword">SET</span> <span class="string">`view_count`</span>=<span class="string">`view_count`</span>+N <span class="keyword">WHERE</span> <span class="string">`article_id`</span>=N
+
+my.cnf配置为
+
+innodb_flush_method=O_DIRECT
+
+innodb_flush_log_at_trx_commit=<span class="number">2</span>
+
+修改为
+
+innodb_flush_method=O_DIRECT
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+后速度明显提高，写入操作从slow_query_log里面消失。</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-15T08:41:53.000Z" class="post__time">三月 15, 2011</time><h1 class="post__title"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/">wordpress在nginx上固定链接</a></h1></header><div class="post__main"><p>Nginx服务器下如何设置才能使永久链接生效而不致报404页面找不到的错误。由于Nginx不支持Apache的.htaccess文件，要实现持久连接静态化，我们必须手工配置Nginx的文件,伪静态化配置的重写规则，假设wordpress放在w目录：</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location /w/ {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># enable search for precompressed files ending in .gz</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># nginx needs to be complied using &amp;uml;C-with-http_gzip_static_module</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; gzip_static on;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if the requested file exists, return it immediately</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># all other requests go to Wordpress</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite . /w/<span class="keyword">index</span>.php <span class="keyword">last</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; include php.conf;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+后台管理的固定链接的设置：
+
+/<span class="variable">%post_id</span><span class="variable">%.</span>html
+
+网上提供的以下配置不成功
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.html){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.html <span class="keyword">break</span>;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.php){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.php;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-f <span class="variable">$request_filename</span>){
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) /<span class="keyword">index</span>.php;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-24T07:47:14.000Z" class="post__time">一月 24, 2011</time><h1 class="post__title"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/">千兆网络必须使用六类线</a></h1></header><div class="post__main"><p>cisc3750 10/100/1000BaseTX自适应交换机，25号端口灯是绿色的</p>
+<pre><code>show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
+
+GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
+
+&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+
+&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">100000</span> Kbit, DLY <span class="number">100</span> usec, 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">2</span>/<span class="number">255</span>, rxload <span class="number">100</span>/<span class="number">255</span>
+
+&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+
+&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+
+&amp;nbsp; Full-duplex, <span class="number">100</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+
+端口设置：
+
+!
+
+interface GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span>
+
+!
+
+联想r520服务器，千兆网卡，操作系统是centos <span class="number">5</span>，驱动是千兆的，交换机和服务器在一个机柜，但是<span class="number">25</span>号端口不能上到千兆。强行设成<span class="number">1000</span>M就会断网。
+
+网络跳线更换为千兆<span class="number">6</span>类线以后：
+
+show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
+
+GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
+
+&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+
+&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">1000000</span> Kbit, DLY <span class="number">10</span> usec, 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">1</span>/<span class="number">255</span>, rxload <span class="number">23</span>/<span class="number">255</span>
+
+&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+
+&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+
+&amp;nbsp; Full-duplex, <span class="number">1000</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+
+已经变成千兆了。
+</code></pre><p>附：</p>
+<p><span style="font-family: Arial,Helvetica,Geneva,Sans-serif; font-size: x-small; color: rgb(0, 0, 128);">CAT-5 is rated to 100M </span></p>
+<pre><code>CAT-<span class="number">5</span>e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">350</span>M 
+
+CAT-<span class="number">6</span> <span class="keyword">and</span> CAT6e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">550</span>M <span class="keyword">or</span> <span class="number">1000</span>M depending <span class="function_start"><span class="keyword">on</span></span> your source 
+
+CAT-<span class="number">7</span> <span class="keyword">is</span> supposedly rated <span class="keyword">to</span> <span class="number">700</span>M <span class="keyword">or</span> presumably <span class="number">1000</span>M &lt;/span&gt;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-05T02:24:06.000Z" class="post__time">一月 5, 2011</time><h1 class="post__title"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/">cisco Catalyst 3750 Series交换机端口限速</a></h1></header><div class="post__main"><p>switch的型号是3750G，使用qos进行流量控制：</p>
+<p>端口限速：</p>
+<pre><code>config t
+
+mls qos
+
+access-list <span class="number">2</span> permit <span class="keyword">any</span>
+
+#access-list <span class="number">2</span> permit <span class="number">0.0</span>.<span class="number">0.0</span> <span class="number">0.0</span>.<span class="number">0.0</span> <span class="comment">//限速不起作用</span>
+
+<span class="keyword">class</span>-map match-all <span class="number">2</span>M-rate 
+
+&amp;nbsp; match access-<span class="keyword">group</span> <span class="number">2</span> <span class="comment">//绑定访问列表2,将符合列表2的流归为2M-rate这个类里</span>
+
+! 
+
+policy-map <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp; <span class="keyword">class</span> <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; police <span class="number">2000000</span> <span class="number">200000</span> exceed-action drop&amp;nbsp;&amp;nbsp; <span class="comment">//限速2M</span>
+
+<span class="keyword">interface</span> GigabitEthernet1<span class="regexp">/0/</span><span class="number">9</span>&amp;nbsp; 
+
+<span class="keyword">description</span> &amp;quot;<span class="number">2</span>M-<span class="number">201100104</span>&amp;quot;&amp;nbsp; 
+
+service-policy input <span class="number">2</span>M-rate
+
+查看：
+
+show policy-map 
+
+show <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+
+show run <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+
+show run
+
+show conf
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-12-13T03:38:26.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/">centos 5.5 x86_64 编译安装httpd-2.2.17、php-5.3.4、memcache扩展</a></h1></header><div class="post__main"><p>Apache是世界使用排名第一的Web服务器软件。同时也是最稳定、安全的服务器之一。</p>
+<pre><code>yum install zlib zlib-devel -y
+
+yum install opensll openssl-devel -y
+
+groupadd -g <span class="number">1000</span> vgroup
+
+useradd -u <span class="number">1000</span> -g vgroup -d <span class="regexp">/dev/</span><span class="literal">null</span> -s <span class="regexp">/bin/</span><span class="literal">false</span> vuser
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/httpd/httpd-2.2.17.tar.bz2</span>
+
+tar xfj httpd-<span class="number">2.2</span><span class="number">.17</span>.tar.bz2 -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-<span class="number">2.2</span><span class="number">.17</span>
+
+make clean
+
+CHOST=&amp;quot;x86_64-pc-linux-gnu&amp;quot;
+
+CFLAGS=&amp;quot;-march=native -O2 -pipe -fomit-frame-pointer&amp;quot;
+
+CXXFLAGS=&amp;quot;${CFLAGS}&amp;quot;
+
+.<span class="regexp">/configure --prefix=/</span>usr<span class="regexp">/local/</span>httpd \
+
+--with-mpm=worker \
+
+--enable-expires --enable-headers --enable-rewrite&amp;nbsp; --enable-deflate --enable-vhost-alias \
+
+--enable-so \
+
+--enable-ssl \
+
+--enable-cache --enable-file-cache --enable-mem-cache --enable-disk-cache --enable-<span class="keyword">static</span>-support --enable-<span class="keyword">static</span>-htpasswd --enable-<span class="keyword">static</span>-htdigest --enable-<span class="keyword">static</span>-rotatelogs --enable-<span class="keyword">static</span>-logresolve --enable-<span class="keyword">static</span>-htdbm --enable-<span class="keyword">static</span>-ab --enable-<span class="keyword">static</span>-checkgid --disable-userdir \
+
+--enable-suexec --with-suexec-caller=vuser --with-suexec-logfile=<span class="regexp">/var/</span>log<span class="regexp">/httpd/</span>suexec.log --with-suexec-docroot=<span class="regexp">/usr/</span>local/www --with-suexec-uidmin=<span class="number">500</span> --with-suexec-gidmin=<span class="number">100</span> 
+
+对于<span class="number">32</span>位系统：
+
+CHOST=&amp;quot;i686-pc-linux-gnu&amp;quot; 
+
+相对来说，prefork方式速度要稍高于worker，然而它需要的cpu和memory资源也稍多于woker。
+
+--enable-module=most --enable-proxy --enable-proxy-ajp --enable-forward --enable-proxy-connect --enable-proxy-http --enable-so --enable-deflate --enable-headers --enable-include
+
+上面的配置，用到了其他一些模块，说不定以后会用到，如支持ssi的include模块
+<span class="label">
+error:</span> APR version <span class="number">1.2</span><span class="number">.0</span> or later is required
+
+yum install apr
+
+或者
+<span class="label">
+http:</span><span class="comment">//apr.apache.org/download.cgi</span>
+
+apr-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+
+apr-util-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+
+./configure
+
+.<span class="regexp">/configure --with-apr=/</span>usr<span class="regexp">/local/</span>apr/
+
+--with-apr=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span> --with-apr-util=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>
+
+设置自启动
+
+[ -f <span class="regexp">/etc/</span>init.d<span class="regexp">/httpd ] || cp support/</span>apachectl <span class="regexp">/etc/</span>init.d/httpd
+
+#apachectl=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl
+
+#httpd=${HTTPD-<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/httpd}
+
+vim <span class="regexp">/etc/</span>init.d/httpd
+
+# vi <span class="regexp">/etc/</span>init.d/httpd(在第两行之后添加如下内容)
+
+#!<span class="regexp">/bin/</span>sh
+
+#
+
+# Startup script <span class="keyword">for</span> the Apache Web Server
+
+# <span class="string">chkconfig:</span> - <span class="number">85</span> <span class="number">15</span>
+
+# <span class="string">description:</span> Apache is a World Wide Web server. It is used to serve \
+
+# HTML files and CGI.
+
+# <span class="string">processname:</span> httpd
+
+# <span class="string">pidfile:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>log/httpd.pid
+
+# <span class="string">config:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+或者
+
+sed -i &amp;#<span class="number">39</span>;s%apachectl=<span class="regexp">/usr/</span>sbin<span class="regexp">/apachectl%apachectl=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apachectl%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+sed -i &amp;#<span class="number">39</span>;s%httpd=${HTTPD-<span class="regexp">/usr/</span>sbin<span class="regexp">/httpd}%httpd=${HTTPD-/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>httpd}%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/
+
+sed -i &amp;#<span class="number">39</span>;s%#Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%&amp;#<span class="number">39</span>; httpd.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerTokens Full/</span>ServerTokens Prod<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerSignature On/</span>ServerSignature Off<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+chkconfig --add httpd
+
+chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/httpd
+
+chkconfig --level <span class="number">345</span> httpd on 
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/&amp;lt;IfModule mime_module&amp;gt;/</span>a\&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php .php\
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php-source .phps&amp;#<span class="number">39</span>; \
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+sed -i -e &amp;#<span class="number">39</span>;s<span class="regexp">/User daemon/</span>User vuser<span class="regexp">/&amp;#39; -e &amp;#39;s/</span>Group daemon<span class="regexp">/Group vgroup/</span>&amp;#<span class="number">39</span>;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+vim&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl graceful
+
+php5安装
+
+yum install curl-devel -y
+
+yum install libxml2-devel -y
+
+yum install gettext-devel -y
+
+yum install libjpeg-devel -y
+
+yum install libpng-devel -y
+
+yum install freetype-devel -y
+
+yum install gmp-devel -y
+
+yum install libmcrypt-devel -y
+
+yum install&amp;nbsp; libtool-ltdl-devel -y
+
+yum install libevent-devel -y
+
+yum install libtidy-devel -y
+
+yum install libtool-ltdl libtool -y
+
+#<span class="regexp">/usr/</span>bin/<span class="string">ld:</span> cannot find -lltdl
+
+#ldconfig -p |grep ltdl
+
+#yum install libtool-ltdl.x86_64 libtool.x86_64 -y
+
+wget <span class="string">http:</span><span class="comment">//cn.php.net/get/php-5.3.4.tar.bz2/from/ca.php.net/mirror</span>
+
+cd <span class="regexp">/mnt/</span>backup<span class="regexp">/soft/</span>
+
+tar xfj php-<span class="number">5.3</span><span class="number">.4</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>php-<span class="number">5.3</span><span class="number">.4</span>
+
+make clean
+
+export PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+#no fpm
+
+#config file locate apache directory --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf
+
+make clean
+
+.<span class="regexp">/configure --with-apxs2=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf --prefix=<span class="regexp">/usr/</span>local<span class="regexp">/php --with-mysqli=/</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_config --with-mysql=<span class="regexp">/usr/</span>local/mysql&amp;nbsp; --with-curl --with-zlib --enable-ftp&amp;nbsp; --with-mcrypt --enable-inline-optimization --disable-debug \
+
+--with-gd --enable-gd-native-ttf --enable-gd-jis-conv --with-iconv-dir= --with-freetype-dir --with-jpeg-dir --with-png-dir \
+
+--with-libxml-dir=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libxml --enable-xml --enable-exif --enable-soap --enable-zip --with-openssl --enable-mbstring --with-mhash --with-tidy --enable-mbstring --with-pdo-mysql=<span class="regexp">/usr/</span>local/mysql \
+
+--enable-sockets --with-gettext \
+
+--enable-sqlite-utf8 
+
+make -j6 &amp;amp;&amp;amp; make install
+
+Wrote PEAR system config file <span class="string">at:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>etc/pear.conf
+
+You may want to <span class="string">add:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib/php to your php.ini include_path
+
+\cp php.ini-production <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/pecl install memcache
+
+wget <span class="string">http:</span><span class="comment">//pecl.php.net/get/memcache-2.2.6.tgz</span>
+
+tar xzf memcache-<span class="number">2.2</span><span class="number">.6</span>.tgz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcache-<span class="number">2.2</span><span class="number">.6</span>
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/phpize
+
+.<span class="regexp">/configure --with-php-config=/</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php-config --with-apxs=<span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apxs --enable-memcache
+
+make &amp;amp;&amp;amp; make install
+
+提示：Installing shared <span class="string">extensions:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+然后修改php.ini
+
+把
+
+extension_dir = &amp;quot;./&amp;quot;
+
+修改为
+
+extension_dir = &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/php/</span><span class="regexp">/lib/</span>php<span class="regexp">/extensions/</span>no-debug-non-zts-<span class="number">20060613</span>&amp;quot;
+
+并添加一行
+
+extension=memcache.so
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20060613/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-12-13T02:37:27.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/">centos 5.5 安装 mysql-5.1.53-linux-x86_64  及主从复制集群配置</a></h1></header><div class="post__main"><p>设置Mysql的主从复制的主要用途：</p>
+<pre><code><span class="number">1</span> 做备份机器，一旦主服务器崩溃，可以直接启用从服务器作为主服务器
+
+<span class="number">2</span> 可以直接锁定从服务器的表只读，然后做备份数据，这样不会影响主服务器的服务
+
+<span class="number">3</span> 可以处理读写数据库的负载均衡
+
+要点：
+
+从服务器一般需要设置只读，否则容易产生错误导致同步失败
+
+wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.53-linux-x86_64-glibc23.tar.gz/from/http://mysql.mirror.tw/</span>
+
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23.tar.gz
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s&amp;nbsp; mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23 mysql
+
+tar -C <span class="regexp">/usr/</span>local -xzf&amp;nbsp; mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23.tar.gz 
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23 mysql
+
+cd <span class="regexp">/usr/</span>local/mysql
+
+cp support-files/my-huge.cnf my.cnf
+
+mv <span class="regexp">/etc/</span>my.cnf ~/
+
+mv <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld ~/
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
+
+vim&amp;nbsp; my.cnf
+
+server-id = <span class="number">8108</span>
+
+max_allowed_packet = <span class="number">64</span>M
+
+max_connections=<span class="number">800</span>
+
+character-set-server=utf8
+
+expire_logs_days = <span class="number">60</span>
+
+binlog_format=mixed
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+default_table_type = INNODB
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">4</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+slow_query_log
+
+#slow_query_log_file=mysql-slow.log
+
+long_query_time=<span class="number">1</span>
+
+log-error=mysqld.log
+
+[mysqld_safe]
+
+log-error=<span class="regexp">/var/</span>log/mysqld.log
+
+pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
+
+#--------------------------------------
+
+# <span class="number">32</span>G RAM
+
+max_allowed_packet = <span class="number">64</span>M
+
+innodb_buffer_pool_size = <span class="number">24</span>G
+
+#-------------------------------------
+
+<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
+
+<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+#chmod -R u+rw data
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
+
+chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
+
+#<span class="regexp">/sbin/</span>chkconfig --del mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld stop
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld start
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe &amp;amp;
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+或者
+
+vim <span class="regexp">/etc/</span>profile
+
+PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+PATH=<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span><span class="string">bin:</span>$PATH
+
+tail -<span class="number">50</span> <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>*.err
+
+slave上的配置
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值，必须保证唯一性：
+
+vim&amp;nbsp; my.cnf
+
+server-id = <span class="number">8168</span>
+
+max_connections=<span class="number">600</span>
+
+character-set-server=utf8
+
+binlog_format = &amp;quot;ROW&amp;quot;
+
+default_table_type = innodb
+
+relay-log-purge=<span class="number">1</span>
+
+#slave-skip-errors=<span class="number">1062</span>,<span class="number">1053</span>
+
+skip-slave-start
+
+replicate-ignore-db=mysql
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+在master服务器上配置复制账号权限：
+
+GRANT REPLICATION SLAVE ON *.* TO &amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;@&amp;#<span class="number">39</span>;%&amp;#<span class="number">39</span>; IDENTIFIED BY &amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;;
+
+flush privileges;
+
+在slave服务器上配置master服务器信息：
+
+CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span><span class="number">.8</span><span class="number">.108</span>&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
+
+start slave;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/7/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/9/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

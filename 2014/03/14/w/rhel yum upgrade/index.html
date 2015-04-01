@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>RHEL完全兼容的linux发行版使用yum安装升级及第三方软件库 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="RHEL完全兼容的linux发行版使用yum安装升级及第三方软件库"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2014-03-14T09:58:45.000Z" class="post__time">三月 14, 2014</time><h1 class="post__title"><a href="/2014/03/14/w/rhel yum upgrade/">RHEL完全兼容的linux发行版使用yum安装升级及第三方软件库</a></h1></header><div class="post__main"><p>&nbsp; CentOS默认自带CentOS-Base.repo源，但官方源中去除了很多有版权争议的软件，而且安装的软件也不是最新的稳定版。Fedora自带 的源中也找不到很多多媒体软件，如果需要安装，必需先添加其他源，如RPMFusion和RPMForge等第三方软件库。以下软件库适用于与RHEL完 全兼容的linux发行版，如CentOS,Fedora,Scientific Linux。</p>
+<p>RHEL系列使用yum安装升级，删除原有的yum源：</p>
+<pre><code>rpm -a<span class="string">q | grep yum|</span>xargs rpm -e --nodeps
+</code></pre><p>使用CentOS 6.5 x86_64的yum源</p>
+<pre><code>rpm -ivh python-iniparse-<span class="number">0.3</span>.<span class="number">1</span>-<span class="number">2.1</span>.el6.noarch.rpm
+
+rpm -ivh yum-metadata-<span class="keyword">parser</span>-<span class="number">1.1</span>.<span class="number">2</span>-<span class="number">14.1</span>.el6.x86_64.rpm
+
+rpm -ivh yum-metadata-<span class="keyword">parser</span>-<span class="number">1.1</span>.<span class="number">2</span>-<span class="number">16.</span>el6.x86_64.rpm
+
+rpm -ivh yum-<span class="number">3.2</span>.<span class="number">29</span>-<span class="number">40.</span>el6.centos.noarch.rpm yum-plugin-fastestmirror-<span class="number">1.1</span>.<span class="number">30</span>-<span class="number">14.</span>el6.noarch.rpm
+
+rpm -ihv <span class="type">PackageKit</span>-yum-<span class="number">0.5</span>.<span class="number">8</span>-<span class="number">21.</span>el6.x86_64.rpm&amp;nbsp; <span class="type">PackageKit</span>-yum-plugin-<span class="number">0.5</span>.<span class="number">8</span>-<span class="number">21.</span>el6.x86_64.rpm
+</code></pre><p>清理yum缓存</p>
+<pre><code><span class="keyword">yum</span> clean <span class="literal">all</span>
+
+<span class="keyword">yum</span> makecache
+</code></pre><p>第三方源</p>
+<pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
+
+rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
+</code></pre><p>介绍：</p>
+<p>EPEL源</p>
+<pre><code>EPEL,即Extra Packages <span class="keyword">for</span> Enterprise Linux,是由 Fedora 社区创建维护，为 RHEL 及衍生发行版如 CentOS、Scientific Linux 等提供高质量软件包的项目。EPEL中含有大量的软件，对官方标准源是一个很好的补充。
+
+&amp;ldquo;EPEL (Extra Packages <span class="keyword">for</span> Enterprise Linux&amp;nbsp; ) <span class="keyword">is</span> a Fedora Special Interest <span class="keyword">Group</span> that creates, maintains, <span class="keyword">and</span> manages a high quality <span class="keyword">set</span> <span class="keyword">of</span> additional packages <span class="keyword">for</span> Enterprise Linux, including, but <span class="keyword">not</span> limited <span class="keyword">to</span>, Red Hat Enterprise Linux (RHEL), CentOS <span class="keyword">and</span> Scientific Linux (SL).&amp;rdquo;
+
+wiki:http:<span class="comment">//fedoraproject.org/wiki/EPEL</span>
+
+Fedora EPEL 下载：http:<span class="comment">//mirrors.fedoraproject.org/publiclist/EPEL/</span>
+
+EPEL 下载地址：http:<span class="comment">//fedoraproject.org/wiki/EPEL</span>
+</code></pre><p>64位，6.0版安装：</p>
+<pre><code>rpm -<span class="constant">Uvh </span><span class="symbol">http:</span>/<span class="regexp">/dl.fedoraproject.org/pub</span><span class="regexp">/epel/</span><span class="number">6</span>/x86_64/epel-release-<span class="number">6</span>-<span class="number">8</span>.noarch.rpm
+
+<span class="symbol">http:</span>/<span class="regexp">/dl.fedoraproject.org/pub</span><span class="regexp">/epel/</span>
+</code></pre><p>Remi源</p>
+<pre><code>Remi源中的软件几乎都是最新稳定版。
+
+Remi下载地址：<span class="string">http:</span><span class="comment">//rpms.famillecollet.com/</span>
+</code></pre><p>RPMForge源</p>
+<pre><code><span class="constant">RPMForge是CentOS系</span>统下的软件仓库，拥有<span class="number">4000</span>多种的软件包，被<span class="constant">CentOS社</span>区认为是最安全也是最稳定的一个软件仓库。
+
+<span class="constant">RPMForge官</span>方网站：<span class="symbol">http:</span>/<span class="regexp">/repoforge.org/</span>
+
+<span class="constant">RPMForge下</span>载地址：
+
+<span class="number">32</span>位：<span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el6/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/</span>
+
+<span class="number">64</span>位：<span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el6/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span>
+</code></pre><p>RPMFusion源</p>
+<pre><code>如果您现在正在使用Fedora，各种音频软件如MPlayer在标准源中是没有的，一般先安装RPMFusion源，之后就可以放便地yum install各种需要的软件。
+
+CentOS官方说RPMFusion软件库里面的软件稳定性不如rpmforge。
+
+RPMFusion官网：<span class="string">http:</span><span class="comment">//rpmfusion.org/</span>
+
+RHEL <span class="number">6</span>/CentOS <span class="number">6</span> ：
+</code></pre><p>su -c &#39;rpm -Uvh <a href="http://download1.rpmfusion.org/free/el/updates/testing/6/i386/rpmfusion-free-release-6-0.1.noarch.rpm" target="_blank" rel="external">http://download1.rpmfusion.org/free/el/updates/testing/6/i386/rpmfusion-free-release-6-0.1.noarch.rpm</a> <a href="http://download1.rpmfusion.org/nonfree/el/updates/testing/6/i386/rpmfusion-nonfree-release-6-0.1.noarch.rpm&amp;#39" target="_blank" rel="external">http://download1.rpmfusion.org/nonfree/el/updates/testing/6/i386/rpmfusion-nonfree-release-6-0.1.noarch.rpm&amp;#39</a>;</p>
+<p>其他版本请详见：</p>
+<pre><code><span class="label">http:</span>//rpmfusion<span class="preprocessor">.org</span>/Configuration
+</code></pre><p>如何使用各种源</p>
+<pre><code>以上源对CentOS等系统完全兼容，但各软件库之间并不能保证完全兼容没有冲突。如果您需要使用以上源，您需要安装yum<span class="attribute">-priorities</span>插件。安装yum<span class="attribute">-priorities</span>插件后，您可以给各个源设置优先级priority。一般设置官方标准源优先级为<span class="number">1</span>，最高，第三方推荐<span class="subst">&amp;</span><span class="literal">gt</span>;<span class="number">10</span>
+</code></pre><p>priority=N （N为1到99的正整数，数值越小越优先）</p>
+<p>[base], [addons], [updates], [extras] &hellip; priority=1</p>
+<pre><code>[CentOSplus],[contrib] &amp;hellip; priority=<span class="number">2</span>
+
+其他第三的软件源为：priority=<span class="keyword">N</span> （推荐<span class="keyword">N</span>&amp;gt;<span class="number">10</span>）
+</code></pre><h1 id="vim_CentOS-Base-repo">vim CentOS-Base.repo</h1><p>[base]</p>
+<pre><code><span class="variable">name=</span>CentOS-$releasever - Base
+
+<span class="variable">mirrorlist=</span>http://mirrorlist.centos.org/?<span class="variable">release=</span>$releasever&amp;amp;<span class="variable">arch=</span>$basearch&amp;amp;<span class="variable">repo=</span>os
+
+<span class="comment">#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/</span>
+
+<span class="variable">gpgcheck=</span><span class="number">1</span>
+
+<span class="variable">gpgkey=</span>file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-<span class="number">6</span>
+
+<span class="variable">priority=</span><span class="number">1</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2014/03/14/w/rhel yum upgrade/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2014/03/14/w/rhel yum upgrade/" data-url="http://blog.veryi.com/2014/03/14/w/rhel yum upgrade/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2014/07/24/w/discuz-x3-1-e5-8d-87-e7-ba-a7-e5-88-b0-comsenz-discuz-x3-2-e6-ad-a3-e5-bc-8f-e7-89-88/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

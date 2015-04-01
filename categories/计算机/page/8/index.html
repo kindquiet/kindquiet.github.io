@@ -1,0 +1,324 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-10-18T09:26:06.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/">FreeBSD使用smbclient访问Windows资源</a></h1></header><div class="post__main"><p>安装应用程序: Packages 和 Ports</p>
+<pre><code>http:<span class="comment">//www.freebsd.org/doc/zh_CN/books/handbook/ports-using.html</span>
+
+安装samba
+
+<span class="keyword">find</span> <span class="regexp">/usr/</span>ports -name samba -<span class="keyword">print</span>
+
+cd <span class="regexp">/usr/</span>ports<span class="regexp">/net/</span>samba3
+
+make config
+
+make install
+</code></pre><p>mount windows共享目录:</p>
+<p>smbclient -L 10.8.88.9 -U username</p>
+<pre><code><span class="title">smbclient</span> //<span class="number">10.8.88.9</span>/developer-home -U username
+
+mount_smbfs -N -I <span class="number">10.8.88.9</span> //username<span class="variable">@NetBIOSname</span>/developer-home /mnt/win/
+
+vi ~/.nsmbrc
+
+[NetBIOSname:username]
+
+password=<span class="number">888888</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-18T03:02:38.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/e9-80-9a-e8-ae-af-e6-95-b0-e7-a0-81-e4-ba-a7-e5-93-81-e5-ad-98-e5-82-a8-e5-8d-a1-e7-ae-80-e4-bb-8b-ef-bc-9asm-e5-8d-a1-e3-80-81cf/">通讯数码产品存储卡简介：SM卡、CF卡、XD卡、SD卡、mini SD 卡、MMC卡、TF卡</a></h1></header><div class="post__main"><p>CF卡（Compact Flash）</p>
+<pre><code><span class="keyword">CF</span>卡全称Compact Flash Card，是SanDisk公司于1994年首先推出。由于这项技术的开放性，一经推出就得到了业界的广泛支持。随后有一百多家厂商联合起来，于1995 年成立了袖珍闪存协会，即CFA（Compact Flash Association）。在CFA的大力推广下，<span class="keyword">CF</span>标准得到了空前的发展和繁荣，成为当时移动存储介质的标准接口。直到现在，依然有很多数码相机生产厂商采用<span class="keyword">CF</span>卡作为存储介质，而且它还广泛应用在手持电脑、电视机顶盒甚至多媒体手机中。
+
+存储容量大，成本低，兼容性好，这些都是<span class="keyword">CF</span>卡的优点，缺点则是体积较大。另外，<span class="keyword">CF</span>卡还有<span class="keyword">TYPE</span> &amp;Iota;和<span class="keyword">TYPE</span> Ⅱ两种接口，目前数码相机上使用较多的是<span class="keyword">CF</span> <span class="keyword">TYPE</span> &amp;Iota;接口。
+
+<span class="keyword">CF</span>卡具有PCMCIA-ATA功能，并与之兼容；<span class="keyword">CF</span>卡重量只有14g，仅纸板火柴般大小（43mm&amp;times;36mm&amp;times;3.3mm），是一种固态产品，也就是工作时没有运动部件。
+
+<span class="keyword">CF</span>卡采用闪存（flash）技术，是一种稳定的存储解决方案，不需要电池来维持其中存储的数据。对所保存的数据来说，<span class="keyword">CF</span>卡比传统的磁盘驱动器安全性和保护性都更高；比传统的磁盘驱动器及Ⅲ型PC卡的可靠性高5到10倍，而且<span class="keyword">CF</span>卡的用电量仅为小型磁盘驱动器的5%。这些优异的条件使得大多数数码相机选择<span class="keyword">CF</span>卡作为其首选存储介质。
+
+<span class="keyword">CF</span>卡作为世界范围内的存储行业标准，保证<span class="keyword">CF</span>产品的兼容，保证<span class="keyword">CF</span>卡的向后兼容性；随着<span class="keyword">CF</span>卡越来越被广泛应用，各厂商积极提高<span class="keyword">CF</span>卡的技术，促进新一代体小质轻、低能耗先进移动设备的推出，进而提高工作效率。CFA总部在加拿大的Palo Alto，其成员有权免费得到<span class="keyword">CF</span>卡、<span class="keyword">CF</span>商标和<span class="keyword">CF</span>技术详情。
+
+<span class="keyword">CF</span>卡有以下缺点：
+
+容量有限。虽然容量在成倍提高，但仍赶不上数码相机的像素发展。目前的5百万像素以上产品已经是流行的高端产品最低规格，而民用主流市场也达到3百万像素级别。普通民用的JPEG压缩格式下，容量尚可，但是专业级的TIFF（RAW）格式文件还是放不下几张图像数据。 
+
+体积较大。与其他种类的存储卡相比，<span class="keyword">CF</span>卡的体积略微偏大，这也限制了使用<span class="keyword">CF</span>卡的数码相机体积，所以现下流行的超薄数码相机大多放弃了<span class="keyword">CF</span>卡，而改用体积更为小巧的SD卡。
+
+性能限制。<span class="keyword">CF</span>卡的工作温度一般是0-40摄氏度。因此0度以下的环境中，数码相机基本可以说变成了&amp;ldquo;废物&amp;rdquo;。即使是专业机也不能幸免。虽然目前军用的<span class="keyword">CF</span>卡耐寒能力达到－40摄氏度，可是什么时候普及，价格什么时候跌到普通老百姓可以承受的地步还不得而知。
+
+SM卡（Smart Media）
+
+又被称为固态软盘卡（Solid State Floppy Disk Cards,SSFDC），SM卡是由东芝公司在1995年11月发布的Flash <span class="keyword">Memory</span>存贮卡，三星公司在1996年购买了生产和销售许可，这两家公司成为主要的SM卡厂商。
+
+SM卡的尺寸为37mm&amp;times;45mm&amp;times;0.76mm，由于SM卡本身没有控制电路，而且由塑胶制成（被分成了许多薄片），因此SM卡的体积小非常轻薄，在 2002年以前被广泛应用于数码产品当中，比如奥林巴斯的老款数码相机以及富士的老款数码相机多采用SM存储卡。但由于SM卡的控制电路是集成在数码产品当中（比如数码相机），这使得数码相机的兼容性容易受到影响。
+
+Smart Media为了节省自身的成本，存贮卡上只有Flash <span class="keyword">Memory</span>模块和接口，而并没有包括控制芯片，使用SmartMedia的设备必须自己装置控制机构，因此兼容性就相对较差。
+
+目前新推出的数码相机中都已经没有采用SM存储卡的产品了。
+
+MMC卡（Multi Media Card，多媒体存储卡）
+
+MMC由SanDisk和Siemens公司在1997年发起，与传统的移动存储卡相比，其最明显的外在特征是尺寸更加微缩&amp;mdash;&amp;mdash;只有普通的邮票大小(是 <span class="keyword">CF</span>卡尺寸的1/5左右)，外形尺寸只有32mm&amp;times;24mm&amp;times;1.4mm，而其重量不超过2g。
+
+MMC在设计之初是瞄准手机和寻呼机市场，之后因其小尺寸等独特优势而迅速被引进更多的应用领域，如数码相机、PDA、MP3播放器、笔记本电脑、便携式游戏机、数码摄像机乃至手持式GPS等。另外，由于采用更低的工作电压，驱动电压为2.7-3.6V。MMC比<span class="keyword">CF</span>和SM等上代产品更加省电。
+
+随着MMC卡的发展，出现了技术含量更高的RS-MMC和MMC Micro卡。
+
+RS-MMC (Reduced Size MMC) ，每一片RS-MMC都包含一个机械式的扩展器，可以把RS-MMC转换成标准的MMC，适用于所有兼容MMC或SD卡的设备。
+
+MMC micro存储卡对大多数用户来说还是一个比较陌生的名词，其标准由三星制定，目前主要为三星特定机型使用，因此国内用户接触到这种存储卡的机会并非很多。实际大小约为RS-MMC体积的三分之一小。支持1.8V/3.3V两种工作电压，其针脚为10pin。产品本身具有较强的影音功能和较低的耗电量，非常适合用于手机、MP3、PDA等小型数码设备中。
+
+SD卡（Secure Digital <span class="keyword">Memory</span> Card）
+
+SD卡是一种基于半导体快闪记忆器的新一代记忆设备。SD卡由日本松下、东芝及美国SanDisk公司于1999年8月共同开发研制。大小犹如一张邮票的SD记忆卡，重量只有2克，但却拥有高记忆容量、快速数据传输率、极大的移动灵活性以及很好的安全性。
+
+SD卡在24mm&amp;times;32mm&amp;times;2.1mm的体积内结合了SanDisk快闪记忆卡控制与MLC（Multilevel Cell）技术和 Toshiba（东芝）0.16u及0.13u的NAND技术，通过9针的接口界面与专门的驱动器相连接，不需要额外的电源来保持其上记忆的信息。而且它是一体化固体介质，没有任何移动部分，所以不用担心机械运动的损坏。
+
+SD卡数据传送和物理规范由MMC发展而来，大小和MMC差不多，尺寸为32mm&amp;times;24mm&amp;times;2.1mm。长宽和MMC一样，只是厚了0.7mm，以容纳更大容量的存贮单元。SD卡与MMC卡保持着向上兼容，也就是说，MMC可以被新的SD设备存取，兼容性则取决于应用软件，但SD卡却不可以被MMC设备存取。（SD卡外型采用了与MMC厚度一样的导轨式设计，以使SD设备可以适合MMC）
+
+SD接口除了保留MMC的7针外，还在两边加多了2针，作为数据线。采用了NAND型Flash <span class="keyword">Memory</span>，基本上和SmartMedia的一样，平均数据传输率能达到2MB/s。SD卡的结构能保证数字文件传送的安全性，也很容易重新格式化，所以有着广泛的应用领域，音乐、电影、新闻等多媒体文件都可以方便地保存到SD卡中。因此不少数码相机支持SD卡。
+
+XD卡（XD-PICTURE CARD）
+
+XD卡是由富士和奥林巴斯联合推出的专为数码相机使用的小型存储卡，采用单面18针接口。
+
+XD取自于&amp;ldquo;Extreme Digital&amp;rdquo;，是&amp;ldquo;极限数字&amp;rdquo;的意思。外形尺寸为20mm&amp;times;25mm&amp;times;1.7mm，总体积只有0.85立方厘米，约为2克重。XD卡的缺点是兼容性差。
+
+记忆棒（<span class="keyword">Memory</span> Stick）
+
+<span class="keyword">Memory</span> Stick记忆棒，是Sony公司开发研制的，尺寸为：50mm&amp;times;21.5mm&amp;times;2.8mm，重4克。
+
+和很多Flash <span class="keyword">Memory</span>存储卡不同，<span class="keyword">Memory</span> Stick规范是非公开的，没有什么标准化组织。采用了Sony自己的外型、协议、物理格式和版权保护技术，要使用它的规范就必须和Sony谈判签订许可。<span class="keyword">Memory</span> Stick也包括了控制器在内，采用10针接口，数据总线为串行，最高频率可达20MHz，电压为2.7伏到3.6伏，电流平均为45mA。可以看出这个规格和差不多同一时间出现的MMC颇为相似。
+
+记忆棒的缺点一是兼容性差，二是容量尚不够大。
+
+miniSD卡
+
+miniSD卡是在数码相机，PDA等所用的Flash <span class="keyword">Memory</span> Card（中文名：快闪存储卡）基础上发展出的一种更小更适合小型手机用的存储卡。尽管miniSD卡的外形大小及接口形状与原来的SD卡不同，但接口等电气标准相同，以确保兼容性。将miniSD插入专用适配器，可通过原来的SD卡插槽读写miniSD卡。不过，不具备像SD卡那样防写入的锁定功能。
+
+miniSD卡的接口比SD卡的9个还多2个，有11条信号线。多出的2条信号线是为未来扩展性能准备的。比如，可用于非接触型IC等近距离无线通信的天线连接等。剩下的9条信号线是与原来SD卡相同标准的信号线。 
+
+miniSD卡可以存储数码照片、音频、MP3文件和其他数据文件，旨在满足现在流行的多媒体手机的需要。
+
+◆体积比SD卡小60%以上。
+
+◆搭配适配器之后，适用于附SD卡槽的数码产品上。
+
+◆产品特征： 高速数据读写、备份； 高存储容量； 非挥发性固态、掉电数据自动保存；无转动部件，延长电池使用时间；用户自选式机械写保护开关； 可承受工作震动率 2000 Gs。
+
+◆尺寸：21.5mm*20mm*1.4mm
+
+TranFlash卡
+
+TransFlash卡即micro SD卡，简称T-flash卡或TF卡，是采用SD架构设计而成，约为SD卡的1/4，尺寸为15 x 11 x 1mm，同手指甲大小。利用适配器可以在使用SD作为存储介质的设备上使用。TransFlash主要是为照像手机拍摄大幅图像以及能够下载较大的视频片段而开发研制的。TransFlash卡可以用来储存个人数据，例如数字照片、MP3、游戏及用于手机的应用和个人数据等，还内设置版权保护管理系统，让下载的音乐、影像及游戏受保护；未来推出的新型TransFlash还备有加密功能，保护个人数据、财政纪录及健康医疗文件。体积小巧的 TransFlash让制造商无须顾虑电话体积即可采用此设计，而另一项弹性运用是可以让供货商在交货前随时按客户不同需求做替换，这个优点是嵌入式闪存所没有的。内设版权保护管理系统，适用于多项多媒体应用。
+
+Trans-flash Card为SD Card产品协会的一员， SDA 协会于 2004 年年底正式更名为：Micro SD Card。 Micro SD记忆卡采用最先进的SLC控制技术，让资料拥有高超的传输速度！搭配上转接卡更能够完全相容市面上所有支援SD记忆卡的数位产品。在Micro SD面市前之前，行动电话制造商都采用嵌入式记忆体，虽然这类模组容易装设，然而容量被限制住了。无法再有升级空间。Micro SD仿效 SIM卡的应用模式，即是同一张卡可以应用在不同型号的行动电话内，让行动电话制造商不用再为插卡式的研发设计而伤脑筋啦。 Micro SD足以堪称可移动式的储存IC 。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/e9-80-9a-e8-ae-af-e6-95-b0-e7-a0-81-e4-ba-a7-e5-93-81-e5-ad-98-e5-82-a8-e5-8d-a1-e7-ae-80-e4-bb-8b-ef-bc-9asm-e5-8d-a1-e3-80-81cf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-09T02:25:35.000Z" class="post__time">十月 9, 2010</time><h1 class="post__title"><a href="/2010/10/09/w/aeamuleied2kiaoe-firefox3/">关联amule（ed2k）和 Firefox3</a></h1></header><div class="post__main"><p>1.在firefox的地址栏输入about:config ,回车后出现一个警告窗口，点击继续</p>
+<pre><code><span class="number">2</span>.新建一个字符串：network<span class="class">.protocol-handler</span><span class="class">.app</span><span class="class">.ed2k</span> 值：/usr/bin/ed2k
+
+<span class="number">3</span>.新建一个布尔串：network<span class="class">.protocol-handler</span><span class="class">.external</span><span class="class">.ed2k</span> 值：true
+
+最后一步：打开首选项，在应用程序设置里面，指定ed2k到/usr/bin/ed2k，重启即可。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/09/w/aeamuleied2kiaoe-firefox3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-09T02:21:20.000Z" class="post__time">十月 9, 2010</time><h1 class="post__title"><a href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/">Centos中文环境支持</a></h1></header><div class="post__main"><p>安装字体：</p>
+<pre><code>yum <span class="keyword">install</span> fonts-chinese fonts-ISO8859-<span class="number">2</span>-<span class="number">75</span>dpi
+</code></pre><p>对于centos6以后版本：</p>
+<p><span style="color: rgb(255, 0, 0);">yum -y groupinstall chinese-support</span></p>
+<pre><code>编辑 .bash_profile 
+
+添加
+
+<span class="built_in">export</span> LANG=&amp;quot;zh_CN.UTF-<span class="number">8</span>&amp;quot;
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-09-20T03:58:13.000Z" class="post__time">九月 20, 2010</time><h1 class="post__title"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/">web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法</a></h1></header><div class="post__main"><p>&nbsp; cpu速度越来越快也更便宜，IDC机房带宽很昂贵，所以用cpu来换取带宽。</p>
+<pre><code>apche启用mod_deflate压缩：
+
+&amp;lt;ifmodule mod_deflate.c&amp;gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; DeflateCompressionLevel <span class="number">9</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetOutputFilter DEFLATE
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:gif|jpe?g|png)$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:exe|t?gz|zip|bz2|sit|rar)$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.pdf$</span> <span class="literal">no</span>-gzip dont-vary
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span> gzip-only-text/html
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span><span class="string">\.0[678]</span> <span class="literal">no</span>-gzip
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch <span class="string">\bMSIE</span> !<span class="literal">no</span>-gzip !gzip-only-text/html
+
+&amp;lt;/ifmodule&amp;gt;
+
+nginx 启用gzip压缩：
+
+http {
+
+&amp;nbsp;&amp;nbsp; gzip&amp;nbsp; <span class="literal">on</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_min_length&amp;nbsp; <span class="number">1000</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_buffers&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span> <span class="number">8k</span>;
+
+&amp;nbsp;&amp;nbsp; gzip_types&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; text/plain application/x-javascript text/css text/html application/xml;
+
+&amp;nbsp;&amp;nbsp; }
+
+压缩效果测试
+
+不使用压缩:
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+
+size_download=64031
+
+使用 Accept-Encoding 头：
+
+curl http://</span>veryi.com/w/<span class="number">1.html</span> --silent -H &amp;quot;<span class="attribute">Accept-Encoding</span>: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}<span class="string">\n&amp;quot;</span> --output /dev/<span class="literal">null</span>
+
+size_download=<span class="number">20012</span>
+
+比较数字就可以知道压缩效果。
+
+使用 HTTP <span class="number">1.0</span> 测试：
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --http1.0 -H &amp;quot;Accept-Encoding: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+
+size_download=64031
+
+[参考](http://</span>dev.nuclearrooster.com<span class="pi">/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>)：<span class="attribute">http</span>:<span class="pi">//dev.nuclearrooster.com/2009/11/08/checking-gzipdeflate-server-responses-with-curl/
+
+&amp;nbsp;</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-09-10T03:59:05.000Z" class="post__time">九月 10, 2010</time><h1 class="post__title"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/">centos4 升级内核linux-2.6.34.1及iptables升级到v1.4.9.1</a></h1></header><div class="post__main"><p>centos4.2 升级到内核linux-2.6.34后iptables无法使用，升级iptables:</p>
+<p>wget&nbsp; <a href="http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2" target="_blank" rel="external">http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2</a></p>
+<pre><code>tar xjf iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>
+
+.<span class="regexp">/configure --prefix=/</span>usr --with-ksource=<span class="regexp">/usr/</span>src/linux-<span class="number">2.6</span><span class="number">.34</span><span class="number">.1</span>
+
+make &amp;amp;&amp;amp; make install
+</code></pre><p>/usr/sbin/iptables -V</p>
+<p>给系统的/sbin/iptables做个符号链接即可。</p>
+<p>升级内核过程：</p>
+<p>tar xfj linux-2.6.34.1.tar.bz2 -C /usr/src</p>
+<pre><code><span class="keyword">cd</span> /usr/src
+
+/bin/rm -<span class="keyword">f</span> linux
+
+<span class="keyword">ln</span> -<span class="keyword">s</span> linux-<span class="number">2.6</span>.<span class="number">34.1</span> linux
+
+<span class="keyword">cd</span> linux
+
+<span class="keyword">make</span> mrproper
+
+<span class="keyword">cp</span> /boot/config-<span class="number">2.6</span>.<span class="number">9</span>-<span class="number">22</span>.<span class="keyword">el</span> .config
+
+<span class="keyword">make</span> menuconfig
+
+<span class="keyword">make</span> -j6 &amp;amp;&amp;amp; <span class="keyword">make</span> modules &amp;amp;&amp;amp; <span class="keyword">make</span> modules_install &amp;amp;&amp;amp; <span class="keyword">make</span> install
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T02:56:10.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/">MySQL快速安全升级(upgrade)到最新版</a></h1></header><div class="post__main"><p>&nbsp; &nbsp;&nbsp; &nbsp; 减少停机时间，以最快的速度升级(upgrade)mysql，升级前建议对新版进行测试。旧版的数据库安装在目录/usr/local/mysql，mysql是一个符号链接。</p>
+<pre><code>tar xfz mysql-5.1.50-linux-x86_64-glibc23.tar.gz -C /usr/local/
+
+cd /usr/local/mysql-5.1.50-linux-x86_64-glibc23 
+
+/bin/rm -fr data/ 
+
+/etc/init.d/mysqld <span class="operator"><span class="keyword">stop</span>
+
+mv ../mysql/<span class="keyword">data</span>/ .
+
+mv ../mysql/my.cnf .
+
+cd ..
+
+rm -f mysql
+
+<span class="keyword">ln</span> -s mysql-<span class="number">5.1</span><span class="number">.50</span>-linux-x86_64-glibc23/ mysql
+
+cd /usr/<span class="keyword">local</span>/mysql/
+
+chown -R root .
+
+chown -R mysql <span class="keyword">data</span>
+
+chgrp -R mysql .
+
+./mysql_upgrade -uroot -pvereyi.com
+
+/etc/init.d/mysqld <span class="keyword">start</span>
+
+Note:mysql_upgrade包含一下三个命令：
+
+# mysqlcheck &amp;ndash;</span><span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>all-databases &amp;ndash;auto-<span class="operator"><span class="keyword">repair</span>
+
+# mysql_fix_privilege_tables
+
+# mysqlcheck &amp;ndash;</span>all-databases &amp;ndash;<span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>fix-db-names &amp;ndash;fix-table-names
+
+在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php&nbsp; 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
+<pre><code>yum install cacti<span class="attribute">-spine</span> <span class="attribute">-y</span>
+
+配置
+
+chmod <span class="subst">+</span>r /etc/spine<span class="built_in">.</span>conf 
+
+vim /etc/spine<span class="built_in">.</span>conf
+
+创建一个软链接文件(因为spine默认会去读取该sock文件)
+
+ln <span class="attribute">-s</span> /tmp/mysql<span class="built_in">.</span>sock /<span class="built_in">var</span>/lib/mysql/mysql<span class="built_in">.</span>sock
+
+验证spine是否正常
+
+/bin/spine 
+
+用管理员帐号登陆Cacti<span class="built_in">.</span>在系统参数中制定Spine/Cactid的物理路径<span class="built_in">.
+
+</span>Console <span class="subst">-&amp;</span><span class="literal">gt</span>; Configuration <span class="subst">-&amp;</span><span class="literal">gt</span>; Settings <span class="subst">-&amp;</span><span class="literal">gt</span>; Paths <span class="subst">-&amp;</span><span class="literal">gt</span>; Alternate Poller Path <span class="subst">-&amp;</span><span class="literal">gt</span>; Spine Poller File Path
+
+/usr/bin/spine
+
+Cacti Settings (Poller)<span class="subst">-&amp;</span><span class="literal">gt</span>; Poller <span class="keyword">Type</span>
+
+spine
+</code></pre><p>&nbsp;</p>
+<p>Cacti在centos上的安装：</p>
+<p>yum -y install http php rrdtool rrdtool-devel net-snmp net-snmp-devel net-snmp-utils php-snmp mysql mysql-server perl-DBI perl-DBD-MySQL</p>
+<p>需要安装yum扩展源：</p>
+<div class="content">&nbsp;</div><br><div class="content">Red Hat Enterprise Linux 5 / <strong>i386</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 5 / <strong>x86_64</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 4 / <strong>i386</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el4/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el4/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.i386.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 4 / <strong>x86_64</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el4/en/x86_64/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el4/en/x86_64/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.x86_64.rpm</a><br><br></div></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-13T02:28:52.000Z" class="post__time">八月 13, 2010</time><h1 class="post__title"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/">centos 使用ntfs-3g mount ntfs分区</a></h1></header><div class="post__main"><p>如果不愿编译内核，可以使用ntfs-3g:</p>
+<p>yum install fuse fuse-ntfs-3g dkms dkms-fuse</p>
+<p>modprobe fuse</p>
+<p>mkdir /mnt/ntfs/</p>
+<p>mount -t ntfs -o noatime /dev/sdb2 /mnt/ntfs/</p>
+</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T03:28:10.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/">mysql导入数据提示没有SUPER Privilege权限处理</a></h1></header><div class="post__main"><p>ERROR 1419 (HY000): You do not have the SUPER Privilege&nbsp; and Binary&nbsp; Logging is&nbsp; Enabled</p>
+<pre><code>导入function 、 trigger 到 MySQL database,报错: &amp;ldquo;You <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> have the SUPER privilege <span class="keyword">and</span> <span class="built_in">binary</span> logging <span class="keyword">is</span> enabled (you *might* want <span class="keyword">to</span> <span class="keyword">use</span> the less safe log_bin_trust_function_creators variable)&amp;rdquo;</span>.
+
+原因：
+
+function / trigger 中有dangerous statements修改数据库，错误只在启用binary logging选项进行主从复制的服务器上出现。
+
+解决：
+
+1）导入数据的用户不仅需要<span class="operator"><span class="keyword">CREATE</span> ROUTINE, <span class="keyword">ALTER</span> ROUTINE, <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span>, <span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span>, <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 和 <span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 权限，还需要SUPER <span class="keyword">privileges</span> 权限，使用超级用户导入数据。
+
+<span class="number">2</span>）让所有用户具有执行类似functions的权限，危险，不推荐，
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by specifying it on the server <span class="operator"><span class="keyword">start</span>, <span class="keyword">like</span>: <span class="comment">--log-bin-trust-function-creators=1</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by setting it to 1 through the <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> statement, <span class="keyword">like</span>:
+
+&amp;nbsp;</span>mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators = <span class="number">1</span>;</span>
+
+3）如果不需要复制，或者是从库，关闭binlog，
+
+# binary logging - not required for slaves, but recommended
+
+#log-bin=mysql-bin
+
+# binary logging format - mixed recommended 
+
+#binlog_format=mixed
+
+原文：http://www.ispirer.com/wiki/sqlways/troubleshooting-guide/mysql/import/binary-logging&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/7/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/9/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

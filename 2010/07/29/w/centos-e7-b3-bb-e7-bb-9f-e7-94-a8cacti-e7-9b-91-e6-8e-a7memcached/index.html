@@ -1,0 +1,40 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos系统用cacti监控memcached - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos系统用cacti监控memcached"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-07-29T10:45:39.000Z" class="post__time">七月 29, 2010</time><h1 class="post__title"><a href="/2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/">centos系统用cacti监控memcached</a></h1></header><div class="post__main"><p>安装Python支持：</p>
+<pre><code>yum install python-setuptools
+
+下载安装python <span class="keyword">for</span> memecached api,<span class="type">Python</span> <span class="type">Client</span> <span class="type">API</span> <span class="type">Installation</span>:
+
+地址：
+
+http://dealnews.com/developers/cacti/memcached.html
+
+tar xzf python-memcached-&amp;lt;ver&amp;gt;.tar.gz.
+
+python setup.py install
+
+模板安装,<span class="type">Template</span> <span class="type">Installation</span>:
+
+下载 cacti-memcached-.tar.gz
+
+tar xzf cacti-memcached-&amp;lt;ver&amp;gt;.tar.gz
+
+<span class="type">Copy</span> (<span class="keyword">or</span> upload) the memcached.py script to the &amp;lt;cacti path&amp;gt;/scripts/ directory on the server that cacti <span class="keyword">is</span> installed on.
+
+[optional] &amp;ndash; <span class="type">Verify</span> that the memcached.py script properly works by opening a console <span class="keyword">or</span> ssh connection to the server <span class="keyword">and</span> typing:
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; python &amp;lt;cacti path&amp;gt;/scripts/memcached.py &amp;lt;hostname&amp;gt;
+
+导入模板cacti_memcached_host_template.xml：
+
+<span class="type">Open</span> <span class="keyword">and</span> login to your cacti installation&amp;<span class="comment">#39;s console in your web browser and choose Import Templates from the menu on the left.</span>
+
+<span class="type">In</span> the <span class="type">Import</span> <span class="type">Templates</span> section, click the <span class="type">Browse</span> button to <span class="type">Import</span> <span class="type">Template</span> <span class="keyword">from</span> <span class="type">Local</span> <span class="type">File</span>. <span class="type">Navigate</span> to the directory where you extracted this <span class="keyword">template</span> <span class="keyword">and</span> choose the cacti_memcached_host_template.xml file to be imported.
+
+<span class="type">Click</span> the <span class="type">Save</span> button to <span class="keyword">import</span> the <span class="keyword">template</span>.
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/" data-url="http://blog.veryi.com/2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/07/23/w/e5-8d-95-e6-a8-a1-e5-85-89-e7-ba-a4-e5-a4-9a-e6-a8-a1-e5-85-89-e7-ba-a4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

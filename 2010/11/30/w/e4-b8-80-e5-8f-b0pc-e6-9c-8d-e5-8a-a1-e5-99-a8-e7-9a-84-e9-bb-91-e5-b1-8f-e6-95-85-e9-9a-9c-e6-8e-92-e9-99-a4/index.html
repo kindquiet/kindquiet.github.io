@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>一台pc服务器的黑屏故障排除 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="一台pc服务器的黑屏故障排除"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-11-30T06:54:19.000Z" class="post__time">十一月 30, 2010</time><h1 class="post__title"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">一台pc服务器的黑屏故障排除</a></h1></header><div class="post__main"><p>开机显示器亮一下显示显卡型号后黑屏，不报警，不能启动。因为听不到&ldquo;滴&rdquo;的自检通过声音而且没有显示，仍然判断为显卡故障，更换显卡以后正常。</p>
+<pre><code>这里需要了解一下POST自检是按什么顺序进行检测的：
+
+POST自检测过程大致为：加电－<span class="built_in">CPU</span>－ROM－BIOS－System Clock－DMA－64KB RAM－IRQ－显卡等。检测显卡以前的过程称过关键部件测试，如果关键部件有问题，计算机会处于挂起状态，习惯上称为核心故障。
+
+另一类故障称为非关键性故障，检测完显卡后，计算机将对64KB以上内存、I／O口、软硬盘驱动器、键盘、即插即用设备、CMOS设置等进行检测，并在屏幕上显示各种信息和出错报告。
+
+附件：个人计算机的启动过程
+
+我们在按下启动键时，首先启动的应是电源（因为如果没有电源供电，那么主板上所有的配件都是无法工作的）。但是为了保证安全使用，电源部分采取了一系列安全保护措施；因此开关电源从起振到稳定之间会有一段时间的延迟，等待各组电压都稳定下来后，电源各部分会输出一个检测信号，这个信号为高电平时表示该部分电压正常，这些部分包括输入电压和各组输出电压。这些信号总和的结果就是一个POWER GOOD信号（也称为POWER OK或PWR OK信号）；如果主板接受不到这个信号，那么时钟芯片会持续向<span class="built_in">CPU</span>发送复位（RESET）信号（与我们按下RESER键相当），<span class="built_in">CPU</span>就不会工作。 
+
+当<span class="built_in">CPU</span>接受到正常的POWER GOOD信号，主板和<span class="built_in">CPU</span>就启动了吗？其实主板此时，还要根据<span class="built_in">CPU</span>的VID0－VID3引脚的定义组合，将<span class="built_in">CPU</span>所提供的VID0－VID3信号送到电源管理模块的相应的端口；如果主板BIOS具有可设定<span class="built_in">CPU</span>电压的功能，主板会按时设定的电压与VID的对应关系产生新的VID信号并送到电源管理模块芯片，电源管理模块将根据设定并通过DAC电压将其转换为基准电压，再经过场效应管轮流导通和关闭，将能量通过电感线圈送到<span class="built_in">CPU</span>，最后再经过调节电路使用输出电压与设定电压值相当。 
+
+由于<span class="built_in">CPU</span>还要根据自己所需要的频率，通过IC总线来检测主板频率发生器所设置的频率是否支持；因为电脑要进行正确的数据传送以及正常的运行，没有时钟信号是不行的，时钟信号在电路中的主要作用就是同步；因为在数据传送过程中，对时序都有着严格的要求，只有这样才能保证数据在传输过程不出差错。时钟信号首先设定了一个基准，我们可以用它来确定其它信号的宽度，另外时钟信号能够保证收发数据双方的同步。对于<span class="built_in">CPU</span>而言，时钟信号作为基准，<span class="built_in">CPU</span>内部的所有信号处理都要以它作为标尺，这样它就确定<span class="built_in">CPU</span>指令的执行速度；如<span class="built_in">CPU</span>本身的频率无法适应频率发生器所提供的高频率，也是无法正常工作的。因此只有当接受到POWER GOOD信号，和相应的得到<span class="built_in">CPU</span>工作的电压时以及相应的时钟频率后，<span class="built_in">CPU</span>才能正常的工作，也就是开始执行BIOS程序。 
+
+POST上电自检：是微机接通电源后，系统进行的一个自我检查的例行程序。这个过程通常称为POST上电自检（Power On Self <span class="keyword">Test</span>）。对系统的几乎所有的硬件进行检测。 
+
+POST是如何进行自检测的？ 
+
+主板在接通电源后，系统首先由(Power On Self <span class="keyword">Test</span>,上电自检)程序来对内部各个设备进行检查。在我们按下起动键（电源开关）时，系统的控制权就交由BIOS来完成，由于此时电压还不稳定，主板控制芯片组会向<span class="built_in">CPU</span>发出并保持一个RESET(重置)信号，让<span class="built_in">CPU</span>初始化，同时等待电源发出的POWER GOOD信号(电源准备好信号)。当电源开始稳定供电后(当然从不稳定到稳定的过程也只是短暂的瞬间)，芯片组便撤去RESET信号(如果是手动按下计算机面板上的Reset按钮来重启机器，那么松开该按钮时芯片组就会撤去RESET信号)，<span class="built_in">CPU</span>马上就从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。
+
+系统BIOS的启动代码首先要做的事情就是进行POST(Power On Self <span class="keyword">Test</span>，加电自检)，由于电脑的硬件设备很多（包括存储器、中断、扩展卡），因此要检测这些设备的工作状态是否正常。 这一过程是逐一进行的，BIOS厂商对每一个设备都给出了一个检测代码（称为POST CODE即开机自我检测代码），在对某个设置进行检测时，首先将对应的POST CODE写入<span class="number">80H</span>（地址）诊断端口，当该设备检测通过，则接着送另一个设置的POST CODE，对此设置进行测试。如果某个设备测试没有通过，则此POST CODE会在<span class="number">80H</span>处保留下来，检测程序也会中止，并根据已定的报警声进行报警（BIOS厂商对报警声也分别作了定义，不同的设置出现故障，其报警声也是不同的，我们可以根据报警声的不同，分辨出故障所在。 
+
+POST自检响铃次数是如何定义的？ 
+
+POST上电自检还会通过报警声响次数的方式来指出检测到的故障。但需要注意：由于目前主板BIOS类型大致可分为AWARD公司、AMI公司、PHOENIX公司（AWARD已与PHOENIX合并），因此不同类型的BIOS，其自检响铃次数所定义的自检错误是不一致的，因此一定要分清。 
+
+POST自检发现错误后如何提示？ 
+
+POST自检如发现有错误，将按两种情况处理：对于严重故障(致命性故障)则停机，此时由于各种初始化操作还没完成，不能给出任何提示或信号；对于非严重故障则给出提示或声音报警信号（以上介绍），等待用户处理。通过BIOS自检功能（POST自检），我们就可以方便的侦测出主板的故障所在，以便正确的解决。 
+
+如我们按下电源键后，只有电源指示灯亮，电脑屏幕没有任何反映，也没有报警声；那么针对这种情况，我们又应如何解决呢？ 
+
+屏幕没有显示，也没有报警声，我们就无法从POST自检功能得到相应的信息；大家都知道，计算机是一个复杂而且精密的产品组合，因此一个环节出现问题，可能都无法启动机器（我们主要谈硬件方面）。因此，如出现黑屏，无报警声响的故障现象，我们就应根据电脑的启动过程来分析问题所在了。 
+
+如何判断、解决故障所在？ 
+
+因为如接受不到POWER GOOD信号，系统就一直处理RESET（复位）循环中，因此主板也就无法启动，相应的其它硬件，如显卡也无法工作，显示器由于接受不到显卡传出的信号，因此也就没有显示，一直处于待机状态。此时，我们应检测电源，不要以为电源灯亮，就表明电正常，因为只要有一路信号有故障（该部分电路不正常或还未稳定），输入出的POWER GOOD信号都为低电平，即表示电源部分有故障或还未进入稳定状状；虽然电源指示灯亮，但由于主板接受不到正常的POWER GOOD信号，也无法启动。我们检测电源的方法是，使用可正常工作的电源测试。如电源为ATX型我们可用导线将<span class="number">13</span>与<span class="number">14</span>脚短接，如电源风扇能正常运行，则表明电源是完好的，则故障应在主板上。 
+
+更换正常电源后，如系统还是没有工作的显象，应按以上主板启动过程，测试<span class="built_in">CPU</span>的电源管理模块和频率发生器。但由于我们不可能有完善的设备来测试主板上的电源和频率模块（大多数电脑爱好者不可能有此类设置，和具有相应的检测能力）。因此我们对此还要采用排除法，即在其它正常主板上测试<span class="built_in">CPU</span>。测试排除<span class="built_in">CPU</span>的故障外，还应检测主板频率设置问题。电脑爱好者为使用或测试<span class="built_in">CPU</span>的超频能力，会通过调整主板外频的方式（目前<span class="built_in">CPU</span>已经锁频，只能设置外频，而无法设置倍频），来调高<span class="built_in">CPU</span>的工作频率。如果<span class="built_in">CPU</span>无法适应高工作频率，虽然电源供电正常，主板也是无法启动的。 
+
+排除了其它硬件的问题，为会么系统仍不可启动？ 
+
+如果硬件一切正常（经测试），那么在POST上电自检测后，<span class="built_in">CPU</span>会从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。由于BIOS是连接操作系统和硬件之间的桥梁，为计算机提供最低级的、最直接的硬件控制，计算机的原始操作都是依照固化在BIOS里的内容（指令）来完成的。因此如BIOS文件破坏或BIOS芯片损坏，都会直接的影响主板的启动。 
+
+如果屏幕显示BIOS ROM checksum error-System halted(BIOS 程序代码在进行总和检查 ( checksum ) 时发现错误)的提示时，应是读取BIOS时，校验总和出错，因此无法启机器。这种问题通常是因为 BIOS 程序代码更新不完全所造成的，解决办法重新刷写烧坏主板 BIOS。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/" data-url="http://blog.veryi.com/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/11/25/w/shell-e7-bc-96-e7-a8-8b-e8-84-9a-e6-9c-ac-e5-91-bd-e5-90-8d-e8-a6-81-e8-b0-a8-e6-85-8e/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

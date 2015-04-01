@@ -1,0 +1,312 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>在线文档web浏览-pdf转换为swf - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="在线文档web浏览-pdf转换为swf"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-25T03:30:32.000Z" class="post__time">七月 25, 2013</time><h1 class="post__title"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/">在线文档web浏览-pdf转换为swf</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp; 在线文档协同浏览，在WEB应用中实现百度文库那样可以在线浏览文档的功能。用户上传一个office文档，如doc、ppt、pdf之类的，然后在浏览器里显示出来。doc,ppt,xls,txt需转换为pdf ，分割pdf ，pdf转换为swf 。</p>
+<p>安装openoffice：</p>
+<p>yum groupinstall &quot;Office Suite and Productivity&quot; -y</p>
+<p>yum list openoffice*</p>
+<p>安装中文语言包</p>
+<p>yum install libreoffice-langpack-zh*</p>
+<p>centos 5 用</p>
+<p>yum groupinstall &quot;Office/Productivity&quot;</p>
+<p>yum -y install openoffice.org-langpack-zh_CN</p>
+<p>安装x11字体：</p>
+<p>yum install xorg-x11-fonts*</p>
+<p>yum install libXfont</p>
+<p>安装Xvfb：</p>
+<p>yum install&nbsp; xorg-x11-server-Xvfb</p>
+<p>把pdf转换为swf，对于centos，安装swftools，需要添加rpmforge源，参见<a href="http://veryi.com/w/327.html" title="Link to 中国国内的Centos yum源及rpm仓库" target="_blank" rel="external">中国国内的Centos yum源及rpm仓库</a>：</p>
+<p>rpm -Uhv&nbsp; <a href="http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm" target="_blank" rel="external">http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</a></p>
+<p>centos5: rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a></p>
+<p>yum install swftools -y</p>
+<p>安装xpdf语言包。下载xpdf-chinese-simplified.tar.gz文件，解压到/usr/share/xpdf下。下载字库文件gbsn00lp.ttf 、gkai00mp.ttf 等。</p>
+<pre><code>wget <span class="symbol">ftp:</span>/<span class="regexp">/ftp.foolabs.com/pub</span><span class="regexp">/xpdf/xpdf</span>-chinese-simplified.tar.gz
+</code></pre><p>tar zxf xpdf-chinese-simplified.tar.gz -C /usr/local/src</p>
+<pre><code>mkdir <span class="regexp">/usr/</span>share/xpdf
+
+cd <span class="regexp">/usr/</span>local/src
+
+mv xpdf-chinese-simplified&amp;nbsp; <span class="regexp">/usr/</span>share/xpdf
+</code></pre><p>cd -</p>
+<p>cp gbsn00lp.ttf gkai00mp.ttf /usr/share/xpdf/xpdf-chinese-simplified/CMap/</p>
+<pre><code>cd <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified
+</code></pre><p>vim add-to-xpdfrc</p>
+<pre><code>cidToUnicode&amp;nbsp;&amp;nbsp; Adobe-GB1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/Adobe-GB1.cidToUnicode
+
+unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ISO-<span class="number">2022</span>-CN&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/ISO-<span class="number">2022</span>-CN.unicodeMap
+
+unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; EUC-CN&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/EUC-CN.unicodeMap
+
+unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; GBK&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/GBK.unicodeMap
+
+cMapDir&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Adobe-GB1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
+
+toUnicodeDir&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
+
+#----- end Chinese Simplified support <span class="keyword">package</span>
+
+displayCIDFontTT Adobe-GB1 <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified<span class="regexp">/CMap/</span>gkai00mp.ttf
+</code></pre><p>命令行启动测试：</p>
+<p>Xvfb :1 -screen 0 800x600x24 &amp;</p>
+<pre><code>soffice -headless <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot; -nofirstartwizard -display :<span class="number">1</span> &amp;amp;
+</code></pre><p>运行和自启动：</p>
+<pre><code>vim <span class="regexp">/etc/i</span>nit.d<span class="regexp">/soffice</span>
+</code></pre><p>以下脚本在centos5 centos6通过</p>
+<h1 id="!/bin/bash">!/bin/bash</h1><h1 id="Boot_open_office_so_that_Alfresco_can_do_transforms-">Boot open office so that Alfresco can do transforms.</h1><pre><code><span class="preprocessor"># chkconfig: 2345 55 25</span>
+
+<span class="preprocessor"># description: OpenOffice Headless</span>
+
+<span class="preprocessor">#</span>
+
+<span class="preprocessor"># processname: soffice</span>
+</code></pre><h1 id="source_function_library">source function library</h1><pre><code>. <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>functions
+</code></pre><p>RETVAL=0</p>
+<p>VDISPLAY=&#39;99&#39;</p>
+<pre><code>#SOFFICE_PATH=&amp;<span class="string">#39</span>;/usr/lib/libreoffice/<span class="keyword">program</span>/&amp;<span class="string">#39</span>;
+
+SOFFICE_PATH=&amp;<span class="string">#39</span>;/usr/lib64/openoffice.org3/<span class="keyword">program</span>&amp;<span class="string">#39</span>;
+</code></pre><h1 id="SOFFICE_PATH=&#39;/usr/lib/openoffice-org3/program&#39;">SOFFICE_PATH=&#39;/usr/lib/openoffice.org3/program&#39;</h1><pre><code>SOFFICE_ARGS1<span class="subst">=&amp;</span>quot;<span class="attribute">-nofirststartwizard</span> <span class="attribute">-nologo</span> <span class="attribute">-headless</span> <span class="attribute">-display</span> :<span class="variable">$VDISPLAY</span> <span class="subst">&amp;</span>quot;
+
+SOFFICE_ARGS2<span class="subst">=&amp;</span><span class="variable">#39</span>;<span class="attribute">-accept</span><span class="subst">=</span>socket,host<span class="subst">=</span>localhost,port<span class="subst">=</span><span class="number">8100</span>;urp;StarOffice<span class="built_in">.</span>ServiceManager<span class="subst">&amp;</span><span class="variable">#39</span>;
+
+SOFFICE_PIDFILE<span class="subst">=</span>/<span class="built_in">var</span>/run/soffice<span class="built_in">.</span>bin<span class="built_in">.</span>pid
+</code></pre><p>XVFB=/usr/bin/Xvfb</p>
+<pre><code>XVFB_ARGS=&amp;quot;:<span class="variable">$VDISPLAY</span> -screen <span class="number">0</span> <span class="number">800</span>x600x8 -fbdir /var/run&amp;quot;
+
+XVFB_PIDFILE=/var/run/xvfb.pid
+
+<span class="function"><span class="title">start_soffice</span></span>() {
+
+<span class="built_in">echo</span> -n $&amp;quot;Starting OpenOffice&amp;quot;
+
+<span class="variable">$SOFFICE_PATH</span>/soffice.bin <span class="variable">$SOFFICE_ARGS1</span> <span class="variable">$SOFFICE_ARGS2</span>&amp;nbsp; <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span> &amp;amp;
+
+[ $? <span class="operator">-eq</span> <span class="number">0</span> ] &amp;amp;&amp;amp; <span class="built_in">echo</span>_success || <span class="built_in">echo</span>_failure
+
+pidof soffice.bin &amp;gt; <span class="variable">$SOFFICE_PIDFILE</span>
+
+<span class="built_in">echo</span>
+
+}
+
+<span class="function"><span class="title">start_xvfb</span></span>() {
+
+<span class="built_in">echo</span> -n $&amp;quot;Starting Xvfb&amp;quot;
+
+<span class="variable">$XVFB</span> <span class="variable">$XVFB_ARGS</span> &amp;gt;/dev/null <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span> &amp;amp;
+
+[ $? <span class="operator">-eq</span> <span class="number">0</span> ] &amp;amp;&amp;amp; success || failure
+
+pidofproc Xvfb &amp;gt; <span class="variable">$XVFB_PIDFILE</span>
+
+<span class="built_in">echo</span>
+
+}
+
+<span class="function"><span class="title">start</span></span>() {
+
+start_xvfb
+
+sleep <span class="number">3</span>
+
+start_soffice
+
+}
+
+<span class="function"><span class="title">stop</span></span>() {
+
+<span class="built_in">echo</span> -n $&amp;quot;Stopping OpenOffice&amp;quot;
+
+killproc soffice.bin
+
+<span class="built_in">echo</span>
+
+<span class="built_in">echo</span> -n $&amp;quot;Stopping Xvfb&amp;quot;
+
+killproc Xvfb
+
+<span class="built_in">echo</span>
+
+}
+
+<span class="keyword">case</span> &amp;quot;<span class="variable">$1</span>&amp;quot; <span class="keyword">in</span>
+
+start)
+
+start
+
+;;
+
+stop)
+
+stop
+
+;;
+
+restart)
+
+stop
+
+start
+
+;;
+
+*)
+
+<span class="built_in">echo</span> $&amp;quot;Usage: <span class="variable">$0</span> {start|stop|restart}&amp;quot;
+
+<span class="keyword">esac</span>
+</code></pre><p>&nbsp;</p>
+<h1 id="以下centos6_64位可用">以下centos6 64位可用</h1><h1 id="!/bin/bash-1">!/bin/bash</h1><pre><code><span class="preprocessor"># chkconfig: 345 20 80</span>
+
+<span class="preprocessor"># description: init.d script for headless openoffice.org (2.3+ for RHEL5 64bit)</span>
+
+<span class="preprocessor">#</span>
+
+<span class="preprocessor"># processname: soffice</span>
+
+<span class="preprocessor">#</span>
+
+<span class="preprocessor"># source function library</span>
+
+. /etc/rc.d/init.d/functions
+</code></pre><p>RETVAL=0</p>
+<pre><code>SOFFICE_PATH=&amp;<span class="string">#39</span>;/usr/lib64/openoffice.org3/<span class="keyword">program</span>&amp;<span class="string">#39</span>;
+
+SOFFICE_ARGS=&amp;<span class="string">#39</span>;-accept=socket,host=localhost,port=<span class="number">8100</span>;urp;StarOffice.ServiceManager -headless -nofirststartwizard -nologo&amp;<span class="string">#39</span>;
+
+SOFFICE_PIDFILE=/<span class="keyword">var</span>/run/soffice.bin.pid
+</code></pre><p>start_soffice() {</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo -n $&amp;quot;Starting OpenOffice.org&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; $SOFFICE_PATH/soffice.bin $SOFFICE_ARGS &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; [ $? -eq 0 ] &amp;amp;&amp;amp; echo_success || echo_failure
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; pidof soffice.bin &amp;gt; $SOFFICE_PIDFILE
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo
+
+}
+
+<span class="operator"><span class="keyword">start</span>() {
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; start_soffice
+
+}
+
+<span class="operator"><span class="keyword">stop</span>() {
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo -n $&amp;quot;Stopping OpenOffice&amp;quot;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; killproc soffice
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo
+
+}
+
+case &amp;quot;$1&amp;quot; in
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>)
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>)
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; restart)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>
+
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; *)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo $&amp;quot;Usage: $0 {<span class="operator"><span class="keyword">start</span>|<span class="keyword">stop</span>|restart}&amp;quot;</span>
+
+esac
+</code></pre><p>chmod +x /etc/init.d/soffice</p>
+<pre><code>chkconfig <span class="comment">--add soffice</span>
+
+chkconfig <span class="comment">--list soffice</span>
+</code></pre><p>/etc/init.d/soffice start</p>
+<p>使用如下命令查看8100端口是否被占用：</p>
+<pre><code>netstat -ano <span class="string">| grep 8100</span>
+
+使用如下命令查看进程是否存在：
+</code></pre><p>ps aux|grep soffice</p>
+<p>然后将一个pdf格式的文档传到一个文件下，执行以下命令，看是否能生成对应的pdf文件：</p>
+<p>pdf2swf -o （swf路径例如 /opt/a/a.swf） -T -z -t -f (pdf路径，例如/opt/a/a.pdf) -s languagedir=/usr/share/xpdf/xpdf-chinese-simplified -s flashversion=9</p>
+<p>如果生成了，那么就说明安装成功了。</p>
+<p>5、最后使用如下转换命令测试：</p>
+<pre><code>pdf2swf <span class="operator">-s</span> languagedir=/usr/share/xpdf/xpdf-chinese-simplified -T <span class="number">9</span> <span class="operator">-s</span> poly2bitmap <span class="operator">-s</span> zoom=<span class="number">150</span> <span class="operator">-s</span> flashversion=<span class="number">9</span> &amp;quot;/opt/<span class="number">123</span>.pdf&amp;quot; -o &amp;quot;/opt/<span class="built_in">test</span>/%.swf&amp;quot;
+</code></pre><p>附：</p>
+<pre><code>编译的时候需要一些开发库 libgif-dev jpeglib-dev freetype-dev 等。编译安装swftools：
+
+yum install gcc* automake zlib-devel libjpeg-devel giflib-devel freetype-devel
+
+tar xfz swftools-<span class="number">0</span>.<span class="number">9.1</span>.tar.gz -<span class="constant">C </span>/usr/local/src/
+
+sh ./configure
+
+make &amp;amp;&amp;amp; make install
+
+设置swftools环境变量，使pdf2swf成为一个可执行命令
+
+vim /etc/profile
+
+export <span class="constant">PATH=</span><span class="variable">$PATH</span><span class="symbol">:/usr/local/swftools/bin/</span>
+</code></pre><p>需要 x-server ，如果没有x，在转换的时候会报这样的错误：</p>
+<pre><code>/usr/lib/openoffice.org/<span class="keyword">program</span>/soffice.bin X11 <span class="keyword">error</span>: Can&amp;#39;t <span class="keyword">open</span> <span class="keyword">display</span>:
+
+<span class="keyword">Set</span> <span class="keyword">DISPLAY</span> environment variable, <span class="keyword">use</span> -<span class="keyword">display</span> option
+
+or check permissions of your X-Server
+
+x桌面导入环境变量 export <span class="keyword">DISPLAY</span>=localhost:1 ，这样就能成功转换。但是，作为服务器是不开 x 的，解决方法是虚拟一个x 桌面 ，
+
+Xvfb :1 -screen 0 800x600x24&amp;amp;
+</code></pre><p>openoffice的服务启动</p>
+<pre><code>soffice -headless <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot; -nofirstartwizard
+
+从windows上传txt格式的文档，openoffice都报错说不能识别。把windows的换行符替换为 \n 。
+
+Linux环境配置文件如下：
+
+<span class="variable">openOfficeStartCommand =</span> /usr/lib/openoffice.org3/program/soffice.bin/ -headless\ <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot;\ -nofirststartwizard
+
+<span class="variable">pdfToSwfCommand =</span> /usr/local/swftools/bin/pdf2swf
+
+<span class="variable">bitMapc=</span>-T <span class="number">9</span> -s poly2bitmap -s <span class="variable">zoom=</span><span class="number">150</span>
+
+<span class="variable">zoom=</span><span class="number">150</span>
+
+<span class="variable">langc=</span>-s <span class="variable">languagedir=</span>/usr/local/xpdf-chinese-simplified
+
+<span class="variable">port =</span> <span class="number">8100</span>
+</code></pre><p>排错：soffice -headless -accept=&quot;socket,host=127.0.0.1,port=8100;urp;&quot; -nofirstartwizard</p>
+<pre><code><span class="attribute">FreeFontPath</span>: <span class="string">FPE &amp;quot;unix/:7100&amp;quot; refcount is 2, should be 1; fixing.</span>
+
+<span class="delphi">The XKEYBOARD keymap compiler (xkbcomp) reports:
+
+&amp;gt; Error:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Can&amp;<span class="string">#39</span>;t find <span class="keyword">file</span> &amp;quot;unknown&amp;quot; <span class="keyword">for</span> geometry include
+
+&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Exiting
+
+&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Abandoning geometry <span class="keyword">file</span> &amp;quot;<span class="keyword">default</span>&amp;quot;
+
+Errors from xkbcomp are <span class="keyword">not</span> fatal <span class="keyword">to</span> the X server</span>
+</code></pre><p>解决方法，安装字体：yum install xorg-x11-fonts*</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/" data-url="http://blog.veryi.com/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

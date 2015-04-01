@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>linux lvs集群 应用经验谈 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="linux lvs集群 应用经验谈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-10T01:19:36.000Z" class="post__time">四月 10, 2009</time><h1 class="post__title"><a href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/">linux lvs集群 应用经验谈</a></h1></header><div class="post__main"><p>lvs(Linux Virtual Server)负载均衡的安装配置网上的文章很多了，这里把lvs集群2年应用中的一些经验写出来，欢迎大家提宝贵意见：</p>
+<p>&nbsp;</p>
+<p>应用环境：</p>
+<p>&nbsp;</p>
+<p>前置机（负载均衡器）：Xeon(TM) CPU 3.00GHz/2G</p>
+<p>&nbsp;</p>
+<p>CentOS release 5 (Final)，kernel： 2.6.21.5</p>
+<p>&nbsp;</p>
+<p>lvs DR: Weighted Round Robin；</p>
+<p>&nbsp;</p>
+<p>heartbeat（实际没用上）；mon（监控real server)</p>
+<p>&nbsp;</p>
+<p>real server:</p>
+<p>&nbsp;</p>
+<p>各种配置，pc机不少。</p>
+<p>&nbsp;</p>
+<p>因为是在线集中培训，用户要提交作业、发表评论，以动态内容为主。一天内的最大在线用户5万以上。</p>
+<p>&nbsp;</p>
+<p>1、lvs NAT的效率较低，抗攻击能力差，建议用lvs DR、lvs TUN方式。</p>
+<p>&nbsp;</p>
+<p>2、lvs DR不能转发到端口，比如说，只能80到80，不能80到8080。</p>
+<p>&nbsp;</p>
+<p>3、lvs非常稳定，因为一些原因，</p>
+<p><strong>load balancer</strong></p>
+<p>没有后备系统，但LB从未发生过停止服务。</p>
+<p>&nbsp;</p>
+<p>4、lvs LB在被攻击时，负载略有提高，real server很快停止响应，在增加一定数量real server后，恢复正常服务。</p>
+<p>&nbsp;</p>
+<p>5、前置机的负载很低，ipvsadm -Lnc|wc -l超过十万时，cpu的使用率&lt;10%。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/" data-url="http://blog.veryi.com/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/09/w/e5-be-ae-e6-b3-a2-e7-82-89-e7-9a-84-e4-b8-a5-e9-87-8d-e5-8d-b1-e5-ae-b3-e7-9c-9f-e7-9b-b8-e2-80-94-e4-bd-a0-e7-9f-a5-e9-81-93-e5-90-97-ef-bc-9f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

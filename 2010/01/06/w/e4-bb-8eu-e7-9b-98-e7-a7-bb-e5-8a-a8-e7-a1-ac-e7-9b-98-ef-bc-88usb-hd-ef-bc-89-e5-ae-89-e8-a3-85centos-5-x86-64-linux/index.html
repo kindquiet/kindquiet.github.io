@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>从u盘/移动硬盘（usb hd）安装centos 6 、centos 5 x86_64 linux - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="从u盘/移动硬盘（usb hd）安装centos 6 、centos 5 x86_64 linux"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-01-06T07:30:58.000Z" class="post__time">一月 6, 2010</time><h1 class="post__title"><a href="/2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/">从u盘/移动硬盘（usb hd）安装centos 6 、centos 5 x86_64 linux</a></h1></header><div class="post__main"><p>安装Linux主要有三种方法</p>
+<pre><code>1、光盘
+
+2、网络
+
+3、<span class="keyword">u</span>盘/移动硬盘
+
+光盘安装最简单，也是最常用的。网络安装很方便，速度也快，nfs镜像适合快速安装大量机器。但<span class="keyword">U</span>盘安装更方便，安装的速度比光盘快，也不需要光驱和刻盘。
+</code></pre><p>这里以一个20g的移动硬盘为例介绍一下安装过程，U盘类似：</p>
+<p>假设移动硬盘是sdb，分区需要在linux中用fdisk（windows环境可以用DiskGenius.exe），</p>
+<p>分为三个区：</p>
+<p>sdb1，4G，fat32（可以安装live linux，参见<a href="http://veryi.com/w/257.html" target="_blank" rel="external">http://veryi.com/w/257.html</a>）；</p>
+<p>sdb2，10G，ntfs（用于存放大于4个G的文件）；</p>
+<p>sdb3，5G，ext2。在linux中使用以下命令格式化：</p>
+<p>mkfs -t ext2 /dev/sdb3。</p>
+<p>&nbsp;</p>
+<p>centos 6 安装设定：</p>
+<p>mkdir -p /mnt/iso</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb1
+
+mount -o CentOS-<span class="number">6.0</span>-i386-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+</code></pre><p>cp -a /mnt/iso/isolinux /mnt/sdb1</p>
+<pre><code>umount <span class="regexp">/mnt/</span>sdb1
+</code></pre><p>复制CentOS-6.0-i386-bin-DVD.iso到ext2分区：</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb3
+
+mount&amp;nbsp; <span class="regexp">/dev/</span>sdb3 <span class="regexp">/mnt/</span>sdb3
+</code></pre><p>cp CentOS-6.0-i386-bin-DVD.iso /mnt/sdb3</p>
+<p>对于CentOS-6.0-i386还需要复制install.img，在CentOS-6.0-i386-bin-DVD.iso文件里的images目录里。</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb3/images
+
+cp <span class="regexp">/mnt/</span>iso<span class="regexp">/images/</span>install.img <span class="regexp">/mnt/</span>sdb3/images
+
+umount <span class="regexp">/mnt/</span>sdb3
+</code></pre><p>&nbsp;</p>
+<p>CentOS 5安装配置：</p>
+<p>复制CentOS-5.4-x86_64-bin-DVD.iso到ext2分区：</p>
+<p>mount&nbsp; /dev/sdb3 /mnt</p>
+<p>cp CentOS-5.4-x86_64-bin-DVD.iso /mnt</p>
+<p>umount /mnt</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>复制linux系统引导文件到sdb1分区：</p>
+<p>mkdir -p /mnt/iso</p>
+<pre><code>mkdir -<span class="tag">p</span> /mnt/sdb1
+</code></pre><p>对于centos 5</p>
+<pre><code>mount -o loop CentOS-<span class="number">5.4</span>-x86_64-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+
+cp -a <span class="regexp">/mnt/i</span>so<span class="regexp">/isolinux /m</span>nt<span class="regexp">/sdb1</span>
+</code></pre><p>对于centos 6</p>
+<pre><code>mount -o loop CentOS-<span class="number">6.0</span>-i386-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+
+cp -a <span class="regexp">/mnt/i</span>so<span class="regexp">/isolinux /m</span>nt<span class="regexp">/sdb1</span>
+</code></pre><p>CentOS6直接放在第一个分区就可以了。因为在linux的安装过程中不能识别ntfs分区，而CentOS-5.4-x86_64-bin-DVD.iso、CentOS-6.0-i386-bin-DVD.iso超过了4个G，fat32分区单文件的上限是4G，所以把iso文件放在ext2分区。</p>
+<p>&nbsp;</p>
+<p>安装<a href="http://sourceforge.net/projects/grub4dos/" target="_blank" rel="external">grub4dos</a>，将引导代码写入U盘mbr：</p>
+<pre><code>W<span class="keyword">in</span>32下，运行grubinst_gui.exe ，在&amp;ldquo;磁盘&amp;rdquo;处选中U盘，在&amp;ldquo;选项&amp;rdquo;区选中&amp;ldquo;不保存原来的mbr&amp;rdquo;、&amp;ldquo;不引导原来的mbr&amp;rdquo;、&amp;ldquo;启动时不搜索软盘&amp;rdquo;，点击&amp;ldquo;安装&amp;rdquo;即可。
+</code></pre><p>拷贝grub.exe、grldr到u盘fat32分区根目录，编辑menu.lst，加入：</p>
+<p>title CentOS-5.4-x86_64 install</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/isolinux/</span>vmlinuz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/isolinux/i</span>nitrd.img
+</code></pre><p>对于centos 6:</p>
+<p>title CentOS-6 from usb key/hdd install</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/isolinux/</span>vmlinuz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/isolinux/i</span>nitrd.img
+</code></pre><p>把要安装的服务器设为usb设备优先引导，grub加载后，选择CentOS-5.4-x86_64 install，</p>
+<p>然后是linux初始化，</p>
+<p>到选择安装介质时选择</p>
+<p>local disk（本地硬盘），硬盘分区选择</p>
+<p>/dev/sdb3（根据实际环境而定，一般是/dev/sdb1），目录选择/(如果iso文件放在/iso目录，就写/iso)。</p>
+<p>在这里，服务器自己的本地硬盘被当成sda,移动硬盘被当成sdb，如果服务器有二块硬盘，移动硬盘就是sdc。</p>
+<p>系统自动找到镜像，后面的安装过程同光盘安装。</p>
+<p>其它版本，如果是CentOS-5.4-i386-bin-DVD.iso，不到4G，就不用这么复杂，复制到ext2分区，直接放到fat32分区就可以了。</p>
+<p>如果是Ubuntu系列，直接从live cd安装即可。</p>
+<p>注意分区是选择&ldquo;定制&rdquo;，grub的安装位置应该是本地硬盘（sda或hda），而不是U盘（sdb等），如果不是本机引导硬盘，在高级选项里调整一下硬盘位置，把本地硬盘上调到第一位，否则安装完可能不能启动，出现grub就停止不动了。</p>
+</div><footer class="post__foot u-cf"><a href="/2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/" data-url="http://blog.veryi.com/2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
+(function() {
+  var ds = document.createElement('script');
+  ds.type = 'text/javascript';ds.async = true;
+  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+  ds.charset = 'UTF-8';
+  document.getElementsByTagName('body')[0].appendChild(ds);
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/01/12/w/e8-ae-be-e7-bd-ae-e8-87-aa-e5-8a-a8-e6-b8-85-e7-90-86mysql-binlog-e6-97-a5-e5-bf-97-e5-92-8c-e6-89-8b-e5-8a-a8-e5-88-a0-e9-99-a4-e7-9a-84-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
