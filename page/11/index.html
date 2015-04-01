@@ -1,70 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-07-15T02:30:00.000Z" class="post__time">七月 15, 2010</time><h1 class="post__title"><a href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/">cacti监控(monitor)mysql InnoDB 数据库</a></h1></header><div class="post__main"><p>目前最好用的监控mysql InnoDB 数据库的方法之一</p>
-<pre><code>http:<span class="comment">//code.google.com/p/mysql-cacti-templates/</span>
-
-wget http:<span class="comment">//mysql-cacti-templates.googlecode.com/files/better-cacti-templates-1.1.7.tar.gz</span>
-
-tar <span class="attribute">-xzf</span> better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz <span class="attribute">-C</span> /usr/<span class="built_in">local</span>/src
-
-cd /usr/<span class="built_in">local</span>/src/better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span>
-
-cp scripts/ss_get_mysql_stats<span class="built_in">.</span>php /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-cd /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-vim ss_get_mysql_stats<span class="built_in">.</span>php
-
-<span class="variable">$mysql_user</span> <span class="subst">=</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-<span class="variable">$mysql_pass</span> <span class="subst">=</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-<span class="variable">$mysql_port</span> <span class="subst">=</span> <span class="number">3306</span>;
-
-设置准备监控的数据库的账户相关信息
-
-创建监控Mysql需要的账户以及权限
-
-配置MySQL服务器，让cacti所在机器能够访问MySQL服务器的状态信息，必须拥有<span class="subst">&amp;</span>rdquo;process<span class="subst">&amp;</span>rdquo;权限。如果要监控InnoDB状态，还必须有<span class="subst">&amp;</span>rdquo;SUPER<span class="subst">&amp;</span>rdquo;权限。
-
-grant process,super <span class="keyword">on</span> <span class="subst">*</span><span class="built_in">.</span><span class="subst">*</span> <span class="keyword">to</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;@<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="subst">%&amp;</span><span class="variable">#39</span>; identified <span class="keyword">by</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-flush privileges;
-
-帐号测试：
-
-cd /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-php <span class="attribute">-q</span> <span class="built_in">.</span>/ss_get_mysql_stats<span class="built_in">.</span>php <span class="subst">--</span>host <span class="number">10.88</span><span class="number">.1</span><span class="number">.134</span> <span class="subst">--</span>items cv,cx,cy,cz <span class="subst">--</span>user cacti <span class="subst">--</span>pass cacti <span class="subst">--</span>port <span class="number">3306</span>
-
-模板导入（<span class="keyword">Import</span> Templates）
-
-在cacti管理界面导入模板cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span>。
-
-Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates<span class="subst">&amp;</span>nbsp; <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
-
-</span><span class="built_in">Data</span> Input Method
-
-<span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X Get MySQL Stats/MyISAM Indexes IM </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Data Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X MyISAM Indexes DT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Graph Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X InnoDB Buffer Pool GT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Host Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X MySQL Server HT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-添加设备
-
-创建Graph。在Console选项卡下的左侧菜单栏中选择Devices，为要监控的主机新建一个Devices或选择已有Devices。在 Associated Graph Templates中添加想要监控MySQL状态的Graph Templates（如X MySQL Connections GT模板）。并点击最上面的Create Graphs for this Host链接，在Graph Templates的选择框中选择X MySQL Connections GT,然后点击Create按钮。然后Create Graphs for this Host。</span>
-</code></pre><p>参考：</p>
-<pre><code><span class="attribute">http</span>:<span class="comment">//faemalia.net/mysqlUtils/</span>
-
-<span class="attribute">http</span>:<span class="comment">//forums.cacti.net/about6108.html</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-13T06:13:48.000Z" class="post__time">七月 13, 2010</time><h1 class="post__title"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/">iptables 匹配多个ip地址</a></h1></header><div class="post__main"><p>如果有一组目的ip不走squid透明代理，端口为3128，比如测试服务器、本地地址等，不需要cache，如何实现？</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-07-13T06:13:48.000Z" class="post__time">七月 13, 2010</time><h1 class="post__title"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/">iptables 匹配多个ip地址</a></h1></header><div class="post__main"><p>如果有一组目的ip不走squid透明代理，端口为3128，比如测试服务器、本地地址等，不需要cache，如何实现？</p>
 <pre><code>/etc/sysconfig/iptables
 
 <span class="comment">*nat</span>
@@ -560,4 +494,49 @@ use wpdatabase;
 delete <span class="keyword">from</span> wp_posts <span class="keyword">where</span> post_type=&amp;<span class="string">#39</span>;revision&amp;<span class="string">#39</span>;;
 
 &amp;nbsp;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/04/27/w/wordpress-e5-b8-b8-e7-94-a8-e7-bb-b4-e6-8a-a4-e6-98-8e-e4-bb-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/04/27/w/wordpress-e5-b8-b8-e7-94-a8-e7-bb-b4-e6-8a-a4-e6-98-8e-e4-bb-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-04-27T01:14:26.000Z" class="post__time">四月 27, 2010</time><h1 class="post__title"><a href="/2010/04/27/w/e5-81-a5-e5-ba-b7-e7-b1-bb-e4-bc-98-e7-a7-80-e5-9b-be-e4-b9-a6-e5-92-8c-e4-b8-ad-e5-8c-bb-e7-b1-bb-e7-bb-8f-e5-85-b8-e5-9b-be-e4-b9-a6/">健康类优秀图书和中医类经典图书</a></h1></header><div class="post__main"><p>这样吃最健康</p>
+<p><img src="http://veryi.com/w/wp-content/uploads/姜医师.gif" alt=""></p>
+<pre><code>这样吃最健康2:这样养育孩子最健康 
+
+这样吃最健康3:姜医师的餐桌 
+
+这样吃最健康4:善待癌症最健康
+
+不生病之真法:揭开人类生命健康之奥秘 - 张家瑞
+
+不生病之真法(续) - 张家瑞
+
+人之自然本能&amp;nbsp; - 张家瑞
+
+半路出家 - 张家瑞
+
+圆运动的古中医学 - 彭子益
+
+单桂敏灸除百病 单桂敏
+
+小穴位大健康(随书赠送同名超长DVD光盘)&amp;nbsp; 李智
+
+中国健康调查报告:膳食与疾病关系的惊人发现 - T&amp;middot;柯林&amp;middot;坎贝尔
+
+-<span class="ruby">-------------------------------
+</span>
+以下图书必读文言原版
+
+神农本草经
+
+黄帝内经素问
+
+黄帝内经灵枢
+
+金匮要略
+
+伤寒论
+
+难经
+
+陈修园医学全书
+
+医宗金鉴
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/04/27/w/e5-81-a5-e5-ba-b7-e7-b1-bb-e4-bc-98-e7-a7-80-e5-9b-be-e4-b9-a6-e5-92-8c-e4-b8-ad-e5-8c-bb-e7-b1-bb-e7-bb-8f-e5-85-b8-e5-9b-be-e4-b9-a6/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
