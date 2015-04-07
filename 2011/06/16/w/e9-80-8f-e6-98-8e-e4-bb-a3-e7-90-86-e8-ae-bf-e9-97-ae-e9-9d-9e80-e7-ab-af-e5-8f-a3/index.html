@@ -47,24 +47,48 @@ COMMIT
 #nat
 
 COMMIT
-</code></pre><font class="f14" id="zoom">代理服务器概述<br><br>    &nbsp;<br><br>    1.1什么是代理服务器&nbsp;<br><br>    在TCP/IP网络中，传统的通信过程是这样的：客户端向服务器请求数据，服务器响应该请求，将数据传送给客户端。在引入了代理服务器以后，这一 过程变成了这样：客户端向服务器发起请求，该请求被送到代理服务器；代理服务器分析该请求，先查看自己缓存中是否有请求数据，如果有就直接传送给客户端， 如果没有就代替客户端向该服务器发出请求。服务器响应以后，代理服务器将响应的数据传送给客户端，同时在自己的缓存中保留一份该数据的拷贝。这样，再有客 户端请求相同的数据时，代理服务器就可以直接将数据传送给客户端，而不需要再向该服务器发起请求。<br><br>    &nbsp;<br><br>    1.2&nbsp;代理服务器的功能&nbsp;<br><br>    一般说来，代理服务器具有以下的功能：&nbsp;<br><br>    1.通过缓存增加访问速度&nbsp;<br><br>    随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。&nbsp;<br><br>    通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。&nbsp;<br><br>    2.提供用私有IP访问Internet的方法&nbsp;<br><br>    IP地址是不可再生的宝贵资源，假如你只有有限的IP地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。&nbsp;<br><br>    3.提高网络的安全性&nbsp;<br><br>    这一点是很明显的，如果内部用户访问Internet都是通过代理服务器，那么，代理服务器就成为进入Internet的唯一通道；反过来说，代 理服务器也是Internet访问内部网的唯一通道，如果你没有做反向代理，则对于Internet上的主机来说，你的整个内部网只有代理服务器是可见 的，从而大大增强了网络的安全性。</font>
+</code></pre><p>代理服务器概述 </p>
+<pre><code>&amp;nbsp<span class="comment">; </span>
 
-<p>反向代理:</p>
+<span class="number">1.1</span>什么是代理服务器&amp;nbsp<span class="comment">; </span>
+
+在TCP/<span class="literal">IP</span>网络中，传统的通信过程是这样的：客户端向服务器请求数据，服务器响应该请求，将数据传送给客户端。在引入了代理服务器以后，这一 过程变成了这样：客户端向服务器发起请求，该请求被送到代理服务器；代理服务器分析该请求，先查看自己缓存中是否有请求数据，如果有就直接传送给客户端， 如果没有就代替客户端向该服务器发出请求。服务器响应以后，代理服务器将响应的数据传送给客户端，同时在自己的缓存中保留一份该数据的拷贝。这样，再有客 户端请求相同的数据时，代理服务器就可以直接将数据传送给客户端，而不需要再向该服务器发起请求。 
+
+&amp;nbsp<span class="comment">; </span>
+
+<span class="number">1.2</span>&amp;nbsp<span class="comment">;代理服务器的功能&amp;nbsp; </span>
+
+一般说来，代理服务器具有以下的功能：&amp;nbsp<span class="comment">; </span>
+
+<span class="number">1</span>.通过缓存增加访问速度&amp;nbsp<span class="comment">; </span>
+
+随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。&amp;nbsp<span class="comment">; </span>
+
+通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。&amp;nbsp<span class="comment">; </span>
+
+<span class="number">2</span>.提供用私有<span class="literal">IP</span>访问Internet的方法&amp;nbsp<span class="comment">; </span>
+
+<span class="literal">IP</span>地址是不可再生的宝贵资源，假如你只有有限的<span class="literal">IP</span>地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。&amp;nbsp<span class="comment">; </span>
+
+<span class="number">3</span>.提高网络的安全性&amp;nbsp<span class="comment">; </span>
+
+这一点是很明显的，如果内部用户访问Internet都是通过代理服务器，那么，代理服务器就成为进入Internet的唯一通道；反过来说，代 理服务器也是Internet访问内部网的唯一通道，如果你没有做反向代理，则对于Internet上的主机来说，你的整个内部网只有代理服务器是可见 的，从而大大增强了网络的安全性。
+</code></pre><p>反向代理:</p>
 <pre><code>什么是反向代理呢？其实，反向代理也就是通常所说的WEB服务器加速，它是一种通过在繁忙的WEB服务器和Internet之间增加一个高速的WEB缓冲服务器（即：WEB反向代理服务器）来降低实际的WEB服务器的负载。
 
-Web服务器加速（反向代理）是针对Web服务器提供加速功能的。它作为代理Cache，但并不针对浏览器用户，而针对一台或多台特定Web服务器（这也是反向代理名称的由来）。实施反向代理（如上图所示），只要将<span class="keyword">Reverse</span> Proxy Cache设备放置在一台或多台Web服务器前端即可。当互联网用户访问某个WEB服务器时，通过DNS服务器解析后的IP地址是<span class="keyword">Reverse</span> Proxy Server的IP地址,而非原始Web服务器的IP地址,这时<span class="keyword">Reverse</span> Proxy Server设备充当Web服务器，浏览器可以与它连接，无需再直接与Web服务器相连。因此，大量Web服务工作量被卸载到反向代理服务上。不但能够防止外部网主机直接和web服务器直接通信带来的安全隐患，而且能够很大程度上减轻web服务器的负担，提高访问速度。
+Web服务器加速（反向代理）是针对Web服务器提供加速功能的。它作为代理<span class="operator"><span class="keyword">Cache</span>，但并不针对浏览器用户，而针对一台或多台特定Web服务器（这也是反向代理名称的由来）。实施反向代理（如上图所示），只要将<span class="keyword">Reverse</span> Proxy <span class="keyword">Cache</span>设备放置在一台或多台Web服务器前端即可。当互联网用户访问某个WEB服务器时，通过DNS服务器解析后的IP地址是<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>的IP地址,而非原始Web服务器的IP地址,这时<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>设备充当Web服务器，浏览器可以与它连接，无需再直接与Web服务器相连。因此，大量Web服务工作量被卸载到反向代理服务上。不但能够防止外部网主机直接和web服务器直接通信带来的安全隐患，而且能够很大程度上减轻web服务器的负担，提高访问速度。
 
 反向代理和其它代理的比较
 
 下面将对几种典型的代理服务作一个简单的比较。在网络上常见的代理服务器有三种：
 
-<span class="number">1</span>．&amp;nbsp; 标准的代理缓冲服务器
+<span class="number">1</span>．&amp;nbsp;</span> 标准的代理缓冲服务器
 
 &amp;nbsp;&amp;nbsp;&amp;nbsp; 一个标准的代理缓冲服务被用于缓存静态的网页（例如：html文件和图片文件等）到本地网络上的一台主机上（即代理服务器）。当被缓存的页面被第二次访问的时候，浏览器将直接从本地代理服务器那里获取请求数据而不再向原web站点请求数据。这样就节省了宝贵的网络带宽，而且提高了访问速度。但是，要想实现这种方式，必须在每一个内部主机的浏览器上明确指明代理服务器的IP地址和端口号。客户端上网时，每次都把请求送给代理服务器处理，代理服务器根据请求确定是否连接到远程web服务器获取数据。如果在本地缓冲区有目标文件，则直接将文件传给用户即可。如果没有的话则先取回文件，先在本地保存一份缓冲，然后将文件发给客户端浏览器。
 
-<span class="number">2</span>．&amp;nbsp; 透明代理缓冲服务器
+2．&amp;nbsp; 透明代理缓冲服务器
 
-&amp;nbsp; &lt;span style=<span class="string">"font-family: DejaVu sans;"</span>&gt;通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。&lt;<span class="regexp">/span&gt;</span>
+&amp;nbsp; 通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。
 </code></pre><p>透明代理缓冲服务和标准代理服务器的功能完全相同。但是，代理操作对客户端的浏览器是透明的（即不需指明代理服务器的IP和端口）。透明代理服务器阻断网络通信，并且过滤出访问外部的HTTP（80端口）流量。如果客户端的请求在本地有缓冲则将缓冲的数据直接发给用户，如果在本地没有缓冲则向远程web服务器发出请求，其余操作和标准的代理服务器完全相同。对于Linux操作系统来说，透明代理使用Iptables或者Ipchains实现。因为不需要对浏览器作任何设置，所以，透明代理对于ISP（Internet服务器提供商）特别有用。</p>
 <pre><code>3．&amp;nbsp; 反向代理缓冲服务器
 
@@ -76,4 +100,4 @@ Web服务器加速（反向代理）是针对Web服务器提供加速功能的�
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

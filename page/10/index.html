@@ -1,409 +1,152 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-08-27T02:56:10.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/">MySQL快速安全升级(upgrade)到最新版</a></h1></header><div class="post__main"><p>&nbsp; &nbsp;&nbsp; &nbsp; 减少停机时间，以最快的速度升级(upgrade)mysql，升级前建议对新版进行测试。旧版的数据库安装在目录/usr/local/mysql，mysql是一个符号链接。</p>
-<pre><code>tar xfz mysql-5.1.50-linux-x86_64-glibc23.tar.gz -C /usr/local/
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-09T09:43:37.000Z" class="post__time">一月 9, 2012</time><h1 class="post__title"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">DNS劫持与RBL使用的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 使用opendns nameserver 208.67.220.220 208.67.222.222可以解决dns hijacking，缺点是web浏览时可能不会解析到最快的ip地址。电信、联通nameserver 如202.106.196.115 202.106.0.20 202.106.46.151多被劫持。导致邮件服务器使用rbl服务阻挡全部邮件。解决办法之一是用返回码验证。postfix修改main.cf：</p>
+<p>&nbsp; reject_rbl_client cblless.anti-spam.org.cn=127.0.8.5,</p>
+<pre><code><span class="attribute">&amp;nbsp; reject_rbl_client zen.spamhaus.org</span>=<span class="string">127.0.0.2, </span>
+</code></pre><p>…</p>
+<p>关于RBL的原理。目前用于垃圾邮件过滤的RBL服务，应该称之为基于DNS的实时黑名单查询，也就是说，这个服务是通过DNS协议来完成的。</p>
+<p>　　具体而言，当一个客户端希望查询某个IP地址（如1.2.3.4）是否在某个RBL（如cbl.anti-spam.org.cn）中 是，其实际上是查询如下地址是否存在解析： 4.3.2.1.cbl.anti-spam.org.cn. （IP地址逆转附加在RBL地址后）。DNS的解析分为几种类型，对于RBL查询，通常是查询这个地址是否存在A记录、TXT记录或者任意（ANY）记 录。</p>
+<p>　　如果该地址被列入了这个RBL，那么查询会返回一个具体的解析结果，根据RBL和查询的不同，可以返回一段文本，也可以返回一个或几个IP地 址，也可以同时返回文本和IP。返回的文本通常是一个说明，用来说明这个IP地址被列入了哪个RBL，具体信息去哪里查询等。返回的IP地址并不具有实际 意义，只是标识该查询有结果，通常这个IP地址是一个保留IP段的地址，如127.0.0.1、127.0.0.2等。</p>
+<p>　　如果该地址没有被列入这个RBL，那么该查询会返回一个查询错误（NXDOMAIN），表示该地址未列入。</p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong>微码</strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
+<p>准备工作：</p>
+<p>制作可引导移动硬盘，<a href="http://veryi.com/w/257.html" target="_blank" rel="external">参考http://veryi.com/w/257.html</a>；</p>
+<p>下载bios镜像，复制到移动硬盘相应目录。</p>
+<p>编辑menu.lst，添加：</p>
+<p>title bios CD ISO</p>
+<pre><code>&amp;nbsp; fallback <span class="number">8</span>
 
-cd /usr/local/mysql-5.1.50-linux-x86_64-glibc23 
+&amp;nbsp; find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
 
-/bin/rm -fr data/ 
+&amp;nbsp; <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
 
-/etc/init.d/mysqld <span class="operator"><span class="keyword">stop</span>
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
 
-mv ../mysql/<span class="keyword">data</span>/ .
+&amp;nbsp; chainloader (<span class="number">0xff</span>)
 
-mv ../mysql/my.cnf .
+&amp;nbsp; savedefault <span class="comment">--wait=2</span>
 
-cd ..
+title bios DOS IMG
 
-rm -f mysql
+&amp;nbsp; find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
 
-<span class="keyword">ln</span> -s mysql-<span class="number">5.1</span><span class="number">.50</span>-linux-x86_64-glibc23/ mysql
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
 
-cd /usr/<span class="keyword">local</span>/mysql/
+&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
 
-chown -R root .
+&amp;nbsp; chainloader (fd0)+<span class="number">1</span>
 
-chown -R mysql <span class="keyword">data</span>
+&amp;nbsp; rootnoverify (fd0)
+</code></pre><p>文件名和目录要对应。</p>
+<p>升级过程：</p>
+<p>要保证供电稳定，启动服务器，按F12，选usb启动。然后选择cd iso或dos img加载。后面步骤参考</p>
+<p><a href="http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK" target="_blank" rel="external">http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK</a></p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T06:33:28.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/">AMD X4 631 必须使用独立显卡</a></h1></header><div class="post__main"><p>&nbsp; &nbsp; 一台新组装的pc机开机黑屏不显示，不报警，也没有滴的一声。配置为 AMD Athlon(tm) II X4 631 Quad-Core Processor，asus F1A55-M LX主板、A55 FCH（Hudson D2）芯片组。想当然认为是主板或cpu有问题。看到cpu盒子上写着&ldquo;需要独立显卡-Requires Discrete GPU&rdquo;，最后终于明白，这种主板上只是按照了vga的接口，而没有集成显示控制芯片，631又屏蔽了内部集成的显卡，不安装独立显卡，系统当然不会显示。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T05:57:06.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/">windows 7设置静态ip地址不生效</a></h1></header><div class="post__main"><p>&nbsp; windows 7设置静态ip地址不生效，ipconfig显示为一个以169开头的ip，开始以为是设置方法不对。最后找到原因：ip地址冲突，手工设定的ip地址不生效。系统不提示ip地址冲突，机子就自己给自己设置一个169.254.<em>.</em>的ip。所以用了不少时间查找原因。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-01T07:32:41.000Z" class="post__time">十二月 1, 2011</time><h1 class="post__title"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/">centos 6 server dhcpd、squid和网络排错</a></h1></header><div class="post__main"><p>服务器需要停止的服务：</p>
+<pre><code>NetworkManager
 
-chgrp -R mysql .
+dnsmasq
 
-./mysql_upgrade -uroot -pvereyi.com
+域名不能解析，resolv.conf被修改
 
-/etc/init.d/mysqld <span class="keyword">start</span>
+cat /etc/resolv.conf
 
-Note:mysql_upgrade包含一下三个命令：
+# Generated <span class="keyword">by</span> NetworkManager
 
-# mysqlcheck &amp;ndash;</span><span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>all-databases &amp;ndash;auto-<span class="operator"><span class="keyword">repair</span>
+chkconfig dnsmasq off
 
-# mysql_fix_privilege_tables
+chkconfig --list dnsmasq
 
-# mysqlcheck &amp;ndash;</span>all-databases &amp;ndash;<span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>fix-db-names &amp;ndash;fix-table-names
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
 
-在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php&nbsp; 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
-<pre><code>yum install cacti<span class="attribute">-spine</span> <span class="attribute">-y</span>
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: ** Ignoring requests <span class="keyword">on</span> eth0.&amp;nbsp; <span class="keyword">If</span> this <span class="keyword">is</span> <span class="keyword">not</span> what
 
-配置
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; you want, please <span class="keyword">write</span> a subnet declaration
 
-chmod <span class="subst">+</span>r /etc/spine<span class="built_in">.</span>conf 
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">in</span> your dhcpd.conf file <span class="keyword">for</span> the network segment
 
-vim /etc/spine<span class="built_in">.</span>conf
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> which <span class="keyword">interface</span> eth0 <span class="keyword">is</span> attached. **
 
-创建一个软链接文件(因为spine默认会去读取该sock文件)
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
 
-ln <span class="attribute">-s</span> /tmp/mysql<span class="built_in">.</span>sock /<span class="built_in">var</span>/lib/mysql/mysql<span class="built_in">.</span>sock
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
 
-验证spine是否正常
+Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: <span class="keyword">Not</span> configured <span class="keyword">to</span> listen <span class="keyword">on</span> any interfaces!
 
-/bin/spine 
+在subnet里定义的网段要与你的网卡IP所处网段一致,
 
-用管理员帐号登陆Cacti<span class="built_in">.</span>在系统参数中制定Spine/Cactid的物理路径<span class="built_in">.
+实际情况是网卡eth0没启动。
 
-</span>Console <span class="subst">-&amp;</span><span class="literal">gt</span>; Configuration <span class="subst">-&amp;</span><span class="literal">gt</span>; Settings <span class="subst">-&amp;</span><span class="literal">gt</span>; Paths <span class="subst">-&amp;</span><span class="literal">gt</span>; Alternate Poller Path <span class="subst">-&amp;</span><span class="literal">gt</span>; Spine Poller File Path
+chkconfig --list dhcpd
 
-/usr/bin/spine
+centos <span class="number">6</span> 启动eth0 网卡时报错：
 
-Cacti Settings (Poller)<span class="subst">-&amp;</span><span class="literal">gt</span>; Poller <span class="keyword">Type</span>
+Error: Connection activation failed: Device <span class="keyword">not</span> managed <span class="keyword">by</span> NetworkManager
 
-spine
-</code></pre><p>&nbsp;</p>
-<p>Cacti在centos上的安装：</p>
-<p>yum -y install http php rrdtool rrdtool-devel net-snmp net-snmp-devel net-snmp-utils php-snmp mysql mysql-server perl-DBI perl-DBD-MySQL</p>
-<p>需要安装yum扩展源：</p>
-<div class="content">&nbsp;</div><br><div class="content">Red Hat Enterprise Linux 5 / <strong>i386</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 5 / <strong>x86_64</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 4 / <strong>i386</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el4/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el4/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.i386.rpm</a><br><br></div><br><div class="content">Red Hat Enterprise Linux 4 / <strong>x86_64</strong>:<br><br>rpm -Uhv <a href="http://apt.sw.be/redhat/el4/en/x86_64/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el4/en/x86_64/rpmforge/RPMS/rpmforge-release-0.3.6-1.el4.rf.x86_64.rpm</a><br><br></div></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-13T02:28:52.000Z" class="post__time">八月 13, 2010</time><h1 class="post__title"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/">centos 使用ntfs-3g mount ntfs分区</a></h1></header><div class="post__main"><p>如果不愿编译内核，可以使用ntfs-3g:</p>
-<p>yum install fuse fuse-ntfs-3g dkms dkms-fuse</p>
-<p>modprobe fuse</p>
-<p>mkdir /mnt/ntfs/</p>
-<p>mount -t ntfs -o noatime /dev/sdb2 /mnt/ntfs/</p>
-</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T03:28:10.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/">mysql导入数据提示没有SUPER Privilege权限处理</a></h1></header><div class="post__main"><p>ERROR 1419 (HY000): You do not have the SUPER Privilege&nbsp; and Binary&nbsp; Logging is&nbsp; Enabled</p>
-<pre><code>导入function 、 trigger 到 MySQL database,报错: &amp;ldquo;You <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> have the SUPER privilege <span class="keyword">and</span> <span class="built_in">binary</span> logging <span class="keyword">is</span> enabled (you *might* want <span class="keyword">to</span> <span class="keyword">use</span> the less safe log_bin_trust_function_creators variable)&amp;rdquo;</span>.
+<span class="number">1</span>\. <span class="keyword">Remove</span> Network Manager <span class="keyword">from</span> startup Services.
 
-原因：
+chkconfig NetworkManager off
 
-function / trigger 中有dangerous statements修改数据库，错误只在启用binary logging选项进行主从复制的服务器上出现。
+chkconfig --list NetworkManager
 
-解决：
+<span class="number">2</span>\. <span class="keyword">Add</span> <span class="keyword">Default</span> Net Manager
 
-1）导入数据的用户不仅需要<span class="operator"><span class="keyword">CREATE</span> ROUTINE, <span class="keyword">ALTER</span> ROUTINE, <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span>, <span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span>, <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 和 <span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 权限，还需要SUPER <span class="keyword">privileges</span> 权限，使用超级用户导入数据。
+chkconfig network <span class="keyword">on</span>
 
-<span class="number">2</span>）让所有用户具有执行类似functions的权限，危险，不推荐，
+chkconfig --list network
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by specifying it on the server <span class="operator"><span class="keyword">start</span>, <span class="keyword">like</span>: <span class="comment">--log-bin-trust-function-creators=1</span>
+Stop NetworkManager first
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by setting it to 1 through the <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> statement, <span class="keyword">like</span>:
+service NetworkManager stop
 
-&amp;nbsp;</span>mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators = <span class="number">1</span>;</span>
+<span class="keyword">and</span> <span class="keyword">then</span> start <span class="keyword">Default</span> Manager
 
-3）如果不需要复制，或者是从库，关闭binlog，
+service network start
 
-# binary logging - not required for slaves, but recommended
+<span class="keyword">or</span> you can change it easy:
 
-#log-bin=mysql-bin
+system-config-network 
 
-# binary logging format - mixed recommended 
+uncheck the box that sets the eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="keyword">and</span> <span class="keyword">set</span> IP info <span class="keyword">from</span> there.
 
-#binlog_format=mixed
+system-config-services 
 
-原文：http://www.ispirer.com/wiki/sqlways/troubleshooting-guide/mysql/import/binary-logging&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T02:13:29.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/cacti-e7-9b-91-e6-8e-a7-apache-e6-9c-8d-e5-8a-a1-e5-99-a8/">cacti 监控 apache 服务器</a></h1></header><div class="post__main"><p>模板下载：</p>
-<pre><code><span class="attr_selector">[http://forums.cacti.net/about9861.html]</span>(<span class="attribute">http</span>:<span class="comment">//cacti 监控 apache 服务器)</span>
+stop <span class="keyword">and</span> disable NetworkManager , start <span class="keyword">and</span> enable network
 
-安装脚本
+you have problem because both <span class="keyword">of</span> NetworkManager <span class="keyword">and</span> Network <span class="keyword">using</span> same Network driver <span class="keyword">and</span> <span class="keyword">default</span> network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared after restart.
 
-wget <span class="attribute">http</span>:<span class="comment">//forums.cacti.net/download.php?id=9907</span>
+squid Version <span class="number">3.2</span>.<span class="number">0.13</span>: ERROR: No
 
-gzip -d ws_apachestats.pl.gz
+<span class="keyword">forward</span>-proxy ports configured.
 
-cp apache.apache ws_apachestats.pl &amp;lt;path_cacti&amp;gt;/scripts/
+&amp;gt; #http/https ports
 
-chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache.apache ws_apachestats.pl 
+&amp;gt; http_port <span class="number">33070</span> transparent
 
-下载 xml 文件
+&amp;gt;
 
-<span class="attribute">http</span>:<span class="comment">//forums.cacti.net/download.php?id=12524</span>
+So, only one port, <span class="keyword">and</span> its a NAT traffic receiving port. Looks like 
 
-在cacti控制台把 cacti087b_host_template_webserver__apache_444.xml 导入 cacti
+Squid was right, &amp;quot;no <span class="keyword">forward</span>-proxy ports configured&amp;quot;.
 
-客户机配置
+Should <span class="keyword">not</span> be <span class="keyword">on</span> every request, that <span class="keyword">is</span> a sign <span class="keyword">of</span> some other problem 
 
-&amp;lt;IfModule mod_status.c&amp;gt;
+happening. Just <span class="keyword">on</span> the ones which need <span class="keyword">to</span> produce internal URLs (ie 
 
-&amp;lt;location /server-status&amp;gt;
+error page icons, FTP directory icons, cache manager requests, etc). 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetHandler server-status
+Squid requires a <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> the URL it tells the browser <span class="keyword">to</span> 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Order Deny,Allow
+fetch those icons <span class="keyword">from</span>. A NAT <span class="keyword">or</span> TROXY receiving port <span class="keyword">is</span> somewhat 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Deny from all
+vulnerable <span class="keyword">to</span> forgery attacks <span class="keyword">and</span> Squid now avoids publishing its 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">127.0</span>.<span class="number">0.1</span>
+details. Accel ports have some problematic cases <span class="keyword">in</span> the parser <span class="keyword">and</span> <span class="keyword">until</span> 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">192.168</span>.<span class="number">8.8</span>
+those are figured <span class="keyword">out</span> properly they are avoided <span class="keyword">as</span> well. Which just 
 
-&amp;lt;/location&amp;gt;
+leaves the regular <span class="keyword">old</span> <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> now.
 
-监控服务器(<span class="number">192.168</span>.<span class="number">8.8</span>)测试：
+Adding &amp;quot;http_port <span class="number">3128</span>&amp;quot; <span class="keyword">or</span> somesuch <span class="keyword">is</span> enough <span class="keyword">to</span> avoid this message
 
-./ws_apachestats.pl clint_ip
-
-<span class="attribute">apache_busy_workers</span>:<span class="number">33</span> <span class="attribute">apache_idle_workers</span>:<span class="number">42</span> <span class="attribute">thread_O</span>:<span class="number">949</span> <span class="attribute">threadC</span>:<span class="number">2</span> <span class="attribute">threadD</span>:<span class="number">0</span> <span class="attribute">threadG</span>:<span class="number">0</span> <span class="attribute">threadI</span>:<span class="number">0</span> <span class="attribute">threadK</span>:<span class="number">24</span> <span class="attribute">threadL</span>:<span class="number">0</span> <span class="attribute">threadR</span>:<span class="number">0</span> <span class="attribute">threadS</span>:<span class="number">0</span> <span class="attribute">threadW</span>:<span class="number">7</span> <span class="attribute">thread_W</span>:<span class="number">42</span> <span class="attribute">apache_cpuload</span>:
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/cacti-e7-9b-91-e6-8e-a7-apache-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-29T11:32:46.000Z" class="post__time">七月 29, 2010</time><h1 class="post__title"><a href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/">CentOS linux查看主板型号及内存硬件信息</a></h1></header><div class="post__main"><p>操作系统：CentOS release 6</p>
-<p>安装包命令查找：</p>
-<p>yum whatprovides */lspci</p>
-<p>&nbsp;</p>
-<p>查看主板型号：</p>
-<p>dmidecode |grep -A16 &quot;System Information$&quot;</p>
-<p>内存槽及内存条：</p>
-<p>dmidecode |grep -A16 &quot;Memory Device$&quot;</p>
-<p>硬盘：</p>
-<p>fdisk -l</p>
-<p>smartctl -a /dev/sda</p>
-<p>HP SmartArray (cciss) hardware RAID controllers：</p>
-<pre><code>smartctl <span class="operator">-d</span> cciss,<span class="number">0</span> <span class="operator">-a</span> /dev/cciss/c0d0
-</code></pre><p>网卡：</p>
-<p>mii-tool</p>
-<p>scsi/raid卡：</p>
-<p>lspci</p>
-<p>&nbsp;</p>
-<p>centos相关命令安装：</p>
-<p>yum -y install smartmontools</p>
-<pre><code>yum <span class="keyword">install</span> pciutils -y
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-29T10:45:39.000Z" class="post__time">七月 29, 2010</time><h1 class="post__title"><a href="/2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/">centos系统用cacti监控memcached</a></h1></header><div class="post__main"><p>安装Python支持：</p>
-<pre><code>yum install python-setuptools
-
-下载安装python <span class="keyword">for</span> memecached api,<span class="type">Python</span> <span class="type">Client</span> <span class="type">API</span> <span class="type">Installation</span>:
-
-地址：
-
-http://dealnews.com/developers/cacti/memcached.html
-
-tar xzf python-memcached-&amp;lt;ver&amp;gt;.tar.gz.
-
-python setup.py install
-
-模板安装,<span class="type">Template</span> <span class="type">Installation</span>:
-
-下载 cacti-memcached-.tar.gz
-
-tar xzf cacti-memcached-&amp;lt;ver&amp;gt;.tar.gz
-
-<span class="type">Copy</span> (<span class="keyword">or</span> upload) the memcached.py script to the &amp;lt;cacti path&amp;gt;/scripts/ directory on the server that cacti <span class="keyword">is</span> installed on.
-
-[optional] &amp;ndash; <span class="type">Verify</span> that the memcached.py script properly works by opening a console <span class="keyword">or</span> ssh connection to the server <span class="keyword">and</span> typing:
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; python &amp;lt;cacti path&amp;gt;/scripts/memcached.py &amp;lt;hostname&amp;gt;
-
-导入模板cacti_memcached_host_template.xml：
-
-<span class="type">Open</span> <span class="keyword">and</span> login to your cacti installation&amp;<span class="comment">#39;s console in your web browser and choose Import Templates from the menu on the left.</span>
-
-<span class="type">In</span> the <span class="type">Import</span> <span class="type">Templates</span> section, click the <span class="type">Browse</span> button to <span class="type">Import</span> <span class="type">Template</span> <span class="keyword">from</span> <span class="type">Local</span> <span class="type">File</span>. <span class="type">Navigate</span> to the directory where you extracted this <span class="keyword">template</span> <span class="keyword">and</span> choose the cacti_memcached_host_template.xml file to be imported.
-
-<span class="type">Click</span> the <span class="type">Save</span> button to <span class="keyword">import</span> the <span class="keyword">template</span>.
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/29/w/centos-e7-b3-bb-e7-bb-9f-e7-94-a8cacti-e7-9b-91-e6-8e-a7memcached/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-23T03:36:17.000Z" class="post__time">七月 23, 2010</time><h1 class="post__title"><a href="/2010/07/23/w/e5-8d-95-e6-a8-a1-e5-85-89-e7-ba-a4-e5-a4-9a-e6-a8-a1-e5-85-89-e7-ba-a4/">单模光纤多模光纤和光纤跳线</a></h1></header><div class="post__main"><p>光纤跳线用来做从设备到光纤布线链路的跳接线。有较厚的保护层，一般用在光端机和终端盒之间的连接。san光存储需要光纤网络布线，必须区分清除光纤的种类。</p>
-<pre><code>光纤跳线主要分为两类：
-
-单模光纤(Single-<span class="built_in">mode</span> Fiber)：一般光纤跳线用黄色表示，接头和保护套为蓝色；传输距离较长。
-
-多模光纤(Multi-<span class="built_in">mode</span> Fiber)：一般光纤跳线用橙色表示，也有的用灰色表示，接头和保护套用米色或者黑色；传输距离较短。
-</code></pre><p>配置：LC-LC光纤跳线、SC-SC光纤跳线、FC-FC光纤跳线、ST-ST光纤跳线</p>
-<pre><code>混合配置：LC-<span class="keyword">SC</span>、<span class="keyword">ST</span>-FC、<span class="keyword">SC</span>- <span class="keyword">ST</span>、FC-<span class="keyword">SC</span>、LC-FC、<span class="keyword">ST</span>-LC等
-
-光纤分类
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 光纤按光在其中的传输模式可分为单模和多模。多模光纤的纤芯直径为50或62.5&amp;mu;<span class="keyword">m</span>，包层外径125&amp;mu;<span class="keyword">m</span>，表示为50/125&amp;mu;<span class="keyword">m</span>或62.5 /125&amp;mu;<span class="keyword">m</span>。单模光纤的纤芯直径为8.3&amp;mu;<span class="keyword">m</span>，包层外径125&amp;mu;<span class="keyword">m</span>，表示为8.3/125&amp;mu;<span class="keyword">m</span>。 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 光纤的工作波长有短波850nm、长波1310nm和1550nm。光纤损耗一般是随波长增加而减小，850nm的损耗一般为 2.5dB/km,1.31&amp;mu;<span class="keyword">m</span>的损耗一般为0.35dB/km，1.55&amp;mu;<span class="keyword">m</span>的损耗一般为0.20dB/km，这是光纤的最低损耗，波长1.65&amp;mu;<span class="keyword">m</span>以上的损耗趋向加大。由于OHˉ(水峰)的吸收作用，900~1300nm和1340nm~1520nm范围内都有损耗高峰，这两个范围未能充分利用。
-
-多模光缆
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 多模光纤(MultiModeFiber)-芯较粗(50或62.5&amp;mu;<span class="keyword">m</span>)，可传多种模式的光。但其模间色散较大，这就限制了传输数字信号的频率，而且随距离的增加会更加严重。因此，多模光纤传输的距离就比较近，一般只有几公里。
-
-单模光缆
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 单模光纤(SingleModeFiber)：中心纤芯很细(芯径一般为9或10&amp;mu;<span class="keyword">m</span>)，只能传一种模式的光。因此，其模间色散很小，适用于远程通讯，但还存在着材料色散和波导色散，这样单模光纤对光源的谱宽和稳定性有较高的要求，即谱宽要窄，稳定性要好。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 后来发现在1310nm波长处，单模光纤的总色散为零。从光纤的损耗特性来看，1310nm正好是光纤的一个低损耗窗口。这样，1310nm波长区就成了光纤通信的一个很理想的工作窗口，也是现在实用光纤通信系统的主要工作波段。1310nm常规单模光纤的主要参数是由国际电信联盟ITU-T在G652建议中确定的，因此这种光纤又称G652光纤。
-
-&amp;nbsp;&amp;nbsp; 多模光纤的纤芯面积是单模的30倍。多模光纤的大芯径明显的优点是可以保证较低的连接损耗，使光纤对光纤或者光纤对收发器连接时的损耗较低，非常适合企业网与局域网的应用情况。在网络总体成本中光收发器是除交换设备以外最昂贵的部分。交换设备是与光纤类型无关的部分，因此收发器成本成为影响方案总体成本的主要因素。DFB与FP激光器比LED与VCSEL要相对贵很多，但是它们可以提供较高的注入功率及高汇聚度的光束，允许将高功率的光束高效地耦合到细小的单模光纤芯。LED与VCSEL则为短距离应用提供相对便宜的解决方案。其中VCSEL拥有较大的有效区域(15um)可以将束光有效地耦合到多模光纤较大的纤芯中去。而LED则只能提供较低的能量，但因其数值孔径很大，光斑直径也很大，可以覆盖住多模光纤的整个端面，也比较适合多模光纤应用。因此，为了得益于VCSEL与LED的低成本，必须配合使用多模光纤，才能获得最佳的光耦合效率。
-
-&amp;nbsp; &amp;nbsp;
-
-光纤使用注意事项：
-
-光纤跳线两端的光模块的收发波长必须一致，也就是说光纤的两端必须是相同波长的光模块，简单的区分方法是光模块的颜色要一致。
-
-一般的情况下，短波光模块使用多模光纤（橙色的光纤），长波光模块使用单模光纤（黄色光纤），以保证数据传输的准确性。
-
-光纤在使用中不要过度弯曲和绕环，这样会增加光在传输过程的衰减。
-
-光纤跳线使用后一定要用保护套将光纤接头保护起来，灰尘和油污会损害光纤的耦合。
-</code></pre><p>优质光纤跳线特点:</p>
-<pre><code>1.插入损耗低
-
-2.重复性好
-
-3.回波损耗大
-
-4.互插性能好
-
-5.温度稳定性好
-
-常用的连接器： LC（小头型）、<span class="keyword">SC</span>（大头型）、FC（螺旋口）、<span class="keyword">ST</span>（卡式口）
-
-光收发一体模块(SFP GBIC XFP)由光电子器件、功能电路和光接口等组成，光电子器件包括发射和接收两部分。发射部分是：输入一定码率的电信号经内部的驱动芯片处理后驱动半导体激光器（LD）或发光二极管（LED）发射出相应速率的调制光信号，其内部带有光功率自动控制电路，使输出的光信号功率保持稳定。接收部分是：一定码率的光信号输入模块后由光探测二极管转换为电信号。经前置放大器后输出相应码率的电信号，输出的信号一般为PECL电平。同时在输入光功率小于一定值后会输出一个告警信号。
-
-光收发一体模块分类
-
-按照速率分：以太网应用的100Base（百兆）、1000Base（千兆）、10GE；SDH应用的155M、622M、2.5G、10G 。
-
-按照封装分：1&amp;times;9、SFF、SFP、GBIC、XENPAK、XFP
-
-1&amp;times;9封装&amp;mdash;&amp;mdash;焊接型光模块，一般速度不高于千兆，多采用<span class="keyword">SC</span>接口；
-
-SFF封装:&amp;mdash;&amp;mdash;焊接小封装光模块，一般速度不高于千兆，多采用LC接口；
-
-GBIC封装&amp;mdash;&amp;mdash;热插拔千兆接口光模块，采用<span class="keyword">SC</span>接口；
-
-SFP封装&amp;mdash;热插拔小封装模块，目前最高数率可达4G，多采用LC接口；
-
-XENPAK封装&amp;mdash;&amp;mdash;应用在万兆以太网，采用<span class="keyword">SC</span>接口；
-
-XFP封装&amp;mdash;&amp;mdash;10G光模块，可用在万兆以太网，SONET等多种系统，多采用LC接口；
-
-按照激光类型分：LED、VCSEL、FP LD、DFB <span class="keyword">L</span> 。
-
-按照发射波长分：850nm、1310nm、1550nm等等。
-
-按照使用方式分：非热插拔（1&amp;times;9、SFF），可热插拔（GBIC、SFP、XENPAK、XFP）。
-
-光纤连接器的分类和主要规格参数
-
-光纤连接器是在一段光纤的两头都安装上连接头，主要作光配线使用。
-
-按照光纤的类型分：单模光纤连接器（一般为<span class="keyword">G</span>.652纤：光纤内径9um，外径125um），多模光纤连接器。单模光纤和多模光纤可以从纤芯的尺寸大小来简单地判别。单模光纤的纤芯很小,约4～10um,只传输主模态。这样可完全避免了模态色散，使得传输频带很宽，传输容量很大。这种光纤适用于大容量、长距离的光纤通信。它是未来光纤通信与光波技术发展的必然趋势。
-
-多模光纤又分为多模突变型光纤和多模渐变型光纤。前者纤芯直径较大，传输模态较多，因而带宽较窄，传输容量较小；后者纤芯中折射率随着半径的增加而减少，可获得比较小的模态色散，因而频带较宽，传输容量较大，目前一般都应用后者。
-
-由于多模光纤中不同模式光的传波速度不同，因此多模光纤的传输距离很短。而单模光纤就能用在无中继的光通讯上。
-
-在光纤通信理论中，光纤有单模、多模之分，区别在于： 
-
-1\. 单模光纤芯径小（10m <span class="keyword">m</span>左右），仅允许一个模式传输，色散小，工作在长波长（1310nm和1550nm），与光器件的耦合相对困难。
-
-2\. 多模光纤芯径大（62.5m <span class="keyword">m</span>或50m <span class="keyword">m</span>），允许上百个模式传输，色散大，工作在850nm或1310nm。与光器件的耦合相对容易。研究表明，多模光纤的带宽大约为4000Mb/s。 制造的单模光纤是为了消除脉冲展宽
-
-而对于光端模块来讲，严格的说并没有单模、多模之分。所谓单模、多模模块，指的是光端模块采用的光器件与何种光纤配合能获得最佳传输特性。一般有以下区别：
-
-1\. 单模模块一般采用LD或光谱线较窄的LED作为光源，耦合部件尺寸与单模光纤配合好，使用单模光纤传输时能传输较远距离。
-
-2\. 多模模块一般采用价格较低的LED作为光源，耦合部件尺寸与多模光纤配合好。
-
-按照光纤连接器的连接头形式分：FC，<span class="keyword">SC</span>，<span class="keyword">ST</span>，LC，MU，MTRJ等等，目前常用的有FC，<span class="keyword">SC</span>，<span class="keyword">ST</span>，LC
-
-FC型&amp;mdash;&amp;mdash;最早由日本NTT研制。外部加强件采用金属套，紧固方式为螺丝扣。测试设备选用该种接头较多。
-
-<span class="keyword">SC</span>型&amp;mdash;&amp;mdash;由日本NTT公司开发的模塑插拔耦合式连接器。其外壳采用模塑工艺，用铸模玻璃纤维塑料制成，呈矩形；插针由精密陶瓷制成，耦合套筒为金属开缝套管结构。紧固方式采用插拔销式，不需要旋转。
-
-LC型&amp;mdash;&amp;mdash;朗讯公司设计的。套管外径为1.25mm，是通常采用的FC-<span class="keyword">SC</span>、<span class="keyword">ST</span>套管外径2.5mm的一半。提高连接器的应用密度。
-
-按照光纤连接器连接头内插针端面分：PC，SPC，UPC，APC
-
-按照光纤连接器的直径分：&amp;Phi;3，&amp;Phi;2, &amp;Phi;0.9
-
-光纤连接器的性能主要有光学性能、互换性能、机械性能、环境性能和寿命。其中最重要的是插入损耗和回波损耗这两个指标。
-
-1、 光模块传输数率：百兆、千兆、10GE等等。
-
-2、 光模块发射光功率和接收灵敏度：发射光功率指发射端的光强，接收灵敏度指可以探测到的光强度。两者都以dBm为单位，是影响传输距离的重要参数。光模块可传输的距离主要受到损耗和色散两方面受限。损耗限制可以根据公式：损耗受限距离＝（发射光功率-接收灵敏度）/光纤衰减量 来估算。光纤衰减量和实际选用的光纤相关。一般目前的<span class="keyword">G</span>.652光纤可以做到1310nm波段0.5dB/km，1550nm波段0.3dB/km甚至更佳。50um多模光纤在850nm波段4dB/km 1310nm波段2dB/km。对于百兆、千兆的光模块色散受限远大于损耗受限，可以不作考虑。
-
-3、 10GE光模块遵循802.3ae的标准，传输的距离和选用光纤类型、光模块光性能相关。
-
-4、 饱和光功率值指光模块接收端最大可以探测到的光功率，一般为-3dBm。当接收光功率大于饱和光功率的时候同样会导致误码产生。因此对于发射光功率大的光模块不加衰减回环测试会出现误码现象。
-
-光模块功能失效重要原因
-
-光模块功能失效分为发射端失效和接收端失效，分析具体原因，最常出现的问题集中在以下几个方面：
-
-1． 光口污染和损伤
-
-由于光接口的污染和损伤引起光链路损耗变大，导致光链路不通。产生的原因有：
-
-A． 光模块光口暴露在环境中，光口有灰尘进入而污染；
-
-B． 使用的光纤连接器端面已经污染，光模块光口二次污染；
-
-C． 带尾纤的光接头端面使用不当，端面划伤等；
-</code></pre><p>&nbsp;&nbsp;&nbsp; GBIC是Giga Bitrate Interface Converter的缩写，是将千兆位电信号转换为光信号的接口器件。GBIC设计上可以为热插拔使用。GBIC是一种符合国际标准的可互换产品。采用 GBIC接口设计的千兆位交换机由于互换灵活，在市场上占有较大的市场分额。</p>
-<p>&nbsp;&nbsp;&nbsp; SFP是Small Form-Factor Pluggable的缩写，可以简单的理解为GBIC的升级版本。SFP模块体积比GBIC模块减少一半，可以在相同的面板上配置多出一倍以上的端口数 量。SFP模块的其他功能基本和GBIC一致。</p>
-<pre><code><span class="keyword">&amp;</span><span class="tag">nbsp</span>;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/23/w/e5-8d-95-e6-a8-a1-e5-85-89-e7-ba-a4-e5-a4-9a-e6-a8-a1-e5-85-89-e7-ba-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-21T01:15:29.000Z" class="post__time">七月 21, 2010</time><h1 class="post__title"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/">何时系统的访问者最少</a></h1></header><div class="post__main"><p>是半夜子时12点吗？看下图就清楚了。同理，这也是电信系统维护割接通常不是在半夜进行，而是在凌晨4点，因为这个时刻，熬夜的睡了，早睡的在准备起。以下分别是日访问几千、几万、几十万独立ip的统计。</p>
-<p><img src="http://veryi.com/w/wp-content/uploads/www_veryi_com(1" alt="">.png)</p>
-<p>&nbsp;</p>
-<p><img src="http://veryi.com/w/wp-content/uploads/auto_veryi_com.png" alt=""></p>
-<p><img src="http://veryi.com/w/wp-content/uploads/veryi_com.png" alt=""></p>
-</div><footer class="post__foot u-cf"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-15T02:30:00.000Z" class="post__time">七月 15, 2010</time><h1 class="post__title"><a href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/">cacti监控(monitor)mysql InnoDB 数据库</a></h1></header><div class="post__main"><p>目前最好用的监控mysql InnoDB 数据库的方法之一</p>
-<pre><code>http:<span class="comment">//code.google.com/p/mysql-cacti-templates/</span>
-
-wget http:<span class="comment">//mysql-cacti-templates.googlecode.com/files/better-cacti-templates-1.1.7.tar.gz</span>
-
-tar <span class="attribute">-xzf</span> better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz <span class="attribute">-C</span> /usr/<span class="built_in">local</span>/src
-
-cd /usr/<span class="built_in">local</span>/src/better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span>
-
-cp scripts/ss_get_mysql_stats<span class="built_in">.</span>php /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-cd /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-vim ss_get_mysql_stats<span class="built_in">.</span>php
-
-<span class="variable">$mysql_user</span> <span class="subst">=</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-<span class="variable">$mysql_pass</span> <span class="subst">=</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-<span class="variable">$mysql_port</span> <span class="subst">=</span> <span class="number">3306</span>;
-
-设置准备监控的数据库的账户相关信息
-
-创建监控Mysql需要的账户以及权限
-
-配置MySQL服务器，让cacti所在机器能够访问MySQL服务器的状态信息，必须拥有<span class="subst">&amp;</span>rdquo;process<span class="subst">&amp;</span>rdquo;权限。如果要监控InnoDB状态，还必须有<span class="subst">&amp;</span>rdquo;SUPER<span class="subst">&amp;</span>rdquo;权限。
-
-grant process,super <span class="keyword">on</span> <span class="subst">*</span><span class="built_in">.</span><span class="subst">*</span> <span class="keyword">to</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;@<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="subst">%&amp;</span><span class="variable">#39</span>; identified <span class="keyword">by</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
-
-flush privileges;
-
-帐号测试：
-
-cd /usr/<span class="built_in">local</span>/www/html/cacti/scripts
-
-php <span class="attribute">-q</span> <span class="built_in">.</span>/ss_get_mysql_stats<span class="built_in">.</span>php <span class="subst">--</span>host <span class="number">10.88</span><span class="number">.1</span><span class="number">.134</span> <span class="subst">--</span>items cv,cx,cy,cz <span class="subst">--</span>user cacti <span class="subst">--</span>pass cacti <span class="subst">--</span>port <span class="number">3306</span>
-
-模板导入（<span class="keyword">Import</span> Templates）
-
-在cacti管理界面导入模板cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span>。
-
-Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates<span class="subst">&amp;</span>nbsp; <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
-
-</span><span class="built_in">Data</span> Input Method
-
-<span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X Get MySQL Stats/MyISAM Indexes IM </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Data Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X MyISAM Indexes DT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Graph Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X InnoDB Buffer Pool GT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-Host Template
-
-</span><span class="preprocessor">[</span>success<span class="preprocessor">]</span><span class="markup"> X MySQL Server HT </span><span class="preprocessor">[</span>update<span class="preprocessor">]</span><span class="markup">
-
-添加设备
-
-创建Graph。在Console选项卡下的左侧菜单栏中选择Devices，为要监控的主机新建一个Devices或选择已有Devices。在 Associated Graph Templates中添加想要监控MySQL状态的Graph Templates（如X MySQL Connections GT模板）。并点击最上面的Create Graphs for this Host链接，在Graph Templates的选择框中选择X MySQL Connections GT,然后点击Create按钮。然后Create Graphs for this Host。</span>
-</code></pre><p>参考：</p>
-<pre><code><span class="attribute">http</span>:<span class="comment">//faemalia.net/mysqlUtils/</span>
-
-<span class="attribute">http</span>:<span class="comment">//forums.cacti.net/about6108.html</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/9/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/11/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+http:<span class="comment">//web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/9/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/11/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

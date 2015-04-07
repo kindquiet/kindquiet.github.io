@@ -1,0 +1,631 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-01-12T08:06:47.000Z" class="post__time">一月 12, 2010</time><h1 class="post__title"><a href="/2010/01/12/w/e4-bf-ae-e6-94-b9-e9-82-ae-e4-bb-b6smtp-e7-ab-af-e5-8f-a3-e8-a7-a3-e5-86-b3isp-e5-b0-81-e9-94-8125-e7-ab-af-e5-8f-a3-e4-b8-8d-e8-83-bd-e5-8f-91-e4-bf-a1/">修改邮件smtp端口解决ISP封锁25端口不能发信</a></h1></header><div class="post__main"><p>&nbsp; 邮件服务器的默认发送邮件端口是25，一些ISP会封锁25端口防止垃圾邮件的发送，这样就导致不能使用Foxmail、outlook等邮件客户端发送邮件。修改默认smtp端口就可以解决这个问题。下面的方法以CentOS linux上Postfix mail server为例，增加2626邮件发送端口。</p>
+<p>方法一，使用linux iptables防火墙的端口重定向，适用于各种mail server：</p>
+<p>修改/etc/sysconfig/iptables，在开头添加</p>
+<p>*nat</p>
+<pre><code><span class="attribute">:PREROUTING ACCEPT [0:0]</span>
+
+<span class="attribute">:POSTROUTING ACCEPT [0:0]</span>
+
+<span class="attribute">:OUTPUT ACCEPT [0:0]</span>
+
+-A PREROUTING -p tcp -m tcp --dport 2626 -j REDIRECT --to-ports 25 
+
+COMMIT
+</code></pre><p>重启iptables即可，对于防火墙不熟悉请勿远程操作。</p>
+<p>&nbsp;</p>
+<p>方法二：</p>
+<p>在master.cf里的非#号开头的第一行,应该是smtp inet n － n －－smtpd</p>
+<pre><code>这一行表示的是smtp的进程，和<span class="regexp">/etc/</span>services里的
+
+smtp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">25</span>/tcp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mail
+
+smtp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">25</span>/udp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mail
+
+相对应,再在后追加一行同样的进行，修改一下前面的名字，如
+
+smtp2 inet n －n － － smtpd，
+
+保存后，在<span class="regexp">/etc/</span>services里也相应增加一个服务器进程端口号即可，如：
+
+smtp2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2626</span>/tcp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mail2
+
+smtp2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2626</span>/udp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mail2
+
+保存后，reload不行，要restart postfix就应该能同时启动<span class="number">25</span>和<span class="number">2626</span>两个功能完全相同的端口。
+
+参见<span class="string">http:</span><span class="comment">//www.extmail.org/forum/viewthread.php?tid=3787&amp;amp;extra=&amp;amp;page=1</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/01/12/w/e4-bf-ae-e6-94-b9-e9-82-ae-e4-bb-b6smtp-e7-ab-af-e5-8f-a3-e8-a7-a3-e5-86-b3isp-e5-b0-81-e9-94-8125-e7-ab-af-e5-8f-a3-e4-b8-8d-e8-83-bd-e5-8f-91-e4-bf-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-01-12T01:20:49.000Z" class="post__time">一月 12, 2010</time><h1 class="post__title"><a href="/2010/01/12/w/e8-ae-be-e7-bd-ae-e8-87-aa-e5-8a-a8-e6-b8-85-e7-90-86mysql-binlog-e6-97-a5-e5-bf-97-e5-92-8c-e6-89-8b-e5-8a-a8-e5-88-a0-e9-99-a4-e7-9a-84-e6-96-b9-e6-b3-95/">设置自动清理mysql binlog日志和手动删除的方法</a></h1></header><div class="post__main"><p>&nbsp; MYSQL主从复制(replication)采用 RBR 模式后，binlog的格式为&quot;ROW&quot;，能解决很多原先出现的主键重复问题。</p>
+<pre><code>在一个繁忙的master db server上，binlog日志文件增长速度很快，如果不定时清除，硬盘空间很快就会被充满。
+
+设置自动清理mysql binlog日志，配置my.cnf：
+
+expire_logs_days = 10
+
+在运行时修改：
+
+<span class="operator"><span class="keyword">show</span> <span class="built_in">binary</span> <span class="keyword">logs</span>;</span> 
+
+<span class="operator"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> &amp;#<span class="number">39</span>;</span>%log%&amp;#39;; 
+
+<span class="operator"><span class="keyword">set</span> <span class="keyword">global</span> expire_logs_days = <span class="number">10</span>;</span>
+
+清除之前可以采用相应的备份策略。
+
+手动删除10天前的mysql binlog日志：
+
+<span class="operator"><span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span> <span class="keyword">BEFORE</span> <span class="keyword">DATE_SUB</span>(<span class="keyword">CURRENT_DATE</span>, <span class="built_in">INTERVAL</span> <span class="number">10</span> <span class="keyword">DAY</span>);</span>
+
+<span class="operator"><span class="keyword">show</span> <span class="keyword">master</span> <span class="keyword">logs</span>;</span>
+
+MASTER和BINARY是同义词。
+</code></pre><p>一般情况下，推荐使用MIXED binlog的复制。<a href="http://dev.mysql.com/doc/refman/5.1/en/open-bugs-general.html中的说明:Replication" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.1/en/open-bugs-general.html中的说明:Replication</a> uses query-level logging: The master writes the executed queries to the binary log. This is a very fast, compact, and efficient logging method that works perfectly in most cases. </p>
+<pre><code>附：关于MYSQL复制的几种模式
+
+以下转自http://steven1981.itpub.net/post/7967/485747
+
+从 MySQL 5.1.12 开始，可以用以下三种模式来实现：
+
+<span class="comment">-- 基于SQL语句的复制(statement-based replication, SBR)，</span>
+
+<span class="comment">-- 基于行的复制(row-based replication, RBR)，</span>
+
+<span class="comment">-- 混合模式复制(mixed-based replication, MBR)。</span>
+
+相应地，binlog的格式也有三种：STATEMENT，ROW，MIXED。 MBR 模式中，SBR 模式是默认的。
+
+在运行时可以动态改动 binlog的格式，除了以下几种情况：
+
+. 存储流程或者触发器中间
+
+. 启用了NDB
+
+. 当前会话试用 RBR 模式，并且已打开了临时表
+
+如果binlog采用了 MIXED 模式，那么在以下几种情况下会自动将binlog的模式由 SBR 模式改成 RBR 模式。
+
+. 当DML语句更新一个NDB表时
+
+. 当函数中包含 UUID() 时
+
+. 2个及以上包含 AUTO_INCREMENT 字段的表被更新时
+
+. 行任何 <span class="operator"><span class="keyword">INSERT</span> <span class="keyword">DELAYED</span> 语句时
+
+. 用 UDF 时
+
+. 视图中必须要求运用 RBR 时，例如建立视图是运用了 <span class="keyword">UUID</span>() 函数
+
+设定主从复制模式：
+
+<span class="keyword">log</span>-<span class="keyword">bin</span>=mysql-<span class="keyword">bin</span>
+
+#binlog_format=&amp;quot;</span>STATEMENT&amp;quot;
+
+#binlog_format=&amp;quot;ROW&amp;quot;
+
+binlog_format=&amp;quot;MIXED&amp;quot;
+
+也可以在运行时动态修改binlog的格式。例如
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">SESSION</span> binlog_format = &amp;#<span class="number">39</span>;</span>STATEMENT&amp;#39;;
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">SESSION</span> binlog_format = &amp;#<span class="number">39</span>;</span>ROW&amp;#39;;
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">SESSION</span> binlog_format = &amp;#<span class="number">39</span>;</span>MIXED&amp;#39;;
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> binlog_format = &amp;#<span class="number">39</span>;</span>STATEMENT&amp;#39;;
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> binlog_format = &amp;#<span class="number">39</span>;</span>ROW&amp;#39;;
+
+mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> binlog_format = &amp;#<span class="number">39</span>;</span>MIXED&amp;#39;;
+
+两种模式各自的优缺点：
+
+SBR 的优点：
+
+历史悠久，技能成熟
+
+binlog文件较小
+
+binlog中包含了所有数据库修改信息，可以据此来审核数据库的安全等情况
+
+binlog可以用于实时的还原，而不仅仅用于复制
+
+主从版本可以不一样，从服务器版本可以比主服务器版本高
+
+SBR 的缺点：
+
+不是所有的<span class="operator"><span class="keyword">UPDATE</span>语句都能被复制，尤其是包含不确定操作的时候。
+
+调用具有不确定因素的 UDF 时复制也可能出疑问
+
+运用以下函数的语句也不能被复制：
+
+* <span class="keyword">LOAD_FILE</span>()
+
+* <span class="keyword">UUID</span>()
+
+* <span class="keyword">USER</span>()
+
+* <span class="keyword">FOUND_ROWS</span>()
+
+* <span class="keyword">SYSDATE</span>() (除非启动时启用了 <span class="comment">--sysdate-is-now 选项)</span>
+
+<span class="keyword">INSERT</span> ... <span class="keyword">SELECT</span> 会产生比 RBR 更多的行级锁
+
+复制须要执行 全表扫描(<span class="keyword">WHERE</span> 语句中没有运用到索引)的 <span class="keyword">UPDATE</span> 时，须要比 RBR 请求更多的行级锁
+
+对于有 AUTO_INCREMENT 字段的 <span class="keyword">InnoDB</span>表而言，<span class="keyword">INSERT</span> 语句会阻塞其他 <span class="keyword">INSERT</span> 语句
+
+对于一些复杂的语句，在从服务器上的耗资源情况会更严重，而 RBR 模式下，只会对那个发生变化的记录产生影响
+
+存储函数(不是存储流程 )在被调用的同时也会执行一次 <span class="keyword">NOW</span>() 函数，这个可以说是坏事也可能是好事
+
+确定了的 UDF 也须要在从服务器上执行
+
+数据表必须几乎和主服务器保持一致才行，否则可能会导致复制出错
+
+执行复杂语句如果出错的话，会消耗更多资源
+
+RBR 的优点：
+
+任何情况都可以被复制，这对复制来说是最安全可靠的
+
+和其他大多数数据库系统的复制技能一样
+
+多数情况下，从服务器上的表如果有主键的话，复制就会快了很多
+
+复制以下几种语句时的行锁更少：
+
+* <span class="keyword">INSERT</span> ... <span class="keyword">SELECT</span>
+
+* 包含 AUTO_INCREMENT 字段的 <span class="keyword">INSERT</span>
+
+* 没有附带条件或者并没有修改很多记录的 <span class="keyword">UPDATE</span> 或 <span class="keyword">DELETE</span> 语句
+
+执行 <span class="keyword">INSERT</span>，<span class="keyword">UPDATE</span>，<span class="keyword">DELETE</span> 语句时锁更少
+
+从服务器上采用多线程来执行复制成为可能
+
+RBR 的缺点：
+
+<span class="keyword">binlog</span> 大了很多
+
+复杂的回滚时 <span class="keyword">binlog</span> 中会包含大量的数据
+
+主服务器上执行 <span class="keyword">UPDATE</span> 语句时，所有发生变化的记录都会写到 <span class="keyword">binlog</span> 中，而 SBR 只会写一次，这会导致频繁发生 <span class="keyword">binlog</span> 的并发写疑问
+
+UDF 产生的大 <span class="built_in">BLOB</span> 值会导致复制变慢
+
+不能从 <span class="keyword">binlog</span> 中看到都复制了写什么语句(加密过的)
+
+当在非事务表上执行一段堆积的<span class="keyword">SQL</span>语句时，最好采用 SBR 模式，否则很容易导致主从服务器的数据不一致情况发生
+
+另外，针对系统库 mysql 里面的表发生变化时的处理准则如下：
+
+如果是采用 <span class="keyword">INSERT</span>，<span class="keyword">UPDATE</span>，<span class="keyword">DELETE</span> 直接操作表的情况，则日志格式根据 binlog_format 的设定而记录
+
+如果是采用 <span class="keyword">GRANT</span>，<span class="keyword">REVOKE</span>，<span class="keyword">SET</span> <span class="keyword">PASSWORD</span> 等管理语句来做的话，那么无论如何 都采用 SBR 模式记录。
+
+注：采用 RBR 模式后，能处理很多原先出现的主键重复问题。实例:
+
+对于<span class="keyword">insert</span> <span class="keyword">into</span> db_allot_ids <span class="keyword">select</span> * <span class="keyword">from</span> db_allot_ids 这个语句:
+
+在BINLOG_FORMAT=STATEMENT 模式下:
+
+<span class="keyword">BINLOG</span>日志信息为:
+
+<span class="comment">-----------------------------------------</span>
+
+<span class="keyword">BEGIN</span>
+
+<span class="comment">/*!*/</span>;</span>
+
+# at 173
+
+#090612 16:05:42 server id 1 end_log_pos 288 Query thread_id=4 exec_time=0 error_code=0
+
+<span class="operator"><span class="keyword">SET</span> <span class="keyword">TIMESTAMP</span>=<span class="number">1244793942</span><span class="comment">/*!*/</span>;</span>
+
+<span class="operator"><span class="keyword">insert</span> <span class="keyword">into</span> db_allot_ids <span class="keyword">select</span> * <span class="keyword">from</span> db_allot_ids
+
+<span class="comment">/*!*/</span>;</span>
+
+<span class="comment">-----------------------------------------</span>
+
+在BINLOG_FORMAT=ROW 模式下:
+
+BINLOG日志信息为:
+
+<span class="comment">-----------------------------------------</span>
+
+BINLOG &amp;#39;
+
+hA0yShMBAAAAMwAAAOAAAAAAAA8AAAAAAAAAA1NOUwAMZGJfYWxsb3RfaWRzAAIBAwAA
+
+hA0yShcBAAAANQAAABUBAAAQAA8AAAAAAAEAAv/8AQEAAAD8AQEAAAD8AQEAAAD8AQEAAAA=
+
+&amp;#39;<span class="comment">/*!*/</span>;
+
+<span class="comment">-----------------------------------------</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/01/12/w/e8-ae-be-e7-bd-ae-e8-87-aa-e5-8a-a8-e6-b8-85-e7-90-86mysql-binlog-e6-97-a5-e5-bf-97-e5-92-8c-e6-89-8b-e5-8a-a8-e5-88-a0-e9-99-a4-e7-9a-84-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-01-06T07:30:58.000Z" class="post__time">一月 6, 2010</time><h1 class="post__title"><a href="/2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/">从u盘/移动硬盘（usb hd）安装centos 6 、centos 5 x86_64 linux</a></h1></header><div class="post__main"><p>安装Linux主要有三种方法</p>
+<pre><code>1、光盘
+
+2、网络
+
+3、<span class="keyword">u</span>盘/移动硬盘
+
+光盘安装最简单，也是最常用的。网络安装很方便，速度也快，nfs镜像适合快速安装大量机器。但<span class="keyword">U</span>盘安装更方便，安装的速度比光盘快，也不需要光驱和刻盘。
+</code></pre><p>这里以一个20g的移动硬盘为例介绍一下安装过程，U盘类似：</p>
+<p>假设移动硬盘是sdb，分区需要在linux中用fdisk（windows环境可以用DiskGenius.exe），</p>
+<p>分为三个区：</p>
+<p>sdb1，4G，fat32（可以安装live linux，参见<a href="http://veryi.com/w/257.html" target="_blank" rel="external">http://veryi.com/w/257.html</a>）；</p>
+<p>sdb2，10G，ntfs（用于存放大于4个G的文件）；</p>
+<p>sdb3，5G，ext2。在linux中使用以下命令格式化：</p>
+<p>mkfs -t ext2 /dev/sdb3。</p>
+<p>&nbsp;</p>
+<p>centos 6 安装设定：</p>
+<p>mkdir -p /mnt/iso</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb1
+
+mount -o CentOS-<span class="number">6.0</span>-i386-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+</code></pre><p>cp -a /mnt/iso/isolinux /mnt/sdb1</p>
+<pre><code>umount <span class="regexp">/mnt/</span>sdb1
+</code></pre><p>复制CentOS-6.0-i386-bin-DVD.iso到ext2分区：</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb3
+
+mount&amp;nbsp; <span class="regexp">/dev/</span>sdb3 <span class="regexp">/mnt/</span>sdb3
+</code></pre><p>cp CentOS-6.0-i386-bin-DVD.iso /mnt/sdb3</p>
+<p>对于CentOS-6.0-i386还需要复制install.img，在CentOS-6.0-i386-bin-DVD.iso文件里的images目录里。</p>
+<pre><code>mkdir -p <span class="regexp">/mnt/</span>sdb3/images
+
+cp <span class="regexp">/mnt/</span>iso<span class="regexp">/images/</span>install.img <span class="regexp">/mnt/</span>sdb3/images
+
+umount <span class="regexp">/mnt/</span>sdb3
+</code></pre><p>&nbsp;</p>
+<p>CentOS 5安装配置：</p>
+<p>复制CentOS-5.4-x86_64-bin-DVD.iso到ext2分区：</p>
+<p>mount&nbsp; /dev/sdb3 /mnt</p>
+<p>cp CentOS-5.4-x86_64-bin-DVD.iso /mnt</p>
+<p>umount /mnt</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>复制linux系统引导文件到sdb1分区：</p>
+<p>mkdir -p /mnt/iso</p>
+<pre><code>mkdir -<span class="tag">p</span> /mnt/sdb1
+</code></pre><p>对于centos 5</p>
+<pre><code>mount -o loop CentOS-<span class="number">5.4</span>-x86_64-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+
+cp -a <span class="regexp">/mnt/i</span>so<span class="regexp">/isolinux /m</span>nt<span class="regexp">/sdb1</span>
+</code></pre><p>对于centos 6</p>
+<pre><code>mount -o loop CentOS-<span class="number">6.0</span>-i386-bin-DVD.iso <span class="regexp">/mnt/i</span>so
+
+mount <span class="regexp">/dev/</span>sdb1 <span class="regexp">/mnt/</span>sdb1
+
+cp -a <span class="regexp">/mnt/i</span>so<span class="regexp">/isolinux /m</span>nt<span class="regexp">/sdb1</span>
+</code></pre><p>CentOS6直接放在第一个分区就可以了。因为在linux的安装过程中不能识别ntfs分区，而CentOS-5.4-x86_64-bin-DVD.iso、CentOS-6.0-i386-bin-DVD.iso超过了4个G，fat32分区单文件的上限是4G，所以把iso文件放在ext2分区。</p>
+<p>&nbsp;</p>
+<p>安装<a href="http://sourceforge.net/projects/grub4dos/" target="_blank" rel="external">grub4dos</a>，将引导代码写入U盘mbr：</p>
+<pre><code>W<span class="keyword">in</span>32下，运行grubinst_gui.exe ，在&amp;ldquo;磁盘&amp;rdquo;处选中U盘，在&amp;ldquo;选项&amp;rdquo;区选中&amp;ldquo;不保存原来的mbr&amp;rdquo;、&amp;ldquo;不引导原来的mbr&amp;rdquo;、&amp;ldquo;启动时不搜索软盘&amp;rdquo;，点击&amp;ldquo;安装&amp;rdquo;即可。
+</code></pre><p>拷贝grub.exe、grldr到u盘fat32分区根目录，编辑menu.lst，加入：</p>
+<p>title CentOS-5.4-x86_64 install</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/isolinux/</span>vmlinuz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/isolinux/i</span>nitrd.img
+</code></pre><p>对于centos 6:</p>
+<p>title CentOS-6 from usb key/hdd install</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/isolinux/</span>vmlinuz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/isolinux/i</span>nitrd.img
+</code></pre><p>把要安装的服务器设为usb设备优先引导，grub加载后，选择CentOS-5.4-x86_64 install，</p>
+<p>然后是linux初始化，</p>
+<p>到选择安装介质时选择</p>
+<p>local disk（本地硬盘），硬盘分区选择</p>
+<p>/dev/sdb3（根据实际环境而定，一般是/dev/sdb1），目录选择/(如果iso文件放在/iso目录，就写/iso)。</p>
+<p>在这里，服务器自己的本地硬盘被当成sda,移动硬盘被当成sdb，如果服务器有二块硬盘，移动硬盘就是sdc。</p>
+<p>系统自动找到镜像，后面的安装过程同光盘安装。</p>
+<p>其它版本，如果是CentOS-5.4-i386-bin-DVD.iso，不到4G，就不用这么复杂，复制到ext2分区，直接放到fat32分区就可以了。</p>
+<p>如果是Ubuntu系列，直接从live cd安装即可。</p>
+<p>注意分区是选择&ldquo;定制&rdquo;，grub的安装位置应该是本地硬盘（sda或hda），而不是U盘（sdb等），如果不是本机引导硬盘，在高级选项里调整一下硬盘位置，把本地硬盘上调到第一位，否则安装完可能不能启动，出现grub就停止不动了。</p>
+</div><footer class="post__foot u-cf"><a href="/2010/01/06/w/e4-bb-8eu-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-ef-bc-88usb-hd-ef-bc-89-e5-ae-89-e8-a3-85centos-5-x86-64-linux/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-12-23T05:25:10.000Z" class="post__time">十二月 23, 2009</time><h1 class="post__title"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/">u盘/移动硬盘（usb hd）安装多种linux live CD</a></h1></header><div class="post__main"><p>如果U盘够大，可以在一个U盘安装slax,pclinuxos,Linux Mint,puppy Linux等多种live linux。移动硬盘原理相同，不做区分。</p>
+<p>因为U盘常用来拷贝文件，fat格式在多种操作系统上通用，所以用grub4dos管理U盘引导。</p>
+<p>把U盘格成HDD格式：</p>
+<p>用DiskGenius 3.2把U盘格式化为USB-HDD格式，推荐使用FAT32分区；或者用U盘格式化工具（HPUSBFW.EXE ）格式化为 HDD 格式。还有其它 工具如FlashBoot、 WIN PM 等。</p>
+<pre><code>将引导代码写入<span class="keyword">U</span>盘mbr：
+
+Win32下，运行grubinst_gui.exe ，在&amp;ldquo;磁盘&amp;rdquo;处选中<span class="keyword">U</span>盘，在&amp;ldquo;选项&amp;rdquo;区选中&amp;ldquo;不保存原来的mbr&amp;rdquo;、&amp;ldquo;不引导原来的mbr&amp;rdquo;、&amp;ldquo;启动时不搜索软盘&amp;rdquo;、&amp;ldquo;输出详细信息&amp;rdquo;，点击&amp;ldquo;安装&amp;rdquo;即可。
+</code></pre><p>拷贝<a href="http://sourceforge.net/projects/grub4dos/files/" target="_blank" rel="external">grub4dos</a>的grub.exe、grldr、menu.lst到u盘根目录。</p>
+<p>现在，U盘已经可以用grub引导，把电脑设置为U盘优先引导，测试一下grub的引导。</p>
+<p>安装linux live cd的过程分为两步，一是把live cd的iso镜像文件中的相关目录和文件复制到U盘，可以用Virtual CloneDrive加载iso镜像。二是编辑grub的menu.lst，各个版本的linux差别较大。</p>
+<h6 id="#">#</h6><h1 id="安装Linux_slax">安装<a href="http://www.slax.org/" target="_blank" rel="external">Linux slax</a></h1><p>提取slax-6.1.2.iso中的</p>
+<p>boot</p>
+<p>slax</p>
+<p>目录（包含文件，其实boot目录只需vmlinuz 、initrd.gz即可）到U盘根目录即可，这个是最容易的安装的linux live之一，而且slax启动速度快，对声卡等硬件支持更好，至少在我测试过的live cd linux中如此。</p>
+<p>grub菜单：</p>
+<p>title Slax</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /boot/vmlinuz <span class="variable">root=</span>/dev/ram0 rw <span class="variable">max_loop=</span><span class="number">255</span> <span class="variable">init=</span>linuxrc <span class="variable">load_ramdisk=</span><span class="number">1</span> <span class="variable">ramdisk_size=</span><span class="number">6666</span> slax <span class="variable">from=</span>/slax/ <span class="variable">vga=</span>normal <span class="variable">autoexec=</span>startx
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /boot/initrd.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><h1 id="安装pclinuxos-2009-2-iso">安装pclinuxos-2009.2.iso</h1><p>打开pclinuxos-2009.2.iso</p>
+<p>拷贝到livecd.sqfs到U盘根目录，拷贝vmlinuz、initrd.gz到相应目录</p>
+<p>grub菜单：</p>
+<p>title pclinuxos</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel&amp;nbsp; /isolinux/vmlinuz&amp;nbsp; <span class="variable">livecd=</span>livecd&amp;nbsp; <span class="variable">root=</span>/dev/rd/<span class="number">3</span> <span class="variable">acpi=</span>on <span class="variable">vga=</span><span class="number">788</span> <span class="variable">keyb=</span>us <span class="variable">splash=</span>silent <span class="variable">fstab=</span>rw,noauto
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /isolinux/initrd.gz
+</code></pre><h1 id="安装Linux_Mint">安装Linux Mint</h1><p>从LinuxMint-8.iso中提取文件，</p>
+<p>拷贝mint.seed到U盘preseed目录，拷贝filesystem.manifest</p>
+<pre><code>filesystem<span class="class">.manifest-desktop</span>
+
+filesystem<span class="class">.squashfs</span>
+
+initrd<span class="class">.lz</span>
+
+vmlinuz到casper目录。
+</code></pre><p>复制.disk目录，否则不能正常启动。ubuntu系列都可以这样操作。</p>
+<p>grub菜单：</p>
+<p>title Linux Mint live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/casper/</span>vmlinuz <span class="keyword">file</span>=<span class="regexp">/preseed/mi</span>nt.seed boot=casper quiet nosplash --
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/casper/i</span>nitrd.lz
+</code></pre><h1 id="安装_puppy_Linux">安装 puppy Linux</h1><p>grub菜单：</p>
+<p>title puppy</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel&amp;nbsp; <span class="regexp">/puppy/</span>vmlinuz ramdisk_size=<span class="number">256000</span> root=<span class="regexp">/dev/</span>ram0 PMEDIA=idehd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/puppy/i</span>nitrd.gz
+</code></pre><p>title Puppy-Linux </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">find</span> --set-root <span class="regexp">/puppy/</span>pup-<span class="number">431</span>.sfs
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/puppy/</span>vmlinuz root=<span class="regexp">/dev/</span>ram0 PMEDIA=usbhd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/puppy/i</span>nitrd.gz
+</code></pre><h1 id="安装Linux_veket">安装Linux veket</h1><p>grub菜单：</p>
+<p>title Veket</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel (hd0,<span class="number">0</span>)<span class="regexp">/puppy/</span>vmlinuz root=<span class="regexp">/dev/</span>ram0 PMEDIA=idehd acpi=off
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd (hd0,<span class="number">0</span>)<span class="regexp">/puppy/i</span>nitrd.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><h1 id="安装archinux（未成功）">安装archinux（未成功）</h1><p>grub菜单：</p>
+<p>ERROR:boot device didn&#39;t show up for 30 seconds</p>
+<p>在 ramfs$ 提示符下依次输入:</p>
+<pre><code>ln -s /dev/sdb1 /dev/archiso
+
+<span class="keyword">exit</span>
+
+假定 sdb1 是<span class="keyword">U</span>盘的挂载位置。
+
+这个问题仅在<span class="keyword">U</span>盘启动的时候产生，更准确的说，是仅在没有使用 dd 命令制作的<span class="keyword">U</span>盘启动盘上发生。
+
+为什么呢？因为这种情况下，<span class="keyword">U</span>盘的标签（<span class="keyword">Label</span>）与<span class="keyword">U</span>盘上 <span class="keyword">boot</span>/grub/menu.lst 中指定的不相符了。
+
+因此，一个更好的解决办法是，修改<span class="keyword">U</span>盘上 <span class="keyword">boot</span>/grub/menu.lst :
+
+kernel /<span class="keyword">boot</span>/vmlinuz26 lang=<span class="keyword">en</span> locale=en_US.UTF-8 archisolabel=ARCHISO_OINGAE2I ramdisk_size=75%
+
+将 &amp;ldquo;ARCHISO_OINGAE2I&amp;rdquo; 改为你<span class="keyword">U</span>盘的标签（<span class="keyword">Label</span>）。是什么就改成什么，注意，要区分大小写。存盘即可。
+
+&amp;nbsp;
+</code></pre><h1 id="安装Linux_Ubuntu_live">安装Linux Ubuntu live</h1><p>title Linux Ubuntu live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/casper/</span>vmlinuz boot=casper quiet nosplash --
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/casper/i</span>nitrd.lz
+</code></pre><h1 id="安装NimbleX_Linux_live">安装NimbleX Linux live</h1><p>grub菜单：</p>
+<pre><code>title NimbleX <span class="number">2008</span> - Boot <span class="keyword">in</span> KDM
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; find --set-root /nimblex/vmlinuz-nx08
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /nimblex/vmlinuz-nx08 <span class="variable">ramdisk_size=</span><span class="number">7120</span> <span class="variable">root=</span>/dev/ram0 rw <span class="variable">vga=</span><span class="number">791</span> <span class="variable">splash=</span>silent quiet <span class="variable">changes=</span>nimblex.data <span class="variable">autoexec=</span>xconf;kdm
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /nimblex/initrd-nx08.gz
+</code></pre><h1 id="安装knoppix_Linux_live(推荐)">安装knoppix Linux live(推荐)</h1><p>grub菜单：</p>
+<p>title knoppix adriane vga=0x311</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /KNOPPIX/linux <span class="variable">ramdisk_size=</span><span class="number">100000</span> <span class="variable">lang=</span>en vt.<span class="variable">default_utf8=</span><span class="number">0</span> <span class="variable">apm=</span>power-off <span class="variable">vga=</span><span class="number">0</span>x311&amp;nbsp; nomce quiet <span class="variable">loglevel=</span><span class="number">0</span> <span class="variable">tz=</span>localtime adriane
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /KNOPPIX/minirt.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><p>&nbsp;</p>
+<h1 id="安装Fedora-12-i686-Live">安装Fedora-12-i686-Live</h1><p>grub菜单：</p>
+<p>title Fedora-12-i686-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=USB2G rootfstype=auto ro liveimg quiet&amp;nbsp; rd_NO_LUKS rd_NO_MD noiswmd 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。</p>
+<p>&nbsp;</p>
+<h6 id="#-1">#</h6><h1 id="安装Qomo_Linux（前Everest_Linux）">安装<a href="http://www.linux-ren.org/" target="_blank" rel="external">Qomo Linux（前Everest Linux）</a></h1><p>grub菜单：</p>
+<p>title Qomo-1.0-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=QOMO_USB_2G rootfstype=auto ro liveimg quiet&amp;nbsp; rd_NO_LUKS rd_NO_MD noiswmd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。提取Qomo-1.0.0-i686-Live.iso中的文件，复制LiveOS目录到u盘，复制initrd0.img、vmlinuz0到LiveOS目录。</p>
+<p>&nbsp;</p>
+<h6 id="#-2">#</h6><h1 id="安装tinycore">安装<a href="http://www.linux-ren.org/" target="_blank" rel="external">tinycore</a></h1><p>grub菜单：</p>
+<p>title tinycore</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/tinycore/</span>bzImage
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/tinycore/</span>tinycore.gz
+</code></pre><p>提取tinycore_3.1.iso中的文件，在u盘建立tinycore目录，复制bzImage、tinycore.gz到tinycore目录。</p>
+<p>&nbsp;</p>
+<h6 id="#-3">#</h6><h1 id="安装[_Centos_5-5_live_CD">安装[ Centos 5.5 live CD</h1><pre><code>](<span class="string">http:</span><span class="comment">//www.centos.org)</span>
+</code></pre><p>grub菜单：</p>
+<p>title CentOS-5.5-i386-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=CENTOS_USB_2G rootfstype=auto ro liveimg quiet 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。提取CentOS-5.5-i386-LiveCD.iso中的文件，复制LiveOS目录到u盘，复制initrd0.img、vmlinuz0到LiveOS目录。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-11-24T01:36:33.000Z" class="post__time">十一月 24, 2009</time><h1 class="post__title"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/">linux系统apache tomcat虚拟主机安装配置</a></h1></header><div class="post__main"><p>&nbsp; 多年不用tomcat，应一朋友要求，搭建一个java环境的虚拟主机，经过多次测试，现在把可以正常运行的配置记录下来。</p>
+<p>安装jdk</p>
+<pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>
+
+sh /mnt/mysql/jdk-<span class="number">6</span>u14-linux-i586.bin 
+
+ln <span class="operator">-s</span> jdk1.<span class="number">6.0</span>_14/ jdk
+
+<span class="built_in">echo</span> &amp;quot;<span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk
+
+<span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span>
+
+<span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib&amp;quot; &amp;gt;&amp;gt; /etc/profile.d/java.sh
+
+chmod +x /etc/profile.d/java.sh
+</code></pre><p>安装tomcat</p>
+<p>wget <a href="http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz" target="_blank" rel="external">http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz</a></p>
+<pre><code>tar xzf apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>.tar.gz -C <span class="regexp">/usr/</span>local/
+
+cd <span class="regexp">/usr/</span>local/
+
+ln -s apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>/ tomcat
+
+vi ~/.bash_profile
+
+TOMCAT_HOME=<span class="regexp">/usr/</span>local/tomcat
+
+export PATH TOMCAT_HOME
+
+source ~/.bash_profile
+
+安装jk connector
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/tomcat/tomcat-connectors/jk/source/jk-1.2.28/tomcat-connectors-1.2.28-src.tar.gz</span>
+
+tar xfz tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src/
+
+cd native/
+
+.<span class="regexp">/configure --with-apxs=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs
+
+make
+
+cp apache-<span class="number">2.0</span><span class="regexp">/mod_jk.so /</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/modules/</span>
+</code></pre><p>&nbsp;</p>
+<p>apche配置</p>
+<p>vim /usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
+<p>LoadModule jk_module modules/mod_jk.so</p>
+<pre><code>Include /usr/<span class="keyword">local</span>/httpd/conf/mod_jk.conf
+
+&amp;<span class="keyword">lt</span>;VirtualHost *:<span class="number">80</span>&amp;<span class="keyword">gt</span>;
+
+JkMountCopy On
+
+&amp;nbsp;&amp;nbsp; ServerName edu.veryi.com
+
+DirectoryIndex <span class="keyword">index</span>.jsp <span class="keyword">index</span>.html <span class="keyword">index</span>.jsp <span class="keyword">index</span>.htm
+
+&amp;nbsp;&amp;nbsp; DocumentRoot /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT
+
+&amp;nbsp;&amp;nbsp; <span class="comment">#DocumentRoot /usr/local/www/edu.veryi.com/html</span>
+
+&amp;nbsp;<span class="comment">#&amp;lt;Directory /usr/local/www/edu.veryi.com&amp;gt;</span>
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;Directory /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp; Order allow,deny
+
+&amp;nbsp;&amp;nbsp; Allow from all
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;<span class="regexp">/Directory&amp;gt;
+
+&amp;nbsp; CustomLog &amp;quot;|/usr</span><span class="regexp">/local/sbin</span><span class="regexp">/cronolog /var</span><span class="regexp">/log/httpd</span><span class="regexp">/edu.veryi.com-access_log.%Y%m%d&amp;quot; combined
+
+&amp;nbsp; ErrorDocument 404 /missing</span>.html
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/VirtualHost&amp;gt;</span>
+</code></pre><hr>
+<p>vim /usr/local/httpd/conf/mod_jk.conf</p>
+<pre><code>JkWorkersFile /usr/<span class="keyword">local</span>/httpd/conf/workers.properties
+
+<span class="comment"># Where to put jk logs</span>
+
+JkLogFile /usr/<span class="keyword">local</span>/httpd/logs/mod_jk.<span class="keyword">log</span>
+
+<span class="comment"># Set the jk log level [debug/error/info]</span>
+
+JkLogLevel info
+
+<span class="comment"># Select the log format</span>
+
+JkLogStampFormat &amp;quot;[<span class="variable">%a</span> <span class="variable">%b</span> <span class="variable">%d</span> <span class="variable">%H</span>:<span class="variable">%M</span>:<span class="variable">%S</span> <span class="variable">%Y</span>]&amp;quot;
+
+<span class="comment"># JkOptions indicate to send SSL KEY SIZE,</span>
+
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+
+<span class="comment"># JkRequestLogFormat set the request format</span>
+
+JkRequestLogFormat &amp;quot;<span class="variable">%w</span> <span class="variable">%V</span> <span class="variable">%T</span>&amp;quot;
+
+<span class="comment"># servlet 和jsp请求通过ajp13的协议送给Tomcat</span>
+
+JkMount /servlet/* worker1
+
+JkMount /*.jsp worker1
+</code></pre><hr>
+<p>/usr/local/httpd/conf/workers.properties</p>
+<pre><code><span class="comment"># Defining a worker named worker1 and of type ajp13</span>
+
+worker.<span class="variable">list=</span>worker1
+
+<span class="comment"># Set properties for worker1</span>
+
+worker.worker1.<span class="variable">type=</span>ajp13
+
+worker.worker1.<span class="variable">host=</span>localhost
+
+worker.worker1.<span class="variable">port=</span><span class="number">8009</span>
+
+<span class="comment">#worker.worker1.lbfactor=50</span>
+
+<span class="comment">#worker.worker1.socket_keepalive=1</span>
+
+<span class="comment">#worker.worker1.socket_timeout=300</span>
+</code></pre><p>&nbsp;</p>
+<p>tomcat配置</p>
+<p>vim /usr/local/tomcat/conf/server.xml</p>
+<p>&nbsp; &lt;Host name=&quot;edu.veryi.com&quot; </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">unpackWARs=</span>&amp;quot;<span class="constant">true</span>&amp;quot; <span class="variable">autoDeploy=</span>&amp;quot;<span class="constant">true</span>&amp;quot;&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Context <span class="variable">path=</span>&amp;quot;&amp;quot; <span class="variable">docBase=</span>&amp;quot;/usr/local/tomcat/webapps/ROOT&amp;quot; /&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Valve <span class="variable">className=</span>&amp;quot;org.apache.catalina.valves.AccessLogValve&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_access_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">pattern=</span>&amp;quot;common&amp;quot; <span class="variable">resolveHosts=</span>&amp;quot;<span class="constant">false</span>&amp;quot;/&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Logger <span class="variable">className=</span>&amp;quot;org.apache.catalina.logger.FileLogger&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_file_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">timestamp=</span>&amp;quot;<span class="constant">true</span>&amp;quot;/&amp;gt;
+
+&amp;nbsp; &amp;lt;/Host&amp;gt;
+</code></pre><p>&nbsp; &lt;Host name=&quot;class.veryi.com&quot; appBase=&quot;&quot;</p>
+<pre><code><span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; unpackWARs<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; autoDeploy<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; xmlValidation<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; xmlNamespaceAware<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Alias<span class="subst">&amp;</span><span class="literal">gt</span>;veryi<span class="built_in">.</span>com<span class="subst">&amp;</span><span class="literal">lt</span>;/Alias<span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Context path<span class="subst">=&amp;</span>quot;<span class="subst">&amp;</span>quot; docBase<span class="subst">=&amp;</span>quot;/webapps/ROOT<span class="subst">&amp;</span>quot; reloadable<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot; workDir<span class="subst">=&amp;</span>quot;work<span class="subst">&amp;</span>quot; <span class="subst">/</span><span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;/Host<span class="subst">&amp;</span><span class="literal">gt</span>;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/20/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/22/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

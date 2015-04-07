@@ -1,696 +1,121 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-03-27T02:47:07.000Z" class="post__time">三月 27, 2009</time><h1 class="post__title"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/">linux服务器samba源代码安装设置</a></h1></header><div class="post__main"><p>操作系统：</p>
-<p>cat /etc/redhat-release</p>
-<p>CentOS release 4.5 (Final)</p>
-<p>&nbsp;</p>
-<p>安装</p>
-<p>cd /usr/local/src/</p>
-<p>wget <a href="http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz" target="_blank" rel="external">http://us6.samba.org/samba/ftp/stable/samba-3.3.2.tar.gz</a></p>
-<p>tar xfz samba-3.3.2.tar.gz</p>
-<p>cd /usr/local/src/samba-3.3.2/source</p>
-<p>./configure &ndash;prefix=/usr/local/samba/</p>
-<p>make -j6 &amp;&amp; make install</p>
-<p>&nbsp;</p>
-<p>系统默认语言:</p>
-<p>cat /etc/sysconfig/i18n</p>
-<p>LANG=&quot;zh_CN.UTF-8&quot;</p>
-<pre><code><span class="constant">LC_ALL</span>=&amp;quot;zh_CN.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
-
-<span class="constant">LANGUAGE</span>=&amp;quot;zh_CN.<span class="constant">GB18030</span><span class="symbol">:zh_CN</span>.<span class="constant">GB2312</span><span class="symbol">:zh_CN</span><span class="symbol">:en_US</span>.<span class="constant">UTF</span>-<span class="number">8</span>&amp;quot;
-</code></pre><p>SUPPORTED=&rdquo;zh_HK.UTF-8:zh_HK:zh:zh_CN.UTF-8:zh_CN:zh:zh_SG.UTF-8:zh_SG:zh:zh_TW.UTF-8:zh_TW:zh:en_US.UTF-8:en_US:en&rdquo;</p>
-<p>SYSFONT=&rdquo;latarcyrheb-sun16&Prime;</p>
-<p>&nbsp;</p>
-<p>vi /etc/ld.so.conf</p>
-<p>添加 :</p>
-<p>/usr/local/samba/lib</p>
-<p><span id="ArticleContent1_ArticleContent1_lblContent">更新动态链接库</span>缓存:</p>
-<p>ldconfig</p>
-<p>&nbsp;</p>
-<p>cd /usr/local/samba/lib</p>
-<p>vi smb.conf</p>
-<p>[global]</p>
-<p>&nbsp;&nbsp; DISPLAY CHARSET= utf8</p>
-<p>&nbsp;&nbsp; #UNIX CHARSET = cp936</p>
-<p>&nbsp;&nbsp;&nbsp; unix charset = UTF-8</p>
-<p>&nbsp;&nbsp; DOS CHARSET = utf8</p>
-<p>&nbsp;&nbsp; workgroup = workgroup</p>
-<p>&nbsp;&nbsp; server string = veryi.com samba server</p>
-<p>&nbsp;&nbsp; security = user</p>
-<p>&nbsp;&nbsp; load printers = no</p>
-<p>&nbsp;&nbsp; log level = 2</p>
-<p>&nbsp;&nbsp; log file = /var/log/samba/%m.%I.log</p>
-<p>&nbsp;&nbsp; max log size = 5000</p>
-<p>&nbsp;&nbsp;&nbsp; announce as = NT</p>
-<p>&nbsp;&nbsp;&nbsp; announce version = 4.0</p>
-<p>&nbsp;&nbsp;&nbsp; browse list = yes</p>
-<p>&nbsp;&nbsp; encrypt passwords = yes</p>
-<p>&nbsp;&nbsp; smb passwd file = /etc/samba/smbpasswd</p>
-<p>&nbsp;&nbsp; dns proxy = no</p>
-<p>&nbsp;&nbsp; socket options = TCP_NODELAY SO_RCVBUF=8192 SO_SNDBUF=8192</p>
-<p>&nbsp; interfaces = 192.168.6.0/24</p>
-<p>&nbsp;&nbsp; local master = yes</p>
-<p>&nbsp;&nbsp; os level = 89</p>
-<p>&nbsp;&nbsp; time server&nbsp; = yes</p>
-<p>&nbsp;&nbsp; domain master = yes</p>
-<p>&nbsp;&nbsp; preferred master = yes</p>
-<p>&nbsp;&nbsp; domain logons = yes</p>
-<p>&nbsp;&nbsp; wins support = yes</p>
-<p>[homes]</p>
-<p>&nbsp;&nbsp; comment = Home Directories</p>
-<p>&nbsp;&nbsp; browseable = no</p>
-<p>&nbsp;&nbsp; writable = yes</p>
-<p>&nbsp;&nbsp; valid users = %S</p>
-<p>&nbsp;&nbsp; create mode = 0664</p>
-<p>&nbsp;&nbsp; directory mode = 0775</p>
-<p>&nbsp;&nbsp; map to guest = bad user</p>
-<p>[work]</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; comment = web application root</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path = /home/work</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; write list = veryi</p>
-<p>[printers]</p>
-<p>&nbsp;&nbsp; comment = All Printers</p>
-<p>&nbsp;&nbsp; path = /usr/spool/samba</p>
-<p>&nbsp;&nbsp; browseable = no</p>
-<p>&nbsp;&nbsp; guest ok = no</p>
-<p>&nbsp;&nbsp; writable = no</p>
-<p>&nbsp;&nbsp; printable = yes</p>
-<h1 id="如果是rpm、yum安装配置文件在/etc/samba目录下。">如果是rpm、yum安装配置文件在/etc/samba目录下。</h1><p>添加用户：</p>
-<p>smbpasswd -a user01</p>
-<p>&nbsp;</p>
-<p>启动脚本（redhat）：</p>
-<p>vi /etc/init.d/smb</p>
-<h1 id="!/bin/sh">!/bin/sh</h1><p>#</p>
-<h1 id="chkconfig:_-_91_35">chkconfig: - 91 35</h1><h1 id="description:_Starts_and_stops_the_Samba_smbd_and_nmbd_daemons_\">description: Starts and stops the Samba smbd and nmbd daemons \</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_used_to_provide_SMB_network_services-">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used to provide SMB network services.</h1><p>#</p>
-<h1 id="pidfile:_/var/run/samba/smbd-pid">pidfile: /var/run/samba/smbd.pid</h1><h1 id="pidfile:_/var/run/samba/nmbd-pid">pidfile: /var/run/samba/nmbd.pid</h1><h1 id="config:&nbsp;_/etc/samba/smb-conf">config:&nbsp; /etc/samba/smb.conf</h1><h1 id="Source_function_library-">Source function library.</h1><p>if [ -f /etc/init.d/functions ] ; then</p>
-<p>&nbsp; . /etc/init.d/functions</p>
-<p>elif [ -f /etc/rc.d/init.d/functions ] ; then</p>
-<p>&nbsp; . /etc/rc.d/init.d/functions</p>
-<p>else</p>
-<p>&nbsp; exit 0</p>
-<p>fi</p>
-<h1 id="Avoid_using_root&rsquo;s_TMPDIR">Avoid using root&rsquo;s TMPDIR</h1><p>unset TMPDIR</p>
-<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>. /etc/sysconfig/network</p>
-<p>if [ -f /etc/sysconfig/samba ]; then</p>
-<p>&nbsp;&nbsp; . /etc/sysconfig/samba</p>
-<p>fi</p>
-<p>&nbsp;</p>
-<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0</p>
-<h1 id="Check_that_smb-conf_exists-">Check that smb.conf exists.</h1><h1 id="[_-f_/etc/samba/smb-conf_]_||_exit_0">[ -f /etc/samba/smb.conf ] || exit 0</h1><p>[ -f /usr/local/samba/lib/smb.conf ] || exit 0</p>
-<h1 id="Options_to_smbd">Options to smbd</h1><p>SMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
-<h1 id="Options_to_nmbd">Options to nmbd</h1><p>NMBDOPTIONS=&rdquo;-D -s /usr/local/samba/lib/smb.conf&rdquo;</p>
-<p>RETVAL=0</p>
-<p>start() {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/smbd $SMBDOPTIONS</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Starting $KIND services: &rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon /usr/local/samba/sbin/nmbd $NMBDOPTIONS</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; touch /var/lock/subsys/smb || \</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=1</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
-<p>}</p>
-<p>stop() {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;SMB&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KIND=&rdquo;NMB&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Shutting down $KIND services: &rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc nmbd</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL2=$?</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] &amp;&amp; rm -f /var/lock/subsys/smb</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo &ldquo;&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
-<p>}</p>
-<p>restart() {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
-<p>}</p>
-<p>reload() {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo -n $&rdquo;Reloading smb.conf file: &rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; killproc smbd -HUP</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RETVAL=$?</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return $RETVAL</p>
-<p>}</p>
-<p>&nbsp;</p>
-<p>rhstatus() {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status smbd</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; status nmbd</p>
-<p>}</p>
-<h1 id="Allow_status_as_non-root-">Allow status as non-root.</h1><p>if [ &quot;$1&quot; = status ]; then</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit $?</p>
-<p>fi</p>
-<h1 id="Check_that_we_can_write_to_it&hellip;_so_non-root_users_stop_here">Check that we can write to it&hellip; so non-root users stop here</h1><h1 id="[_-w_/etc/samba/smb-conf_]_||_exit_0">[ -w /etc/samba/smb.conf ] || exit 0</h1><p>case &ldquo;$1&Prime; in</p>
-<p>&nbsp; start)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; stop)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stop</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; restart)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; restart</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; reload)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reload</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; status)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rhstatus</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; condrestart)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ -f /var/lock/subsys/smb ] &amp;&amp; restart || :</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;;</p>
-<p>&nbsp; *)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; echo $&rdquo;Usage: $0 {start|stop|restart|reload|status|condrestart}&rdquo;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exit 1</p>
-<p>esac</p>
-<p>exit $?</p>
-<p>增加执行属性:</p>
-<p>chmod +x /etc/init.d/smb</p>
-<p>mkdir -p /var/log/samba</p>
-<p>&nbsp;</p>
-<p>启动：</p>
-<p>/etc/init.d/smb start</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-26T01:00:06.000Z" class="post__time">三月 26, 2009</time><h1 class="post__title"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/">笔记本电脑不花钱的降温降噪音方法</a></h1></header><div class="post__main"><p>把我去年笔记本电脑降噪音方法写出来。</p>
-<p>天气热了，旭日420的风扇声音吵得人无法安心工作，用speadfan软件(<a href="http://www.almico.com/speedfan.php" target="_blank" rel="external">http://www.almico.com/speedfan.php</a>) 检测，cpu温度75度以上，但不死机。给联想打电话，说明去年夏天很安静，使用不到一年。说可能需要清灰，并建议如果可以找到发票，证明购机不到一年，可以上门。或者送到联想服务站。 发票不好找，去服务站没时间，忍无可忍，自己动手丰衣足食：</p>
-<p>1、拔掉外界电源，拔掉电池！！这个是必须做的，至少你修不好但不至于修坏。不知道如何拆电池？您还是送到维修站吧。 </p>
-<p>2、打开风扇盖，拆下覆盖风扇的金属盖，拆下风扇，发现风扇的出风口已经完全被很细的绒毛堵上，清理干净。 </p>
-<p>3、安装风扇，别忘了按上风扇电源。安装时先把所有的螺丝都装上，但不要拧紧，然后逐个螺丝拧紧一点，直到完全拧紧。  开机后检测，cpu温度在50度以下，如果不贴到出风口上，是不会听到噪音的。即使你用上百元的散热器，降温也不会超过5度，而且带来了更大的电力浪费和更多的噪音源。</p>
-<p>清灰的降温效果比笔记本散热器要好用的多，值得试一试。还你一个清静的夏天。如果使用频繁，建议每半年清灰一次。 其他采用风扇降温的笔记本电脑也可以如法清理。如果你从来没有拆过笔记本电脑，那您还是请专业人士来完成吧。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T09:18:35.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/">MySQL完全备份、增量备份与恢复</a></h1></header><div class="post__main"><p>场景：每周日执行一次完全备份，每天下午1点执行增量备份</p>
-<pre><code>[ 配置 ]
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-11-30T06:54:19.000Z" class="post__time">十一月 30, 2010</time><h1 class="post__title"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">一台pc服务器的黑屏故障排除</a></h1></header><div class="post__main"><p>开机显示器亮一下显示显卡型号后黑屏，不报警，不能启动。因为听不到&ldquo;滴&rdquo;的自检通过声音而且没有显示，仍然判断为显卡故障，更换显卡以后正常。</p>
+<pre><code>这里需要了解一下POST自检是按什么顺序进行检测的：
 
-执行增量备份的前提条件是MySQL打开log-bin 日志开关，例如在my.ini或my.cnf中
+POST自检测过程大致为：加电－<span class="built_in">CPU</span>－ROM－BIOS－System Clock－DMA－64KB RAM－IRQ－显卡等。检测显卡以前的过程称过关键部件测试，如果关键部件有问题，计算机会处于挂起状态，习惯上称为核心故障。
 
-加入
+另一类故障称为非关键性故障，检测完显卡后，计算机将对64KB以上内存、I／O口、软硬盘驱动器、键盘、即插即用设备、CMOS设置等进行检测，并在屏幕上显示各种信息和出错报告。
 
-log-bin=/opt/data/mysql-bin
+附件：个人计算机的启动过程
 
-&amp;ldquo;log-bin=&amp;rdquo;后的字符串为日志记载目录，一般建议放在不同于mysql数据目录的磁盘上。
+我们在按下启动键时，首先启动的应是电源（因为如果没有电源供电，那么主板上所有的配件都是无法工作的）。但是为了保证安全使用，电源部分采取了一系列安全保护措施；因此开关电源从起振到稳定之间会有一段时间的延迟，等待各组电压都稳定下来后，电源各部分会输出一个检测信号，这个信号为高电平时表示该部分电压正常，这些部分包括输入电压和各组输出电压。这些信号总和的结果就是一个POWER GOOD信号（也称为POWER OK或PWR OK信号）；如果主板接受不到这个信号，那么时钟芯片会持续向<span class="built_in">CPU</span>发送复位（RESET）信号（与我们按下RESER键相当），<span class="built_in">CPU</span>就不会工作。 
 
-[ 完全备份]
+当<span class="built_in">CPU</span>接受到正常的POWER GOOD信号，主板和<span class="built_in">CPU</span>就启动了吗？其实主板此时，还要根据<span class="built_in">CPU</span>的VID0－VID3引脚的定义组合，将<span class="built_in">CPU</span>所提供的VID0－VID3信号送到电源管理模块的相应的端口；如果主板BIOS具有可设定<span class="built_in">CPU</span>电压的功能，主板会按时设定的电压与VID的对应关系产生新的VID信号并送到电源管理模块芯片，电源管理模块将根据设定并通过DAC电压将其转换为基准电压，再经过场效应管轮流导通和关闭，将能量通过电感线圈送到<span class="built_in">CPU</span>，最后再经过调节电路使用输出电压与设定电压值相当。 
 
-假定星期日下午1点执行完全备份，适用于MyISAM存储引擎。
+由于<span class="built_in">CPU</span>还要根据自己所需要的频率，通过IC总线来检测主板频率发生器所设置的频率是否支持；因为电脑要进行正确的数据传送以及正常的运行，没有时钟信号是不行的，时钟信号在电路中的主要作用就是同步；因为在数据传送过程中，对时序都有着严格的要求，只有这样才能保证数据在传输过程不出差错。时钟信号首先设定了一个基准，我们可以用它来确定其它信号的宽度，另外时钟信号能够保证收发数据双方的同步。对于<span class="built_in">CPU</span>而言，时钟信号作为基准，<span class="built_in">CPU</span>内部的所有信号处理都要以它作为标尺，这样它就确定<span class="built_in">CPU</span>指令的执行速度；如<span class="built_in">CPU</span>本身的频率无法适应频率发生器所提供的高频率，也是无法正常工作的。因此只有当接受到POWER GOOD信号，和相应的得到<span class="built_in">CPU</span>工作的电压时以及相应的时钟频率后，<span class="built_in">CPU</span>才能正常的工作，也就是开始执行BIOS程序。 
 
-mysqldump &amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span> &amp;ndash;</span><span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> &amp;ndash;</span>master-data=2 -u root -p test &amp;gt; backup_sunday_1_PM.sql
+POST上电自检：是微机接通电源后，系统进行的一个自我检查的例行程序。这个过程通常称为POST上电自检（Power On Self <span class="keyword">Test</span>）。对系统的几乎所有的硬件进行检测。 
 
-对于InnoDB 将&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span>替换为&amp;ndash;</span>single-transaction
+POST是如何进行自检测的？ 
 
-&amp;ndash;<span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> 为结束当前日志，生成新日志文件
+主板在接通电源后，系统首先由(Power On Self <span class="keyword">Test</span>,上电自检)程序来对内部各个设备进行检查。在我们按下起动键（电源开关）时，系统的控制权就交由BIOS来完成，由于此时电压还不稳定，主板控制芯片组会向<span class="built_in">CPU</span>发出并保持一个RESET(重置)信号，让<span class="built_in">CPU</span>初始化，同时等待电源发出的POWER GOOD信号(电源准备好信号)。当电源开始稳定供电后(当然从不稳定到稳定的过程也只是短暂的瞬间)，芯片组便撤去RESET信号(如果是手动按下计算机面板上的Reset按钮来重启机器，那么松开该按钮时芯片组就会撤去RESET信号)，<span class="built_in">CPU</span>马上就从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。
 
-&amp;ndash;</span>master-data=2 选项将会在输出SQL中记录下完全备份后新日志文件的名称，
+系统BIOS的启动代码首先要做的事情就是进行POST(Power On Self <span class="keyword">Test</span>，加电自检)，由于电脑的硬件设备很多（包括存储器、中断、扩展卡），因此要检测这些设备的工作状态是否正常。 这一过程是逐一进行的，BIOS厂商对每一个设备都给出了一个检测代码（称为POST CODE即开机自我检测代码），在对某个设置进行检测时，首先将对应的POST CODE写入<span class="number">80H</span>（地址）诊断端口，当该设备检测通过，则接着送另一个设置的POST CODE，对此设置进行测试。如果某个设备测试没有通过，则此POST CODE会在<span class="number">80H</span>处保留下来，检测程序也会中止，并根据已定的报警声进行报警（BIOS厂商对报警声也分别作了定义，不同的设置出现故障，其报警声也是不同的，我们可以根据报警声的不同，分辨出故障所在。 
 
-用于日后恢复时参考，例如输出的备份SQL文件中含有：
+POST自检响铃次数是如何定义的？ 
 
-&amp;ndash; <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=&amp;rsquo;</span>mysql-bin.000002&amp;prime;, MASTER_LOG_POS=106;
+POST上电自检还会通过报警声响次数的方式来指出检测到的故障。但需要注意：由于目前主板BIOS类型大致可分为AWARD公司、AMI公司、PHOENIX公司（AWARD已与PHOENIX合并），因此不同类型的BIOS，其自检响铃次数所定义的自检错误是不一致的，因此一定要分清。 
 
-<span class="comment">--master-data[=value]</span>
+POST自检发现错误后如何提示？ 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Write the binary log filename and position to the output. This option requires the RELOAD privilege and the binary log must be
+POST自检如发现有错误，将按两种情况处理：对于严重故障(致命性故障)则停机，此时由于各种初始化操作还没完成，不能给出任何提示或信号；对于非严重故障则给出提示或声音报警信号（以上介绍），等待用户处理。通过BIOS自检功能（POST自检），我们就可以方便的侦测出主板的故障所在，以便正确的解决。 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; enabled. If the option value is equal to 1, the position and filename are written to the dump output in the form of a <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+如我们按下电源键后，只有电源指示灯亮，电脑屏幕没有任何反映，也没有报警声；那么针对这种情况，我们又应如何解决呢？ 
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement. If the dump is from a master server and you <span class="operator"><span class="keyword">use</span> it <span class="keyword">to</span> <span class="keyword">set</span> up a <span class="keyword">slave</span> <span class="keyword">server</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> statement causes the
+屏幕没有显示，也没有报警声，我们就无法从POST自检功能得到相应的信息；大家都知道，计算机是一个复杂而且精密的产品组合，因此一个环节出现问题，可能都无法启动机器（我们主要谈硬件方面）。因此，如出现黑屏，无报警声响的故障现象，我们就应根据电脑的启动过程来分析问题所在了。 
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; slave to <span class="operator"><span class="keyword">start</span> <span class="keyword">from</span> the correct <span class="keyword">position</span> <span class="keyword">in</span> the masters <span class="built_in">binary</span> <span class="keyword">logs</span>. <span class="keyword">If</span> the <span class="keyword">option</span> <span class="keyword">value</span> <span class="keyword">is</span> equal <span class="keyword">to</span> <span class="number">2</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+如何判断、解决故障所在？ 
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement is written as an SQL comment. (This is the default action if value is omitted.)
+因为如接受不到POWER GOOD信号，系统就一直处理RESET（复位）循环中，因此主板也就无法启动，相应的其它硬件，如显卡也无法工作，显示器由于接受不到显卡传出的信号，因此也就没有显示，一直处于待机状态。此时，我们应检测电源，不要以为电源灯亮，就表明电正常，因为只要有一路信号有故障（该部分电路不正常或还未稳定），输入出的POWER GOOD信号都为低电平，即表示电源部分有故障或还未进入稳定状状；虽然电源指示灯亮，但由于主板接受不到正常的POWER GOOD信号，也无法启动。我们检测电源的方法是，使用可正常工作的电源测试。如电源为ATX型我们可用导线将<span class="number">13</span>与<span class="number">14</span>脚短接，如电源风扇能正常运行，则表明电源是完好的，则故障应在主板上。 
 
-其他说明：
+更换正常电源后，如系统还是没有工作的显象，应按以上主板启动过程，测试<span class="built_in">CPU</span>的电源管理模块和频率发生器。但由于我们不可能有完善的设备来测试主板上的电源和频率模块（大多数电脑爱好者不可能有此类设置，和具有相应的检测能力）。因此我们对此还要采用排除法，即在其它正常主板上测试<span class="built_in">CPU</span>。测试排除<span class="built_in">CPU</span>的故障外，还应检测主板频率设置问题。电脑爱好者为使用或测试<span class="built_in">CPU</span>的超频能力，会通过调整主板外频的方式（目前<span class="built_in">CPU</span>已经锁频，只能设置外频，而无法设置倍频），来调高<span class="built_in">CPU</span>的工作频率。如果<span class="built_in">CPU</span>无法适应高工作频率，虽然电源供电正常，主板也是无法启动的。 
 
-如果 mysqldump加上&amp;ndash;<span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span> 则清除以前的日志，以释放空间。但是如果服务器配置为镜像的复制主服务器，用mysqldump &amp;ndash;</span><span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span>删掉MySQL二进制日志很危险，因为从服务器可能还没有完全处理该二进制日志的内容。在这种情况下，使用 <span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span>更为安全。
+排除了其它硬件的问题，为会么系统仍不可启动？ 
 
-[ 增量备份 ]
+如果硬件一切正常（经测试），那么在POST上电自检测后，<span class="built_in">CPU</span>会从地址<span class="number">FFFF0H</span>处开始执行指令，这个地址在系统BIOS的地址范围内，无论是Award BIOS还是AMI BIOS，放在这里的只是一条跳转指令，跳到系统BIOS中真正的启动代码处。由于BIOS是连接操作系统和硬件之间的桥梁，为计算机提供最低级的、最直接的硬件控制，计算机的原始操作都是依照固化在BIOS里的内容（指令）来完成的。因此如BIOS文件破坏或BIOS芯片损坏，都会直接的影响主板的启动。 
 
-每日定时使用 mysqladmin <span class="keyword">flush</span>-<span class="keyword">logs</span>来创建新日志，并结束前一日志写入过程。并
+如果屏幕显示BIOS ROM checksum error-System halted(BIOS 程序代码在进行总和检查 ( checksum ) 时发现错误)的提示时，应是读取BIOS时，校验总和出错，因此无法启机器。这种问题通常是因为 BIOS 程序代码更新不完全所造成的，解决办法重新刷写烧坏主板 BIOS。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/30/w/e4-b8-80-e5-8f-b0pc-e6-9c-8d-e5-8a-a1-e5-99-a8-e7-9a-84-e9-bb-91-e5-b1-8f-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-25T02:02:34.000Z" class="post__time">十一月 25, 2010</time><h1 class="post__title"><a href="/2010/11/25/w/shell-e7-bc-96-e7-a8-8b-e8-84-9a-e6-9c-ac-e5-91-bd-e5-90-8d-e8-a6-81-e8-b0-a8-e6-85-8e/">shell编程脚本命名要谨慎</a></h1></header><div class="post__main"><p>一个自动启动程序的脚本，如果检测到进程没有了就自动重启。程序不会写pid到硬盘文件，只能通过ps取得pid，在调试的时候出现各种不能解释的现象。突然意识到bash shell和程序同名，所以产生不可控的结果，将脚本改名，一切正常。</p>
+</div><footer class="post__foot u-cf"><a href="/2010/11/25/w/shell-e7-bc-96-e7-a8-8b-e8-84-9a-e6-9c-ac-e5-91-bd-e5-90-8d-e8-a6-81-e8-b0-a8-e6-85-8e/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-11-12T03:56:55.000Z" class="post__time">十一月 12, 2010</time><h1 class="post__title"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/">windows不能搜索中文汉字修复</a></h1></header><div class="post__main"><p>重新安装搜索组件:打开系统盘\Windows\inf 在inf里面找srchasst.inf，用鼠标右击-安装</p>
+<pre><code>手动选择安装盘的路径 到i386点击确定。
 
-把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span><span class="number">.000002</span> , &amp;hellip;</span>
+打开注册表依次<span class="special">&amp;</span>ldquo;HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Explorer</span><span class="command">\CabinetState</span><span class="special">&amp;</span>rdquo;在CabinetState里新建字符串<span class="special">&amp;</span>ldquo;Use Search Asst<span class="special">&amp;</span>rdquo;，设置其值为<span class="special">&amp;</span>ldquo;NO<span class="special">&amp;</span>rdquo;。
 
-[ 从备份中恢复 ]
+在运行命令里输入regsvr32 offfilt.dll
+</code></pre><p>&ldquo;确定&rdquo;－出现成功提示后点OK,同样方法运行</p>
+<pre><code>regsvr32 <span class="keyword">Query</span>.dll
 
-* 恢复完全备份
+&amp;ldquo;regsvr32 jscript.dll&amp;rdquo;
 
-mysql -u root -p &amp;lt; backup_sunday_1_PM.sql
+&amp;ldquo;regsvr32 vbscript.dll&amp;rdquo;。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-19T03:42:34.000Z" class="post__time">十月 19, 2010</time><h1 class="post__title"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/">彻底禁用RealPlayer播放器软件更新检测计划任务</a></h1></header><div class="post__main"><p>RealPlayer 会私自安装两个RealPlayer播放器软件更新检测计划任务,并且一打开RealPlayer播放器,会在任务管理器中加载一个realsched.exe进程,关闭RealPlayer后这个进程仍然会存在,并且每次自动添加一个启动项目TkBellExe.</p>
+<pre><code>RealPlayer启动项目:
 
-* 恢复增量备份
+TkBellExe
 
-mysqlbinlog mysql-bin.000002 &amp;hellip; | mysql -u root -p
+注册表位置: HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
 
-注意此次恢复过程亦会写入日志文件，如果数据量很大，建议先关闭日志功能
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
 
-参考：http://bbs.bitscn.com /171622
+关联路径文件:C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
 
-常用参数：
+RealPlayer计划任务
 
-&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span>, -l
+文件路径: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
 
-<span class="keyword">Lock</span> <span class="keyword">all</span> <span class="keyword">tables</span> <span class="keyword">before</span> dumping them. The <span class="keyword">tables</span> <span class="keyword">are</span> locked <span class="keyword">with</span> <span class="keyword">READ</span> <span class="keyword">LOCAL</span> <span class="keyword">to</span> allow <span class="keyword">concurrent</span> inserts <span class="keyword">in</span> the <span class="keyword">case</span> <span class="keyword">of</span> MyISAM
+C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
 
-<span class="keyword">tables</span>. <span class="keyword">For</span> transactional <span class="keyword">tables</span> such <span class="keyword">as</span> <span class="keyword">InnoDB</span> <span class="keyword">and</span> BDB, &amp;ndash;</span>single-transaction is a much better option, because it does not need
+注册表位置: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
 
-to <span class="operator"><span class="keyword">lock</span> the <span class="keyword">tables</span> <span class="keyword">at</span> <span class="keyword">all</span>.
+方法:
 
-Please note that <span class="keyword">when</span> dumping multiple <span class="keyword">databases</span>, &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> locks <span class="keyword">tables</span> <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">database</span> separately. Therefore, this
+开始<span class="command">\运</span>行<span class="command">\mmc</span>.exe
 
-<span class="keyword">option</span> does <span class="keyword">not</span> guarantee that the <span class="keyword">tables</span> <span class="keyword">in</span> the dump file <span class="keyword">are</span> logically <span class="keyword">consistent</span> <span class="keyword">between</span> <span class="keyword">databases</span>. <span class="keyword">Tables</span> <span class="keyword">in</span> different
+找到Task Scheduler服务项,右键<span class="command">\停</span>止(如在启动状态进行这一步)<span class="command">\属</span>性<span class="command">\启</span>动类型(设置为已禁用)
 
-<span class="keyword">databases</span> may be dumped <span class="keyword">in</span> completely different states.
+删除文件: C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
 
-&amp;ndash;</span>no-data, -d
+C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
 
-<span class="operator"><span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">write</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">row</span> information (that <span class="keyword">is</span>, <span class="keyword">do</span> <span class="keyword">not</span> dump <span class="keyword">table</span> contents). This <span class="keyword">is</span> very useful <span class="keyword">if</span> you want <span class="keyword">to</span> dump <span class="keyword">only</span> the
+删除注册表项: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
 
-<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> statement <span class="keyword">for</span> the <span class="keyword">table</span>.
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
 
-&amp;ndash;</span>extended-<span class="operator"><span class="keyword">insert</span> &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> &amp;ndash;</span>quick &amp;ndash;<span class="operator"><span class="keyword">set</span>-<span class="keyword">charset</span>. It should give you a <span class="keyword">fast</span> dump operation <span class="keyword">and</span> produce a dump file that can
+HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
 
-be reloaded <span class="keyword">into</span> a MySQL <span class="keyword">server</span> quickly.
+重启系统再操作:
 
-The &amp;ndash;</span>opt option is enabled by default. <span class="operator"><span class="keyword">Use</span> &amp;ndash;</span>skip-opt to disable it.&amp;nbsp; See the discussion at the beginning of this section for
+删除文件: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\目</span>录中以Real开头的.job文件
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-18T09:26:06.000Z" class="post__time">十月 18, 2010</time><h1 class="post__title"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/">FreeBSD使用smbclient访问Windows资源</a></h1></header><div class="post__main"><p>安装应用程序: Packages 和 Ports</p>
+<pre><code>http:<span class="comment">//www.freebsd.org/doc/zh_CN/books/handbook/ports-using.html</span>
 
-information about selectively enabling or disabling certain of the options affected by &amp;ndash;opt.
+安装samba
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--compatible=name</span>
+<span class="keyword">find</span> <span class="regexp">/usr/</span>ports -name samba -<span class="keyword">print</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。
+cd <span class="regexp">/usr/</span>ports<span class="regexp">/net/</span>samba3
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--complete-insert，-c</span>
+make config
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出的数据采用包含字段名的完整 <span class="operator"><span class="keyword">INSERT</span> 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。
+make install
+</code></pre><p>mount windows共享目录:</p>
+<p>smbclient -L 10.8.88.9 -U username</p>
+<pre><code><span class="title">smbclient</span> //<span class="number">10.8.88.9</span>/developer-home -U username
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--default-character-set=charset</span>
+mount_smbfs -N -I <span class="number">10.8.88.9</span> //username<span class="variable">@NetBIOSname</span>/developer-home /mnt/win/
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。
+vi ~/.nsmbrc
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--disable-keys</span>
+[NetBIOSname:username]
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 告诉 mysqldump 在 <span class="operator"><span class="keyword">INSERT</span> 语句的开头和结尾增加 <span class="comment">/*!40000 ALTER TABLE table DISABLE KEYS */</span>;</span> 和 <span class="comment">/*!40000 ALTER TABLE table ENABLE KEYS */</span>; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--extended-insert = true|false</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 默认情况下，mysqldump 开启 <span class="comment">--complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--hex-blob</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-all-tables，-x</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 <span class="comment">--single-transaction 和 --lock-tables 选项。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-tables</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它和 <span class="comment">--lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--no-create-info，-t</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 只导出数据，而不添加 <span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 语句。
-
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--no-data，-d</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 不导出任何数据，只导出数据库表结构。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--opt</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 这只是一个快捷选项，等同于同时添加 <span class="comment">--add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--quick，-q</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--routines，-R</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出存储过程以及自定义函数。
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--single-transaction</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出数据之前提交一个 <span class="operator"><span class="keyword">BEGIN</span> <span class="keyword">SQL</span>语句，<span class="keyword">BEGIN</span> 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 <span class="keyword">InnoDB</span> 和 BDB。
-
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 本选项和 <span class="comment">--lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 要想导出大表的话，应结合使用 <span class="comment">--quick 选项。</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--triggers</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T07:30:54.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">设置WordPress固定链接不生效的可能原因</a></h1></header><div class="post__main"><p>apache设置Permalinks以后，除了首页，所有的页面都变成了404错误。</p>
-<p>多方查找原因，发现是.htaccess文件未生效。在apache配置文件中设置WordPress目录权限为AllowOverride All:</p>
-<p>&nbsp;&lt;Directory /www/veryi.com/w&gt;</p>
-<pre><code><span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; AllowOverride <span class="literal">All</span>
-
-<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="keyword">Order</span> allow,deny
-
-<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; Allow from <span class="literal">all</span>
-
-<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span><span class="literal">lt</span>;/Directory<span class="subst">&amp;</span><span class="literal">gt</span>;
-
-访问正常。
-</code></pre><p>附固定链接设置方法：</p>
-<p>linux服务器，登陆WordPress，单击&ldquo;设置&rdquo;。然后单击&ldquo;设置&rdquo;的下级分类&lsquo;固定链接&rsquo;在常规设置中选择&ldquo;自定义&rdquo;，然后在&ldquo;自定义结构&rdquo;中填入你想设置的永久链接结构。我用的是:</p>
-<p>/%post_id%.html</p>
-<p>Windows服务器下设置WordPress固定链接伪静态，只要主机支持自定义404页面，无需安装插件，就能让Win主机像Linux 那样，方便使用WordPress的固定链接为静态化地址格式。</p>
-<p>&lt;?php</p>
-<pre><code>header(<span class="special">&amp;</span>rdquo;HTTP/1.1 200 OK<span class="special">&amp;</span>rdquo;);
-
-<span class="formula">$ori_qs = $</span>_SERVER<span class="special">[</span><span class="special">&amp;</span><span class="special">#</span>39;QUERY_STRING<span class="special">&amp;</span><span class="special">#</span>39;<span class="special">]</span>;
-
-<span class="formula">$pattern = <span class="special">&amp;</span>lsquo;/<span class="special">[</span>^;<span class="special">]</span>+;<span class="special">[</span>^:<span class="special">]</span>+:<span class="command">\/</span><span class="command">\/</span><span class="special">[</span>^<span class="command">\/</span><span class="special">]</span>+(<span class="command">\/</span><span class="special">[</span>^<span class="command">\?</span><span class="special">]</span>*)(?:<span class="command">\?</span>(.*))?/i<span class="special">&amp;</span>rsquo;;</span>
-</code></pre><p>preg_match($pattern, $ori_qs, $matches);</p>
-<pre><code><span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;PATH_INFO&amp;#39;] = $matches[1] . &amp;lsquo;?&amp;rsquo; . $matches[2];</span>
-
-<span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;REQUEST_URI&amp;#39;] = $_SERVER[&amp;#39;PATH_INFO&amp;#39;];</span>
-
-<span class="variable">$query_args</span> = explode(&amp;rsquo;&amp;amp;&amp;rsquo;, <span class="variable">$matches</span>[<span class="number">2</span>]);
-
-<span class="keyword">unset</span>(<span class="variable">$_GET</span>);
-
-<span class="keyword">foreach</span> (<span class="variable">$query_args</span> <span class="keyword">as</span> <span class="variable">$arg</span>)
-
-{
-
-<span class="variable">$the_arg</span> = explode(&amp;rsquo;=&amp;<span class="comment">#39;, $arg);</span>
-
-<span class="variable">$_GET</span>[<span class="variable">$the_arg</span>[<span class="number">0</span>]] = <span class="variable">$the_arg</span>[<span class="number">1</span>];
-
-}
-
-<span class="keyword">include</span>(&amp;rsquo;index.php&amp;rsquo;);
-
-?&amp;gt;
-</code></pre><p>设置固定链接（Permalink）伪静态步骤：</p>
-<pre><code><span class="number">1</span><span class="string">\.</span> 将以上代码保存为 <span class="number">404.php</span>，并上传至主机根目录。
-
-<span class="number">2</span><span class="string">\.</span> 设置 <span class="number">404</span> 自定义错误页为 <span class="number">404.php</span>。
-
-<span class="number">3</span><span class="string">\.</span> 进入 WordPress 控制面板，设置（Options）- 固定链接（Permalinks）,选择固定链接格式。
-</code></pre><p>nginx静态链接还需要设置重写规则：&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location /w/ {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># enable search for precompressed files ending in .gz</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># nginx needs to be complied using &amp;ndash;-with-http_gzip_static_module</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; gzip_static on;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if the requested file exists, return it immediately</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$request_filename</span>) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">break</span>;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_file</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> <span class="variable">$request_uri</span>;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$request_method</span> = POST) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># Using pretty permalinks, so bypass the cache for any query string</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$query_string</span>) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$http_cookie</span> ~* &amp;quot;comment_author_|wordpress|wp-postpass_&amp;quot; ) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if we haven&amp;#39;t bypassed the cache, specify our supercache file</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="variable">$supercache_uri</span> ~ ^(.+)$) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="built_in">set</span> <span class="variable">$supercache_file</span> /w/wp-content/cache/supercache/<span class="variable">$http_host</span>/<span class="variable">$1index</span>.html;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># only rewrite to the supercache file if it actually exists</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$document_root</span><span class="variable">$supercache_file</span>) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite ^(.*)$ <span class="variable">$supercache_file</span> <span class="built_in">break</span>;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; 
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># all other requests go to Wordpress</span>
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!<span class="operator">-e</span> <span class="variable">$request_filename</span>) {
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite . /w/index.php last;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-24T00:42:35.000Z" class="post__time">三月 24, 2009</time><h1 class="post__title"><a href="/2009/03/24/w/e5-bc-9f-e5-ad-90-e8-a7-84/">弟子规</a></h1></header><div class="post__main"><p>弟 子 规</p>
-<p>总　叙</p>
-<p>弟子规　圣人训　首孝弟　次谨信</p>
-<p>泛爱众　而亲仁　有余力　则学文</p>
-<p>入 则 孝</p>
-<p>父母呼　应勿缓　父母命　行勿懒</p>
-<p>父母教　须敬听　父母责　须顺承</p>
-<p>冬则温　夏则凊　晨则省　昏则定</p>
-<p>出必告　反必面　居有常　业无变</p>
-<p>事虽小　勿擅为　苟擅为　子道亏</p>
-<p>物虽小　勿私藏　苟私藏　亲心伤</p>
-<p>亲所好　力为具　亲所恶　谨为去</p>
-<p>身有伤　贻亲忧　德有伤　贻亲羞</p>
-<p>亲爱我　孝何难　亲憎我　孝方贤</p>
-<p>亲有过　谏使更　怡吾色　柔吾声</p>
-<p>谏不入　悦复谏　号泣随　挞无怨</p>
-<p>亲有疾　药先尝　昼夜侍　不离床</p>
-<p>丧三年　常悲咽　居处变　酒肉绝</p>
-<p>丧尽礼　祭尽诚　事死者　如事生</p>
-<p>出 则 弟</p>
-<p>兄道友　弟道恭　兄弟睦　孝在中</p>
-<p>财物轻　怨何生　言语忍　忿自泯</p>
-<p>或饮食　或坐走　长者先　幼者后</p>
-<p>长呼人　即代叫　人不在　己即到</p>
-<p>称尊长　勿呼名　对尊长　勿见能</p>
-<p>路遇长　疾趋揖　长无言　退恭立</p>
-<p>骑下马　乘下车　过犹待　百步余</p>
-<p>长者立　幼勿坐　长者坐　命乃坐</p>
-<p>尊长前　声要低　低不闻　却非宜</p>
-<p>进必趋　退必迟　问起对　视勿移</p>
-<p>事诸父　如事父　事诸兄　如事兄</p>
-<p>谨</p>
-<p>朝起早　夜眠迟　老易至　惜此时</p>
-<p>晨必盥　兼漱口　便溺回　辄净手</p>
-<p>冠必正　纽必结　袜与履　俱紧切</p>
-<p>置冠服　有定位　勿乱顿　致污秽</p>
-<p>衣贵洁　不贵华　上循分　下称家</p>
-<p>对饮食　勿拣择　食适可　勿过则</p>
-<p>年方少　勿饮酒　饮酒醉　最为丑</p>
-<p>步从容　立端正　揖深圆　拜恭敬</p>
-<p>勿践阈　勿跛倚　勿箕踞　勿摇髀</p>
-<p>缓揭帘　勿有声　宽转弯　勿触棱</p>
-<p>执虚器　如执盈　入虚室　如有人</p>
-<p>事勿忙　忙多错　勿畏难　勿轻略</p>
-<p>斗闹场　绝勿近　邪僻事　绝勿问</p>
-<p>将入门　问孰存　将上堂　声必扬</p>
-<p>人问谁　对以名　吾与我　不分明</p>
-<p>用人物　须明求　倘不问　即为偷</p>
-<p>借人物　及时还　后有急　借不难</p>
-<p>信</p>
-<p>凡出言　信为先　诈与妄　奚可焉</p>
-<p>话说多　不如少　惟其是　勿佞巧</p>
-<p>奸巧语　秽污词　市井气　切戒之</p>
-<p>见未真　勿轻言　知未的　勿轻传</p>
-<p>事非宜　勿轻诺　苟轻诺　进退错</p>
-<p>凡道字　重且舒　勿急疾　勿模糊</p>
-<p>彼说长　此说短　不关己　莫闲管</p>
-<p>见人善　即思齐　纵去远　以渐跻</p>
-<p>见人恶　即内省　有则改　无加警</p>
-<p>唯德学　唯才艺　不如人　当自砺</p>
-<p>若衣服　若饮食　不如人　勿生戚</p>
-<p>闻过怒　闻誉乐　损友来　益友却</p>
-<p>闻誉恐　闻过欣　直谅士　渐相亲</p>
-<p>无心非　名为错　有心非　名为恶</p>
-<p>过能改　归于无　倘掩饰　增一辜</p>
-<p>泛 爱 众</p>
-<p>凡是人　皆须爱　天同覆　地同载</p>
-<p>行高者　名自高　人所重　非貌高</p>
-<p>才大者　望自大　人所服　非言大</p>
-<p>己有能　勿自私　人有能　勿轻訾</p>
-<p>勿谄富　勿骄贫　勿厌故　勿喜新</p>
-<p>人不闲　勿事搅　人不安　勿话扰</p>
-<p>人有短　切莫揭　人有私　切莫说</p>
-<p>道人善　即是善　人知之　愈思勉</p>
-<p>扬人恶　即是恶　疾之甚　祸且作</p>
-<p>善相劝　德皆建　过不规　道两亏</p>
-<p>凡取与　贵分晓　与宜多　取宜少</p>
-<p>将加人　先问己　己不欲　即速已</p>
-<p>恩欲报　怨欲忘　报怨短　报恩长</p>
-<p>待婢仆　身贵端　虽贵端　慈而宽</p>
-<p>势服人　心不然　理服人　方无言</p>
-<p>亲 仁</p>
-<p>同是人　类不齐　流俗众　仁者希</p>
-<p>果仁者　人多畏　言不讳　色不媚</p>
-<p>能亲仁　无限好　德日进　过日少</p>
-<p>不亲仁　无限害　小人进　百事坏</p>
-<p>余 力 学 文</p>
-<p>不力行　但学文　长浮华　成何人</p>
-<p>但力行　不学文　任己见　昧理真</p>
-<p>读书法　有三到　心眼口　信皆要</p>
-<p>方读此　勿慕彼　此未终　彼勿起</p>
-<p>宽为限　紧用功　工夫到　滞塞通</p>
-<p>心有疑　随札记　就人问　求确义</p>
-<p>房室清　墙壁净　几案洁　笔砚正</p>
-<p>墨磨偏　心不端　字不敬　心先病</p>
-<p>列典籍　有定处　读看毕　还原处</p>
-<p>虽有急　卷束齐　有缺坏　就补之</p>
-<p>非圣书　屏勿视　蔽聪明　坏心志</p>
-<p>勿自暴　勿自弃　圣与贤　可驯致</p>
-<p>—</p>
-<div class="Section0"><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">弟子規</span></span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">總敘</span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">弟子規&nbsp;聖人訓&nbsp;首孝弟&nbsp;次謹信 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">汎愛眾&nbsp;而親仁&nbsp;有餘力&nbsp;則學文 </span></span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">入則孝</span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">父母呼&nbsp;應勿緩 </span></span><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">父母命&nbsp;行勿懶 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">父母教&nbsp;須敬聽&nbsp;父母責&nbsp;須順承</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">冬則溫&nbsp;夏則凊&nbsp;晨則省&nbsp;昏則定 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">出必告&nbsp;反必面&nbsp;居有常&nbsp;業無變 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">事雖小&nbsp;勿擅為&nbsp;茍擅為&nbsp;子道虧 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">物雖小&nbsp;勿私藏&nbsp;茍私藏&nbsp;親心傷 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">親所好&nbsp;力為具&nbsp;親所惡&nbsp;謹為去 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">身有傷&nbsp;貽親憂&nbsp;德有傷&nbsp;貽親羞 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">親愛我&nbsp;孝何難&nbsp;親憎我&nbsp;孝方賢 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">親有過&nbsp;諫使更&nbsp;怡吾色&nbsp;柔吾聲 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">諫不入&nbsp;悅復諫&nbsp;號泣隨&nbsp;撻無怨</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">親有疾&nbsp;藥先嘗&nbsp;晝夜侍&nbsp;不離床 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">喪三年&nbsp;常悲咽&nbsp;居處變&nbsp;酒肉絕 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">喪盡禮&nbsp;祭盡誠&nbsp;事死者&nbsp;如事生</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">出則弟</span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">兄道友&nbsp;弟道恭&nbsp;兄弟睦&nbsp;孝在中 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">財物輕&nbsp;怨何生&nbsp;言語忍&nbsp;忿自泯</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">或飲食&nbsp;或坐走&nbsp;長者先&nbsp;幼者後 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">長呼人&nbsp;即代叫&nbsp;人不在&nbsp;己即到 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">稱尊長&nbsp;勿呼名&nbsp;對尊長&nbsp;勿見能</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">路遇長&nbsp;疾趨揖&nbsp;長無言&nbsp;退恭立 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">騎下馬&nbsp;乘下車&nbsp;過猶待&nbsp;百步餘 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">長者立&nbsp;幼勿坐&nbsp;長者坐&nbsp;命乃坐 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">尊長前&nbsp;聲要低</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> <span style="font-family: 宋体;">低不聞&nbsp;卻非宜 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">進必趨&nbsp;退必遲&nbsp;問起對&nbsp;視勿移</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">事諸父&nbsp;如事父&nbsp;事諸兄&nbsp;如事兄 </span></span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">謹</span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">朝起早</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> <span style="font-family: 宋体;">夜眠遲&nbsp;老易至&nbsp;惜此時 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">晨必盥&nbsp;兼漱口&nbsp;便溺回&nbsp;輒淨手 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">冠必正&nbsp;紐必結&nbsp;襪與履&nbsp;俱緊切 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">置冠服&nbsp;有定位&nbsp;勿亂頓&nbsp;致污穢 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">衣貴潔&nbsp;不貴華&nbsp;上循分&nbsp;下稱家</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">對飲食&nbsp;勿揀擇&nbsp;食適可&nbsp;勿過則</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">年方少&nbsp;勿飲酒&nbsp;飲酒醉&nbsp;最為醜 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">步從容&nbsp;立端正&nbsp;揖深圓&nbsp;拜恭敬</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">勿踐閾&nbsp;勿跛倚&nbsp;勿箕踞&nbsp;勿搖髀</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">緩揭簾&nbsp;勿有聲&nbsp;寬轉彎&nbsp;勿觸棱 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">執虛器&nbsp;如執盈&nbsp;入虛室&nbsp;如有人 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">事勿忙&nbsp;忙多錯&nbsp;勿畏難&nbsp;勿輕略 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">鬥鬧場&nbsp;絕勿近&nbsp;邪僻事&nbsp;絕勿問</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">將入門&nbsp;問孰存&nbsp;將上堂&nbsp;聲必揚 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">人問誰&nbsp;對以名&nbsp;吾與我&nbsp;不分明 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">用人物&nbsp;須明求&nbsp;倘不問&nbsp;即為偷 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">借人物&nbsp;及時還&nbsp;後有急&nbsp;借不難 </span></span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">信</span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">凡出言&nbsp;信為先&nbsp;詐與妄&nbsp;奚可焉 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">話說多&nbsp;不如少&nbsp;惟其是&nbsp;勿佞巧 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">奸巧語&nbsp;穢污詞&nbsp;市井氣&nbsp;切戒之 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">見未真&nbsp;勿輕言&nbsp;知未的&nbsp;勿輕傳</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">事非宜&nbsp;勿輕諾&nbsp;茍輕諾&nbsp;進退錯</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">凡道字&nbsp;重且舒&nbsp;勿急疾&nbsp;勿模糊 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">彼說長&nbsp;此說短&nbsp;不關己&nbsp;莫閒管 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">見人善&nbsp;即思齊&nbsp;縱去遠&nbsp;以漸躋 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">見人惡&nbsp;即內省&nbsp;有則改&nbsp;無加警 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">唯德學&nbsp;唯才藝&nbsp;不如人&nbsp;當自礪 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">若衣服&nbsp;若飲食&nbsp;不如人&nbsp;勿生慼 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">聞過怒&nbsp;聞譽樂&nbsp;損友來&nbsp;益友卻 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">聞譽恐&nbsp;聞過欣&nbsp;直諒士&nbsp;漸相親 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">無心非&nbsp;名為錯&nbsp;有心非&nbsp;名為惡 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">過能改&nbsp;歸於無&nbsp;倘揜飾&nbsp;增一辜</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">汎愛眾</span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">凡是人&nbsp;皆須愛&nbsp;天同覆&nbsp;地同載 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">行高者&nbsp;名自高&nbsp;人所重&nbsp;非貌高 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">才大者&nbsp;望自大&nbsp;人所服&nbsp;非言大 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">己有能&nbsp;勿自私&nbsp;人有能&nbsp;勿輕訾 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">勿諂富&nbsp;勿驕貧&nbsp;勿厭故&nbsp;勿喜新</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">人不閒&nbsp;勿事攪&nbsp;人不安&nbsp;勿話擾 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">人有短&nbsp;切莫揭&nbsp;人有私&nbsp;切莫說 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">道人善&nbsp;即是善&nbsp;人知之&nbsp;愈思勉 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">揚人惡&nbsp;即是惡&nbsp;疾之甚&nbsp;禍且作 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">善相勸&nbsp;德皆建&nbsp;過不規&nbsp;道兩虧 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">凡取與&nbsp;貴分曉&nbsp;與宜多&nbsp;取宜少 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">將加人&nbsp;先問己&nbsp;己不欲&nbsp;即速已 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">恩欲報&nbsp;怨欲忘&nbsp;報怨短&nbsp;報恩長</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">待婢僕&nbsp;身貴端&nbsp;雖貴端&nbsp;慈而寬 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">勢服人&nbsp;心不然&nbsp;理服人&nbsp;方無言 </span></span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">親仁</span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">同是人&nbsp;類不齊&nbsp;流俗眾&nbsp;仁者希 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">果仁者&nbsp;人多畏&nbsp;言不諱&nbsp;色不媚</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">能親仁&nbsp;無限好&nbsp;德日進&nbsp;過日少 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">不親仁&nbsp;無限害&nbsp;小人進&nbsp;百事壞</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br>&nbsp;<br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">餘力學文</span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">不力行&nbsp;但學文&nbsp;長浮華&nbsp;成何人 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">但力行&nbsp;不學文&nbsp;任己見&nbsp;昧理真 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">讀書法&nbsp;有三到&nbsp;心眼口&nbsp;信皆要 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">方讀此&nbsp;勿慕彼&nbsp;此未終&nbsp;彼勿起</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">寬為限&nbsp;緊用功&nbsp;工夫到&nbsp;滯塞通</span></span><span style="font-size: 12pt; font-family: 'Times New Roman';"> </span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">心有疑&nbsp;隨札記&nbsp;就人問&nbsp;求確義 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">房室清&nbsp;牆壁淨&nbsp;几案潔&nbsp;筆硯正 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">墨磨偏&nbsp;心不端&nbsp;字不敬&nbsp;心先病 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">列典籍&nbsp;有定處&nbsp;讀看畢&nbsp;還原處 </span></span><br><br><span style="font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">雖有急&nbsp;卷束齊&nbsp;有缺壞&nbsp;就補之 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">非聖書&nbsp;屏勿視&nbsp;蔽聰明&nbsp;壞心志 </span></span><br><br><span style="font-weight: bold; font-size: 12pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">勿自暴&nbsp;勿自棄&nbsp;聖與賢&nbsp;可馴致 </span></span><br><br></div></div><footer class="post__foot u-cf"><a href="/2009/03/24/w/e5-bc-9f-e5-ad-90-e8-a7-84/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-23T01:18:04.000Z" class="post__time">三月 23, 2009</time><h1 class="post__title"><a href="/2009/03/23/w/e5-a9-86-e5-aa-b3-e4-b8-8d-e5-92-8c-e7-9a-84-e9-87-8d-e8-a6-81-e5-8e-9f-e5-9b-a0-e4-b9-8b-e4-b8-80-e5-84-bf-e5-ad-90-e2-80-9c-e5-a4-aa-e5-ad-9d-e9-a1-ba-e2-80-9d/">婆媳不和的重要原因之一--儿子“太孝顺”</a></h1></header><div class="post__main"><p>&nbsp; &nbsp; &nbsp;&nbsp; 这里说的儿子孝顺，不是真的孝顺，是儿子要孝顺的名，而忽视了孝顺的实。</p>
-<p>&nbsp; &nbsp; &nbsp;&nbsp; 因为如果儿子真的孝顺，不是把妈妈放到至高无上的地位，无视妻子的存在甚至伤害妻子。 真正的孝顺是在娶了妻子以后，自己退居第二位，把孝敬母亲的工作交给妻子去做，促成母亲和妻子的关系的和睦， 让母亲觉得妻子很好，甚至像爱自己的姑娘一样爱妻子，而妻子也把婆婆当成自己的妈妈。这样家庭和谐，社会和谐，天下太平。</p>
-<p>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 一个孝子，通常妻子也会孝顺，因为感应道交。如果妻子不孝顺，检查自己，看自己那些地方做的让妻子不高兴，不满意，&ldquo;行有不得，反求诸己&rdquo;。 母子、夫妻、婆媳，这里有三种关系。未结婚之前，儿子怎么孝顺母亲都不为过，但是结了婚以后，要把孝顺母亲的机会留给妻子，甚至给妻子创造出孝顺的机会。举个例子，比如说妈妈想吃苹果，妻子买回来一斤，儿子说，妈妈爱吃，你才买这么点。出去买回来一箱，这就是陷妻子于不义，或者说制造矛盾。这样，妈妈会想，还是儿子孝顺，妻子可能会想，你不是孝顺吗，那你就孝顺吧，我以后不管了。 如果妈妈想吃苹果，妻子没有去买，儿子不要着急，反省自己，妻子为何没有去买。补充一点，结婚前，儿子把收入交给妈妈很好，结婚以后，工资卡最好交给妻子。否则，可能为日后婆媳不和种下种子。开始母亲可能会不高兴，但这是给妻子孝顺母亲创造机会，母亲对儿子不满，只是暂时的，更不会记在心里，但婆媳一旦结怨，就很麻烦了。这就是王善人常说的&ldquo;近人要远，远人要近&rdquo;的道理。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 《孝经》云:孝悌之至 通於神明 光于四海 无所不通。妻子对于丈夫的孝行应该欢喜赞叹，因为这是一切善行的根本，否则，就是给子女做一个不好的榜样，等她们结了婚，又会怎样对待自己的父母呢？而且，从来没有因为孝经父母而贫穷的家庭，反倒是不孝父母而消己福。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我说的可能不对，欢迎大家批评指导:acy@163.com。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/23/w/e5-a9-86-e5-aa-b3-e4-b8-8d-e5-92-8c-e7-9a-84-e9-87-8d-e8-a6-81-e5-8e-9f-e5-9b-a0-e4-b9-8b-e4-b8-80-e5-84-bf-e5-ad-90-e2-80-9c-e5-a4-aa-e5-ad-9d-e9-a1-ba-e2-80-9d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-20T01:55:48.000Z" class="post__time">三月 20, 2009</time><h1 class="post__title"><a href="/2009/03/20/w/e6-97-a0-e5-85-ac-e5-ae-b3-e3-80-81-e6-97-a0-e5-86-9c-e8-8d-af-e3-80-81-e6-97-a0-e5-8c-96-e8-82-a5-e3-80-81-e7-bb-bf-e8-89-b2-e3-80-81-e6-9c-89-e6-9c-ba-e8-94-ac-e8-8f-9c-e7-9a-84-e6-9c-89-e6-95-88/">无公害、无农药、无化肥、绿色、有机蔬菜的简单有效判断方法</a></h1></header><div class="post__main"><p>1、无农药、无化肥的蔬菜通常保存时间长，通常春秋常温可保存半个月以上不会腐烂变质，虽然可以长时间保存，仍然建议吃新鲜的。农药化肥菜一般放在冰箱不超过7天就会变质变臭。</p>
-<p>2、无农药、无化肥的蔬菜菜味很浓，前提是你生吃或不要放味精和太多的调味料。</p>
-<p>3、爱心栽种的菜会有一种特殊的甜味，这种特殊的甜味不像糖的甜，糖吃了以后口中会觉得酸，这种特殊的甜味会让你喜悦。</p>
-<p>4、无农药、无化肥蔬菜通常会有虫子咬的洞，或者有蚜虫（腻虫、油旱），也许不会很好看，但一定好吃。如果你有种植蔬菜的经验，就知道蔬菜虫子太爱吃了，只有少数如茼蒿、尖椒一般虫子不爱吃。有虫子咬的洞菜不一定没喷农药，那没有虫子咬的菜呢？ 杀虫就是杀人啊。</p>
-<p>真正健康的菜虫子不会咬，就象真正健康的人不会生病一样，&ldquo;恬淡虚无，真气从之，精神内守，病安从来&rdquo;。为了让菜不被虫子咬，就喷农药；为了健康，就建越来越大、越来越高科技的医院，把健康寄希望于大医院上。其实，外面的毒来自于心毒，如果我们心不毒，我们的食品就是无公害、绿色、有生机的。所以，也不必费劲心机挑选有机食品，先从把我们的心变得无公害开始吧。暂且写这么多，欢迎大家补充。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/20/w/e6-97-a0-e5-85-ac-e5-ae-b3-e3-80-81-e6-97-a0-e5-86-9c-e8-8d-af-e3-80-81-e6-97-a0-e5-8c-96-e8-82-a5-e3-80-81-e7-bb-bf-e8-89-b2-e3-80-81-e6-9c-89-e6-9c-ba-e8-94-ac-e8-8f-9c-e7-9a-84-e6-9c-89-e6-95-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-19T00:02:21.000Z" class="post__time">三月 19, 2009</time><h1 class="post__title"><a href="/2009/03/19/w/e6-9c-80-e5-a5-bd-e7-94-a8-e7-9a-84-e4-bc-98-e7-a7-80-e5-bc-80-e6-ba-90-e5-85-8d-e8-b4-b9-e8-bd-af-e4-bb-b6-e6-8e-a8-e8-8d-90/">最好用的优秀开源/免费软件推荐</a></h1></header><div class="post__main"><p><span style="font-size: 10.5pt; font-family: '宋体';">Ver<span style="font-family: 宋体;">：0.02    2009/03/19</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">用盗版软件的理由很多，但就象窃书不算偷一样可笑。如果说有开源软件或freeware可以代替盗版软件，功能差不多，甚至更好用，恐怕没有谁愿意用盗版。以下是一些经过长期使用确认优秀的软件，有的仅限个人</span></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">非商业用途</span></span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">使用，基本包含了常用电脑软件。如有更好建议，请发邮件acy@163.com</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">1、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">操作系统：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">如果你是用品牌电脑，一般会oem操作系统。如果没有，可以用linux。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">2、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">办公软件：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">软件名称: WPS Office 2007 个人版</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">系统需求: Windows 2000/XP/Vista</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Symbol';">· </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"><span style="font-family: 宋体;">软件大小: 28M</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://wps.kingsoft.com/down/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://wps.kingsoft.com/down/</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">WPS Office 2007<span style="font-family: 宋体;">个人版对个人用户永久免费，包含WPS文字、WPS表格、WPS演示三大功能模块，与MS Office无障碍兼容。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它同类软件：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">OpenOffice</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">可以创建pdf格式文件。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">IBM Lotus Symphony</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">3、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">杀毒软件：</span></span></p>
-<p><span style="font-weight: bold; font-size: 21pt; font-family: 'Times New Roman';">avast! HOME EDITION</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://www.avast.com/eng/download-avast-home.html" target="_blank" rel="external"><span style="font-weight: normal; font-size: 12pt; font-family: 'Times New Roman';">http://www.avast.com/eng/download-avast-home.html</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">有中文版，防毒效果明显，至少我的电脑没中过毒。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">4、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">防火墙：</span></span></p>
-<p><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">Sunbelt Personal Firewall free<br></span></p>
-<p></p><p style="margin-bottom: 13.95pt; margin-top: 13.95pt;"><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';"><strong>下载地址</strong><br></span></p>
-<p></p><p style="margin-bottom: 13.95pt; margin-top: 13.95pt;"><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';"><a href="http://www.sunbeltsoftware.com/home-home-office/sunbelt-personal-firewall/" target="_blank" rel="external">http://www.sunbeltsoftware.com/home-home-office/sunbelt-personal-firewall/</a><br></span></p>
-<p></p><p style="margin-bottom: 0pt; margin-top: 0pt; text-align: left;"><span><a href="http://www.tallemu.com/downloads.html" target="_blank" rel="external"></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">性能一流,免费版的功能已经足够用了。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它同类软件：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">COMODO</span><span style="font-size: 10.5pt; font-family: '宋体';"> </span><span style="font-size: 10.5pt; font-family: 'Times New Roman';">Internet Security</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://www.personalfirewall.comodo.com/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.personalfirewall.comodo.com/</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">5、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">其它安全相关：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">360<span style="font-family: 宋体;">安全卫士，上网的用户建议安装。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">6、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">压缩解压</span></span></p>
-<p><span style="font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">7-Zip</span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> </span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://www.7-zip.org/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10.5pt; font-family: '宋体'; text-decoration: underline;">http://www.7-zip.org/</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">压缩比高，支撑文件格式多。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">7、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">虚拟光驱</span></span></p>
-<p><span><a href="http://static.slysoft.com/SetupVirtualCloneDrive.exe" target="_blank" rel="external"><span style="color: #0000ff; font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman'; text-decoration: underline;">Virtual CloneDrive</span></a></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> (Freeware)</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://www.slysoft.com/en/download.html" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.slysoft.com/en/download.html</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">8、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">上网浏览</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">Mozilla Firefox</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://www.mozillaonline.com/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.mozillaonline.com/</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">上网速度更快，更安全</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">9、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">光盘刻录</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">CDBurnerXP</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://cdburnerxp.se/download.php" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://cdburnerxp.se/download.php</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">10、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">词典翻译</span></span></p>
-<p><span style="color: #ff9900; font-weight: bold; font-size: 10.5pt; font-family: 'Times New Roman';">Lingoes <span style="font-family: 宋体;">灵格斯词霸</span></span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> </span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.lingoes.cn/zh/translator/download.htm" target="_blank" rel="external">http://www.lingoes.cn/zh/translator/download.htm</a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">11、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">磁盘碎片整理</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: 'Times New Roman';">Smart Defrag</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.iobit.com/iobitsmartdefrag.html?Str=download" target="_blank" rel="external">http://www.iobit.com/iobitsmartdefrag.html?Str=download</a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">12、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">笔记软件</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">Evernote</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://www.evernote.com/about/download/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.evernote.com/about/download/</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率。</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">13、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">剪切板增强</span></span></p>
-<p><span style="color: #0000a0; font-weight: bold; font-size: 12pt; font-family: 'Times';">CLCL</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.nakka.com/soft/clcl/index_eng.html" target="_blank" rel="external">http://www.nakka.com/soft/clcl/index_eng.html</a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">14、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">图像处理制作编辑</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">Gimp</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><a href="http://www.gimp.org/downloads/" target="_blank" rel="external"><span style="font-size: 10.5pt; font-family: '宋体';">http://www.gimp.org/downloads/</span></a></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">盗版photoshop的最佳替代品</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">15、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">图像浏览</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">FastStone Image Viewer</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://www.faststone.org/FSViewerDownload.htm" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://www.faststone.org/FSViewerDownload.htm</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-style: italic; font-size: 10.5pt; font-family: 'Times New Roman';">FastStone Image Viewer</span><span style="font-size: 10.5pt; font-family: 'Times New Roman';"> <span style="font-family: 宋体;">是一款免费（非商业用途）且小巧的看图软件</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">16、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">屏幕截图</span></span></p>
-<p><span style="font-weight: bold; font-size: 10pt; font-family: 'Verdana';">FastStone Capture</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><a href="http://www.faststone.org/FSCapturerDownload.htm" target="_blank" rel="external">http://www.faststone.org/FSCapturerDownload.htm</a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">17、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">邮件收发</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">Foxmail</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://fox.foxmail.com.cn/" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://fox.foxmail.com.cn/</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">推荐安装，可以提高工作效率</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">18、</span><span style="font-size: 10.5pt; font-family: '宋体';">ftp<span style="font-family: 宋体;">工具</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">FileZilla</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">下载地址：</span></span></p>
-<p><span><a href="http://filezilla-project.org/download.php?type=client" target="_blank" rel="external"><span style="color: #0000ff; font-size: 10pt; font-family: '宋体'; text-decoration: underline;">http://filezilla-project.org/download.php?type=client</span></a></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">说明：</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">服务器版也很好用</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">19、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">远程登录</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">putty</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">20、</span><span style="font-size: 10.5pt; font-family: '宋体';"><span style="font-family: 宋体;">媒体播放</span></span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">foobar2000</span></p>
-<p><span style="font-size: 10.5pt; font-family: '宋体';">KMPlayer</span></p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/19/w/e6-9c-80-e5-a5-bd-e7-94-a8-e7-9a-84-e4-bc-98-e7-a7-80-e5-bc-80-e6-ba-90-e5-85-8d-e8-b4-b9-e8-bd-af-e4-bb-b6-e6-8e-a8-e8-8d-90/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-18T00:02:08.000Z" class="post__time">三月 18, 2009</time><h1 class="post__title"><a href="/2009/03/18/w/e6-b5-8e-e5-85-ac-e6-b4-bb-e4-bd-9b-e5-9c-a3-e8-ae-ad/">济公活佛圣训</a></h1></header><div class="post__main"><p>一生都是修来的-求什么? 今日不知明日事-愁什么?<br>不礼爹娘礼世尊-敬什么? 兄弟姐妹皆同气-争什么?<br>儿孙自有儿孙福-忧什么? 岂可人无得运时-急什么?<br>人世难逢开口笑-苦什么? 补破遮寒暖即休-摆什么?<br>食过三寸成何物-馋什么? 死后一文带不去-悭什么?<br>前人田地后人收-占什么? 得便宜处失便宜-贪什么?<br>举头三尺有神明-欺什么? 荣华富贵眼前花-傲什么?<br>他家富贵前生定-妒什么? 前世不修今受苦-怨什么?<br>赌博之人无下梢-耍什么? 治家勤俭胜求人-奢什么?<br>冤冤相报几时休-结什么? 世事如同棋一局-算什么?<br>聪明反被聪明误-巧什么? 虚言折尽平生福-谎什么?<br>是非到底见分明-辩什么? 谁能保得常无事-诮什么?<br>穴在人心不在山-谋什么? 欺人是祸饶人福-卜什么?<br>寿自护生爱物增-杀什么? 一旦无常万事休-忙什么?</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/18/w/e6-b5-8e-e5-85-ac-e6-b4-bb-e4-bd-9b-e5-9c-a3-e8-ae-ad/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-17T01:28:20.000Z" class="post__time">三月 17, 2009</time><h1 class="post__title"><a href="/2009/03/17/w/e6-b6-88-e5-8c-96-e7-94-9f-e7-90-86-e4-b9-8b-e5-89-96-e6-9e-90-e9-87-8d-e5-bb-ba-e5-af-b9-e7-89-9b-e5-a5-b6-e6-91-84-e5-8f-96-e7-9a-84-e6-ad-a3-e7-a1-ae-e8-ae-a4-e8-af-86-e5-a7-9c-e6-b7-91-e6-83-a0/">消化生理之剖析-重建对牛奶摄取的正确认识-姜淑惠医师</a></h1></header><div class="post__main"><p>　　在临床行医生涯里，因所学之故，经常容易遇见幼儿过敏、气喘、过敏性鼻炎、扁洮腺肿大、皮肤发疹、成年人关节炎、腰背酸痛、免疫系统失调等病例，每当病家本身或父母亲属，详细寻问致病原因，或想改善平日饮食时，我通常会建议他们-「暂时停止摄取牛奶或乳类制品」，多数的人最初都是投以惊讶疑惑的眼神，或有驳斥道：「牛奶乃极端完整的食物，欧美人士长得高大壮硕，就是从小摄取牛奶代替茶水饮用。你这位医师到底有没有搞错？」或也有些病患，姑且相信并且付诸实践，结果成效斐然，孩子或自己本身的痼疾得以痊愈，进而体悟「知难行易」的道理。其实牛奶本身营养分相当完整，可以提供小牛在婴幼儿期的利用；犹如人类的母奶，所提供的养分亦有一定期限，超过婴儿期再摄取就不适宜。其中蕴涵深远的道理，牛奶乃至乳类制品到底适合不适合孩童，青少年，成人及老人呢？以下将逐步分析说明。不要忽略消化生理学上的通则；没有健全且完整的消化作用，自然无法获得完善的营养。<br>　　　　　　　　　　　1. 从牛奶及人奶成份比较谈起:<br>　　蛋白质：牛奶总蛋白质含量高，为人奶的三倍。牛奶的蛋白质，主要以酪蛋白(Casein)为主，人奶以白蛋白为主。人奶味道较甜，因为碳水化合物含量较牛奶高。在矿物质方面，牛奶缺乏碘、铁、磷、镁，人奶含量丰富。人奶含有二种物质成份，此乃牛奶所缺乏者，一者卵磷质 (Lecithin)，属于磷脂质，一者Taurine，属于一种胺基酸，这二种物质参与婴儿脑部发育，哺乳人奶攸关婴儿智能发展，又岂是牛奶可以取代？人奶中另有二种胺基酸，其含量为众奶之上，其成分为Cystine及Tryptophan，他们提供婴儿极佳的营养分。<br>　　从人奶与牛奶成份比较中，我们可以发现一个事实，人奶牛奶都是提供给小牛或婴幼儿饮用。仔细观察小牛与小婴儿成长的差异，可以发现牛奶原是发育中小牛的食物，小牛出生后饮用牛奶，促使其骨骼及身体重量的急速发育，每个月增加一倍，(出生后前三个月均如此)，但脑部发育少且慢；相对地，人类小婴儿却需要六个月时间，体重才会增加为出生时的一倍大。婴儿的发育，身体成长成熟度缓慢，但脑部却以最快速发育，超越所有的动物。小牛肢体骨骼的快速成长，故需要大量蛋白质；相对地，婴儿脑部成长胜过肢干，故需要卵磷质及Taurine等特别物质的辅助。<br>　　台湾社会经济发达，乳类制品充斥市场，现代的小孩子发育极好，高大的躯干，呈现早熟的征兆。常见如十二岁的外表，却仅有八岁的智能内涵，此及乳类制品，如牛奶等高蛋白质的赏赐，但相对地脑部发育，智力启发却大不如矣！<br>　　从消化的观点来考量，牛奶中含有二种成份，一种乳糖(Lactose)，另一种酪蛋白(Casein)，这二种成份，均得仰赖特定酵素的分解。如乳糖经由Lactase(乳糖霉)，酪蛋白经由Rennin，分解成较单纯之成份。人类仅在婴儿期(稚齿尚未长齐之前)，其胃内含有这种足以消化酪蛋白的酵素 Rennin，孩童约三到四岁时，乳齿已长完备，这二种酵素就会从消化道中消失，终其一生不再分泌。<br>　　此时应当提醒父母，停止使用乳类制品，开始喂食固体食物。如果仍旧继续使用牛奶，将会埋藏许多痛苦的病兆。牛奶所含的蛋白质中，大多数是酪蛋白 (Casein)，酪蛋白是一种大型、坚硬、致密、极困难消化分解的凝乳(curds)。“酪蛋白”适合含有四个胃结构的牛，利用不断反刍消化分解，方能完全消化。母奶蛋白质成分单位相当小，属于性质柔软的凝乳，即使消化系统尚在发育中的新生儿，均很容易就能消化。<br>　　牛奶与人奶，其酪蛋白的含量，牛奶为百分之三百，这种坚厚粗糙的东西，诚如粘合木器胶质。哈维医师指出牛奶中酪蛋白因子乃是造成消化不良的重要因素。因为牛奶中所含酪蛋白及脂肪，会与所有食物进行极不适当的组合。<br>　　牛奶进入胃后，会自然形成凝乳，凝乳会形成一种把胃中残存食物包围起来的作用，这种隔离现象，造成孤立状态，会阻碍其他食物之消化，直到凝乳被消化为止。<br>　　从牛奶与人奶成分分析中，显示新生儿至六个月间，最好以人奶哺乳，如此在脑部发育及营养状况才能健全。六个月以上至幼齿长成期间，可以牛奶替代。三岁以上，或幼齿长齐则应放弃牛奶的摄取，而以天然谷物及豆类、蔬果等取代之。<br>　　　　　　　　　　2. 摄取牛奶与疾病之关系:<br>　　牛奶及乳类制品，含有至少二十五种以上不同成分类型的蛋白质(异类蛋白质)，此乃造成人类过敏反应的重大原因，乃至自体免疫疾病，均有关联性。<br>　　牛奶及乳制品为食物过敏的元凶。过敏反应几乎不曾见于喂食母奶的婴幼儿。倘若母亲仍是乳制品的大量消耗者，过敏反应会透过奶水的喂食，造成婴儿腹痛等疾病。<br>　　消化性溃疡者，假使摄取乳制品，常会恶化溃疡。其原因乃是乳类制品含有高浓度蛋白质，蛋白质的消化，必需靠胃部分泌更多的胃酸(主要是盐酸)及消化酵素方能分解消化。因此民众错误的认知以为「胃溃疡应多喝牛奶，以令胃壁形成一层膜，可以抵抗发炎且可帮助溃疡的愈合。」乍听似有道理，仔细推理则是一派胡言。<br>　　神经医学上有一种疾病，至今仍旧令人感到沮丧难治者–多性硬化症，其发生率与孩提时代摄取过多乳制品有关。流行病学研究显示，吃人奶者极少见有罹患此病者。<br>　　成年人糜烂溃疡性大肠炎，儿童经常发作的急性扁桃腺炎，慢性鼻窦炎，淋巴腺发炎肿大，慢性中耳炎‥‥这些顽固且反覆发作恼人的疾病，不论何种年龄层，只要单纯地从饮食中剔除牛奶以及相关的乳类制品，短则或一个月，长则或三个月，就可以得到非常神奇的改善与效果。譬如儿童肿大的扁桃腺，不须藉助扁桃腺摘除手术，或长期抗生素治疗，假以时日就会明显的缩小而回复正常大小，永绝再患。<br>　　W.Walker医师是美国一位世界知名的内分泌专家，他以其六十多年长期行医的丰富经验中体认到，许多疾病尤其甲状腺肿大之形成，或其他甲状腺功能失调等棘手疾病，除了碘代谢以及贺尔蒙因素之外，直接导因于牛奶中所含酪蛋白者，经常为人们所忽略。<br>　　这种现象在牛奶及乳制品大量采用巴斯德消毒法之后，更为显著。Walker医师在三十到四十年代，提出这种想法及呼吁，诚为高瞻远瞩。由前面阐述吾人已了解酪蛋白是一种坚厚如绳索，粘腻如胶水的粘液组织，其会附着在粘膜壁上而形成身体的阻塞，造成组织器官的病变。人体组织中并没有这种机转的设计，足以消化崩解酪蛋白，因此对人体而言，他们是无法被利用且会阻塞全身各种系统的粘液。不论儿童、青少年、成年人、老人或病人，取用乳类制品，均会有不良副作用。孩提时代，呼吸道及消化道在免疫系统上属于较为脆弱的组织，并且首当其冲，当粘液分泌物过多时，这二处所形成的障碍也相对增加。因此不论大小医院，小儿门诊所见，通常尽是这些消化不良，腹胀，腹泻，便秘，呕吐或感冒，气管炎，气喘，鼻塞等。总之，不论什么年龄层，粘液阻塞通常选择在每个人较脆弱的组织，此乃定则。<br>　　中国医学谈论病机时，在黄帝内经记载：「邪之所凑，其气必虚。」由此可见，中外古今自然界所共同遵循的轨则，同出一辙也。<br>　　因为牛奶与人奶在成份组成上之差异，加以人与牛消化器官功能上的差别，酪蛋白的腐化，酿成许多健康的问题。在我们品尝牛奶，乳酪，奶油等香醇迷人的乳类制品时亦当省思「病从口入」的谛理事实，读者诸君自能领悟健康之道，建立于手口之间的抉择。<br>　　　　　　　　　3. 摄取牛奶无法阻止骨质疏松症:<br>　　「多喝牛奶可以预防骨质疏松症」，「多吃鱼骨头，小鱼干可以补充钙质，可以预防骨质疏松症」，「每天喝三大杯牛奶，健康营餐不缺了」，「XXX高蛋白高钙奶粉，病中的补品，平日的食品」打开报章杂志，电视广播，眼所见，耳所闻，广告中不断教导大众，多喝牛奶摄取足量钙质，可以杜绝骨骼疏松，强化骨骼；营养专家，医护人员教导，政府卫生教育宣导，再再强调补充蛋白质，补充钙质，多喝牛奶，多摄取乳类制品，年青人可以强化骨骼，老年人可以挥别骨骼疏软。这种耳熟能详的广告辞，早已为“蛋白质、钙质及牛奶缺乏会导致骨质疏松症的恐慌者”奉为圭皋，并且天天力行实践。何以如此卖力实践，骨科门诊及病房中，仍旧有许多不慎扭伤或滑倒，就造成骨折的病人呢？坦白说，每当后学对医学研究报告读得越多越仔细越深入后，越感到夸大不实，虚伪广告对众生的残害。以讹传讹，错误观念，所谓专家一言九鼎的信条，也只是扭曲事实，自大腐化的认识，殊不知营养医学的革命，早已默默地在有良知的改革者大力推动中，如在美国研究饮食与疾病关联方面权威之一的麦都果医师AJohnMcDougall)，曾做过一个全世界各地区人民摄取钙质与骨质疏松症的大型研究计划-历经多年的研究调查，提出几个事实，以资参考。<br>　　乳类制品贩售的基本理由乃在钙质之提供。<br>　　事实上，世界上有许多国家的人民，他们的饮食中并没有乳制品之存在，也未面临骨质疏松的侵害。人类钙质缺乏，导因于人类饮食中摄取钙质不足者，极为有限。摄取蛋白质越多，骨质中流失的钙质也越多。血液中钙的浓度，不能代表骨骼钙质流失的程度。保持体内钙质正性平衡，维持骨骼硬朗，根本政策-改变饮食内容，减少每天摄取蛋白质的量，却不是增加钙质之摄取。<br>　　从世界各地所收集的资料显示，亚洲及非洲社会，在工业大事发展前，牛奶乃非常罕见的食品，当时他们都具有坚强的骨骼及坚固的牙齿，所谓富裕社会的文明病，极少发生在他们身上。如非洲斑图(Bantu)的妇女，他的健康状况乃很好例证，在她们的日用饮食里，从来没有见过牛奶，他们钙质的来源取自蔬菜，每日提供二五○到四○○毫克钙质，他们钙质吸收量不及西方社会妇女的一半。<br>　　斑图妇女，一生当中平均生育十个子女，每个孩子都是亲自哺乳十个月。即使如此的钙质流出及相对性地低量的钙质摄取，骨质疏松症(多数骨头表现薄又脆弱的妇女，几乎不曾见到过。相当有趣的是，假使斑图妇女移民或迁徙到其他西方国家，并且改变他们的饮食状况，改以文明饮食(所谓高蛋白质，高糖分，高油脂，高盐，营养丰富饮食)为主时，骨质疏松症及牙齿的毛病，就变成稀松平常啦！骨质疏松症的发生率是一个很理想的指标，代表任何一种文化背景社会中，其骨骼中钙质存留的状况，间接反映饮食营养文化。<br>　　在医学界及公共卫生学家们，对全世界做广泛研究后，显示骨质疏松症最常见之国家为美国，英国，瑞典，芬兰，他们也正是乳类制品消耗最多量的国家。相对地，骨质疏松症极少见于乳制品消耗量最低的国家，如亚洲及非洲。<br>　　在美国受到骨质疏松症侵害者，大约有一亿五千万~二亿人口，然而美国人民的乳制品消耗量也是世界第一位。平均每位男子，女子，小孩，其一年的总平均消耗量约为三百磅。<br>　　由此显示饮食中钙质足够与否，并非骨质疏松症之诱因，其真正原因在那？骨质疏松症与蛋白质消耗量多寡有直接关联性。换言之，倘若蛋白质摄取愈多，钙质流失就愈厉害，骨质就愈脆弱疏松。爱斯基摩人给我们很精彩的范例，说明蛋白质效应与骨质中钙的存留之间的关系。爱斯基摩人因为地理环境使然，他们的饮食含有全世界最高的蛋白质-每天二五○到四○○公克，取自鱼，海象，鲸鱼等，钙质摄取量也是世界最高-每天超过二○○○毫克，取自鱼骨头及肉类，他们的骨质疏松症发生率是世界之冠，平均二十岁不到，就可见到弯腰驼背且比比皆是。相对地，非洲斑图人民，每天蛋白质仅四十七公克，钙质仅四○○毫克，未闻有骨质疏松症。由此再次说明牛奶及其他乳类制品(包括乳酪、奶油、冰淇淋、肉类等)饮食中含有高量(高浓度)的蛋白质，乃是造成骨质中钙质大量流失元凶。<br>　　素食者倘若蛋白质摄取过量，也会造成骨质软化，只是植物性蛋白质较动物性蛋白质，对骨骼有保护作用，其中理由乃是牛奶，乳类制品，肉类，蛋，鱼类，除了蛋白质外A还有其他会促成骨质疏松症的因素-就是酸性物质比例太高(请参考健康之道(三))，为了保持血液酸碱平衡，维持弱碱性，骨质必然要游离(所谓抽取)更多的钙质，以达成此目标。在此特别提醒素食者及素食者父母，以目前台湾蛋白质平均摄取量，均属过剩之虑，绝无缺乏之忧，千万不要担忧自己或孩子没有足够蛋白质，为了安抚这种偏差心理，进而加倍给自己或孩子补充大量牛奶，优酪乳，奶酪及蛋。请记得，得自乳制品额外的蛋白质，势必造成钙质及其他矿物质，流失体外之倾内，造成身体负性钙平衡。<br>　　除了大量蛋白质摄取，会造成骨质冲刷外流外，缺乏运动，停经，喝汽水，可乐(碳酸，磷质含量太高)，吃加工精制垃圾食物，过量的盐及其他酸性食物，均为骨质疏松症的致病因素。长期的腰酸背痛，疲倦，骨头酸软无力，牙齿松动，齿龈退缩，容易扭伤，闪腰，骨折‥‥代表骨质中钙质及其他矿物质之流失，此刻应当重新检讨我们的饮食，减少蛋白质，鱼肉类，乳类制品摄取，以便重建真正的健康。<br>　　　　　　　　　　4. 人类应当尽早放弃乳类制品之理由:<br>　　商业性现代化便利又方便的牛奶及乳类制品，对我们人体有极大危害，除了前面叙述的理由外，有更多的研究显示我们应当尽早丢弃牛奶、乳酪、奶油等乳类制品，今列举四点理由说明之。<br>　　巴斯德消毒法的害处。<br>　　毒性物质残存的考量。<br>　　均质化乳制品的伤害。<br>　　合成维生素D的添加。<br>　　1)巴斯德加热消毒法的害处:<br>　　细菌学家巴斯德创立消毒杀菌的方法，使得一向牛奶或羊奶由生奶变成熟奶，虽然有利于保存及减少伤寒菌感染等，但是加热后的牛奶或乳酪等、改变酵素性质，酵素及蛋白质、脂肪的结构成分，加热后会形成不稳定物质，且牛奶加热至170℉ (约摄氏62℃)会破坏牛奶中活性酵素系统，诸如 Cystine,Tryptophan,Lactase等。其他维生素，矿物质，也大多数摧毁殆尽。又加热后蛋白质会凝固(凝乳)形成坚硬的酪蛋白，且有益肠道的乳酸菌也遭到破坏，最后牛奶变成非常困难消化，易致过敏，对人类有害无益的东西。<br>　　用巴斯德消毒法，消毒牛奶是卫生单位为了强调安全、清洁的产品所设计。但是并不能提供人们有助益健康的产品，更何况巴斯德消毒法并不能完全排除毛发，灰，花粉，霉菌，昆虫，肥料等环境的污染。总之，巴斯德消毒法仅仅提供劣质，即使原本唯一仰赖吸食牛奶的动物-小牛，假设喂食消毒过的牛奶后，在其成熟成壮牛前就会死亡，人类应当觉察这些事实，任何人只要即时觉悟而拒绝再喝牛奶制品，都不算是太迟。<br>　　虽然经过发酵的乳制品，如乳酪、酸乳酪、酸乳等，通常较比牛奶对于人类消化道，前者较为优胜，但是事实上对人类真正理想饮食而言，仍旧差距甚远，因为他们都算是偏酸性食物，理应避免。假使真的要摄取，则可使用少量生的，无添加盐分的乳制品。<br>　　2)毒性物质残存的考量:<br>　　现代畜牧业与过去完全不同，限宥于空间，管理，经济效益，已不采野外自由放牧而是限地集中管理。为了避免密集式畜而造成传染病意外，故于饲料中添加抗生素及杀虫剂，为了促进肉质肥美，乳汁增产，故自主的添加生长促进剂及贺尔蒙，如此无法确知的化学品，添加剂亦会流入牛奶中，残存的毒性物质，随着人类摄食又进入人体。畜养方式的改变，饲料取代牧章，牛群的生态环境及生理现象也会改变。<br>　　在有一次参观牧场的经验中，发现牛眷里牛只所排出的粪便稀松，不成型，犹如腹泻般，缺乏小时候在乡间所见所闻，那阵阵泛着草香，晒干后可以整团捡回家当燃。纤维质的减少，牛奶中脂肪成分的改变，脂肪含量增加(因为牛群饱食终日，缺乏活动)，尤其饱和性脂肪比例偏高，相对地未饱和脂肪反而大量减少，例如 EPA(EicosapentaenoicAcid)。换言之，破坏性脂肪远比建设性脂肪为多，造成心脏血管疾病及生殖系统癌病变的增加。<br>　　3)均质化乳制品的伤害:<br>　　所谓牛奶均质化(Homogenization)是打断牛奶中的脂肪球，破坏后令其解散的一种制作法。虽然在乳制工业中，此乃一种新的制作过程，但是质化乳会破坏人类的动脉管壁，对于发展均质化乳，实为致命一击。<br>　　Kurt Oster医师研究最为精辟，他发现有一种酵素(Xanthin OxiDase)简称XO，可存于牛奶脂肪中，正常饮用非均质化乳时，XO只会存于肠道间，不会被回吸收入血液循环中。但是牛奶若经过均质化之后，这个均质化过程会减少乳化脂肪，造成XO大量释放出来，进而造成血液再回收。因此摄取均质化牛奶，吾辈血中XO浓度平均很高。相反地，饮用非均质化牛奶或不喝牛奶者A其XO浓度均低。<br>　　XO被视为血管壁瘢痕化的原因，血管壁失去原有的平滑性，会诱发脂肪物质沉淀，凝聚血小板或崩解的血球等，进一步造成瘢痕，粥状化，最后形成血管硬化，管腔狭窄。Ostcr及哈佛大医学院Esselbacher共同提出-摄取均质化牛奶是美国人罹患心脏病的最主要原因。世界上其他国家，如芬兰，他们的乳制品也是全面采用均质化过程，故心脏病发生率亦极高。又法国极少用均质化制乳，其心脏病比率较美国、芬兰明显降低。<br>　　4)合成维生素D的添加:<br>　　维生素D(irradiated ergosterol)，此乃经由放射性处理过的维生素添加剂，多年来一直被使用于添加入大多数商业用乳类制品或其他食品及常见合成性的多种维他命丸中。何以要添加维生素D呢？以前畜牧业以野外放牧方式为主，牛羊们一年到头在户外吃草，天然的维生素D及胡萝卜素，可以透过阳光照射在体内自然合成。再从挤出的新鲜乳汁中制作成奶油(尤其是日照丰富的夏季，制成的奶油为一种天然的鲜明的黄色成分)。这种天然的奶油，无法长久储存及运输到远地，故凡是能运送者，多半所含维生素D极少量且颜色较淡。随着野外放牧时间减少，吃野草机会减少，曝晒日光机会缩短，维生素D合成量减低，所制成的奶油，在质及维生素D含量上，皆随着颜色褪去而减少，最后制乳业者只得添加色色素及放射性D以补其不足。<br>　　动物体内的维生素D是一种极为复杂的成分，他们的活化过程，需要阳光照射在皮肤上，活化催促由D1转成D2再转成D3，分别在肝脏，肾脏中进行，最后活性的D3，负担执行钙磷代谢，钙质再吸收，骨质钙化等等过程。<br>　　具放射性的D2是一合成维生素，与自然形成的维生素在结构上有些不同。在食物中并无法摄取完整的且天然的维生素D，因此吾人在临床上常见关节炎病患，其产生问题通常都是钙质的利用有所障碍，显示添加的合成性维生素D，不论取自牛奶或其他乳类制品，都不是根本解决之法。<br>　　在一九三○年代，发现怀孕时，摄取维生素D添加之牛奶，其胎盘有钙化现象，合成维生素D的危险性，逐渐为人所了解。数年前，在英国因为不正常钙质代谢，导致新生儿致死，发现与放射性维生素D，被过量添加入牛奶中使用(由四百国际单位增加为一千国际单位/每品脱)有直接关联性，因此放射性维生素D2添加品，在英国已被废除且禁用。<br>　　近年来乳制业者，又以合成性维生素D3，取代放射性D2为添加品，但其事实结果，对人类健康之利害影响尚未知也。<br>　　后记：后学撰写此文时，曾为自己不断打气加油，虽千万人吾往矣！明知这冒犯许多乳制业者，奶粉贩售者，医护营养学者专家及行政卫生单位，仍旧完成了。也算为自己一向主张「牛奶是牛吃的，不是人吃的。」，「为了远离慢性病，请尽早断奶。」宁愿采用其他含钙的植物性天然食物，以取代牛奶及其乳制品，因为他们的弊端远大过利益。在此总算做了一次较详尽的说明。重建牛奶摄取观念。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/17/w/e6-b6-88-e5-8c-96-e7-94-9f-e7-90-86-e4-b9-8b-e5-89-96-e6-9e-90-e9-87-8d-e5-bb-ba-e5-af-b9-e7-89-9b-e5-a5-b6-e6-91-84-e5-8f-96-e7-9a-84-e6-ad-a3-e7-a1-ae-e8-ae-a4-e8-af-86-e5-a7-9c-e6-b7-91-e6-83-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/16/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/18/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+password=<span class="number">888888</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/18/w/freebsd-e4-bd-bf-e7-94-a8smbclient-e8-ae-bf-e9-97-aew/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/16/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/18/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

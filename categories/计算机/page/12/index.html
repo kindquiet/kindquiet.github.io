@@ -1,618 +1,957 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-07-10T07:14:08.000Z" class="post__time">七月 10, 2009</time><h1 class="post__title"><a href="/2009/07/10/w/e7-a6-81-e6-ad-a2wordpress-e8-87-aa-e5-8a-a8-e6-9b-bf-e6-8d-a2-e5-8d-8a-e8-a7-92-e6-a0-87-e7-82-b9-e7-ac-a6-e5-8f-b7/">禁止WordPress自动替换半角标点符号</a></h1></header><div class="post__main"><p>WordPress会将半角标点符号自动转换成全角的，但并没有替换数据库里的信息，这样会导致一些技术文章的代码粘贴后出错，防盗版？解决方法:</p>
-<p>1、 编辑 wp-includes/formatting.php 文件，找到以下代码：</p>
-<p>&nbsp;&nbsp;&nbsp; // static strings</p>
-<p>&nbsp;&nbsp;&nbsp; $curl = str_replace($static_characters, $static_replacements, $curl);</p>
-<p>&nbsp;&nbsp;&nbsp; // regular expressions</p>
-<p>&nbsp;&nbsp;&nbsp; $curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
-<p>正是 str_replace() 和 preg_replace() 两个函数在作怪。</p>
-<p>2、 将相应语句注释，禁用自动替换功能：</p>
-<p>&nbsp;&nbsp;&nbsp; // static strings</p>
-<p>&nbsp;&nbsp;&nbsp; //$curl = str_replace($static_characters, $static_replacements, $curl);</p>
-<p>&nbsp;&nbsp;&nbsp; // regular expressions</p>
-<p>&nbsp;&nbsp;&nbsp; //$curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
-<p>OK，以后Wordpress在也不会自作聪明的将半角标点符号转换成全角标点符号了。</p>
-<p>来源:</p>
-<p><a href="http://buyu.name/074.html" target="_blank" rel="external">http://buyu.name/074.html</a></p>
-</div><footer class="post__foot u-cf"><a href="/2009/07/10/w/e7-a6-81-e6-ad-a2wordpress-e8-87-aa-e5-8a-a8-e6-9b-bf-e6-8d-a2-e5-8d-8a-e8-a7-92-e6-a0-87-e7-82-b9-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-06-30T08:39:01.000Z" class="post__time">六月 30, 2009</time><h1 class="post__title"><a href="/2009/06/30/w/mysql-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e4-b8-8d-e6-88-90-e5-8a-9f-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">mysql 主从复制不成功的可能原因</a></h1></header><div class="post__main"><p>环境:centos 5</p>
-<p>mysql 5主从复制报错:</p>
-<p>[ERROR] Slave SQL: Error ‘Duplicate entry ‘…’ for key ‘PRIMARY’’ on query. Default database: ‘blog’. Query: ‘insert into tb_article_peak(…)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; values(…’)’, Error_code: 1062</p>
-<p>stop slave;</p>
-<p>desc tb_article_peak;</p>
-<p>select * from tb_article_peak where peak_id&gt;=’…’;</p>
-<p>delete tb_article_peak where peak_id&gt;=’…’;</p>
-<p>start slave;</p>
-<p>复制恢复正常。</p>
-<p>过一段时间又报错，间隔从几小时到几天不等。</p>
-<p>不解。</p>
-<p>只好把读写都集中到master db上。</p>
-<p>但不应是mysql replication 的问题，因为新的数据产生量很大，如果复制有问题，不会间隔几天才报错。</p>
-<p>最后终于找到原因:</p>
-<p>某一段代码把连接池弄反，写时调用了读的连接，写到了slave db上。所以产生Duplicate entry。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/06/30/w/mysql-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e4-b8-8d-e6-88-90-e5-8a-9f-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-06-25T00:34:06.000Z" class="post__time">六月 25, 2009</time><h1 class="post__title"><a href="/2009/06/25/w/squid-e4-bc-98-e5-8c-96/">squid优化</a></h1></header><div class="post__main"><p>/usr/local/squid/bin/squidclient -p 3128 -h localhost mgr:io</p>
-<pre><code><span class="status">HTTP/1.0 <span class="number">200</span> OK</span>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-06-21T08:50:41.000Z" class="post__time">六月 21, 2011</time><h1 class="post__title"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/">Apache/Nginx 配置 Cache Last-Modified、Expires</a></h1></header><div class="post__main"><p>正确使用Expires标识处理，可以使得页面更加有效被缓冲，节约带宽资源。</p>
+<pre><code>apache配置：
 
-<span class="http"><span class="attribute">Server</span>: <span class="string">squid/3.0.STABLE15</span>
+&amp;lt;IfModule mod_expires.c&amp;gt;
 
-<span class="elixir"><span class="constant">HTTP I/O</span>
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive On
 
-number of <span class="symbol">reads:</span> <span class="number">18985956</span>
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/gif A2592000
 
-<span class="constant">Read Histogram:</span>
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/jpeg A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">766</span>&amp;nbsp; <span class="number">0</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/png A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">38574</span>&amp;nbsp; <span class="number">0</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/x-icon A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9769</span>&amp;nbsp; <span class="number">0</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType application/x-javascript A604800
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">5</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">8</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30168</span>&amp;nbsp; <span class="number">0</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType text/css A604800
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9</span>-&amp;nbsp;&amp;nbsp; <span class="number">16</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">10200</span>&amp;nbsp; <span class="number">0</span>%
+&amp;lt;/IfModule&amp;gt;
 
-&amp;nbsp;&amp;nbsp; <span class="number">17</span>-&amp;nbsp;&amp;nbsp; <span class="number">32</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">31835</span>&amp;nbsp; <span class="number">0</span>%
+或者
 
-&amp;nbsp;&amp;nbsp; <span class="number">33</span>-&amp;nbsp;&amp;nbsp; <span class="number">64</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">32801</span>&amp;nbsp; <span class="number">0</span>%
+&amp;lt;ifmodule mod_expires.c&amp;gt;
 
-&amp;nbsp;&amp;nbsp; <span class="number">65</span>-&amp;nbsp; <span class="number">128</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">113799</span>&amp;nbsp; <span class="number">1</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
 
-&amp;nbsp; <span class="number">129</span>-&amp;nbsp; <span class="number">256</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">457726</span>&amp;nbsp; <span class="number">2</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive on
 
-&amp;nbsp; <span class="number">257</span>-&amp;nbsp; <span class="number">512</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">1161065</span>&amp;nbsp; <span class="number">6</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 600 minutes&amp;quot;
 
-&amp;nbsp; <span class="number">513</span>- <span class="number">1024</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">2114155</span> <span class="number">11</span>%
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;/filesmatch&amp;gt;
 
-&amp;nbsp;<span class="number">1025</span>- <span class="number">2048</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">4009525</span> <span class="number">21</span>%
+&amp;lt;/ifmodule&amp;gt;
 
-&amp;nbsp;<span class="number">2049</span>- <span class="number">4096</span><span class="symbol">:&amp;nbsp</span>; <span class="number">10975545</span> <span class="number">58</span>%
+可以选用的时间参数有years&amp;nbsp;&amp;nbsp;&amp;nbsp; months&amp;nbsp;&amp;nbsp;&amp;nbsp; weeks&amp;nbsp;&amp;nbsp;&amp;nbsp; days&amp;nbsp;&amp;nbsp;&amp;nbsp; hours&amp;nbsp;&amp;nbsp;&amp;nbsp; minutes&amp;nbsp;&amp;nbsp;&amp;nbsp; seconds
 
-&amp;nbsp;<span class="number">4097</span>- <span class="number">8192</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">26</span>&amp;nbsp; <span class="number">0</span>%
+也可以加在.htaccess文件：
 
-&amp;nbsp;<span class="number">8193</span>-<span class="number">16384</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>&amp;nbsp; <span class="number">0</span>%
+#Expire Header
 
-<span class="number">16385</span>-<span class="number">32768</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>&amp;nbsp; <span class="number">0</span>%
+&amp;lt;FilesMatch &amp;quot;\.(ico|jpg|jpeg|png|gif|js|css|swf)$&amp;quot;&amp;gt;
 
-vim squid.conf
+&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 2 hours&amp;quot;
 
-minimum_object_size <span class="number">64</span> <span class="constant">KB</span>
+&amp;lt;/FilesMatch&amp;gt;
 
-maximum_object_size <span class="number">8192</span> <span class="constant">KB</span>
+or
 
-maximum_object_size_in_memory <span class="number">4096</span> <span class="constant">KB</span></span></span>
-</code></pre><p>&nbsp;</p>
-<p>/usr/local/squid/sbin/squid -k reconfigure</p>
-</div><footer class="post__foot u-cf"><a href="/2009/06/25/w/squid-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-06-16T06:02:57.000Z" class="post__time">六月 16, 2009</time><h1 class="post__title"><a href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">squid iptables 透明代理 QQ、msn不能登录解决办法</a></h1></header><div class="post__main"><p>linux服务器:centos</p>
+# Expire images header
+
+ExpiresActive On
+
+ExpiresDefault A0
+
+ExpiresByType image/gif A2592000
+
+ExpiresByType image/png A2592000
+
+ExpiresByType image/jpg A2592000
+
+ExpiresByType image/jpeg A2592000
+
+ExpiresByType image/ico A2592000
+
+ExpiresByType text/css A2592000
+
+ExpiresByType text/javascript A2592000
+
+#A2592000 means 1 month in the future (60*60*24*30=2592000)
+
+nginx配置：
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~* ^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js|flv|mp3|wma|wmv|ram|rm)$ {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://veryi.com/cloud.gif;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #return 412;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; access_log off;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root /opt/www;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires 10h;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; break;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+或者&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.(gif|jpg|png|swf|flv|bmp)$ {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://www.veryi.com/403.JPG;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 30d;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ .*\.(js|css)?$
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; {
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3d;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; } 
+
+测试：
+
+curl -I http://veryi.com/w/wp-content/uploads/%E5%A7%9C%E5%8C%BB%E5%B8%88.gif
+
+HTTP/1.1 200 OK
+
+Server: Apache/2.0.63
+
+Date: Tue, 21 Jun 2011 08:13:06 GMT
+
+Content-Type: image/gif
+
+Content-Length: 21734
+
+Last-Modified: Tue, 21 Jun 2011 08:11:00 GMT
+
+Connection: keep-alive
+
+Expires: Thu, 21 Jul 2011 08:13:06 GMT
+
+<span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">2592000</span>
+
+Accept-Ranges: bytes
+
+Etag和Expires的工作原理
+
+http://www.neil.tk/archives/<span class="number">12</span>
+
+在客户端通过浏览器发出第一次请求某一个URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应同时记录相关属性标记(Http Reponse Header)，服务器端的返回状态会是<span class="number">200</span>，格式类似如下：
+
+HTTP/<span class="number">1.1</span> <span class="number">200</span> OK
+
+<span class="built_in">Date</span>: Tue, <span class="number">03</span> Mar <span class="number">2009</span> <span class="number">04</span>:<span class="number">58</span>:<span class="number">40</span> GMT
+
+Content-Type: image/jpeg
+
+Content-Length: <span class="number">83185</span>
+
+<span class="keyword">Last</span>-Modified: Tue, <span class="number">24</span> Feb <span class="number">2009</span> <span class="number">08</span>:<span class="number">01</span>:<span class="number">04</span> GMT
+
+<span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">2592000</span>
+
+Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
+
+Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+
+客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应并记录相关记录属性标记文件没有发生改动,服务器端返回304，直接从缓存中读取：
+
+HTTP/1.x 304 Not Modified
+
+Date: Tue, 03 Mar 2009 05:03:56 GMT
+
+Content-Type: image/jpeg
+
+Content-Length: 83185
+
+Last-Modified: Tue, 24 Feb 2009 08:01:04 GMT
+
+<span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">2592000</span>
+
+Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
+
+Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+
+其中Last-Modified、Expires和Etag是标记页面缓存标识
+
+一、Last-Modified、Expires和Etag相关工作原理
+
+1、Last-Modified
+
+在浏览器第一次请求某一个URL时，服务器端的返回状态会是200，内容是你请求的资源，同时有一个Last-Modified的属性标记(Http Reponse Header)此文件在服务期端最后被修改的时间，格式类似这样：
+
+Last-Modified: Tue, 24 Feb 2009 08:01:04 GMT
+
+客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送 If-Modified-Since 报头(Http Request Header)，询问该时间之后文件是否有被修改过：
+
+If-Modified-Since: Tue, 24 Feb 2009 08:01:04 GMT
+
+如果服务器端的资源没有变化，则自动返回 HTTP 304 （Not Changed.）状态码，内容为空，这样就节省了传输数据量。当服务器端代码发生改变或者重启服务器时，则重新发出资源，返回和第一次请求时类似。从而保证不向客户端重复发出资源，也保证当服务器有变化时，客户端能够得到最新的资源。
+
+注：如果If-Modified-Since的时间比服务器当前时间(当前的请求时间request_time)还晚，会认为是个非法请求
+
+2、Etag工作原理
+
+HTTP 协议规格说明定义ETag为&amp;ldquo;被请求变量的实体标记&amp;rdquo; （参见14.19）。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+
+Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+
+客户端的查询更新格式是这样的：
+
+If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+
+如果ETag没改变，则返回状态304。
+
+即:在客户端发出请求后，Http Reponse Header中包含 Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+
+标识，等于告诉Client端，你拿到的这个的资源有表示ID：5d8c72a5edda8d6a:3239。当下次需要发Request索要同一个URI的时候，浏览器同时发出一个If-None-Match报头( Http Request Header)此时包头中信息包含上次访问得到的Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;标识。
+
+If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;ldquo;
+
+,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>-None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
+
+<span class="number">3</span>、Expires
+
+给出的日期/时间后，被响应认为是过时。如Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
+
+需和<span class="keyword">Last</span>-Modified结合使用。用于控制请求文件的有效时间，当请求数据在有效期内时客户端浏览器从缓存请求数据而不是服务器端. 当缓存中数据失效或过期，才决定从服务器更新数据。
+
+<span class="number">4</span>、<span class="keyword">Last</span>-Modified和Expires
+
+<span class="keyword">Last</span>-Modified标识能够节省一点带宽，但是还是逃不掉发一个HTTP请求出去，而且要和Expires一起用。而Expires标识却使得浏览器干脆连HTTP请求都不用发，比如当用户F5或者点击Refresh按钮的时候就算对于有Expires的URI，一样也会发一个HTTP请求出去，所以，<span class="keyword">Last</span>-Modified还是要用的，而 且要和Expires一起用。
+
+<span class="number">5</span>、Etag和Expires
+
+如果服务器端同时设置了Etag和Expires时，Etag原理同样，即与<span class="keyword">Last</span>-Modified/Etag对应的Http Request Header:<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>。我们可以看到这两个Header的值和Web <span class="keyword">Server</span>发出的<span class="keyword">Last</span>-Modified,Etag值完全一样；在完全匹配<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>即检查完修改时间和Etag之后，服务器才能返回<span class="number">304.</span>
+
+<span class="number">6</span>、<span class="keyword">Last</span>-Modified和Etag
+
+<span class="keyword">Last</span>-Modified 和ETags请求的http报头一起使用，服务器首先产生 <span class="keyword">Last</span>-Modified/Etag标记，服务器可在稍后使用它来判断页面是否已经被修改，来决定文件是否继续缓存
+
+过程如下:
+
+<span class="number">1</span>\. 客户端请求一个页面（A）。
+
+<span class="number">2</span>\. 服务器返回页面A，并在给A加上一个<span class="keyword">Last</span>-Modified/ETag。
+
+<span class="number">3</span>\. 客户端展现该页面，并将页面连同<span class="keyword">Last</span>-Modified/ETag一起缓存。
+
+<span class="number">4</span>\. 客户再次请求页面A，并将上次请求时服务器返回的<span class="keyword">Last</span>-Modified/ETag一起传递给服务器。
+
+<span class="number">5</span>\. 服务器检查该<span class="keyword">Last</span>-Modified或ETag，并判断出该页面自上次客户端请求之后还未被修改，直接返回响应<span class="number">304</span>和一个空的响应体。
+
+注：
+
+<span class="number">1</span>、<span class="keyword">Last</span>-Modified和Etag头都是由Web <span class="keyword">Server</span>发出的Http Reponse Header，Web <span class="keyword">Server</span>应该同时支持这两种头。
+
+<span class="number">2</span>、Web <span class="keyword">Server</span>发送完<span class="keyword">Last</span>-Modified/Etag头给客户端后，客户端会缓存这些头；
+
+<span class="number">3</span>、客户端再次发起相同页面的请求时，将分别发送与<span class="keyword">Last</span>-Modified/Etag对应的Http Request Header:<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>。我们可以看到这两个Header的值和Web <span class="keyword">Server</span>发出的<span class="keyword">Last</span>-Modified,Etag值完全一样；
+
+<span class="number">4</span>、通过上述值到服务器端检查，判断文件是否继续缓存；
+
+在客户端通过浏览器发出第一次请求某一个URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应同时记录相关属性标记(Http Reponse Header)，服务器端的返回状态会是<span class="number">200</span>，格式类似如下：
+
+HTTP/<span class="number">1.1</span> <span class="number">200</span> OK
+
+客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应并记录相关记录属性标记文件没有发生改动,服务器端返回<span class="number">304</span>，直接从缓存中读取：
+
+HTTP/<span class="number">1.</span>x <span class="number">304</span> <span class="keyword">Not</span> Modified
+
+其中<span class="keyword">Last</span>-Modified、Expires和Etag是标记页面缓存标识
+
+一、<span class="keyword">Last</span>-Modified、Expires和Etag相关工作原理
+
+<span class="number">1</span>、<span class="keyword">Last</span>-Modified
+
+在浏览器第一次请求某一个URL时，服务器端的返回状态会是<span class="number">200</span>，内容是你请求的资源，同时有一个<span class="keyword">Last</span>-Modified的属性标记 (Http Reponse Header)此文件在服务期端最后被修改的时间，格式类似这样：
+
+<span class="keyword">Last</span>-Modified: 
+
+客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送 <span class="keyword">If</span>-Modified-Since 报头(Http Request Header)，询问该时间之后文件是否有被修改过：
+
+<span class="keyword">If</span>-Modified-Since: 
+
+如果服务器端的资源没有变化，则自动返回 HTTP <span class="number">304</span> （NotChanged.）状态码，内容为空，这样就节省了传输数据量。当服务器端代码发生改变或者重启服务器时，则重新发出资源，返回和第一次请求时类 似。从而保证不向客户端重复发出资源，也保证当服务器有变化时，客户端能够得到最新的资源。
+
+注：如果<span class="keyword">If</span>-Modified-Since的时间比服务器当前时间(当前的请求时间request_time)还晚，会认为是个非法请求
+
+<span class="number">2</span>、Etag工作原理
+
+HTTP 协议规格说明定义ETag为&amp;rdquo;</span>被请求变量的实体标记&amp;rdquo; 。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+
+Etag: 
+
+客户端的查询更新格式是这样的：
+
+If-None-Match: 
+
+如果ETag没改变，则返回状态304。
+
+即:在客户端发出请求 后，Http Reponse Header中包含 Etag标识，等于告诉Client端，你拿到的这个的资源有表示 ID。当下次需要发Request索要同一个 URI的时候，浏览器同时发出一个If-None-Match报头( Http RequestHeader)此时包头中信息包含上次访问得到的Etag标识。
+
+If-None-Match: &amp;quot;xok.la-961AA72-4CEA99B4415628&amp;quot;
+
+,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>- None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
+
+<span class="number">3</span>、Expires
+
+给出的 日期/时间后，被响应认为是过时。如Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
+
+需和<span class="keyword">Last</span>-Modified结合使用。用于控制请求文件的有效时间，当请求数据在有效期内时客 户端浏览器从缓存请求数据而不是服务器端. 当缓存中数据失效或过期，才决定从服务器更新数据。
+
+<span class="number">4</span>、<span class="keyword">Last</span>-Modified和Expires
+
+<span class="keyword">Last</span>- Modified标识能够节省一点带宽，但是还是逃不掉发一个HTTP请求出去，而且要和Expires一起用。而Expires标识却使得浏览器干脆连 HTTP请求都不用发，比如当用户F5或者点击Refresh按钮的时候就算对于有Expires的URI，一样也会发一个HTTP请求出去，所 以，<span class="keyword">Last</span>-Modified还是要用的，而 且要和Expires一起用。
+
+<span class="number">5</span>、 Etag和Expires
+
+如果服务器端同时设置了Etag和Expires 时，Etag原理同样，即与<span class="keyword">Last</span>-Modified/Etag对应的HttpRequest Header:<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>。我们可以看到这两个Header的值和WebServer发出的 <span class="keyword">Last</span>-Modified,Etag值完全一样；在完全匹配<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>即检查完修改时间和 Etag之后，服务器才能返回<span class="number">304.</span>
+
+<span class="number">6</span>、<span class="keyword">Last</span>-Modified和Etag
+
+<span class="keyword">Last</span>-Modified 和ETags请求的http报头一起使用，服务器首先产生 <span class="keyword">Last</span>-Modified/Etag标记，服务器可在稍后使用它来判断页面是否已经被修改，来决定文件是否继续缓存
+
+过程如下:
+
+<span class="number">1</span>\. 客户端请求一个页面（A）。
+
+<span class="number">2</span>\. 服务器返回页面A，并在给A加上一个<span class="keyword">Last</span>-Modified/ETag。
+
+<span class="number">3</span>\. 客户端展现该页面，并将页面连同<span class="keyword">Last</span>-Modified/ETag一起缓存。
+
+<span class="number">4</span>\. 客户再次请求页面A，并将上次请求时服务器返回的<span class="keyword">Last</span>-Modified/ETag一起传递给服务器。
+
+<span class="number">5</span>\. 服务器检查该<span class="keyword">Last</span>-Modified或ETag，并判断出该页面自上次客户端请求之后还未被修改，直接返回响应<span class="number">304</span>和一个空的响应体。
+
+注：
+
+<span class="number">1</span>、<span class="keyword">Last</span>- Modified和Etag头都是由Web <span class="keyword">Server</span>发出的Http Reponse Header，Web <span class="keyword">Server</span>应该同时支持这两种头。
+
+<span class="number">2</span>、Web <span class="keyword">Server</span>发送完<span class="keyword">Last</span>-Modified/Etag头给客户端后，客户端会缓存这些头；
+
+<span class="number">3</span>、客户端再次发起相同页面的请求时，将分别发送与<span class="keyword">Last</span>-Modified/Etag对应的Http RequestHeader:<span class="keyword">If</span>-Modified-Since和<span class="keyword">If</span>-None-<span class="keyword">Match</span>。我们可以看到这两个Header的值和 WebServer发出的<span class="keyword">Last</span>-Modified,Etag值完全一样；
+
+<span class="number">4</span>、 通过上述值到服务器端检查，判断文件是否继续缓存；
+
+二、Apache、 Lighttpd和Nginx中针配置Etag和Expires，有效缓存纯静态如css/js/pic/页面/流媒体等文件。
+
+A、Expires
+
+A<span class="number">.1</span>、 Apache Etag
+
+使用Apache的mod_expires 模块来设置，这包括控制应答时的Expires头内容和<span class="keyword">Cache</span>-Control头的<span class="keyword">max</span>-age指令
+
+ExpiresActive <span class="keyword">On</span>
+
+ExpiresByType image/gif &amp;quot;</span>access plus 1 month&amp;quot;
+
+ExpiresByType image/jpg &amp;quot;access plus 1 month&amp;quot;
+
+ExpiresByType image/jpeg &amp;quot;access plus 1 month&amp;quot;
+
+ExpiresByType image/x-icon &amp;quot;access plus 1 month&amp;quot;
+
+ExpiresByType image/bmp &amp;quot;access plus 1 month&amp;quot;
+
+ExpiresByType image/png &amp;quot;access plus 1 month&amp;quot;
+
+ExpiresByType text/html &amp;quot;access plus 30 minutes&amp;quot;
+
+ExpiresByType text/css&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+
+ExpiresByType text/txt&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+
+ExpiresByType text/js&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+
+ExpiresByType application/x-javascript&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+
+ExpiresByType application/x-shockwave-flash&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+
+或
+
+&amp;lt;ifmodule mod_expires.c&amp;gt;
+
+&amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
+
+ExpiresActive on
+
+ExpiresDefault &amp;quot;access plus 1 year&amp;quot;
+
+&amp;lt;/filesmatch&amp;gt;
+
+&amp;lt;/ifmodule&amp;gt;
+
+当设置了expires后，会自动输出<span class="operator"><span class="keyword">Cache</span>-Control 的<span class="keyword">max</span>-age 信息
+
+具体关于 Expires 详细内容可以查看Apache官方文档。
+
+在这个时间段里，该文件的请求都将直接通过缓存服务器获取，
+
+当然如果需要忽略浏览器的刷新请求（F5)，缓存服务器squid还需要使用 refresh_pattern 选项来忽略该请求
+
+refresh_pattern -i \.gif$ <span class="number">1440</span> <span class="number">100</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.jpg$ <span class="number">1440</span> <span class="number">100</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.jpeg$ <span class="number">1440</span> <span class="number">100</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.png$ <span class="number">1440</span> <span class="number">100</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.bmp$ <span class="number">1440</span> <span class="number">100</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.htm$ <span class="number">60</span> <span class="number">100</span>% <span class="number">100</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.html$ <span class="number">1440</span> <span class="number">50</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.<span class="keyword">xml</span>$ <span class="number">1440</span> <span class="number">50</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.txt$ <span class="number">1440</span> <span class="number">50</span>% <span class="number">28800</span> <span class="keyword">ignore</span>-reload
+
+refresh_pattern -i \.css$ <span class="number">1440</span> <span class="number">50</span>% <span class="number">28800</span> reload-<span class="keyword">into</span>-ims
+
+refresh_pattern -i \.js$ <span class="number">60</span> <span class="number">50</span>% <span class="number">100</span> reload-<span class="keyword">into</span>-ims
+
+refresh_pattern . <span class="number">10</span> <span class="number">50</span>% <span class="number">60</span>
+
+有关Squid中Expires的说明，请参考Squid官方中refresh_pattern介 绍。
+
+A<span class="number">.2</span>、Lighttpd Expires
+
+和Apache一样Lighttpd设置expire也要先查看是否支持了mod_expire模 块，
+
+下面的设置是让URI中所有images目录下的文件<span class="number">1</span>小时后过期；
+
+expire.url = ( &amp;quot;</span>/images/&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
+
+下面是让作用于images目录及其子目录的文件；
+
+$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;^/images/&amp;quot; {
+
+&amp;nbsp;
+
+expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
+
+&amp;nbsp;
+
+}
+
+也可以指定文件的类型；
+
+$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot; {
+
+&amp;nbsp;
+
+expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
+
+&amp;nbsp;
+
+}
+
+具体参考Lighttpd官方Expires解释
+
+A.3、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+
+{
+
+expires 30d;
+
+}
+
+location ~ .*\.(js|css)?$
+
+{
+
+expires 1h;
+
+}
+
+这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的&amp;rdquo; Expires &amp;ldquo;和&amp;rdquo; <span class="operator"><span class="keyword">Cache</span>-Control &amp;ldquo;</span>的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
+
+B.1、Apache中Etag设置
+
+在Apache中设置Etag的支持比较简单，只用在含有静态文件的目录中建立一个文件.htaccess, 里面加入：
+
+FileETag MTime Size
+
+这样就行了，详细的可以参考Apache的FileEtag文档页
+
+B.2、 Lighttpd Etag
+
+在Lighttpd中设置Etag支持：
+
+etag.use-inode: 是否使用inode作为Etag
+
+etag.use-mtime: 是否使用文件修改时间作为Etag
+
+etag.use-size: 是否使用文件大小作为Etag
+
+static-file.etags: 是否启用Etag的功能
+
+第四个参数肯定是要enable的， 前面三个就看实际的需要来选吧，推荐使用修改时间
+
+B.3、 Nginx Etag
+
+Nginx中默认没有添加对Etag标识.Igor Sysoev的观点&amp;rdquo;在对静态文件处理上看不出如何Etag好于Last-Modified标识。&amp;rdquo;
+
+Note:
+
+Yes, it&amp;#39;s addition,and it&amp;#39;s easy to add, however, I <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> see howETag <span class="keyword">is</span> better than <span class="keyword">Last</span>-Modified <span class="keyword">for</span> static files. -Igor Sysoev
+
+A nice short description <span class="keyword">is</span> here:
+
+http://www.mnot.net/cache_docs/#<span class="keyword">WORK</span>
+
+It looks <span class="keyword">to</span> me that it makes <span class="keyword">some</span> caches out there <span class="keyword">to</span> <span class="keyword">cache</span> theresponse <span class="keyword">from</span> the origin <span class="keyword">server</span> more reliable <span class="keyword">as</span> <span class="keyword">in</span> rfc2616(ftp://ftp.rfc-editor.org/<span class="keyword">in</span>-notes/rfc2616.txt) <span class="keyword">is</span> written.
+
+<span class="number">3.11</span> Entity Tags <span class="number">13.3</span><span class="number">.2</span> Entity Tag <span class="keyword">Cache</span> Validators <span class="number">14.19</span> ETag
+
+当然也有第三方nginx- static-etags 模块了，请参考
+
+https://github.com/mikewest/nginx-static-etags
+
+三、对于非实时交互动态页面中Expires和Etag处理
+
+对数据更新并不频繁、如tag分类归档等等，可以考虑对其<span class="keyword">cache</span>。简单点就是在非实时交互的动 态程序中输出expires和etag标识，让其缓存。但需要注意关闭<span class="keyword">session</span>，防止http response时http header包含<span class="keyword">session</span> id标识；
+
+<span class="number">3.1</span>、Expires
+
+如expires.php
+
+&amp;lt;</span>?php
+
+&amp;nbsp;
+
+header(&amp;#39;<span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">86400</span>,must-revalidate&amp;#<span class="number">39</span>;</span>);
+
+&amp;nbsp;
+
+header(&amp;#39;Last-Modified: &amp;#39; .gmdate(&amp;#39;D, d M Y H:i:s&amp;#39;) . &amp;#39; GMT&amp;#39; );
+
+&amp;nbsp;
+
+header(&amp;quot;Expires: &amp;quot; .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, time() + &amp;#39;86400&amp;prime; ). &amp;#39; GMT&amp;#39;);
+
+&amp;nbsp;
+
+?&amp;gt;
+
+以上信息表示该文件自请求后24小时后过期。
+
+其他需要处理的动态页面直接调用即可。
+
+3.2、Etag
+
+根据Http返回状态来处理。当返回304直接从缓 存中读取
+
+如etag.php
+
+&amp;gt;
+
+<span class="operator"><span class="keyword">cache</span>();</span>
+
+echo date(&amp;quot;Y-m-d H:i:s&amp;quot;);
+
+function <span class="operator"><span class="keyword">cache</span>()
+
+{
+
+$etag = &amp;quot;</span>http://xok.la&amp;quot;;
+
+if ($_SERVER[&amp;#39;HTTP_IF_NONE_MATCH&amp;#39;] == $etag)
+
+{
+
+header(&amp;#39;Etag:&amp;#39;.$etag,true,304);
+
+exit;
+
+}
+
+else header(&amp;#39;Etag:&amp;#39;.$etag);
+
+}
+
+?&amp;gt;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-16T03:21:17.000Z" class="post__time">六月 16, 2011</time><h1 class="post__title"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/">squid透明代理访问非80端口http服务</a></h1></header><div class="post__main"><p>实现linux服务器配置squid透明代理访问非80端口，允许部分地址不通过代理服务器直接访问。</p>
 <p>&nbsp;</p>
-<p>squid3</p>
-<p>squid日志:</p>
-<p>&nbsp;&quot;NONE error:unsupported-request-method HTTP/0.0&quot; 400 1817 NONE:NONE，</p>
-<p>原来qq使用了80端口但使用的非http标准协议。</p>
-<p>公司允许使用qq、msn，</p>
-<p>只好打开udp 8000端口:</p>
-<p>-A FORWARD -m state —state NEW -m udp -p udp -s 192.168.6.0/23 -d 58.251.0.0/16 —dport 8000 -j ACCEPT</p>
-<p>squid透明代理https以后，msn(live messager)不能登录，报错:</p>
-<p>MSN登录报错80048820 </p>
-<p>只好取消REDIRECT，打开443端口:</p>
-<p>&nbsp;-A FORWARD -m state —state NEW -m tcp -p tcp -s 192.168.6.0/23 —dport 443 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
-<p>附:squid日志状态说明</p>
-<p>TCP_HIT</p>
-<p>A valid copy of the requested object was in the cache.</p>
-<p>TCP_MISS</p>
-<p>The requested object was not in the cache.</p>
-<p>TCP_REFRESH_HIT</p>
-<p>The requested object was cached but STALE. The IMS query for the object resulted in &ldquo;304 not modified&rdquo;.</p>
-<p>TCP_REF_FAIL_HIT</p>
-<p>The requested object was cached but STALE. The IMS query failed and the stale object was delivered.</p>
-<p>TCP_REFRESH_MISS</p>
-<p>The requested object was cached but STALE. The IMS query returned the new content.</p>
-<p>TCP_CLIENT_REFRESH_MISS</p>
-<p>The client issued a &ldquo;no-cache&rdquo; pragma, or some analogous cache control command along with the request. Thus, the cache</p>
-<p>has to refetch the object.</p>
-<p>TCP_IMS_HIT</p>
-<p>The client issued an IMS request for an object which was in the cache and fresh.</p>
-<p>TCP_SWAPFAIL_MISS</p>
-<p>The object was believed to be in the cache, but could not be accessed.</p>
-<p>TCP_NEGATIVE_HIT</p>
-<p>Request for a negatively cached object, e.g. &ldquo;404 not found&rdquo;, for which the cache believes to know that it is</p>
-<p>inaccessible. Also refer to the explainations for negative_ttl in your squid.conf file.</p>
-<p>TCP_MEM_HIT</p>
-<p>A valid copy of the requested object was in the cache and it was in memory, thus avoiding disk accesses.</p>
-<p>TCP_DENIED</p>
-<p>Access was denied for this request.</p>
-<p>TCP_OFFLINE_HIT</p>
-<p>The requested object was retrieved from the cache during offline mode. The offline mode never validates any object, see</p>
-<p>offline_mode in squid.conf file.</p>
-<p>UDP_HIT</p>
-<p>A valid copy of the requested object was in the cache.</p>
-<p>UDP_MISS</p>
-<p>The requested object is not in this cache.</p>
-<p>UDP_DENIED</p>
-<p>Access was denied for this request.</p>
-<p>UDP_INVALID</p>
-<p>An invalid request was received.</p>
-<p>UDP_MISS_NOFETCH</p>
-<p>During &ldquo;-Y&rdquo; startup, or during frequent failures, a cache in hit only mode will return either UDP_HIT or this code.</p>
-<p>Neighbours will thus only fetch hits.</p>
-<p>NONE</p>
-<p>Seen with errors and cachemgr requests.</p>
-<p>The following codes are no longer available in Squid-2:</p>
-<p>ERR_*</p>
-<p>Errors are now contained in the status code.</p>
-<p>TCP_CLIENT_REFRESH</p>
-<p>See: TCP_CLIENT_REFRESH_MISS.</p>
-<p>TCP_SWAPFAIL</p>
-<p>See: TCP_SWAPFAIL_MISS.</p>
-<p>TCP_IMS_MISS</p>
-<p>Deleted, TCP_IMS_HIT used instead.</p>
-<p>UDP_HIT_OBJ</p>
-<p>Hit objects are no longer available.</p>
-<p>UDP_RELOADING</p>
-<p>See: UDP_MISS_NOFETCH.</p>
-<p>后面找到了中文版，补充全一些：</p>
-<p>access.log结果编码</p>
-<p>相应于HTTP请求，下列标签可能出现在access.log文件的第四个域。</p>
-<p>TCP_HIT</p>
-<p>Squid发现请求资源的貌似新鲜的拷贝，并将其立即发送到客户端。</p>
-<p>TCP_MISS</p>
-<p>Squid没有请求资源的cache拷贝。</p>
-<p>TCP_REFRESH_HIT</p>
-<p>Squid发现请求资源的貌似陈旧的拷贝，并发送确认请求到原始服务器。原始服务器返回304（未修改）响应，指示squid的拷贝仍旧是新鲜的。</p>
-<p>TCP_REF_FAIL_HIT</p>
-<p>Squid发现请求资源的貌似陈旧的拷贝，并发送确认请求到原始服务器。然而，原始服务器响应失败，或者返回的响应Squid不能理解。在此情形下，squid发送现有cache拷贝（很可能是陈旧的）到客户端。</p>
-<p>TCP_REFRESH_MISS</p>
-<p>Squid发现请求资源的貌似陈旧的拷贝，并发送确认请求到原始服务器。原始服务器响应新的内容，指示这个cache拷贝确实是陈旧的。</p>
-<p>TCP_CLIENT_REFRESH_MISS</p>
-<p>Squid发现了请求资源的拷贝，但客户端的请求包含了Cache-Control: no-cache指令。Squid转发客户端的请求到原始服务器，强迫cache确认。</p>
-<p>TCP_IMS_HIT</p>
-<p>客户端发送确认请求，Squid发现更近来的、貌似新鲜的请求资源的拷贝。Squid发送更新的内容到客户端，而不联系原始服务器。</p>
-<p>TCP_SWAPFAIL_MISS</p>
-<p>Squid发现请求资源的有效拷贝，但从磁盘装载它失败。这时squid发送请求到原始服务器，就如同这是个cache丢失一样。</p>
-<p>TCP_NEGATIVE_HIT</p>
-<p>在对原始服务器的请求导致HTTP错误时，Squid也会cache这个响应。在短时间内对这些资源的重复请求，导致了否命中。 negative_ttl指令控制这些错误被cache的时间数量。请注意这些错误只在内存cache，不会写往磁盘。下列HTTP状态码可能导致否定 cache（也遵循于其他约束）： 204, 305, 400, 403, 404, 405, 414, 500, 501, 502, 503, 504。</p>
-<p>TCP_MEM_HIT</p>
-<p>Squid在内存cache里发现请求资源的有效拷贝，并将其立即发送到客户端。注意这点并非精确的呈现了所有从内存服务的响应。例如，某些cache在内存里，但要求确认的响应，会以TCP_REFRESH_HIT, TCP_REFRESH_MISS等形式记录。</p>
-<p>TCP_DENIED</p>
-<p>因为http_access或http_reply_access规则，客户端的请求被拒绝了。注意被http_access拒绝的请求在第9域的值是NONE/-，然而被http_reply_access拒绝的请求，在相应地方有一个有效值。</p>
-<p>TCP_OFFLINE_HIT</p>
-<p>当offline_mode激活时，Squid对任何cache响应返回cache命中，而不用考虑它的新鲜程度。</p>
-<p>TCP_REDIRECT</p>
-<p>重定向程序告诉Squid产生一个HTTP重定向到新的URI（见11.1节）。正常的，Squid不会记录这些重定向。假如要这样做，必须在编译squid前，手工定义LOG_TCP_REDIRECTS预处理指令。</p>
-<p>NONE</p>
-<p>无分类的结果用于特定错误，例如无效主机名。</p>
-<p>相应于ICP查询，下列标签可能出现在access.log文件的第四域。</p>
-<p>UDP_HIT</p>
-<p>Squid在cache里发现请求资源的貌似新鲜的拷贝。</p>
-<p>UDP_MISS</p>
-<p>Squid没有在cache里发现请求资源的貌似新鲜的拷贝。假如同一目标通过HTTP请求，就可能是个cache丢失。请对比UDP_MISS_NOFETCH。</p>
-<p>UDP_MISS_NOFETCH</p>
-<p>跟UDP_MISS类似，不同的是这里也指示了Squid不愿去处理相应的HTTP请求。假如使用了-Y命令行选项，Squid在启动并编译其内存索引时，会返回这个标签而不是UDP_MISS。</p>
-<p>UDP_DENIED</p>
-<p>因为icp_access规则，ICP查询被拒绝。假如超过95%的到某客户端的ICP响应是UDP_DENIED，并且客户端数据库激活了（见附录A），Squid在1小时内，停止发送任何ICP响应到该客户端。若这点发生，你也可在cache.log里见到一个警告。</p>
-<p>UDP_INVALID</p>
-<p>Squid接受到无效查询（例如截断的消息、无效协议版本、URI里的空格等）。Squid发送UDP_INVALID响应到客户端。</p>
-<p>附:HTTP响应状态码</p>
-<p>Table 13-1列出了数字HTTP响应CODE和理由短句。注意Squid和其他HTTP客户端仅仅关注这些数字值。理由短句是纯解释性的，不会影响响应的意义。对每个状态码，也提供了一个到RFC 2616的具体节的索引。注意状态码0和600是squid使用的非标准的值，不会在RFC里提到。</p>
-<p>Table 13-1. HTTP response status codes</p>
-<p>Code &nbsp;&nbsp;&nbsp; Reason phrase &nbsp;&nbsp;&nbsp; RFC 2616 section</p>
-<p>0 &nbsp;&nbsp;&nbsp; No Response Received (Squid-specific) &nbsp;&nbsp;&nbsp; N/A</p>
-<p>1xx &nbsp;&nbsp;&nbsp; Informational &nbsp;&nbsp;&nbsp; 10.1</p>
-<p>100 &nbsp;&nbsp;&nbsp; Continue &nbsp;&nbsp;&nbsp; 10.1.1</p>
-<p>101 &nbsp;&nbsp;&nbsp; Switching Protocols &nbsp;&nbsp;&nbsp; 10.1.2</p>
-<p>2xx &nbsp;&nbsp;&nbsp; Successful &nbsp;&nbsp;&nbsp; 10.2</p>
-<p>200 &nbsp;&nbsp;&nbsp; OK &nbsp;&nbsp;&nbsp; 10.2.1</p>
-<p>201 &nbsp;&nbsp;&nbsp; Created &nbsp;&nbsp;&nbsp; 10.2.2</p>
-<p>202 &nbsp;&nbsp;&nbsp; Accepted &nbsp;&nbsp;&nbsp; 10.2.3</p>
-<p>203 &nbsp;&nbsp;&nbsp; Non-Authoritative Information &nbsp;&nbsp;&nbsp; 10.2.4</p>
-<p>204 &nbsp;&nbsp;&nbsp; No Content &nbsp;&nbsp;&nbsp; 10.2.5</p>
-<p>205 &nbsp;&nbsp;&nbsp; Reset Content &nbsp;&nbsp;&nbsp; 10.2.6</p>
-<p>206 &nbsp;&nbsp;&nbsp; Partial Content &nbsp;&nbsp;&nbsp; 10.2.7</p>
-<p>3xx &nbsp;&nbsp;&nbsp; Redirection &nbsp;&nbsp;&nbsp; 10.3</p>
-<p>300 &nbsp;&nbsp;&nbsp; Multiple Choices &nbsp;&nbsp;&nbsp; 10.3.1</p>
-<p>301 &nbsp;&nbsp;&nbsp; Moved Permanently &nbsp;&nbsp;&nbsp; 10.3.2</p>
-<p>302 &nbsp;&nbsp;&nbsp; Found &nbsp;&nbsp;&nbsp; 10.3.3</p>
-<p>303 &nbsp;&nbsp;&nbsp; See Other &nbsp;&nbsp;&nbsp; 10.3.4</p>
-<p>304 &nbsp;&nbsp;&nbsp; Not Modified &nbsp;&nbsp;&nbsp; 10.3.5</p>
-<p>305 &nbsp;&nbsp;&nbsp; Use Proxy &nbsp;&nbsp;&nbsp; 10.3.6</p>
-<p>306 &nbsp;&nbsp;&nbsp; (Unused) &nbsp;&nbsp;&nbsp; 10.3.7</p>
-<p>307 &nbsp;&nbsp;&nbsp; Temporary Redirect &nbsp;&nbsp;&nbsp; 10.3.8</p>
-<p>4xx &nbsp;&nbsp;&nbsp; Client Error &nbsp;&nbsp;&nbsp; 10.4</p>
-<p>400 &nbsp;&nbsp;&nbsp; Bad Request &nbsp;&nbsp;&nbsp; 10.4.1</p>
-<p>401 &nbsp;&nbsp;&nbsp; Unauthorized &nbsp;&nbsp;&nbsp; 10.4.2</p>
-<p>402 &nbsp;&nbsp;&nbsp; Payment Required &nbsp;&nbsp;&nbsp; 10.4.3</p>
-<p>403 &nbsp;&nbsp;&nbsp; Forbidden &nbsp;&nbsp;&nbsp; 10.4.4</p>
-<p>404 &nbsp;&nbsp;&nbsp; Not Found &nbsp;&nbsp;&nbsp; 10.4.5</p>
-<p>405 &nbsp;&nbsp;&nbsp; Method Not Allowed &nbsp;&nbsp;&nbsp; 10.4.6</p>
-<p>406 &nbsp;&nbsp;&nbsp; Not Acceptable &nbsp;&nbsp;&nbsp; 10.4.7</p>
-<p>407 &nbsp;&nbsp;&nbsp; Proxy Authentication Required &nbsp;&nbsp;&nbsp; 10.4.8</p>
-<p>408 &nbsp;&nbsp;&nbsp; Request Timeout &nbsp;&nbsp;&nbsp; 10.4.9</p>
-<p>409 &nbsp;&nbsp;&nbsp; Conflict &nbsp;&nbsp;&nbsp; 10.4.10</p>
-<p>410 &nbsp;&nbsp;&nbsp; Gone &nbsp;&nbsp;&nbsp; 10.4.11</p>
-<p>411 &nbsp;&nbsp;&nbsp; Length Required &nbsp;&nbsp;&nbsp; 10.4.12</p>
-<p>412 &nbsp;&nbsp;&nbsp; Precondition Failed &nbsp;&nbsp;&nbsp; 10.4.13</p>
-<p>413 &nbsp;&nbsp;&nbsp; Request Entity Too Large &nbsp;&nbsp;&nbsp; 10.4.14</p>
-<p>414 &nbsp;&nbsp;&nbsp; Request-URI Too Long &nbsp;&nbsp;&nbsp; 10.4.15</p>
-<p>415 &nbsp;&nbsp;&nbsp; Unsupported Media Type &nbsp;&nbsp;&nbsp; 10.4.16</p>
-<p>416 &nbsp;&nbsp;&nbsp; Requested Range Not Satisfiable &nbsp;&nbsp;&nbsp; 10.4.17</p>
-<p>417 &nbsp;&nbsp;&nbsp; Expectation Failed &nbsp;&nbsp;&nbsp; 10.4.18</p>
-<p>5xx &nbsp;&nbsp;&nbsp; Server Error &nbsp;&nbsp;&nbsp; 10.5</p>
-<p>500 &nbsp;&nbsp;&nbsp; Internal Server Error &nbsp;&nbsp;&nbsp; 10.5.1</p>
-<p>501 &nbsp;&nbsp;&nbsp; Not Implemented &nbsp;&nbsp;&nbsp; 10.5.2</p>
-<p>502 &nbsp;&nbsp;&nbsp; Bad Gateway &nbsp;&nbsp;&nbsp; 10.5.3</p>
-<p>503 &nbsp;&nbsp;&nbsp; Service Unavailable &nbsp;&nbsp;&nbsp; 10.5.4</p>
-<p>504 &nbsp;&nbsp;&nbsp; Gateway Timeout &nbsp;&nbsp;&nbsp; 10.5.5</p>
-<p>505 &nbsp;&nbsp;&nbsp; HTTP Version Not Supported &nbsp;&nbsp;&nbsp; 10.5.6</p>
-<p>6xx &nbsp;&nbsp;&nbsp; Proxy Error &nbsp;&nbsp;&nbsp; N/A</p>
-<p>600 &nbsp;&nbsp;&nbsp; Unparseable Response Headers (Squid-specific) &nbsp;&nbsp;&nbsp; N/A</p>
-<p>假如Squid从原始服务器没有接受到任何响应，你可在access.log里看到状态码0。假如Squid接受到的响应没有包含HTTP头部，就会出现状态码600。在少数情况下，某些原始服务器仅发送响应body，而忽略了任何头部。</p>
-<p>13.2.3 access.log对端编码</p>
-<p>下列编码可能出现在access.log的第9域。请参考10.10节关于Squid如何对cache丢失情况，选择有效的下一跳。</p>
-<p>NONE</p>
-<p>这指明Squid对本次请求，不会与任何其他服务器（邻居或原始服务器）通信。它通常与cache命中、拒绝请求、cache管理请求、错误、和所有的ICP查询这些类型联合出现。</p>
-<p>DIRECT</p>
-<p>Squid直接转发请求到原始服务器。该域的第2半部分显示原始服务器的IP地址，或主机名-假如禁止了log_ip_on_direct。</p>
-<p>SIBLING_HIT</p>
-<p>在姐妹cache返回ICP或HTCP命中后，Squid发送请求到姐妹cache。</p>
-<p>PARENT_HIT</p>
-<p>在父cache返回ICP或HTCP命中后，Squid发送请求到父cache。</p>
-<p>DEFAULT_PARENT</p>
-<p>Squid选择该父cache，因为其在squid.conf的cache_peer行里被标志为default。</p>
-<p>FIRST_UP_PARENT</p>
-<p>Squid转发请求到该父cache，因为它是位于已知活跃列表里的第一个父cache。</p>
-<p>FIRST_PARENT_MISS</p>
-<p>Squid转发请求到该父cache，它第一个响应ICP/HTCP丢失消息。换句话说，对这个特殊的ICP/HTCP查询，在这个特殊时刻，被选中的父cache有最佳的往返时间（RTT）。注意标准RTT可能被人工矫正过，取决于cache_peer指令的weight选项。</p>
-<p>CLOSEST_PARENT_MISS</p>
-<p>Squid选择该父cache，因为它报告到原始服务器的RTT最低。这点仅在2个cache都激活了netdb，并且原始服务器（或在同一子网内的其他server）返回ICMP ping消息。</p>
-<p>CLOSEST_PARENT</p>
-<p>这点类似CLOSEST_PARENT_MISS，除了RTT计算不是来自ICP/HTCP响应消息外。代替的，它们来自Squid保留的更老的计算方式，例如netdb交换功能。</p>
-<p>CLOSEST_DIRECT</p>
-<p>Squid基于netdb算法，转发请求到原始服务器。这点在满足下述任何条件时发生：</p>
-<p>&nbsp;&nbsp;&nbsp; * 1）在Squid和原始服务器之间的RTT小于配置的minimum_direct_rtt值。</p>
-<p>&nbsp;&nbsp;&nbsp; * 2）在Squid和原始服务器之间的标准路由跳数少于配置的minimum_direct_hops值。</p>
-<p>&nbsp;&nbsp;&nbsp; * 3）在ICP/HTCP响应里返回的RTT值，指示Squid离原始服务器近于任何其他邻居。</p>
-<p>ROUNDROBIN_PARENT</p>
-<p>Squid转发请求到该父cache，因为设置了round-robin选项，并且它有最低的使用计数器。</p>
-<p>CD_PARENT_HIT</p>
-<p>Squid基于cache摘要算法（见10.7节）转发请求到该父cache。</p>
-<p>CD_SIBLING_HIT</p>
-<p>Squid基于cache摘要算法转发请求到该姐妹cache。</p>
-<p>CARP</p>
-<p>Squid选择该父cache，基于cache数组路由协议算法（见10.9节）。</p>
-<p>ANY_PARENT</p>
-<p>作为最后的手段，Squid选择该父cache，因为没有其他方法能选择可行的下一跳。</p>
-<p>注意大部分上述编码可能以TIMEOUT_开头，这表明在等待ICP/HTCP响应时发生超时。例如：</p>
-<p>可使用icp_query_timeout指令来调整超时。</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-05-25T07:04:08.000Z" class="post__time">五月 25, 2009</time><h1 class="post__title"><a href="/2009/05/25/w/centos-linux-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85-e6-9c-80-e6-96-b0-e7-89-88amule/">centos linux 源代码编译安装最新版amule</a></h1></header><div class="post__main"><p>aMule是Linux下最佳的P2P软件之一，可应用eDonkey网络协议，也支持KAD网络，支持模糊协议（obfuscation）。</p>
-<p>yum install wxGTK*</p>
-<p>yum install cryptopp</p>
-<p>yum install cryptopp-devel</p>
-<p>tar xfj aMule-2.2.6.tar.bz2 -C /usr/local/src</p>
-<p>cd /usr/local/src/aMule-2.2.6</p>
-<p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon \</p>
-<p>—enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui \</p>
-<p>—enable-cas —enable-wxcas —enable-alc —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>make -j6 &amp;&amp; make install</p>
-<h1 id="—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_compile_aMuleLinkCreator_GUI_version">—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compile aMuleLinkCreator GUI version</h1><p>如果编译报错graphics.c:95: undefined reference to `gdImageJpeg&#39; collect2: ld returned 1 exit status</p>
-<p>取消—enable-alc</p>
-<p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon —enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui —enable-cas —enable-wxcas —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>&nbsp;</p>
-<p>附:wxGTK、cryptopp源代码安装方法</p>
-<p>export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/local/pkgconfig:/usr/X11R6/lib/pkgconfig</p>
-<p>wget <a href="http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2" target="_blank" rel="external">http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2</a></p>
-<p>tar xfj wxWidgets-2.8.8.tar.bz2</p>
-<p>cd wxWidgets-2.8.8</p>
-<p>./configure —enable-unicode</p>
-<p>make -j6 &amp;&amp; make install</p>
-<p>ldconfig</p>
-<p>wget <a href="http://www.cryptopp.com/cryptopp552.zip" target="_blank" rel="external">http://www.cryptopp.com/cryptopp552.zip</a></p>
-<p>mkdir crypto ; mv cryptopp552.zip ./crypto</p>
-<p>cd crypto ; unzip cryptopp552.zip</p>
-<p>make &amp;&amp; cp libcryptopp.a /usr/lib/</p>
-<p>mkdir /usr/include/cryptopp &amp;&amp; cp *.h /usr/include/cryptopp/</p>
-<p>ldconfig</p>
-<p><span id="ctl00_MainContentPlaceholder_ctl01_ctl00_lblEntry">amule关联firefox，修改about:config只能作用于firefox2.x的:</span></p>
-<p>新建一个字符串：network.protocol-handler.app.ed2k 值：/usr/bin/ed2k</p>
-<pre><code>新建一个布尔串：network<span class="class">.protocol-handler</span><span class="class">.external</span><span class="class">.ed2k</span> 值：true
+<p>iptables相关配置：</p>
+<p>*mangle</p>
+<pre><code>-A PREROUTING -<span class="keyword">d</span> 10.11.48.0/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
 
-新建一个布尔串：network<span class="class">.protocol-handler</span><span class="class">.warn-external</span><span class="class">.ed2k</span> 值：true&lt;span&gt;
+-A PREROUTING -<span class="keyword">d</span> 10.11.48.0/255.255.255.192 -j <span class="literal">RETURN</span>
 
-对于firefox3.x，只要打开首选项，在应用程序设置里面，指定ed2k到/usr/bin/ed2k就万事大吉。&lt;/span&gt;
-</code></pre><p><span>amule优化:</span></p>
-<p><span>勾选</span><span>启动时自动更新服务器列表，。并且点击&ldquo;列表&rdquo;。添加如下服务器：</span></p>
-<pre><code><span class="attribute">ed2k</span>:<span class="comment">//server|no1.eserver.emule.org.cn|8080|</span>
+#以上地址不通过代理
 
-<span class="attribute">ed2k</span>:<span class="comment">//server|no2.eserver.emule.org.cn|8080|</span>
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x4
 
-<span class="attribute">http</span>:<span class="comment">//www.emule.org.cn/server.met</span>
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
 
-<span class="attribute">http</span>:<span class="comment">//www.srv1000.com/x1/server.met</span>
+-A PREROUTING -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x7
 
-<span class="attribute">http</span>:<span class="comment">//emule.945.cn/server.met</span>
+-A PREROUTING -j <span class="literal">RETURN</span>
 
-<span class="attribute">http</span>:<span class="comment">//www.edk-files.com/x1/server.met</span>
+COMMIT
 
-<span class="attribute">http</span>:<span class="comment">//corpo.free.fr/server.met&lt;/span&gt;</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/05/25/w/centos-linux-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85-e6-9c-80-e6-96-b0-e7-89-88amule/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-05-25T02:23:11.000Z" class="post__time">五月 25, 2009</time><h1 class="post__title"><a href="/2009/05/25/w/centos-linux-yum-e4-b8-8d-e8-83-bd-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">centos linux yum 不能使用的解决方法</a></h1></header><div class="post__main"><p>yum报错:</p>
-<p>rpmdb: Lock table is out of available locker entries</p>
-<p>rpmdb: Unknown locker ID: bc1</p>
-<p>error: db4 error(22) from db-&gt;close: Invalid argument</p>
-<p>error: cannot open Packages index using db3 - Cannot allocate memory (12)</p>
-<p>error: cannot open Packages database in /var/lib/rpm</p>
-<p>TypeError: rpmdb open failed</p>
-<p>解决方法A:</p>
-<p>备份rpm所用的数据库</p>
-<p>cd /var/lib/rpm/</p>
-<p>mv __db.* ~/</p>
-<p>重建该数据库</p>
-<p>rpm —rebuilddb</p>
-<h1 id="yum_clean_all">yum clean all</h1><p>yum search fastestmirror</p>
-<p>yum install yum-fastestmirror.noarch</p>
-<p>如果一切正常</p>
-<p>删除_db.*</p>
-<p>rm -f ~/__db.*</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/05/25/w/centos-linux-yum-e4-b8-8d-e8-83-bd-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-05-12T02:11:58.000Z" class="post__time">五月 12, 2009</time><h1 class="post__title"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/">linux NTP（Network Time Protocol）服务器配置</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 服务器记录文件以及其后的报告中的数据来评估组织的活动，包括防火墙和VPN安全相关的活动，带宽的使用，以及其他各种各样的记录、管理、确认、授权和会计职能。由于服务器记录的是来自不同主机的信息，因此时间的准确性显得非常必要，否则的话就可能出现不同的事件顺序和故障排除的根源问题，使得与时间有关的一切数据都变得毫无意义。即使是在路由器里，像路由器配置改变、接口状态、调制解调器事件、安全警报、环境条件、CPU处理过载等主要的配置事件和系统错误信息，都要有准确的时间戳，这些数据才有意义。</p>
-<p>网络时间协议简介</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NTP（Network Time Protocol）是由美国德拉瓦大学的David L. Mills教授于1985年提出，除了可以估算封包在网络上的往返延迟外，还可独立地估算计算机时钟偏差，从而实现在网络上的高精准度计算机校时，它是设计用来在Internet上使不同的机器能维持相同时间的一种通讯协定。时间服务器（time server）是利用NTP的一种服务器，通过它可以使网络中的机器维持时间同步。在大多数的地方，NTP可以提供1-50ms的可信赖性的同步时间源和网络工作路径。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 网络时间协议（NTP）的详细说明在RFC-1305[Mills 1992]中。RFC-1305对 NTP协议自动机在事件、状态、转变功能和行为方面给出了明确的说明。它以合适的算法以增强时钟的准确性，并且减轻多个由于同步源而产生的差错，实现了准确性低于毫秒的时间服务，以满足目前因特网中路径量测的需要。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NTP 是一个跨越广域网或局域网的复杂的同步时间协议，它通常可获得毫秒级的精度。RFC2030[Mills 1996]描述了SNTP（Simple Network Time Protocol），目的是为了那些不需要完整NTP实现复杂性的主机，它是NTP的一个子集。通常让局域网上的若干台主机通过因特网与其他的NTP主机同步时钟，接着再向局域网内其他客户端提供时间同步服务。</p>
-<ul>
-<li>网络时间服务的工作模式</li>
-</ul>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Sever/Client mode：用户向一个多几个服务器提出服务请求，根据所交换的信息，从中选择认为最准确的时间，并调整本地的时钟。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Multicast/Broadcast mode：此种模式是适用于用在高速的LAN上。利用一个或多个服务器在固定的周期向某个多播地址做广播。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o Symmetric mode：二个以上的Server互相进行时间消息的通讯，可以互相校正对方的时间，以维持整个subnet的时间一致性。</p>
-<ul>
-<li>保持网络节点时间同步的机制</li>
-</ul>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o ntpdate 命令：此命令被用来立即同步客户端和服务器的时间。这是同步客户端和服务器的时间的最快方式。系统每次启动的时候会使用这个命令，用来确保客户端和服务器的时间的同步。这个命令通常指定一个NTP服务器作为一个参数，客户端的时钟被设置为和服务器的时间匹配。当这个命令使用多个NTP服务器作为参数时，客户端会使用最低级的NTP服务器。如果级别相等，客户端会使用加权平均数。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o ntpd守护进程：此进程在后台持续运行，并且会定时校验客户端的时钟和NTP服务器的时间。xntpd守护进程通常是在系统启动的时候启动。因为客户端的时钟可能产生漂移，以致与实际的NTP时钟有差异。xntpd守护进程会周期性地发送一个NTP服务器的网络请求，并且与客户端的时钟对比，在必要的时候修正客户端的时间，同时将时间差存到名为/etc/ntp.drift文件。默认的xntpd时间检查的间隔为64秒，在第一次检查的时候，客户端的时钟和NTP服务器上的时钟的差异会被记录下来，同时依靠这个时间差异来计划下一次检查。如果这个时间差异很大，下一次的时间检查会很快发生。如果这个差异很小，下一次的检查到来的时间会相应的延长。这样就避免每次都去查询网络中的时间服务器，从而可以减轻网络负载。查询NTP服务器的次数会慢慢变少。直到达到NTP请求的最小值。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; o 注：在命令行方式下，可以采用&quot;ntpd -q&quot;或者&quot;ntpdate [-b]&nbsp; pool.ntp.org&quot;进行对时。使用ntpd进行时间同步时，应事先配置好ntp.conf文件。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
-<h1 id="yum_update_ntp">yum update ntp</h1><p>vi /etc/ntp.conf</p>
-<p>restrict default nomodify notrap noquery</p>
-<h1 id="restrict_default_ignore_//忽略所有ntp要求封包">restrict default ignore //忽略所有ntp要求封包</h1><p>//如果restric 后面不带参数，表示可以允许全部权限</p>
-<p>restrict 127.0.0.1</p>
-<p>restrict 192.168.6.0 mask 255.255.255.0 nomodify notrap</p>
-<h1 id="—-_OUR_TIMESERVERS_——-">—- OUR TIMESERVERS ——-</h1><p>server 0.pool.ntp.org</p>
-<p>server 1.pool.ntp.org</p>
-<p>server 2.pool.ntp.org</p>
-<p>server pool.ntp.org</p>
-<p>server 3.cn.pool.ntp.org</p>
-<p>server 0.asia.pool.ntp.org</p>
-<p>server&nbsp; 127.127.1.0&nbsp;&nbsp;&nbsp;&nbsp; # local clock</p>
-<p>fudge&nbsp;&nbsp; 127.127.1.0 stratum 10</p>
-<p>//driftfile 选项，则指定了用来保存系统时钟频率偏差的文件, ntpd程序使用它来自动地补偿时钟的自然漂移， 从而使时钟即使在切断了外来时源的情况下，仍能保持相当的准确度</p>
-<p>driftfile /var/lib/ntp/drift</p>
-<p>broadcastdelay&nbsp; 0.008</p>
-<p>keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /etc/ntp/keys</p>
-<p>logfile /var/log/ntp.log</p>
-<p>/etc/init.d/ntpd restart</p>
-<p>chkconfig —level 345 ntpd on</p>
-<p>&nbsp;&nbsp;&nbsp; 使用下面的命令检查时间服务器同步的状态：</p>
-<p>ntpq -p</p>
-<p>&nbsp;&nbsp;&nbsp; 一个可以证明同步问题的证据是所有远程服务器的jitter值是4000并且delay和reach的值是0。</p>
-<p>&nbsp;&nbsp;&nbsp; 可能的原因有：</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 配置文件中的restrict default ignore没有被注释</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 有防火墙阻断了与server之间的通讯</p>
-<p>&nbsp;&nbsp;&nbsp; 此外每次重启NTP服务器之后大约要3－5分钟客户端才能与server建立正常的通讯连接，否则你执行ntpdate ip的时候将返回：</p>
-<p>&nbsp;ntpdate: no server suitable for synchronization found</p>
-<p>&nbsp;</p>
-<hr>
-<p>网络内其它服务器时间的同步:</p>
-<p>每一刻钟同步一次</p>
-<p>crontab -e</p>
-<p><em>/15 </em> <em> </em> * root /usr/sbin/ntpdate 192.168.6.153 &gt; /dev/null 2&gt;&amp;1</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-29T06:21:29.000Z" class="post__time">四月 29, 2009</time><h1 class="post__title"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/">理解Unicode字符编码规范</a></h1></header><div class="post__main"><p>Unicode是一种字符编码规范 。</p>
-<div class="blogstory"><br><br>　　先从ASCII说起。ASCII是用来表示英文字符的一种编码规范，每个ASCII字符占用1个字节（8bits）<br><br>　　因此，ASCII编码可以表示的最大字符数是256，其实英文字符并没有那么多，一般只用前128个（最高位为0），其中包括了控制字符、数字、大小写字母和其他一些符号<br><br>。<br><br>　　而最高位为1的另128个字符被成为&ldquo;扩展ASCII&rdquo;，一般用来存放英文的制表符、部分音标字符等等的一些其他符号，这种字符编码规范显然用 来处理英文没有什么问题。（实际上也可以用来处理法文、德文等一些其他的西欧字符，但是不能和英文通用），但是面对中文、阿拉伯文之类复杂的文字，255 个字符显然不够用<br><br>　　于是，各个国家纷纷制定了自己的文字编码规范，其中中文的文字编码规范叫做&ldquo;GB2312-80&rdquo;，它是和ASCII兼容的一种编码规范，其实就是利用扩展ASCII没有真正标准化这一点，把一个中文字符用两个扩展ASCII字符来表示。<br><br>　　但是这个方法有问题，最大的问题就是，中文文字没有真正属于自己的编码，因为扩展ASCII码虽然没有真正的标准化，但是PC里的ASCII码 还是有一个事实标准的（存放着英文制表符），所以很多软件利用这些符号来画表格。这样的软件用到中文系统中，这些表格符就会被误认作中文字，破坏版面。而 且，统计中英文混合字符串中的字数，也是比较复杂的，我们必须判断一个ASCII码是否扩展，以及它的下一个ASCII是否扩展，然后才&ldquo;猜&rdquo;那可能是一 个中文字<br><br>。<br><br>　　总之当时处理中文是很痛苦的。而更痛苦的是GB2312是国家标准，台湾当时有一个Big5编码标准，很多编码和GB是相同的，所以&hellip;&hellip;，嘿嘿。<br><br>　　这时候，我们就知道，要真正解决中文问题，不能从扩展ASCII的角度入手，也不能仅靠中国一家来解决。而必须有一个全新的编码系统，这个系统 要可以将中文、英文、法文、德文&hellip;&hellip;等等所有的文字统一起来考虑，为每个文字都分配一个单独的编码，这样才不会有上面那种现象出现。<br><br>　　于是，Unicode诞生了。<br><br>　　Unicode有两套标准，一套叫UCS-2(Unicode-16)，用2个字节为字符编码，另一套叫UCS-4(Unicode-32)，用4个字节为字符编码。<br><br>　　以目前常用的UCS-2为例，它可以表示的字符数为2^16=65535，基本上可以容纳所有的欧美字符和绝大部分的亚洲字符<br><br>。<br><br>　　UTF-8的问题后面会提到 。<br><br>　　在Unicode里，所有的字符被一视同仁。汉字不再使用&ldquo;两个扩展ASCII&rdquo;，而是使用&ldquo;1个Unicode&rdquo;，注意，现在的汉字是&ldquo;一个字符&rdquo;了，于是，拆字、统计字数这些问题也就自然而然的解决了<br><br>。<br><br>　　但是，这个世界不是理想的，不可能在一夜之间所有的系统都使用Unicode来处理字符，所以Unicode在诞生之日，就必须考虑一个严峻的问题：和ASCII字符集之间的不兼容问题。<br><br>　　我们知道，ASCII字符是单个字节的，比如&ldquo;A&rdquo;的ASCII是65。而Unicode是双字节的，比如&ldquo;A&rdquo;的Unicode是0065，这就造成了一个非常大的问题：以前处理ASCII的那套机制不能被用来处理Unicode了<br><br>。<br><br>　　另一个更加严重的问题是，C语言使用’\0’作为字符串结尾，而Unicode里恰恰有很多字符都有一个字节为0，这样一来，C语言的字符串函数将无法正常处理Unicode，除非把世界上所有用C写的程序以及他们所用的函数库全部换掉<br><br>。<br><br>　　于是，比Unicode更伟大的东东诞生了，之所以说它更伟大是因为它让Unicode不再存在于纸上，而是真实的存在于我们大家的电脑中。那就是：UTF。<br><br>　　UTF= UCS Transformation Format UCS转换格式，它是将Unicode编码规则和计算机的实际编码对应起来的一个规则。现在流行的UTF有2种：UTF-8和UTF-16<br><br>。<br><br>　　其中UTF-16和上面提到的Unicode本身的编码规范是一致的，这里不多说了。而UTF-8不同，它定义了一种&ldquo;区间规则&rdquo;，这种规则可以和ASCII编码保持最大程度的兼容<br><br>。<br><br>　　UTF-8有点类似于Haffman编码，它将Unicode编码为00000000-0000007F的字符，用单个字节来表示；<br><br>　　　　00000080-000007FF的字符用两个字节表示<br><br>　　　　00000800-0000FFFF的字符用3字节表示<br><br>　　因为目前为止Unicode-16规范没有指定FFFF以上的字符，所以UTF-8最多是使用3个字节来表示一个字符。但理论上来说，UTF-8最多需要用6字节表示一个字符。<br><br>　　在UTF-8里，英文字符仍然跟ASCII编码一样，因此原先的函数库可以继续使用。而中文的编码范围是在0080-07FF之间，因此是2个字节表示（但这两个字节和GB编码的两个字节是不同的），用专门的Unicode处理类可以对UTF编码进行处理。<br><br>　　下面说说中文的问题。<br><br>　　由于历史的原因，在Unicode之前，一共存在过3套中文编码标准。<br><br>　　GB2312-80，是中国大陆使用的国家标准，其中一共编码了6763个常用简体汉字。Big5，是台湾使用的编码标准，编码了台湾使用的繁体汉字，大概有8千多个。HKSCS，是中国香港使用的编码标准，字体也是繁体，但跟Big5有所不同。<br><br>　　这3套编码标准都采用了两个扩展ASCII的方法，因此，几套编码互不兼容，而且编码区间也各有不同<br><br>　　因为其不兼容性，在同一个系统中同时显示GB和Big5基本上是不可能的。当时的南极星、RichWin等等软件，在自动识别中文编码、自动显示正确编码方面都做了很多努力。<br><br>　　他们用了怎样的技术我就不得而知了，我知道好像南极星曾经以同屏显示繁简中文为卖点。<br><br>　　后来，由于各方面的原因，国际上又制定了针对中文的统一字符集GBK和GB18030，其中GBK已经在Windows、Linux等多种操作系统中被实现。<br><br>　　GBK兼容GB2312，并增加了大量不常用汉字，还加入了几乎所有的Big5中的繁体汉字。但是GBK中的繁体汉字和Big5中的几乎不兼容。<br><br>　　GB18030相当于是GBK的超集，比GBK包含的字符更多。据我所知目前还没有操作系统直接支持GB18030。<br><br>　　谈谈Unicode编码，简要解释UCS、UTF、BMP、BOM等名词<br><br>这是一篇程序员写给程序员的趣味读物。所谓趣味是指可以比较轻松地了解一些原来不清楚的概念，增进知识，类似于打RPG游戏的升级。整理这篇文章的动机是两个问题：<br><br>　　问题一：<br><br>使用Windows记事本的&ldquo;另存为&rdquo;，可以在GBK、Unicode、Unicode big<br><br>endian和UTF-8这几种编码方式间相互转换。同样是txt文件，Windows是怎样识别编码方式的呢？<br><br>　　我很早前就发现Unicode、Unicode big endian和UTF-8编码的txt文件的开头会多出几个字节，分别是FF、FE（Unicode）,FE、FF（Unicode big endian）,EF、BB、BF（UTF-8）。但这些标记是基于什么标准呢？<br><br>　　问题二：<br><br>最近在网上看到一个ConvertUTF.c，实现了UTF-32、UTF-16和UTF-8这三种编码方式的相互转换。 对于Unicode(UCS2)、GBK、UTF-8这些编码方式，我原来就了解。但这个程序让我有些糊涂，想不起来UTF-16和UCS2有什么关系。<br><br>查了查相关资料，总算将这些问题弄清楚了，顺带也了解了一些Unicode的细节。写成一篇文章，送给有过类似疑问的朋友。本文在写作时尽量做到通俗易懂，但要求读者知道什么是字节，什么是十六进制。<br><br>　　0、big endian和little endian<br><br>big endian和little<br><br>endian是CPU处理多字节数的不同方式。例如&ldquo;汉&rdquo;字的Unicode编码是6C49。那么写到文件里时，究竟是将6C写在前面，还是将49写在前面？如果将6C写在前面，就是big endian。还是将49写在前面，就是little endian。<br><br>　　&ldquo;endian&rdquo;这个词出自《格列佛游记》。小人国的内战就源于吃鸡蛋时是究竟从大头(Big-Endian)敲开还是从小头(Little-Endian)敲开，由此曾发生过六次叛乱，其中一个皇帝送了命，另一个丢了王位。<br><br>　　我们一般将endian翻译成&ldquo;字节序&rdquo;，将big endian和little endian称作&ldquo;大尾&rdquo;和&ldquo;小尾&rdquo;。<br><br>　　1、字符编码、内码，顺带介绍汉字编码<br><br>字符必须编码后才能被计算机处理。计算机使用的缺省编码方式就是计算机的内码。早期的计算机使用7位的ASCII编码，为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5。<br><br>　　GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。汉字区的内码范围高字节从B0-F7，低字节从A1-FE，占用的码位是72<em>94=6768。其中有5个空位是D7FA-D7FE。<br><br>　　GB2312支持的汉字太少。1995年的汉字扩展规范GBK1.0收录了21886个符号，它分为汉字区和图形符号区。汉字区包括21003 个字符。2000年的GB18030是取代GBK1.0的正式国家标准。该标准收录了27484个汉字，同时还收录了藏文、蒙文、维吾尔文等主要的少数民 族文字。现在的PC平台必须支持GB18030，对嵌入式产品暂不作要求。所以手机、MP3一般只支持GB2312。<br><br>　　从ASCII、GB2312、GBK到GB18030，这些编码方法是向下兼容的，即同一个字符在这些方案中总是有相同的编码，后面的标准支持 更多的字符。在这些编码中，英文和中文可以统一地处理。区分中文编码的方法是高字节的最高位不为0。按照程序员的称呼，GB2312、GBK到 GB18030都属于双字节字符集<br><br>(DBCS)。<br><br>　　有的中文Windows的缺省内码还是GBK，可以通过GB18030升级包升级到GB18030。不过GB18030相对GBK增加的字符，普通人是很难用到的，通常我们还是用GBK指代中文Windows内码。<br><br>　　这里还有一些细节：<br><br>　　GB2312的原文还是区位码，从区位码到内码，需要在高字节和低字节上分别加上A0。<br><br>　　在DBCS中，GB内码的存储格式始终是big endian，即高位在前。<br><br>　　GB2312的两个字节的最高位都是1。但符合这个条件的码位只有128</em>128=16384个。所以GBK和GB18030的低字节最高位都 可能不是1。不过这不影响DBCS字符流的解析：在读取DBCS字符流时，只要遇到高位为1的字节，就可以将下两个字节作为一个双字节编码，而不用管低字 节的高位是什么。<br><br>　　2、Unicode、UCS和UTF<br><br>前面提到从ASCII、GB2312、GBK到GB18030的编码方法是向下兼容的。而Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如&ldquo;汉&rdquo;字的Unicode编码是6C49，而GB码是BABA。<br><br>　　Unicode也是一种字符编码方法，不过它是由国际组织设计，可以容纳全世界所有语言文字的编码方案。Unicode的学名&quot;Universal<br><br>Multiple-Octet Coded Character Set&quot;，简称为UCS。UCS可以看作是&quot;Unicode Character Set&quot;的缩写。<br><br>　　根据维基百科全书(<a href="http://zh.wikipedia.org/wiki/" target="_blank" rel="external">http://zh.wikipedia.org/wiki/</a>)的记载：历史上存在两个试图独立设计Unicode的组织，即国际标准化组织（ISO）和一个软件制造商的协会（unicode.org）。ISO开发了ISO<br><br>10646项目，Unicode协会开发了Unicode项目。<br><br>　　在1991年前后，双方都认识到世界不需要两个不兼容的字符集。于是它们开始合并双方的工作成果，并为创立一个单一编码表而协同工作。从Unicode2.0开始，Unicode项目采用了与ISO<br><br>10646-1相同的字库和字码。<br><br>　　目前两个项目仍都存在，并独立地公布各自的标准。Unicode协会现在的最新版本是2005年的Unicode<br><br>4.1.0。ISO的最新标准是10646-3:2003。<br><br>　　UCS规定了怎么用多个字节表示各种文字。怎样传输这些编码，是由UTF(UCS Transformation Format)规范规定的，常见的UTF规范包括UTF-8、UTF-7、UTF-16。<br><br>　　IETF的RFC2781和RFC3629以RFC的一贯风格，清晰、明快又不失严谨地描述了UTF-16和UTF-8的编码方法。我总是记不 得IETF是Internet Engineering Task Force的缩写。但IETF负责维护的RFC是Internet上一切规范的基础。<br><br>　　3、UCS-2、UCS-4、BMP<br><br>　　UCS有两种格式：UCS-2和UCS-4。顾名思义，UCS-2就是用两个字节编码，UCS-4就是用4个字节（实际上只用了31位，最高位必须为0）编码。下面让我们做一些简单的数学游戏：<br><br>　　UCS-2有2^16=65536个码位，UCS-4有2^31=2147483648个码位。<br><br>　　UCS-4根据最高位为0的最高字节分成2^7=128个group。每个group再根据次高字节分为256个plane。每个plane根 据第3个字节分为256行 (rows)，每行包含256个cells。当然同一行的cells只是最后一个字节不同，其余都相同。<br><br>　　group 0的plane 0被称作Basic Multilingual Plane, 即BMP。或者说UCS-4中，高两个字节为0的码位被称作BMP。<br><br>将UCS-4的BMP去掉前面的两个零字节就得到了UCS-2。在UCS-2的两个字节前加上两个零字节，就得到了UCS-4的BMP。而目前的UCS-4规范中还没有任何字符被分配在BMP之外。<br><br>　　4、UTF编码<br><br>　　UTF-8就是以8位为单元对UCS进行编码。从UCS-2到UTF-8的编码方式如下：<br><br>　　UCS-2编码(16进制) UTF-8 字节流(二进制)<br><br>0000 - 007F 0xxxxxxx<br><br>0080 - 07FF 110xxxxx 10xxxxxx<br><br>0800 - FFFF 1110xxxx 10xxxxxx 10xxxxxx<br><br>　　例如&ldquo;汉&rdquo;字的Unicode编码是6C49。6C49在0800-FFFF之间，所以肯定要用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将6C49写成二进制是：0110 110001 001001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。<br><br>　　读者可以用记事本测试一下我们的编码是否正确。<br><br>　　UTF-16以16位为单元对UCS进行编码。对于小于0x10000的UCS码，UTF-16编码就等于UCS码对应的16位无符号整数。对 于不小于0x10000的UCS码，定义了一个算法。不过由于实际使用的UCS2，或者UCS4的BMP必然小于0x10000，所以就目前而言，可以认 为UTF-16和UCS-2基本相同。但UCS-2只是一个编码方案，UTF-16却要用于实际的传输，所以就不得不考虑字节序的问题。<br><br>　　5、UTF的字节序和BOM<br><br>UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，在解释一个 UTF-16文本前，首先要弄清楚每个编码单元的字节序。例如收到一个&ldquo;奎&rdquo;的Unicode编码是594E，&ldquo;乙&rdquo;的Unicode编码是4E59。如 果我们收到UTF-16字节流&ldquo;594E&rdquo;，那么这是&ldquo;奎&rdquo;还是&ldquo;乙&rdquo;？<br><br>　　Unicode规范中推荐的标记字节顺序的方法是BOM。BOM不是&ldquo;Bill Of Material&rdquo;的BOM表，而是Byte Order Mark。BOM是一个有点小聪明的想法：<br><br>　　在UCS编码中有一个叫做&quot;ZERO WIDTH NO-BREAK<br><br>SPACE&quot;的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。UCS规范建议我们在传输字节流前，先传输字符&quot;ZERO<br><br>WIDTH NO-BREAK SPACE&quot;。<br><br>　　这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。因此字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;又被称作BOM。<br><br>　　UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;的UTF-8编码是EF BB BF（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB<br><br>BF开头的字节流，就知道这是UTF-8编码了。<br><br>　　Windows就是使用BOM来标记文本文件的编码方式的。<br><br>　　6、进一步的参考资料<br><br>本文主要参考的资料是 &quot;Short overview of ISO-IEC 10646 and Unicode&quot;<br><br>(<a href="http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html" target="_blank" rel="external">http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html</a>)。<br><br>&nbsp;<br><br>原文出处：<a href="http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html" target="_blank" rel="external">http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html</a><br><br></div></div><footer class="post__foot u-cf"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T07:08:35.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/">企业级网管开源软件nagios 监控Windows远程服务器</a></h1></header><div class="post__main"><p>在nagios的libexec下有check_nt这个插件,它就是用来检查windows机器的服务的,其功能类似于上一章讲的check_nrpe.不过还需要搭配另外一个软件NSClient,它则类似于NRPE</p>
-<p>&nbsp;,NSClient与nrpe最大的区别就是:</p>
-<p>—被监控机上安装有nrpe,并且还有插件,最终的监控是由这些插件来进行的.当监控主机将监控请求发给nrpe后,nrpe调用插件来完成监控.—NSClient则不同,被监控机上只安装NSClient,没有任何的插件.当监控主机将监控请求发给NSClient后,NSClient直接完成监控,所有的监控是由NSClient完成的.</p>
-<p>&nbsp;</p>
-<p>安装NSClient</p>
-<p>从</p>
-<p><a href="http://sourceforge.net/projects/nscplus" target="_blank" rel="external">http://sourceforge.net/projects/nscplus</a></p>
-<p>下载NSClient++-Win32-0.3.5.msi(或者NSClient++-x64-0.3.5.msi，64位机)，双击安装。</p>
-<p>在开始-运行里面输入services.msc打开&rdquo;服务&rdquo;，启动服务:</p>
-<p>NSClientpp</p>
-<p>&nbsp;</p>
-<p>编辑NSC.ini文件，</p>
-<p>C:\Program Files\NSClient++</p>
-<p>将 [modules]部分的所有模块前面的注释都去掉,除了CheckWMI.dll， RemoteConfiguration.dll，SysTray.dll。</p>
-<p>在[Settings]部分设置’password’选项来设置密码,作用是在nagios连接过来时要求提供密码.这一步是可选的.</p>
-<p>将[Settings]部分’allowed_hosts’选项的注释去掉,并且加上运行nagios的监控主机的IP.</p>
-<p>allowed_hosts=127.0.0.1/32,172.16.8.153</p>
-<p>以逗号相隔.这个地方是支持子网的,如果写成192.168.0.0/24则表示该子网内的所有机器都可以访问.如果这个地方是空白则表示所有的主机都可以连接上来.</p>
-<p>[NSClient]的’port’选项取消注释,,这是NSClient的默认监听端口</p>
-<p>port=12489</p>
-<p>查看服务，在cmd里面执行netstat &ndash;an可以看到已经开始监听tcp的12489端口了。</p>
-<p>防火墙也要打开tcp的12489端口,否则nagios检查此服务的时候会报socket 超时错误.</p>
-<p>&nbsp;</p>
-<p>监控主机的配置</p>
-<p>在监控主机上做的就是:</p>
-<p>1.安装监控windows的插件(已经默认安装了,check_nt)</p>
-<p>2.定义命令</p>
-<p>3.定义要监控的项目</p>
-<p>&nbsp;</p>
-<p>cd /usr/local/nagios/etc/servers</p>
-<p>vi services.cfg</p>
-<p>//这里只举一个例子</p>
-<p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eblog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPULOAD</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nt!CPULOAD! -l 5,80,95</p>
-<p>}</p>
-<p>如果NSClient设置了连接需要密码,则应写成如下格式</p>
-<p>check_nt!CPULOAD!&nbsp; -s PASSWORD -l 5,80,95</p>
-<p>可以通过以下指令测试设备响应是否正常</p>
-<p>/usr/local/nagios/libexec/check_nt -H 主机IP -p 12489 -s 密码 -v UPTIME </p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T06:14:22.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">企业级网管开源软件nagios远程主机的安装配置</a></h1></header><div class="post__main"><p>远程主机（被监控机）安装部分</p>
-<h1 id="yum_install_openssl">yum install openssl</h1><p>rpm -ihv gd-devel-2.0.28-4.4E.1.i386.rpm</p>
-<p>安装nagios-plugin</p>
-<p>groupadd nagios</p>
-<p>useradd nagios -g nagios -s /sbin/nologin</p>
-<p>mkdir -p /usr/local/nagios</p>
-<p>mkdir -p /usr/local/nagios/etc</p>
-<p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
-<p>cd /usr/local/src/nagios-plugins-1.4.13</p>
-<p>./configure -prefix=/usr/local/nagios-plugins -enable-redhat-pthread-workaround</p>
-<p>make -j6 &amp;&amp; make install</p>
-<p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
-<h1 id="&ndash;enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem&hellip;_错误时使用">&ndash;enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem&hellip; 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
-<p>tar zxf nrpe-2.12.tar.gz -C /usr/local/src</p>
-<p>cd /usr/local/src/nrpe-2.12</p>
-<p>./configure —enable-ssl —enable-command-args</p>
-<p>make all &amp;&amp;make install</p>
-<p>cp sample-config/nrpe.cfg /usr/local/nagios/etc</p>
-<p>chown -R nagios.nagios /usr/local/nagios</p>
-<p>vi /usr/local/nagios/etc/nrpe.cfg</p>
-<p>添加修改</p>
-<p>allowed_hosts=127.0.0.1,172.16.1.153,a.b.c.25</p>
-<p>command[check_/]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /</p>
-<p>command[check_swap]=/usr/local/nagios/libexec/check_swap -w 20% -c 10%</p>
-<p>command[check_/var]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /var</p>
-<p>command[check_/usr/local]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /usr/local</p>
-<p>command[check_/data1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /data1</p>
-<p>command[check_/opt]=/usr/local/nagios/libexec/check_disk -w 20 -c 10 -p /opt</p>
-<p>vi /etc/rc.local</p>
-<p>echo &quot;/usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d&quot; &gt;&gt; /etc/rc.local</p>
-<p>如果有防火墙也要开放tcp 5666</p>
-<p>vi /etc/sysconfig/iptables</p>
-<p>-A INPUT -s a.b.c.25 -p icmp -m icmp —icmp-type echo-request -m state —state NEW -j ACCEPT</p>
-<p>-A INPUT -s a.b.c.25 -p tcp -m state —state NEW -m tcp —dport 5666 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
-<p>启动nrpe，端口为5666</p>
-<p>/usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d</p>
-<p>/etc/init.d/iptables restart</p>
-<p>服务器端（监控主机）测试:</p>
-<p>/usr/local/nagios/libexec/check_nrpe -H a.b.c.57</p>
-<p>服务器端（监控主机）的配置</p>
-<p>cd /usr/local/nagios/etc/</p>
-<p>mkdir servers/</p>
-<p>vi hosts.cfg</p>
-<h1 id="define_monitor&nbsp;_host">define monitor&nbsp; host</h1><p>define host{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc-server&nbsp;&nbsp;&nbsp; ; The name of this host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-host&nbsp;&nbsp;&nbsp; ; This template inherits other values from the generic-host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; By default, Linux hosts are checked round the clock</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check each Linux host 10 times (max)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive ; Default command to check Linux hosts</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; workhours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Linux admins hate to be woken up, so we only notify during the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Note that the notification_period variable is being overridden from</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; the value that is inherited from the generic-host template!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Resend notification every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Only send notifications for specific host states</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent to the admins by default</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<h6 id="#">#</h6><h1 id="IDC_servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">IDC servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web veryi blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.57</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
-<p>}</p>
-<p>vi hostgroups.cfg</p>
-<p>//这里只举一个例子</p>
-<p>define hostgroup {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostgroup_name&nbsp; blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blog1 servers</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
-<p>}</p>
-<p>vi services.cfg</p>
-<p>define service{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The name of this service template&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from the generic-service definition</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The service can be checked at any time of the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; normal_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check the service every 5 minutes under normal conditions</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; retry_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service every minute until a hard state can be determined</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sagroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent out to everyone in the ‘admins’ group</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Send notifications about warning, unknown, critical, and recovery events</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-notify about service problems every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications can be sent out at any time</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
-<h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check-host-alive">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_d,u,r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,u,r</h1><p>}</p>
-<p>define service{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Name of service template to use</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *,!localhost</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PING</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; check_ping!100.0,20%!500.0,60%</p>
-<p>}</p>
-<p>//这里只举一个例子</p>
-<p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; check_tcp 80</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_tcp!80</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; / Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check<em>command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check</em>/</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPU Load</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_load</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; swap Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_swap</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>vi servicegroups.cfg</p>
-<p>//这里只举一个例子</p>
-<p>define servicegroup{</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; servicegroup_name&nbsp;&nbsp;&nbsp; linux disks</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; free disk Services</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 37-165,/var Free Space,37-165,/opt&nbsp; Free Space,37-165,/data1 Free Space,37-165,/usr/local&nbsp; Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</p>
-<p>进阶:</p>
-<p>Nagios is able to determine whether the hosts you&rsquo;re monitoring are in a DOWN or UNREACHABLE</p>
-<p>state. These are very different (although related) states and can help you quickly determine the root</p>
-<p>cause of network problems. Here&rsquo;s how the reachability logic works to distinguish between these two </p>
-<p>states…</p>
-<p>定义主机父子关系</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.1</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
-<p>}</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inet switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.0.8.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
-<p>}</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing beiyuan</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.12.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
-<p>}</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.161</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; idc router</p>
-<p>}</p>
-<p>//这里只举一个例子</p>
-<p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; office.veryi.com</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; veryi office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.168</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/11/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/13/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+<span class="comment">*filter</span>
+</code></pre><p>:INPUT DROP [0:0]</p>
+<pre><code><span class="attribute">:FORWARD DROP [0:0]</span>
+
+<span class="attribute">:OUTPUT DROP [0:0]</span>
+
+-A FORWARD -d 10.11.40.0/255.255.255.192 -m state --state NEW -j ACCEPT
+
+-A FORWARD -s 172.168.6.0/255.255.254.0 -p tcp -m multiport --dports 25,110,143 -m state --state NEW -m tcp --tcp-flags SYN,RST,ACK SYN -j ACCEPT
+
+-A FORWARD -s 172.168.6.0/255.255.254.0 -p tcp -m state --state NEW -m tcp --dport 80 --tcp-flags SYN,RST,ACK SYN -j ACCEPT
+
+COMMIT
+
+<span class="strong">*nat
+
+</span>-A PREROUTING -i eth0 -p tcp -m mark --mark 0x4 -m tcp --dport 80 -j REDIRECT --to-ports 3128
+
+#透明代理
+
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 8080 -j REDIRECT --to-ports 3128
+
+#访问非80端口
+
+-A POSTROUTING -s 172.168.6.0/255.255.254.0 -o eth1 -j SNAT --to-source 1.2.3.168
+
+#nat
+
+COMMIT
+</code></pre><p>代理服务器概述 </p>
+<pre><code>&amp;nbsp<span class="comment">; </span>
+
+<span class="number">1.1</span>什么是代理服务器&amp;nbsp<span class="comment">; </span>
+
+在TCP/<span class="literal">IP</span>网络中，传统的通信过程是这样的：客户端向服务器请求数据，服务器响应该请求，将数据传送给客户端。在引入了代理服务器以后，这一 过程变成了这样：客户端向服务器发起请求，该请求被送到代理服务器；代理服务器分析该请求，先查看自己缓存中是否有请求数据，如果有就直接传送给客户端， 如果没有就代替客户端向该服务器发出请求。服务器响应以后，代理服务器将响应的数据传送给客户端，同时在自己的缓存中保留一份该数据的拷贝。这样，再有客 户端请求相同的数据时，代理服务器就可以直接将数据传送给客户端，而不需要再向该服务器发起请求。 
+
+&amp;nbsp<span class="comment">; </span>
+
+<span class="number">1.2</span>&amp;nbsp<span class="comment">;代理服务器的功能&amp;nbsp; </span>
+
+一般说来，代理服务器具有以下的功能：&amp;nbsp<span class="comment">; </span>
+
+<span class="number">1</span>.通过缓存增加访问速度&amp;nbsp<span class="comment">; </span>
+
+随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。&amp;nbsp<span class="comment">; </span>
+
+通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。&amp;nbsp<span class="comment">; </span>
+
+<span class="number">2</span>.提供用私有<span class="literal">IP</span>访问Internet的方法&amp;nbsp<span class="comment">; </span>
+
+<span class="literal">IP</span>地址是不可再生的宝贵资源，假如你只有有限的<span class="literal">IP</span>地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。&amp;nbsp<span class="comment">; </span>
+
+<span class="number">3</span>.提高网络的安全性&amp;nbsp<span class="comment">; </span>
+
+这一点是很明显的，如果内部用户访问Internet都是通过代理服务器，那么，代理服务器就成为进入Internet的唯一通道；反过来说，代 理服务器也是Internet访问内部网的唯一通道，如果你没有做反向代理，则对于Internet上的主机来说，你的整个内部网只有代理服务器是可见 的，从而大大增强了网络的安全性。
+</code></pre><p>反向代理:</p>
+<pre><code>什么是反向代理呢？其实，反向代理也就是通常所说的WEB服务器加速，它是一种通过在繁忙的WEB服务器和Internet之间增加一个高速的WEB缓冲服务器（即：WEB反向代理服务器）来降低实际的WEB服务器的负载。
+
+Web服务器加速（反向代理）是针对Web服务器提供加速功能的。它作为代理<span class="operator"><span class="keyword">Cache</span>，但并不针对浏览器用户，而针对一台或多台特定Web服务器（这也是反向代理名称的由来）。实施反向代理（如上图所示），只要将<span class="keyword">Reverse</span> Proxy <span class="keyword">Cache</span>设备放置在一台或多台Web服务器前端即可。当互联网用户访问某个WEB服务器时，通过DNS服务器解析后的IP地址是<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>的IP地址,而非原始Web服务器的IP地址,这时<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>设备充当Web服务器，浏览器可以与它连接，无需再直接与Web服务器相连。因此，大量Web服务工作量被卸载到反向代理服务上。不但能够防止外部网主机直接和web服务器直接通信带来的安全隐患，而且能够很大程度上减轻web服务器的负担，提高访问速度。
+
+反向代理和其它代理的比较
+
+下面将对几种典型的代理服务作一个简单的比较。在网络上常见的代理服务器有三种：
+
+<span class="number">1</span>．&amp;nbsp;</span> 标准的代理缓冲服务器
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 一个标准的代理缓冲服务被用于缓存静态的网页（例如：html文件和图片文件等）到本地网络上的一台主机上（即代理服务器）。当被缓存的页面被第二次访问的时候，浏览器将直接从本地代理服务器那里获取请求数据而不再向原web站点请求数据。这样就节省了宝贵的网络带宽，而且提高了访问速度。但是，要想实现这种方式，必须在每一个内部主机的浏览器上明确指明代理服务器的IP地址和端口号。客户端上网时，每次都把请求送给代理服务器处理，代理服务器根据请求确定是否连接到远程web服务器获取数据。如果在本地缓冲区有目标文件，则直接将文件传给用户即可。如果没有的话则先取回文件，先在本地保存一份缓冲，然后将文件发给客户端浏览器。
+
+2．&amp;nbsp; 透明代理缓冲服务器
+
+&amp;nbsp; 通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。
+</code></pre><p>透明代理缓冲服务和标准代理服务器的功能完全相同。但是，代理操作对客户端的浏览器是透明的（即不需指明代理服务器的IP和端口）。透明代理服务器阻断网络通信，并且过滤出访问外部的HTTP（80端口）流量。如果客户端的请求在本地有缓冲则将缓冲的数据直接发给用户，如果在本地没有缓冲则向远程web服务器发出请求，其余操作和标准的代理服务器完全相同。对于Linux操作系统来说，透明代理使用Iptables或者Ipchains实现。因为不需要对浏览器作任何设置，所以，透明代理对于ISP（Internet服务器提供商）特别有用。</p>
+<pre><code>3．&amp;nbsp; 反向代理缓冲服务器
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; 反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
+<pre><code>PHP <span class="number">5.3</span><span class="number">.6</span>
+
+cacti spine
+
+pureftp
+
+安装
+
+wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
+
+tar -C <span class="regexp">/usr/</span>local -xzf&amp;nbsp; mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64/ mysql
+
+cd <span class="regexp">/usr/</span>local/mysql
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
+
+cp support-files<span class="regexp">/my-huge.cnf etc/</span>my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/skip-locking/</span>skip-external-locking/&amp;#<span class="number">39</span>; my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/default-character-set/</span>character-set-server/&amp;#<span class="number">39</span>; my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_queries/</span>slow_query_log/&amp;#<span class="number">39</span>; my.cnf
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
+
+vim&amp;nbsp; my.cnf
+
+#max_allowed_packet = <span class="number">1</span>M
+
+server-id = <span class="number">8108</span>
+
+max_allowed_packet = <span class="number">64</span>M
+
+max_connections=<span class="number">800</span>
+
+character-set-server=utf8
+
+expire_logs_days = <span class="number">60</span>
+
+binlog_format=mixed
+
+log-bin=mysql-bin
+
+#read_only=<span class="number">1</span>
+
+#slave-skip-errors=<span class="number">1062</span>,<span class="number">1032</span>,<span class="number">1053</span>
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+#default_table_type = INNODB <span class="comment">//unknown variable</span>
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">8</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+slow_query_log
+
+#log-queries-not-using-indexes
+
+#log-slow-admin-statements
+
+#slow_query_log_file=mysql-slow.log
+
+long_query_time=<span class="number">1</span>
+
+log-error=mysqld.log
+
+[mysqld_safe]
+
+log-error=<span class="regexp">/var/</span>log/mysqld.log
+
+pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
+
+添加数据库用户
+
+<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
+
+<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+#chmod -R u+rw data
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
+
+chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld restart
+
+#<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
+
+#<span class="regexp">/sbin/</span>chkconfig --del mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe &amp;amp;
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+mysql5<span class="number">.1</span>升级到mysql5<span class="number">.5</span>
+
+mysql_upgrade包含一下三个命令：
+
+# mysqlcheck --check-upgrade --all-databases --auto-repair
+
+# mysql_fix_privilege_tables
+
+# mysqlcheck --all-databases --check-upgrade --fix-db-names --fix-table-names
+
+在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql_upgrade -uroot -p
+
+[ERROR] <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/<span class="string">mysqld:</span> unknown variable &amp;#<span class="number">39</span>;default_table_type=INNODB&amp;#<span class="number">39</span>;
+
+注释my.cnf中的default_table_type=INNODB
+
+把所有INNODB表转换成MYISAM表的脚本
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T03:57:42.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">cacti SQL Failed! Error:'1062'故障排除</a></h1></header><div class="post__main"><p>cacti日志报错：</p>
+<p>05/25/2011 11:40:01 AM - SPINE: Poller[0] ERROR: SQL Failed! Error:&#39;1062&#39;, Message:&#39;Duplicate entry &#39;3-mem_buffers-2011-05-25 11:40:01&#39; for key &#39;PRIMARY&#39;&#39;, SQL Fragment:&#39;INSERT INTO poller_output (local_data_id, rrd_name, time, output) VALUES (3,&#39;mem_buffers&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;927912&#39;),(4,&#39;mem_swap&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4192956&#39;),(5,&#39;&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;1min:0.10 5min:0.16 10min:0.23&#39;),(6,&#39;users&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4&#39;),(7,&#39;proc&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;169&#39;),(8,&#39;hdd_free&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;47949780&#39;),(8,&#39;hdd_used&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;44424292&#39;)&#39;</p>
+<pre><code>Check
+
+- <span class="regexp">/etc/</span>crontab
+
+- <span class="regexp">/etc/</span>cron.d/cacti
+
+- crontab of root and cactiuser 
+
+cat <span class="regexp">/etc/</span>crontab
+
+SHELL=<span class="regexp">/bin/</span>bash
+
+PATH=<span class="regexp">/sbin:/</span><span class="string">bin:</span><span class="regexp">/usr/</span><span class="string">sbin:</span><span class="regexp">/usr/</span>bin
+
+MAILTO=root
+
+HOME=/
+
+# run-parts
+
+<span class="number">01</span> * * * * root run-parts <span class="regexp">/etc/</span>cron.hourly
+
+<span class="number">02</span> <span class="number">4</span> * * * root run-parts <span class="regexp">/etc/</span>cron.daily
+
+<span class="number">22</span> <span class="number">4</span> * * <span class="number">0</span> root run-parts <span class="regexp">/etc/</span>cron.weekly
+
+<span class="number">42</span> <span class="number">4</span> <span class="number">1</span> * * root run-parts <span class="regexp">/etc/</span>cron.monthly
+</code></pre><p>crontab -l -u cactiuser</p>
+<pre><code>*<span class="regexp">/5 * * * * /</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php&amp;nbsp; <span class="regexp">/opt/</span>local<span class="regexp">/www/</span>html<span class="regexp">/cacti/</span>poller.php &amp;gt; <span class="regexp">/dev/</span><span class="literal">null</span> <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span>
+
+cat <span class="regexp">/etc/</span>cron.d/cacti 
+
+*<span class="regexp">/5 * * * *&amp;nbsp;&amp;nbsp;&amp;nbsp; cacti&amp;nbsp;&amp;nbsp;&amp;nbsp; php /</span>var<span class="regexp">/www/</span>cacti<span class="regexp">/poller.php &amp;amp;&amp;gt;/</span>dev/<span class="literal">null</span>
+
+注释以上语句故障排除。
+
+&amp;nbsp;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-16T09:31:55.000Z" class="post__time">五月 16, 2011</time><h1 class="post__title"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/">postfix邮件服务器安全</a></h1></header><div class="post__main"><p>配置extmail不允许伪造不存在的本地邮件地址发邮件,不允许并仿冒他人邮件地址发送邮件</p>
+<pre><code>cd /etc/postfix/
+
+cat &amp;gt;mysql_virtual_sender_maps.cf&amp;lt;&amp;lt;EOF
+
+<span class="variable">user =</span> extmail
+
+<span class="variable">password =</span> extmail
+
+<span class="variable">hosts =</span> localhost
+
+<span class="variable">dbname =</span> extmail
+
+<span class="variable">table =</span> mailbox
+
+<span class="variable">select_field =</span> username
+
+<span class="variable">where_field =</span> username
+
+<span class="variable">additional_conditions =</span> AND <span class="variable">active =</span> &amp;<span class="comment">#39;1&amp;#39;</span>
+
+EOF
+
+vim main.cf
+
+<span class="variable">smtpd_sender_login_maps =</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mysql:/etc/postfix/mysql_virtual_sender_maps.cf
+
+<span class="variable">smtpd_sender_restrictions =</span>
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; permit_mynetworks,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_sender_login_mismatch,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_authenticated_sender_login_mismatch,
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reject_unauthenticated_sender_login_mismatch
+</code></pre><p>使配置生效</p>
+<pre><code><span class="title">postfix</span> reload
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/11/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/13/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

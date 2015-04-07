@@ -1,429 +1,114 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-05-24T09:12:01.000Z" class="post__time">五月 24, 2013</time><h1 class="post__title"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/">postfix反垃圾邮件设置</a></h1></header><div class="post__main"><p>增加防止发件人身份伪造的配置：</p>
-<h1 id="smtpd_related_config">smtpd related config</h1><pre><code><span class="constant">smtpd_recipient_restrictions</span> =
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2014-03-12T07:40:01.000Z" class="post__time">三月 12, 2014</time><h1 class="post__title"><a href="/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/">centos修改dhcpd日志不记入系统日志</a></h1></header><div class="post__main"><p>编辑dhcp服务配置文件</p>
+<pre><code><span class="keyword">vim</span> /etc/dhcp/dhcpd.<span class="keyword">conf</span>&amp;nbsp;&amp;nbsp; 在末尾加入
 
-&amp;nbsp; permit_mynetworks,
+<span class="built_in">log</span>-facility&amp;nbsp; local4;
 
-&amp;nbsp; permit_sasl_authenticated,
+&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;
 
-<span class="comment">#&amp;nbsp; reject_non_fqdn_hostname,</span>
+编辑 rsyslog服务配置文件，修改/var/<span class="built_in">log</span>/<span class="keyword">messages</span>加入local4.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
 
-&amp;nbsp; reject_non_fqdn_sender,
+<span class="keyword">vim</span> /etc/rsyslog.<span class="keyword">conf</span>&amp;nbsp;&amp;nbsp; 加入
 
-&amp;nbsp; reject_non_fqdn_recipient,
+# Save dhcpd <span class="keyword">messages</span> also <span class="keyword">to</span> dhcpd.<span class="built_in">log</span>
 
-&amp;nbsp; reject_unauth_destination,
+local4.*&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/dhcpd.<span class="built_in">log</span>
 
-&amp;nbsp; reject_unauth_pipelining,
+#*.info;mail.none;authpriv.none;cron.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
 
-&amp;nbsp; reject_invalid_hostname
+*.info;mail.none;authpriv.none;cron.none;local4.none&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /var/<span class="built_in">log</span>/<span class="keyword">messages</span>
+</code></pre><p>重启&nbsp; rsyslog 服务</p>
+<pre><code>service rsyslog restart
+
+重启 dhcpd 服务
+
+service dhcpd restart
+
+tail -f /<span class="keyword">var</span>/<span class="keyword">log</span>/dhcpd.<span class="keyword">conf</span>
+
+tail -f /<span class="keyword">var</span>/<span class="keyword">log</span>/messges
 </code></pre><p>&nbsp;</p>
-<p>smtpd_sender_restrictions =</p>
-<pre><code>&amp;nbsp; permit_mynetworks,
+</div><footer class="post__foot u-cf"><a href="/2014/03/12/w/centos-e4-bf-ae-e6-94-b9dhcpd-e6-97-a5-e5-bf-97-e4-b8-8d-e8-ae-b0-e5-85-a5-e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-11-29T01:52:55.000Z" class="post__time">十一月 29, 2013</time><h1 class="post__title"><a href="/2013/11/29/w/e5-90-ac-e9-97-bb-e9-9a-8f-e8-bd-ac-e4-bf-ae-e5-bf-83-e8-a6-81-ef-bc-8c-e5-b0-91-e5-8a-9b-e5-8d-b3-e8-84-b1-e7-94-9f-e6-ad-bb-e5-9f-8e/">听闻随转修心要，少力即脱生死城</a></h1></header><div class="post__main"><p>无限生命，暇满人生、等流、增上。</p>
+<p>日常法师宣讲 菩提道次第广论 <a href="https://jianguoyun.com/p/DYxCTYoQsfvdBRifSQ" target="_blank" rel="external">下载https://jianguoyun.com/p/DYxCTYoQsfvdBRifSQ</a>。</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2013/11/29/w/e5-90-ac-e9-97-bb-e9-9a-8f-e8-bd-ac-e4-bf-ae-e5-bf-83-e8-a6-81-ef-bc-8c-e5-b0-91-e5-8a-9b-e5-8d-b3-e8-84-b1-e7-94-9f-e6-ad-bb-e5-9f-8e/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-11-18T10:13:31.000Z" class="post__time">十一月 18, 2013</time><h1 class="post__title"><a href="/2013/11/18/w/e7-94-a8lvm-e5-9c-a8-e7-ba-bf-e6-89-a9-e5-ae-b9-e6-96-87-e4-bb-b6-e7-b3-bb-e7-bb-9f/">用lvm在线扩容文件系统</a></h1></header><div class="post__main"><p>LVM (Logic Volume Management,逻辑卷管理)。以下在centos系统测试通过。</p>
+<p>vgs</p>
+<pre><code>&amp;<span class="tag">nbsp</span>; <span class="tag">VG</span>&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; <span class="id">#PV</span> <span class="id">#LV</span> <span class="id">#SN</span> <span class="tag">Attr</span>&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; <span class="tag">VSize</span>&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; <span class="tag">VFree</span> &amp;<span class="tag">nbsp</span>;
 
-&amp;nbsp; check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
+&amp;<span class="tag">nbsp</span>; <span class="tag">web_doc</span>&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; 1&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; 1&amp;<span class="tag">nbsp</span>;&amp;<span class="tag">nbsp</span>; 0 <span class="tag">wz--n-</span> 465<span class="class">.76G</span> 270<span class="class">.45G</span>
+</code></pre><p>lvs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Attr&nbsp;&nbsp; LSize&nbsp;&nbsp; Origin Snap%&nbsp; Move Log Copy%&nbsp; Convert</p>
+<pre><code>&amp;nbsp; www&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; web_doc&amp;nbsp;&amp;nbsp;&amp;nbsp; -<span class="keyword">wi</span>-ao <span class="number">195.31</span>G&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;
+</code></pre><p>lvextend -L +100g /dev/mapper/web_doc-www</p>
+<pre><code>&amp;nbsp; Extending logical <span class="shader"><span class="keyword">volume</span> www to 295.31 GB
 
-&amp;nbsp; permit_sasl_authenticated,
+&amp;nbsp; Logical <span class="keyword">volume</span> www successfully resized</span>
+</code></pre><p>resize2fs /dev/mapper/web_doc-www</p>
+<pre><code>resize2fs <span class="number">1.39</span> (<span class="number">29</span>-May-<span class="number">2006</span>)
 
-&amp;nbsp; reject_sender_login_mismatch,
+Filesystem <span class="keyword">at</span> /dev/mapper/web_doc-www <span class="keyword">is</span> mounted <span class="function_start"><span class="keyword">on</span></span> /opt; <span class="function_start"><span class="keyword">on</span></span>-line resizing required
 
-&amp;nbsp; reject_authenticated_sender_login_mismatch,
+Performing an <span class="function_start"><span class="keyword">on</span></span>-line resize <span class="keyword">of</span> /dev/mapper/web_doc-www <span class="keyword">to</span> <span class="number">77414400</span> (<span class="number">4</span>k) blocks.
+</code></pre><p>df -m</p>
+<pre><code>Filesystem&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 1M-blocks&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Used Available <span class="operator"><span class="keyword">Use</span>% Mounted <span class="keyword">on</span>
 
-&amp;nbsp; reject_unauthenticated_sender_login_mismatch,
+/dev/mapper/web_doc-www
 
-&amp;nbsp; reject_unknown_sender_domain
-</code></pre><h1 id="SMTP_AUTH_config_here">SMTP AUTH config here</h1><pre><code><span class="setting">broken_sasl_auth_clients = <span class="value"><span class="keyword">yes</span></span></span>
+&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 297655&amp;nbsp;&amp;nbsp;&amp;nbsp; 170871&amp;nbsp;&amp;nbsp;&amp;nbsp; 111669&amp;nbsp; 61% /opt
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/11/18/w/e7-94-a8lvm-e5-9c-a8-e7-ba-bf-e6-89-a9-e5-ae-b9-e6-96-87-e4-bb-b6-e7-b3-bb-e7-bb-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-11-15T10:43:46.000Z" class="post__time">十一月 15, 2013</time><h1 class="post__title"><a href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/">linux系统忘记MySQL密码的恢复方法</a></h1></header><div class="post__main"><p>以下在centos测试通过。</p>
+<p>1. 停止mysqld服务；</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/mysql stop</span>
+</code></pre><p>2. 用以下命令启动MySQL，以不检查权限的方式启动；</p>
+<pre><code>cd /usr/<span class="keyword">local</span>/mysql/bin
 
-<span class="setting">smtpd_sasl_auth_enable = <span class="value"><span class="keyword">yes</span></span></span>
+./mysqld_safe <span class="comment">--skip-grant-tables &amp;amp;</span>
 
-<span class="setting">smtpd_sasl_security_options = <span class="value">noanonymous</span></span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-03-07T01:41:05.000Z" class="post__time">三月 7, 2013</time><h1 class="post__title"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/">公共dns服务</a></h1></header><div class="post__main"><p>推荐opendns的dns服务器，最好选当地的dns服务。</p>
-<pre><code>openDNS
+或者
 
-208.67.220.220 
+mysqld <span class="comment">--skip-grant-tables &amp;amp;</span>
 
-208.67.222.220
+<span class="number">3</span>\. 用空密码方式使用root用户登录 MySQL；
 
-微软DNS
+./mysql -uroot -p
+</code></pre><p>4. 修改root用户的密码；</p>
+<pre><code><span class="operator"><span class="keyword">update</span> mysql.<span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">PASSWORD</span>(&amp;#<span class="number">39</span>;</span>newpass&amp;#39;) where User=&amp;#39;root&amp;#39;;
 
-4.2.2.1 
+<span class="operator"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span>
 
-4.2.2.2
+quit
+</code></pre><p>重新启动MySQL</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/mysql restart</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-09-10T09:14:08.000Z" class="post__time">九月 10, 2013</time><h1 class="post__title"><a href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">php5.4 织梦dedecms后台登录空白的解决方法</a></h1></header><div class="post__main"><p>linux，php5.4， 织梦dedecms后台登录空白，原因：</p>
+<p>include/userlogin.class.php，里面有一个keepuser()函数，是用session_register来注册一个session变量，但是在php5.4中已经移除了这个功能</p>
+<p>把@session_register($this-&gt;keepUserIDTag);&nbsp;&nbsp;&nbsp; 注释掉，然后改为</p>
+<pre><code><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="variable">$this</span>-&gt;keepUserIDTag]))
+</code></pre><p>如下：</p>
+<pre><code><span class="keyword">if</span> (!isset(<span class="variable">$_SESSION</span>[<span class="variable">$this</span>-&gt;keepUserIDTag]))
 
-comodoDNS
+//<span class="variable">@session_register</span>(<span class="variable">$this</span>-&amp;<span class="keyword">gt</span>;keepUserIDTag);
+</code></pre><p>&nbsp;</p>
+<p>附，nginx日志报错：</p>
+<pre><code><span class="title">nginx</span> fastcgi &amp;ldquo;<span class="title">Primary</span> script unknown&amp;rdquo; <span class="title">when</span> configuring userdir
+</code></pre><p>修改：</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.php$ {
 
-156.154.70.25&amp;nbsp; 
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
 
-156.154.71.25
+&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
-谷歌DNS
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
 
-8.8.8.8&amp;nbsp; 
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
 
-8.8.4.4
+为：
 
-诺顿DNS
+&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.php$ {
 
-198.153.192.40(过滤不安全网页)
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
 
-198.153.194.40(同上)
+&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param SCRIPT_FILENAME $request_filename;
 
-198.153.192.50(过滤不安全网页+色情)
+&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param REQUEST_URI $uri?$args;
 
-198.153.194.50(同上)
+&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
 
-198.153.192.60(过滤不安全网页+色情+非家庭友好)
-
-198.153.194.60(同上)
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
-<pre><code>phpMyAdmin &amp;ndash; Error
-
-Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
-</code></pre><p>502 bad gateway</p>
-<p>查看nginx error log：</p>
-<p>[error]&nbsp; recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://127.0.0.1:9000&quot;, host: &quot;mysql.veryi.com&quot;</p>
-<p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
-<p>其他可能：</p>
-<p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
-<pre><code>http
-
-{
-
-fastcgi_connect_timeout <span class="number">300</span>;
-
-fastcgi_send_timeout <span class="number">300</span>;
-
-fastcgi_<span class="built_in">read</span>_timeout <span class="number">300</span>;
-
-}
-
-php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以加大php.ini的memory_<span class="built_in">limit</span>为<span class="number">64</span>M。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T10:35:11.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/">RPM命令详解</a></h1></header><div class="post__main"><div class="content mod-cs-content text-content clearfix" id="content">yum、rpm 常用命令<br><br>　　1.安装一个包<br><br>　　# rpm -ivh<br><br>　　2.升级一个包<br><br>　　# rpm -Uvh<br><br>　　3.移走一个包<br><br>　　# rpm -e<br><br>yum remove<br><br>　　4.安装参数<br><br>　　—force 即使覆盖属于其它包的文件也强迫安装<br><br>　　—nodeps 如果该RPM包的安装依赖其它包，即使其它包没装，也强迫安装。<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.查询一个包是否被安装<br><br>　　# rpm -q &lt; rpm package name&gt;<br><br>　　6.得到被安装的包的信息<br><br>　　# rpm -qi &lt; rpm package name&gt;<br><br>　　7.列出该包中有哪些文件<br><br>　　# rpm -ql &lt; rpm package name&gt;<br><br>　　8.列出服务器上的一个文件属于哪一个RPM包<br><br>　　#rpm -qf<br><br>　　9.可综合好几个参数一起用<br><br>　　# rpm -qil &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;<br><br>　　10.列出所有被安装的rpm package<br><br>　　# rpm -qa<br><br>　　11.列出一个未被安装进系统的RPM包文件中包含有哪些文件？<br><br>　　# rpm -qilp &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;<br><br>　　&lt;&gt;<br><br>　　一、安装<br><br>　　命令格式：<br><br>　　rpm -i ( or —install) options file1.rpm … fileN.rpm<br><br>　　参数：<br><br>　　file1.rpm … fileN.rpm 将要安装的RPM包的文件名<br><br>　　详细选项：<br><br>　　-h (or —hash) 安装时输出hash记号 (<code>#&amp;#39;&amp;#39;)
-
-　　--test 只对安装进行测试，并不实际安装。
-
-　　--percent 以百分比的形式输出安装的进度。
-
-　　--excludedocs 不安装软件包中的文档文件
-
-　　--includedocs 安装文档
-
-　　--replacepkgs 强制重新安装已经安装的软件包
-
-　　--replacefiles 替换属于其它软件包的文件
-
-　　--force 忽略软件包及文件的冲突
-
-　　--noscripts 不运行预安装和后安装脚本
-
-　　--prefix 将软件包安装到由 指定的路径下
-
-    --ignorearch 不校验软件包的结构
-
-　　--ignoreos 不检查软件包运行的操作系统
-
-　　--nodeps 不检查依赖性关系
-
-　　--ftpproxy 用 作为 FTP代理
-
-　　--ftpport 指定FTP的端口号为
-
-　　通用选项
-
-　　-v 显示附加信息
-
-　　-vv 显示调试信息
-
-　　--root 让RPM将指定的路径做为&amp;quot;根目录&amp;quot;，这样预安装程序和后安
-
-　　装程序都会安装到这个目录下
-
-　　--rcfile 设置rpmrc文件为
-
-　　--dbpath 设置RPM 资料库存所在的路径为
-
-　　二、删除
-
-　　命令格式：
-
-　　rpm -e ( or --erase) options pkg1 ... pkgN
-
-　　参数
-
-　　pkg1 ... pkgN ：要删除的软件包
-
-　　详细选项
-
-　　--test 只执行删除的测试
-
-　　--noscripts 不运行预安装和后安装脚本程序
-
-　　--nodeps 不检查依赖性
-
-　　通用选项
-
-　　-vv 显示调试信息
-
-　　--root 让RPM将指定的路径做为&amp;quot;根目录&amp;quot;，这样预安装程序和后安装
-
-　　程序都会安装到这个目录下
-
-　　--rcfile 设置rpmrc文件为
-
-　　--dbpath 设置RPM 资料库存所在的路径为
-
-　　三、升级
-
-　　命令格式
-
-　　rpm -U ( or --upgrade) options file1.rpm ... fileN.rpm
-
-　　参数
-
-　　file1.rpm ... fileN.rpm 软件包的名字
-
-　　详细选项
-
-　　-h (or --hash) 安装时输出hash记号 (</code>#&#39;&#39;)<br><br>　　—oldpackage 允许&quot;升级&quot;到一个老版本<br><br>　　—test 只进行升级测试<br><br>　　—excludedocs 不安装软件包中的文档文件<br><br>　　—includedocs 安装文档<br><br>　　—replacepkgs 强制重新安装已经安装的软件包<br><br>　　—replacefiles 替换属于其它软件包的文件<br><br>　　—force 忽略软件包及文件的冲突<br><br>　　—percent 以百分比的形式输出安装的进度。<br><br>—noscripts 不运行预安装和后安装脚本<br><br>　　—prefix 将软件包安装到由 指定的路径下<br><br>　　—ignorearch 不校验软件包的结构<br><br>　　—ignoreos 不检查软件包运行的操作系统<br><br>　　—nodeps 不检查依赖性关系<br><br>　　—ftpproxy 用 作为 FTP代理<br><br>　　—ftpport 指定FTP的端口号为<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　四、查询<br><br>　　命令格式：<br><br>　　rpm -q ( or —query) options<br><br>　　参数：<br><br>　　pkg1 … pkgN ：查询已安装的软件包<br><br>　　详细选项<br><br>　　-p (or ``-&#39;&#39;) 查询软件包的文件<br><br>　　-f 查询属于哪个软件包<br><br>　　-a 查询所有安装的软件包<br><br>　　—whatprovides 查询提供了 功能的软件包<br><br>　　-g 查询属于 组的软件包<br><br>　　—whatrequires 查询所有需要 功能的软件包<br><br>　　信息选项<br><br>　　显示软件包的全部标识<br><br>　　-i 显示软件包的概要信息<br><br>　　-l 显示软件包中的文件列表<br><br>　　-c 显示配置文件列表<br><br>　　-d 显示文档文件列表<br><br>　　-s 显示软件包中文件列表并显示每个文件的状态<br><br>　　—scripts 显示安装、卸载、校验脚本<br><br>　　—queryformat (or —qf) 以用户指定的方式显示查询信息<br><br>　　—dump 显示每个文件的所有已校验信息<br><br>　　—provides 显示软件包提供的功能<br><br>　　—requires (or -R) 显示软件包所需的功能<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　五、校验已安装的软件包<br><br>　　命令格式：<br><br>　　rpm -V ( or —verify, or -y) options<br><br>　　参数<br><br>　　pkg1 … pkgN 将要校验的软件包名<br><br>　　软件包选项<br><br>　　-p Verify against package file<br><br>　　-f 校验所属的软件包<br><br>　　-a Verify 校验所有的软件包<br><br>　　-g 校验所有属于组 的软件包<br><br>　　详细选项<br><br>　　—noscripts 不运行校验脚本<br><br>　　—nodeps 不校验依赖性<br><br>　　—nofiles 不校验文件属性<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　—dbpath 设置RPM 资料库存所在的路径为<br><br>　　六、校验软件包中的文件<br><br>　　语法：<br><br>　　rpm -K ( or —checksig) options file1.rpm … fileN.rpm<br><br>　　参数：<br><br>　　file1.rpm … fileN.rpm 软件包的文件名<br><br>　　Checksig—详细选项<br><br>　　—nopgp 不校验PGP签名<br><br>　　通用选项<br><br>　　-v 显示附加信息<br><br>　　-vv 显示调试信息<br><br>　　—rcfile 设置rpmrc文件为<br><br>　　七、其它RPM选项<br><br>　　—rebuilddb 重建RPM资料库<br><br>　　—initdb 创建一个新的RPM资料库<br><br>　　—quiet 尽可能的减少输出<br><br>　　—help 显示帮助文件<br><br>　　—version 显示RPM的当前版本<br><br></div></div><footer class="post__foot u-cf"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-13T10:44:02.000Z" class="post__time">十二月 13, 2012</time><h1 class="post__title"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/">取消sogou为默认浏览器设置</a></h1></header><div class="post__main"><p>&nbsp; 默认浏览器是firefox，装了sogou浏览器，默认浏览器被改成了sougou。试了几种常规方法都没改回来,改IE为默认也无效。查找注册表：</p>
-<p>HKEY_CLASSES_ROOT\http\shell\se\command</p>
-<p>默认值修改为firefox的安装地址</p>
-<p>&quot;D:\Program Files\Mozilla Firefox\firefox.exe&quot; &quot;%1&quot;</p>
-<p>修改成功</p>
-</div><footer class="post__foot u-cf"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-12T09:30:26.000Z" class="post__time">十二月 12, 2012</time><h1 class="post__title"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/">wordpress手工升级到3.5</a></h1></header><div class="post__main"><p>&nbsp; 自动升级失败，改用手工升级。升级前先备份网站和数据库。</p>
-<p>下载：</p>
-<p>wget <a href="http://cn.wordpress.org/wordpress-3.5-zh_CN.zip" target="_blank" rel="external">http://cn.wordpress.org/wordpress-3.5-zh_CN.zip</a></p>
-<pre><code><span class="title">unzip</span> wordpress-<span class="number">3</span>.<span class="number">5</span>-zh_CN.zip
-</code></pre><p>lls -F</p>
-<pre><code><span class="built_in">index</span>.php&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-activate.php&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-comments-post.php&amp;nbsp; <span class="keyword">wp</span>-cron.php&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-load.php&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-settings.php&amp;nbsp;&amp;nbsp; xmlrpc.php
-
-license.txt&amp;nbsp; <span class="keyword">wp</span>-admin/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-config-sample.php&amp;nbsp; <span class="keyword">wp</span>-includes/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-login.php&amp;nbsp; <span class="keyword">wp</span>-signup.php
-
-readme.html&amp;nbsp; <span class="keyword">wp</span>-blog-header.php&amp;nbsp; <span class="keyword">wp</span>-content/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-links-opml.php&amp;nbsp; <span class="keyword">wp</span>-mail.php&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-trackback.php
-</code></pre><p>开始升级：</p>
-<p>进入网站wordpress根目录</p>
-<p>mkdir ../old</p>
-<p>mv * ../old</p>
-<p>cp -a /opt/download/wordpress/* .</p>
-<p>升级数据库：</p>
-<p>veryi.com/w/wp-admin/upgrade.php</p>
-<p>恢复插件、附件、图片、主题、表情：</p>
-<p>mv ../old/wp-content/themes/ .</p>
-<pre><code>mv ..<span class="regexp">/old/</span>wp-content<span class="regexp">/uploads/</span> .
-
-cp ..<span class="regexp">/old/</span>wp-content<span class="regexp">/plugins/</span> . -a
-</code></pre><p>插件：/wp-content/plugins（如果WP后台导出的话也可以记录下插件有哪些然后重新后台安装）</p>
-<pre><code>附件和上传的图片：<span class="regexp">/wp-content/u</span>ploads
-
-主题：<span class="regexp">/wp-content/</span>themes （主题没有恢复，会出现首页打开空白后台正常的情况。）
-
-表情：<span class="regexp">/wp-includes/im</span>ages<span class="regexp">/smilies</span>
-</code></pre><p>至此成功升级。</p>
-</div><footer class="post__foot u-cf"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-11-30T09:32:43.000Z" class="post__time">十一月 30, 2012</time><h1 class="post__title"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/">svn: REPORT of : 200 OK 错误排除</a></h1></header><div class="post__main"><p>提示：疑难问题找不到原因时，一定要查看error log，相关的错误日志都要分析，不能只看当前服务的日志。</p>
-<p>操作系统：centos 6 x86_64</p>
-<p>服务配置：subversion ,mod_dav_svn ,apache ,nginx</p>
-<pre><code>不管用什么版本的svn客户端，对svn库checkout时都是如下错误:
-
-svn: REPORT <span class="keyword">of</span> &amp;<span class="string">#39</span>;/svn/.../!svn/vcc/<span class="keyword">default</span>&amp;<span class="string">#39</span>;: <span class="number">200</span> OK
-
-一直认为是svn服务的问题，用多种方案不能解决问题，用了大量时间排错debug，甚至计划重建版本库。查看nginx日志是发现：
-</code></pre><p>[crit] 17496#0: *31428 open() &quot;/usr/local/nginx/proxy_temp/1/00/0000001001&quot; failed (13: Permission denied) while reading upstream, client: …, server: …, request: &quot;GET … HTTP/1.1&quot;, upstream: &quot;<a href="http://127.0.0.1:8080/...&amp;quot" target="_blank" rel="external">http://127.0.0.1:8080/...&amp;quot</a>;, host: &quot;…&quot;, referrer: &quot;<a href="http://...&amp;quot" target="_blank" rel="external">http://...&amp;quot</a>;</p>
-<p>修改/usr/local/nginx/proxy_temp目录权限为nginx运行用户权限，问题解决。</p>
-<p>chown vuser /usr/local/nginx/proxy_temp -R</p>
-</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-10-10T08:18:43.000Z" class="post__time">十月 10, 2012</time><h1 class="post__title"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">apache停止响应故障排除</a></h1></header><div class="post__main"><p>&nbsp; apache停止响应，httpd进程存在，80端口有监听。查看apache error log：</p>
-<p>[Sat Sep 29 11:16:01 2012] [error] server is within MinSpareThreads of MaxClients, consider raising the MaxClients setting</p>
-<pre><code><span class="attr_selector">[Sat Sep 29 11:18:07 2012]</span> <span class="attr_selector">[error]</span> <span class="tag">server</span> <span class="tag">reached</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>, <span class="tag">consider</span> <span class="tag">raising</span> <span class="tag">the</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>
-</code></pre><p>修改apache配置文件：</p>
-<p>ServerLimit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 300</p>
-<pre><code>MaxClients&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 6000
-</code></pre><p>问题解决。</p>
-<p>其中最重要的参数是 ThreadsPerChild和 MaxClients：</p>
-<pre><code><span class="preprocessor"># worker MPM</span>
-
-<span class="preprocessor"># ThreadLimit: maximum setting of ThreadsPerChild</span>
-
-<span class="preprocessor"># ServerLimit: maximum setting of StartServers</span>
-
-<span class="preprocessor"># StartServers: initial number of server processes to start</span>
-
-<span class="preprocessor"># MaxClients: maximum number of simultaneous client connections</span>
-
-<span class="preprocessor"># MinSpareThreads: minimum number of worker threads which are kept spare</span>
-
-<span class="preprocessor"># MaxSpareThreads: maximum number of worker threads which are kept spare</span>
-
-<span class="preprocessor"># ThreadsPerChild: constant number of worker threads in each server process</span>
-
-<span class="preprocessor"># MaxRequestsPerChild: maximum number of requests a server process serves</span>
-
-ThreadLimit <span class="number">125</span>
-
-ServerLimit <span class="number">320</span>
-
-StartServers <span class="number">5</span>
-
-MaxClients <span class="number">8000</span>
-
-MinSpareThreads <span class="number">125</span>
-
-MaxSpareThreads <span class="number">1250</span>
-
-ThreadsPerChild <span class="number">125</span>
-
-MaxRequestsPerChild <span class="number">1000</span>
-
-<span class="preprocessor">##ThreadsPerChild 每个子进程建立的线程数，子进程在启动时建立这些线程后就不再建立新的线程了</span>
-
-<span class="preprocessor">##MaxClients 允许同时伺服的最大接入请求数量（在worker下就是最大线程数量）</span>
-
-<span class="preprocessor">##ServerLimit：对最大子进程数的上限，该值必须大于等于MaxClients/ThreadsPerChild</span>
-
-<span class="preprocessor">##ThreadLimit：对ThreadsPerChild的上限，该值必须大于等于 ThreadsPerChild，如果将ThreadLimit设置成一个高出实际需要很多的ThreadsPerChild值，将会有过多的共享内存被分配，应当和ThreadsPerChild可能达到的最大值保持一致.</span>
-
-<span class="preprocessor">##StartServers：服务器启动时的服务进程数目，该值肯定小于等于ServerLimit</span>
-
-<span class="preprocessor">##MinSpareThreads和MaxSpareThreads：通过新建或结束子进程的方式，将空闲线程的总数维持在这个范围内</span>
-
-<span class="preprocessor">##MaxRequestsPerChild：用于控制服务器建立新进程和结束旧进程的频率，其实是一个为了防止内存溢出的参数，每个子进程在其生存期内允许伺服的最大请求数量。到达MaxRequestsPerChild的限制后，子进程将会结束。对于KeepAlive链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。</span>
-
-可以通过检查HTTPServer/logs/error_log日志，判断MaxClients是否需要增加，如果有下面的报错，就说明apache自上次重启至今，曾经发生过达到MaxClients的情况：
-
-[error] server reached MaxClients setting, consider raising the MaxClients setting
-
-还有一种可以实时看到连接数的方法，就是打开 server-status页面，设置方法如下：
-
-<span class="number">1</span>\. 去掉以下部分的注释
-
-LoadModule status_module modules/mod_status.so
-
-ExtendedStatus On
-
-<span class="number">2.</span>修改以下部分
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; SetHandler server-status
-
-&amp;nbsp; # order deny,allow
-
-&amp;nbsp; # Deny from all
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">192.168</span><span class="number">.8</span>
-
-&amp;nbsp;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-09-27T08:47:40.000Z" class="post__time">九月 27, 2012</time><h1 class="post__title"><a href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/">修改pam.d/login导致centos 6 64位不能本地登录</a></h1></header><div class="post__main"><p>&nbsp; centos 6慎用旧版本centos 5文档。</p>
-<p>echo &#39;session required /lib/security/pam_limits.so&#39; &gt;&gt;/etc/pam.d/login</p>
-<pre><code>在64位系统上导致本地不能登录 ！！！
-
-以下在centos 6 x86_64通过测试：
-</code></pre><p>echo &#39;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; soft&nbsp;&nbsp;&nbsp; nofile&nbsp; 16384</p>
-<pre><code><span class="subst">*&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; hard<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; nofile<span class="subst">&amp;</span>nbsp; <span class="number">65535</span><span class="subst">&amp;</span><span class="variable">#39</span>; <span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span><span class="literal">gt</span>; /etc/security/limits<span class="built_in">.</span>conf
-
-echo <span class="subst">&amp;</span><span class="variable">#39</span>;session<span class="subst">&amp;</span>nbsp; required<span class="subst">&amp;</span>nbsp; pam_limits<span class="built_in">.</span>so<span class="subst">&amp;</span><span class="variable">#39</span>; <span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span><span class="literal">gt</span>;/etc/pam<span class="built_in">.</span>d/login
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-09-26T03:34:00.000Z" class="post__time">九月 26, 2012</time><h1 class="post__title"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/">Debian安装配置Iptables防火墙</a></h1></header><div class="post__main"><p>debian默认安装没有开启防火墙。</p>
-<pre><code>第一步:使用如下命令安装:
-
-sudo apt-get <span class="operator"><span class="keyword">install</span> iptables
-
-第二步:查看Iptables目前的配置信息
-
-可以使用如下命令查看
-
-sudo iptables -L
-
-第三步:配置Iptables
-
-配置Iptables,我们先把一个基本的Iptables的规则文章保存起来,这个规则文章做为测试用
-
-sudo vim /etc/iptables.test.rules
-
-然后在这个文章中输入如下规则内容,这个内容是debian官方给出的基本配置
-
-*filter
-
-# Allows <span class="keyword">all</span> loopback (lo0) traffic <span class="keyword">and</span> <span class="keyword">drop</span> <span class="keyword">all</span> traffic <span class="keyword">to</span> <span class="number">127</span>/<span class="number">8</span> that doesn&amp;#<span class="number">39</span>;</span>t <span class="operator"><span class="keyword">use</span> lo0
-
--A <span class="keyword">INPUT</span> -i lo -j ACCEPT
-
--A <span class="keyword">INPUT</span> -i ! lo -d <span class="number">127.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span> -j REJECT
-
-# Accepts <span class="keyword">all</span> established inbound connections
-
--A <span class="keyword">INPUT</span> -m state <span class="comment">--state ESTABLISHED,RELATED -j ACCEPT</span>
-
-# Allows <span class="keyword">all</span> outbound traffic
-
-# You could modify this <span class="keyword">to</span> <span class="keyword">only</span> allow certain traffic
-
--A <span class="keyword">OUTPUT</span> -j ACCEPT
-
-# Allows HTTP <span class="keyword">and</span> HTTPS connections <span class="keyword">from</span> anywhere (the normal ports <span class="keyword">for</span> websites)
-
--A <span class="keyword">INPUT</span> -m state <span class="comment">--state NEW -m tcp -p tcp --dport 9090 -j ACCEPT</span>
-
--A <span class="keyword">INPUT</span> -p tcp <span class="comment">--dport 80 -j ACCEPT</span>
-
--A <span class="keyword">INPUT</span> -p tcp <span class="comment">--dport 443 -j ACCEPT</span>
-
-# Allows SSH connections <span class="keyword">for</span> script kiddies
-
-# THE -dport <span class="built_in">NUMBER</span> <span class="keyword">IS</span> THE SAME ONE YOU <span class="keyword">SET</span> UP <span class="keyword">IN</span> THE SSHD_CONFIG FILE
-
--A <span class="keyword">INPUT</span> -p tcp -m state <span class="comment">--state NEW --dport 22 -j ACCEPT</span>
-
-# <span class="keyword">Now</span> you should <span class="keyword">read</span> up <span class="keyword">on</span> iptables rules <span class="keyword">and</span> consider whether ssh access 
-
-# <span class="keyword">for</span> everyone <span class="keyword">is</span> really desired. Most likely you will <span class="keyword">only</span> allow access <span class="keyword">from</span> certain IPs.
-
-# Allow ping
-
--A <span class="keyword">INPUT</span> -p icmp -m icmp <span class="comment">--icmp-type 8 -j ACCEPT</span>
-
-# <span class="keyword">log</span> iptables denied calls (access via &amp;#<span class="number">39</span>;</span>dmesg&amp;#39; command)
-
--A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix &amp;quot;iptables denied: &amp;quot; --log-level 7</span>
-
-# Reject all other inbound - default deny unless explicitly allowed policy:
-
--A INPUT -j REJECT
-
--A FORWARD -j REJECT
-
-<span class="operator"><span class="keyword">COMMIT</span>
-
-保存本文件,然后把本规则加载,使之生效,注意,iptables不需要重启,加载一次规则就成了
-
-sudo iptables-<span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.test.rules
-
-然后再查看最新的配置,应该所有的设置都生效了.
-
-sudo iptables -L
-
-第四:保存生效的配置,让系统重启的时候自动加载有效配置
-
-iptables提供了保存当前运行的规则功能
-
-iptables-save &amp;gt; /etc/iptables.up.rules
-
-注意,如果当前用户不是root,即使使用了sudo,也会提示你没有权限,无法保存,所以执行本命令,你必须使用root用户.
-
-可以使用sudo -i快速转到root,使用完成,请及时使用su username切换到普通帐户.
-
-为了重启服务器后,规则自动加载,我们创建如下文件:
-
-sudo vim /etc/network/if-pre-up.d/iptables
-
-内容如下:
-
-#!/bin/bash
-
-/sbin/iptables-<span class="operator"><span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.up.rules
-
-最后,设置本文章具体可执行仅限
-
-chmod +x /etc/network/if-pre-up.d/iptables
-
-第五:其它
-
-如果你想设置某ip段可以访问所有服务,你需要在iptables.test.rules文件中加入
-
--A INPUT -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
-
-然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="dayu2829@sina.com" title="wiebo" class="weibo ico"></a><a href="kindquiet@qq.com" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/2/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/2/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

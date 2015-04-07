@@ -1,0 +1,377 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-12-23T05:25:10.000Z" class="post__time">十二月 23, 2009</time><h1 class="post__title"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/">u盘/移动硬盘（usb hd）安装多种linux live CD</a></h1></header><div class="post__main"><p>如果U盘够大，可以在一个U盘安装slax,pclinuxos,Linux Mint,puppy Linux等多种live linux。移动硬盘原理相同，不做区分。</p>
+<p>因为U盘常用来拷贝文件，fat格式在多种操作系统上通用，所以用grub4dos管理U盘引导。</p>
+<p>把U盘格成HDD格式：</p>
+<p>用DiskGenius 3.2把U盘格式化为USB-HDD格式，推荐使用FAT32分区；或者用U盘格式化工具（HPUSBFW.EXE ）格式化为 HDD 格式。还有其它 工具如FlashBoot、 WIN PM 等。</p>
+<pre><code>将引导代码写入<span class="keyword">U</span>盘mbr：
+
+Win32下，运行grubinst_gui.exe ，在&amp;ldquo;磁盘&amp;rdquo;处选中<span class="keyword">U</span>盘，在&amp;ldquo;选项&amp;rdquo;区选中&amp;ldquo;不保存原来的mbr&amp;rdquo;、&amp;ldquo;不引导原来的mbr&amp;rdquo;、&amp;ldquo;启动时不搜索软盘&amp;rdquo;、&amp;ldquo;输出详细信息&amp;rdquo;，点击&amp;ldquo;安装&amp;rdquo;即可。
+</code></pre><p>拷贝<a href="http://sourceforge.net/projects/grub4dos/files/" target="_blank" rel="external">grub4dos</a>的grub.exe、grldr、menu.lst到u盘根目录。</p>
+<p>现在，U盘已经可以用grub引导，把电脑设置为U盘优先引导，测试一下grub的引导。</p>
+<p>安装linux live cd的过程分为两步，一是把live cd的iso镜像文件中的相关目录和文件复制到U盘，可以用Virtual CloneDrive加载iso镜像。二是编辑grub的menu.lst，各个版本的linux差别较大。</p>
+<h6 id="#">#</h6><h1 id="安装Linux_slax">安装<a href="http://www.slax.org/" target="_blank" rel="external">Linux slax</a></h1><p>提取slax-6.1.2.iso中的</p>
+<p>boot</p>
+<p>slax</p>
+<p>目录（包含文件，其实boot目录只需vmlinuz 、initrd.gz即可）到U盘根目录即可，这个是最容易的安装的linux live之一，而且slax启动速度快，对声卡等硬件支持更好，至少在我测试过的live cd linux中如此。</p>
+<p>grub菜单：</p>
+<p>title Slax</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /boot/vmlinuz <span class="variable">root=</span>/dev/ram0 rw <span class="variable">max_loop=</span><span class="number">255</span> <span class="variable">init=</span>linuxrc <span class="variable">load_ramdisk=</span><span class="number">1</span> <span class="variable">ramdisk_size=</span><span class="number">6666</span> slax <span class="variable">from=</span>/slax/ <span class="variable">vga=</span>normal <span class="variable">autoexec=</span>startx
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /boot/initrd.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><h1 id="安装pclinuxos-2009-2-iso">安装pclinuxos-2009.2.iso</h1><p>打开pclinuxos-2009.2.iso</p>
+<p>拷贝到livecd.sqfs到U盘根目录，拷贝vmlinuz、initrd.gz到相应目录</p>
+<p>grub菜单：</p>
+<p>title pclinuxos</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel&amp;nbsp; /isolinux/vmlinuz&amp;nbsp; <span class="variable">livecd=</span>livecd&amp;nbsp; <span class="variable">root=</span>/dev/rd/<span class="number">3</span> <span class="variable">acpi=</span>on <span class="variable">vga=</span><span class="number">788</span> <span class="variable">keyb=</span>us <span class="variable">splash=</span>silent <span class="variable">fstab=</span>rw,noauto
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /isolinux/initrd.gz
+</code></pre><h1 id="安装Linux_Mint">安装Linux Mint</h1><p>从LinuxMint-8.iso中提取文件，</p>
+<p>拷贝mint.seed到U盘preseed目录，拷贝filesystem.manifest</p>
+<pre><code>filesystem<span class="class">.manifest-desktop</span>
+
+filesystem<span class="class">.squashfs</span>
+
+initrd<span class="class">.lz</span>
+
+vmlinuz到casper目录。
+</code></pre><p>复制.disk目录，否则不能正常启动。ubuntu系列都可以这样操作。</p>
+<p>grub菜单：</p>
+<p>title Linux Mint live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/casper/</span>vmlinuz <span class="keyword">file</span>=<span class="regexp">/preseed/mi</span>nt.seed boot=casper quiet nosplash --
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/casper/i</span>nitrd.lz
+</code></pre><h1 id="安装_puppy_Linux">安装 puppy Linux</h1><p>grub菜单：</p>
+<p>title puppy</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel&amp;nbsp; <span class="regexp">/puppy/</span>vmlinuz ramdisk_size=<span class="number">256000</span> root=<span class="regexp">/dev/</span>ram0 PMEDIA=idehd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/puppy/i</span>nitrd.gz
+</code></pre><p>title Puppy-Linux </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">find</span> --set-root <span class="regexp">/puppy/</span>pup-<span class="number">431</span>.sfs
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/puppy/</span>vmlinuz root=<span class="regexp">/dev/</span>ram0 PMEDIA=usbhd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/puppy/i</span>nitrd.gz
+</code></pre><h1 id="安装Linux_veket">安装Linux veket</h1><p>grub菜单：</p>
+<p>title Veket</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel (hd0,<span class="number">0</span>)<span class="regexp">/puppy/</span>vmlinuz root=<span class="regexp">/dev/</span>ram0 PMEDIA=idehd acpi=off
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd (hd0,<span class="number">0</span>)<span class="regexp">/puppy/i</span>nitrd.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><h1 id="安装archinux（未成功）">安装archinux（未成功）</h1><p>grub菜单：</p>
+<p>ERROR:boot device didn&#39;t show up for 30 seconds</p>
+<p>在 ramfs$ 提示符下依次输入:</p>
+<pre><code>ln -s /dev/sdb1 /dev/archiso
+
+<span class="keyword">exit</span>
+
+假定 sdb1 是<span class="keyword">U</span>盘的挂载位置。
+
+这个问题仅在<span class="keyword">U</span>盘启动的时候产生，更准确的说，是仅在没有使用 dd 命令制作的<span class="keyword">U</span>盘启动盘上发生。
+
+为什么呢？因为这种情况下，<span class="keyword">U</span>盘的标签（<span class="keyword">Label</span>）与<span class="keyword">U</span>盘上 <span class="keyword">boot</span>/grub/menu.lst 中指定的不相符了。
+
+因此，一个更好的解决办法是，修改<span class="keyword">U</span>盘上 <span class="keyword">boot</span>/grub/menu.lst :
+
+kernel /<span class="keyword">boot</span>/vmlinuz26 lang=<span class="keyword">en</span> locale=en_US.UTF-8 archisolabel=ARCHISO_OINGAE2I ramdisk_size=75%
+
+将 &amp;ldquo;ARCHISO_OINGAE2I&amp;rdquo; 改为你<span class="keyword">U</span>盘的标签（<span class="keyword">Label</span>）。是什么就改成什么，注意，要区分大小写。存盘即可。
+
+&amp;nbsp;
+</code></pre><h1 id="安装Linux_Ubuntu_live">安装Linux Ubuntu live</h1><p>title Linux Ubuntu live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/casper/</span>vmlinuz boot=casper quiet nosplash --
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/casper/i</span>nitrd.lz
+</code></pre><h1 id="安装NimbleX_Linux_live">安装NimbleX Linux live</h1><p>grub菜单：</p>
+<pre><code>title NimbleX <span class="number">2008</span> - Boot <span class="keyword">in</span> KDM
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; find --set-root /nimblex/vmlinuz-nx08
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /nimblex/vmlinuz-nx08 <span class="variable">ramdisk_size=</span><span class="number">7120</span> <span class="variable">root=</span>/dev/ram0 rw <span class="variable">vga=</span><span class="number">791</span> <span class="variable">splash=</span>silent quiet <span class="variable">changes=</span>nimblex.data <span class="variable">autoexec=</span>xconf;kdm
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /nimblex/initrd-nx08.gz
+</code></pre><h1 id="安装knoppix_Linux_live(推荐)">安装knoppix Linux live(推荐)</h1><p>grub菜单：</p>
+<p>title knoppix adriane vga=0x311</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel /KNOPPIX/linux <span class="variable">ramdisk_size=</span><span class="number">100000</span> <span class="variable">lang=</span>en vt.<span class="variable">default_utf8=</span><span class="number">0</span> <span class="variable">apm=</span>power-off <span class="variable">vga=</span><span class="number">0</span>x311&amp;nbsp; nomce quiet <span class="variable">loglevel=</span><span class="number">0</span> <span class="variable">tz=</span>localtime adriane
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd /KNOPPIX/minirt.gz
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; boot
+</code></pre><p>&nbsp;</p>
+<h1 id="安装Fedora-12-i686-Live">安装Fedora-12-i686-Live</h1><p>grub菜单：</p>
+<p>title Fedora-12-i686-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=USB2G rootfstype=auto ro liveimg quiet&amp;nbsp; rd_NO_LUKS rd_NO_MD noiswmd 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。</p>
+<p>&nbsp;</p>
+<h6 id="#-1">#</h6><h1 id="安装Qomo_Linux（前Everest_Linux）">安装<a href="http://www.linux-ren.org/" target="_blank" rel="external">Qomo Linux（前Everest Linux）</a></h1><p>grub菜单：</p>
+<p>title Qomo-1.0-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=QOMO_USB_2G rootfstype=auto ro liveimg quiet&amp;nbsp; rd_NO_LUKS rd_NO_MD noiswmd
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。提取Qomo-1.0.0-i686-Live.iso中的文件，复制LiveOS目录到u盘，复制initrd0.img、vmlinuz0到LiveOS目录。</p>
+<p>&nbsp;</p>
+<h6 id="#-2">#</h6><h1 id="安装tinycore">安装<a href="http://www.linux-ren.org/" target="_blank" rel="external">tinycore</a></h1><p>grub菜单：</p>
+<p>title tinycore</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/tinycore/</span>bzImage
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/tinycore/</span>tinycore.gz
+</code></pre><p>提取tinycore_3.1.iso中的文件，在u盘建立tinycore目录，复制bzImage、tinycore.gz到tinycore目录。</p>
+<p>&nbsp;</p>
+<h6 id="#-3">#</h6><h1 id="安装[_Centos_5-5_live_CD">安装[ Centos 5.5 live CD</h1><pre><code>](<span class="string">http:</span><span class="comment">//www.centos.org)</span>
+</code></pre><p>grub菜单：</p>
+<p>title CentOS-5.5-i386-Live</p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; root (hd0,<span class="number">0</span>)
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">live:</span>CDLABEL=CENTOS_USB_2G rootfstype=auto ro liveimg quiet 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp; initrd <span class="regexp">/LiveOS/</span>initrd0.img
+</code></pre><p>CDLABEL修改为分区的卷标名称。提取CentOS-5.5-i386-LiveCD.iso中的文件，复制LiveOS目录到u盘，复制initrd0.img、vmlinuz0到LiveOS目录。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-12-18T08:50:13.000Z" class="post__time">十二月 18, 2009</time><h1 class="post__title"><a href="/2009/12/18/w/e5-bf-8d-e7-9a-84-e4-ba-8c-e7-a7-8d-e5-a2-83-e7-95-8c/">忍的二种境界</a></h1></header><div class="post__main"><p>百忍成金</p>
+<p>比如听到有人骂我，高高兴兴听着，不生气，让他骂一百次。</p>
+<p>忍无可忍</p>
+<p>&nbsp;考验来了，我忍了，其实我没有忍，也没有需要忍的。比如听到有人骂我，挨骂就象听唱似的，挨打就象撞门框似的。</p>
+<p>附：</p>
+<p>&nbsp; 东张公五世同居，百忍家道兴。据说他发愿，在他的一生中，要行一百件大忍辱的事，忍过了九十九次之后，第一百次时是他的孙子娶妻那一天，突然来了个道人， 要试验他是否真有忍辱功夫，便向他要这个新娘子，先于自己做一夜夫妻，这一件事使张公很感为难，但他宽大一想，我什么悔辱事都忍受过了，这最后一次忍辱有 什么不能呢？</p>
+<pre><code><span class="keyword">&amp;</span><span class="tag">nbsp</span>;<span class="keyword">&amp;</span><span class="tag">nbsp</span>; 于是劝其孙儿，完成他的百忍大愿，忍辱一下，后来这位道人在新娘房中，跳个不休，嘴里不停地说：<span class="keyword">&amp;</span><span class="tag">ldquo</span>;看得破，跳得过<span class="keyword">&amp;</span><span class="tag">rdquo</span>;。跳到天亮，忽然倒在地上死了，新娘骇 叫起来，待众人来看时，已变成了一个金人，由此致富。故说张公百忍成金，山东那个地方，到现在还有一座巍峨的<span class="attr_selector">[百忍堂]</span>纪念他忍辱的德行。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/12/18/w/e5-bf-8d-e7-9a-84-e4-ba-8c-e7-a7-8d-e5-a2-83-e7-95-8c/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-11-24T01:36:33.000Z" class="post__time">十一月 24, 2009</time><h1 class="post__title"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/">linux系统apache tomcat虚拟主机安装配置</a></h1></header><div class="post__main"><p>&nbsp; 多年不用tomcat，应一朋友要求，搭建一个java环境的虚拟主机，经过多次测试，现在把可以正常运行的配置记录下来。</p>
+<p>安装jdk</p>
+<pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>
+
+sh /mnt/mysql/jdk-<span class="number">6</span>u14-linux-i586.bin 
+
+ln <span class="operator">-s</span> jdk1.<span class="number">6.0</span>_14/ jdk
+
+<span class="built_in">echo</span> &amp;quot;<span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk
+
+<span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span>
+
+<span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib&amp;quot; &amp;gt;&amp;gt; /etc/profile.d/java.sh
+
+chmod +x /etc/profile.d/java.sh
+</code></pre><p>安装tomcat</p>
+<p>wget <a href="http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz" target="_blank" rel="external">http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz</a></p>
+<pre><code>tar xzf apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>.tar.gz -C <span class="regexp">/usr/</span>local/
+
+cd <span class="regexp">/usr/</span>local/
+
+ln -s apache-tomcat-<span class="number">6.0</span><span class="number">.20</span>/ tomcat
+
+vi ~/.bash_profile
+
+TOMCAT_HOME=<span class="regexp">/usr/</span>local/tomcat
+
+export PATH TOMCAT_HOME
+
+source ~/.bash_profile
+
+安装jk connector
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/tomcat/tomcat-connectors/jk/source/jk-1.2.28/tomcat-connectors-1.2.28-src.tar.gz</span>
+
+tar xfz tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>tomcat-connectors-<span class="number">1.2</span><span class="number">.28</span>-src/
+
+cd native/
+
+.<span class="regexp">/configure --with-apxs=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs
+
+make
+
+cp apache-<span class="number">2.0</span><span class="regexp">/mod_jk.so /</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/modules/</span>
+</code></pre><p>&nbsp;</p>
+<p>apche配置</p>
+<p>vim /usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
+<p>LoadModule jk_module modules/mod_jk.so</p>
+<pre><code>Include /usr/<span class="keyword">local</span>/httpd/conf/mod_jk.conf
+
+&amp;<span class="keyword">lt</span>;VirtualHost *:<span class="number">80</span>&amp;<span class="keyword">gt</span>;
+
+JkMountCopy On
+
+&amp;nbsp;&amp;nbsp; ServerName edu.veryi.com
+
+DirectoryIndex <span class="keyword">index</span>.jsp <span class="keyword">index</span>.html <span class="keyword">index</span>.jsp <span class="keyword">index</span>.htm
+
+&amp;nbsp;&amp;nbsp; DocumentRoot /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT
+
+&amp;nbsp;&amp;nbsp; <span class="comment">#DocumentRoot /usr/local/www/edu.veryi.com/html</span>
+
+&amp;nbsp;<span class="comment">#&amp;lt;Directory /usr/local/www/edu.veryi.com&amp;gt;</span>
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;Directory /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT&amp;<span class="keyword">gt</span>;
+
+&amp;nbsp;&amp;nbsp; Order allow,deny
+
+&amp;nbsp;&amp;nbsp; Allow from all
+
+&amp;nbsp;&amp;<span class="keyword">lt</span>;<span class="regexp">/Directory&amp;gt;
+
+&amp;nbsp; CustomLog &amp;quot;|/usr</span><span class="regexp">/local/sbin</span><span class="regexp">/cronolog /var</span><span class="regexp">/log/httpd</span><span class="regexp">/edu.veryi.com-access_log.%Y%m%d&amp;quot; combined
+
+&amp;nbsp; ErrorDocument 404 /missing</span>.html
+
+&amp;<span class="keyword">lt</span>;<span class="regexp">/VirtualHost&amp;gt;</span>
+</code></pre><hr>
+<p>vim /usr/local/httpd/conf/mod_jk.conf</p>
+<pre><code>JkWorkersFile /usr/<span class="keyword">local</span>/httpd/conf/workers.properties
+
+<span class="comment"># Where to put jk logs</span>
+
+JkLogFile /usr/<span class="keyword">local</span>/httpd/logs/mod_jk.<span class="keyword">log</span>
+
+<span class="comment"># Set the jk log level [debug/error/info]</span>
+
+JkLogLevel info
+
+<span class="comment"># Select the log format</span>
+
+JkLogStampFormat &amp;quot;[<span class="variable">%a</span> <span class="variable">%b</span> <span class="variable">%d</span> <span class="variable">%H</span>:<span class="variable">%M</span>:<span class="variable">%S</span> <span class="variable">%Y</span>]&amp;quot;
+
+<span class="comment"># JkOptions indicate to send SSL KEY SIZE,</span>
+
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+
+<span class="comment"># JkRequestLogFormat set the request format</span>
+
+JkRequestLogFormat &amp;quot;<span class="variable">%w</span> <span class="variable">%V</span> <span class="variable">%T</span>&amp;quot;
+
+<span class="comment"># servlet 和jsp请求通过ajp13的协议送给Tomcat</span>
+
+JkMount /servlet/* worker1
+
+JkMount /*.jsp worker1
+</code></pre><hr>
+<p>/usr/local/httpd/conf/workers.properties</p>
+<pre><code><span class="comment"># Defining a worker named worker1 and of type ajp13</span>
+
+worker.<span class="variable">list=</span>worker1
+
+<span class="comment"># Set properties for worker1</span>
+
+worker.worker1.<span class="variable">type=</span>ajp13
+
+worker.worker1.<span class="variable">host=</span>localhost
+
+worker.worker1.<span class="variable">port=</span><span class="number">8009</span>
+
+<span class="comment">#worker.worker1.lbfactor=50</span>
+
+<span class="comment">#worker.worker1.socket_keepalive=1</span>
+
+<span class="comment">#worker.worker1.socket_timeout=300</span>
+</code></pre><p>&nbsp;</p>
+<p>tomcat配置</p>
+<p>vim /usr/local/tomcat/conf/server.xml</p>
+<p>&nbsp; &lt;Host name=&quot;edu.veryi.com&quot; </p>
+<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">unpackWARs=</span>&amp;quot;<span class="constant">true</span>&amp;quot; <span class="variable">autoDeploy=</span>&amp;quot;<span class="constant">true</span>&amp;quot;&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Context <span class="variable">path=</span>&amp;quot;&amp;quot; <span class="variable">docBase=</span>&amp;quot;/usr/local/tomcat/webapps/ROOT&amp;quot; /&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Valve <span class="variable">className=</span>&amp;quot;org.apache.catalina.valves.AccessLogValve&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_access_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">pattern=</span>&amp;quot;common&amp;quot; <span class="variable">resolveHosts=</span>&amp;quot;<span class="constant">false</span>&amp;quot;/&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;Logger <span class="variable">className=</span>&amp;quot;org.apache.catalina.logger.FileLogger&amp;quot; <span class="variable">directory=</span>&amp;quot;logs&amp;quot;&amp;nbsp; 
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">prefix=</span>&amp;quot;tomcat_file_log.&amp;quot; <span class="variable">suffix=</span>&amp;quot;.log&amp;quot; <span class="variable">timestamp=</span>&amp;quot;<span class="constant">true</span>&amp;quot;/&amp;gt;
+
+&amp;nbsp; &amp;lt;/Host&amp;gt;
+</code></pre><p>&nbsp; &lt;Host name=&quot;class.veryi.com&quot; appBase=&quot;&quot;</p>
+<pre><code><span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; unpackWARs<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; autoDeploy<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; xmlValidation<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot; xmlNamespaceAware<span class="subst">=&amp;</span>quot;<span class="literal">false</span><span class="subst">&amp;</span>quot;<span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Alias<span class="subst">&amp;</span><span class="literal">gt</span>;veryi<span class="built_in">.</span>com<span class="subst">&amp;</span><span class="literal">lt</span>;/Alias<span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;Context path<span class="subst">=&amp;</span>quot;<span class="subst">&amp;</span>quot; docBase<span class="subst">=&amp;</span>quot;/webapps/ROOT<span class="subst">&amp;</span>quot; reloadable<span class="subst">=&amp;</span>quot;<span class="literal">true</span><span class="subst">&amp;</span>quot; workDir<span class="subst">=&amp;</span>quot;work<span class="subst">&amp;</span>quot; <span class="subst">/</span><span class="subst">&amp;</span><span class="literal">gt</span>;
+
+<span class="subst">&amp;</span>nbsp; <span class="subst">&amp;</span><span class="literal">lt</span>;/Host<span class="subst">&amp;</span><span class="literal">gt</span>;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-11-17T06:49:32.000Z" class="post__time">十一月 17, 2009</time><h1 class="post__title"><a href="/2009/11/17/w/e4-b8-ba-e5-96-9c-e6-ac-a2-e6-97-85-e8-a1-8c-e5-92-8c-e9-aa-91-e8-bd-a6-e4-b8-8a-e7-8f-ad-e7-9a-84-e6-9c-8b-e5-8f-8b-e6-8e-a8-e8-8d-90-e4-b8-80-e6-ac-be-e9-9f-b3-e7-ae-b1-e8-bd-bb-e9-aa-91-e5-85-b5u/">为喜欢旅行和骑车上班的朋友推荐一款音箱-轻骑兵U2使用感受</a></h1></header><div class="post__main"><p>耳机时间长了会很不舒服，也会损伤听力。所以考虑买一个便携音箱。</p>
+<pre><code>轻骑兵<span class="constant">U2</span>迷你音箱的特点:
+
+<span class="number">1</span>、续航时间长，我每天上下班骑车<span class="number">2</span>个小时，<span class="number">4</span>节<span class="number">5#2000</span><span class="id">mah</span>充电电池，已经听了一个月了。
+
+<span class="number">2</span>、声音够大，可以盖过路边汽车的噪音，额定功率<span class="number">2</span>W比某款号称额定功率<span class="number">2.5</span>W&amp;<span class="id">times</span>;<span class="number">2</span>的声音大多了。
+
+<span class="number">3</span>、体积小，也就一个半拳头大，携带方便，适合骑车旅行、步行旅游者。
+
+轻骑兵<span class="constant">U2</span>迷你音箱是轻骑兵公司专为户外运动爱好者量身定做一款产品。另外，轻骑兵<span class="constant">U2</span>还采用了主副箱设计，音乐回放时它的立体声输出分离度较高，整体性能在同级音箱中非常突出。同时，轻骑兵<span class="constant">U2</span>迷你音箱还可以作为手电筒照明使用，对于户外爱好者来说使用起来非常方便。
+
+对于&amp;<span class="id">ldquo</span>;驴友&amp;<span class="id">rdquo</span>;来讲，随身装备必须做到精而又精，尤其音响设备要做到全天候，太重的音箱不会考虑，太娇贵的器材同样必须放弃。轻骑兵<span class="constant">U2</span>由铝合金及<span class="constant">ABS</span>工程塑料制成，强度高、重量轻，适合各种严酷的户外环境使用。
+
+&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="constant">U2</span>的造型比较独特，酷似一片树叶，又有点像水滴，充满了动感，切合它户外音箱的定位。
+
+&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 供电方面轻骑兵<span class="constant">U2</span>使用<span class="number">4</span>节<span class="number">5</span>号电池，连续播放时间长达<span class="number">50</span>小时左右。
+
+&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 随机附带一根音箱连接线，<span class="number">3.5</span><span class="id">mm</span>插头的音频输入线长短各一根，可方便接驳各种随身听及笔记本。
+
+&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="constant">U2</span>的输出功率为<span class="number">2</span>W，实际听感音色嘹亮激越，金属质感极强，对于户外用户已经足够。
+
+&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="constant">U2</span>由于体积小巧，还可以当笔记本专用音箱，随机附送电源适配器，用户可选配<span class="constant">USB</span>供电线。
+
+　　值得一提的是<span class="constant">U2</span>还内置一颗高亮度的白色<span class="constant">LED</span>，在暗夜还能照明用。附送红色防震袋，保证了音箱不被摔坏。
+
+轻骑兵 <span class="constant">U2</span>
+
+音箱系统&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 便携音箱
+
+额定功率（W）&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="number">2</span>
+
+功能调节&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 无
+
+扬声器单元&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="number">2</span> 英寸 全频带纸振膜高音
+
+防磁功能&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 支持
+
+外观色彩&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 黑色
+
+音箱尺寸&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 主箱： <span class="number">65</span>*<span class="number">65</span>*<span class="number">110</span> <span class="id">mm</span> 副箱： <span class="number">65</span>*<span class="number">65</span>*<span class="number">75</span> <span class="id">mm</span>
+
+音箱重量&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 约<span class="number">1.0</span> <span class="variable">Kg</span>
+
+其它参数&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="number">4</span>节<span class="number">5</span>号电池，可连续播放时间长达<span class="number">50</span>小时左右
+
+其它特点&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; <span class="number">3</span>倍功率，<span class="constant">U2</span>内置高效率D类放大器，在<span class="number">4</span>节电池供电下每个声道可以最大输出高达<span class="number">2.1</span>W的功率，是传统<span class="constant">AB</span>类放大器的<span class="number">3</span>倍以上。
+
+立体声，分离式主副音箱设计，最大可能的提高立体声分离度
+
+高容量，使用<span class="number">4</span>节<span class="number">5</span>号电池，连续播放时间长达<span class="number">50</span>小时左右。 
+
+可充电，在家里使用时可以连接附送的电源适配器，边听歌边充电。 
+
+带照明，<span class="constant">U2</span>内置一颗超高亮度的白色<span class="constant">LED</span>，可以作为手电使用。
+
+输入电源&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>;&amp;<span class="id">nbsp</span>; 直流<span class="number">5</span>V/<span class="number">2000</span>mA
+
+&amp;<span class="id">nbsp</span>;
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/11/17/w/e4-b8-ba-e5-96-9c-e6-ac-a2-e6-97-85-e8-a1-8c-e5-92-8c-e9-aa-91-e8-bd-a6-e4-b8-8a-e7-8f-ad-e7-9a-84-e6-9c-8b-e5-8f-8b-e6-8e-a8-e8-8d-90-e4-b8-80-e6-ac-be-e9-9f-b3-e7-ae-b1-e8-bd-bb-e9-aa-91-e5-85-b5u/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-09-29T07:17:31.000Z" class="post__time">九月 29, 2009</time><h1 class="post__title"><a href="/2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/">学习mysql 5 权威指南</a></h1></header><div class="post__main"><p>mysql 5.1.39，建立一个存储过程</p>
+<p>BEGIN</p>
+<p>&nbsp;&nbsp;&nbsp; IF ISNULL(s) THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN ‘’;</p>
+<p>&nbsp;&nbsp;&nbsp; ELSEIF n&lt;15 THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN LEFT(s, n);</p>
+<p>&nbsp;&nbsp;&nbsp; ELSE</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IF CHAR_LENGTH(s) &lt;= n THEN</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN s;</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ELSE</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN CONCAT(LEFT(s, n-10), ‘ … ‘, RIGHT(s, 5));</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; END IF;</p>
+<p>&nbsp;&nbsp;&nbsp; END IF;</p>
+<p>END</p>
+<p>ERROR 1418 (HY000): This function has none of DETERMINISTIC, NO SQL, or READS SQL DATA in its declaration and binary logging is enabled (you <em>might</em> want to use the less safe log_bin_trust_function_creators variable)</p>
+<p>&nbsp;</p>
+<p>解决:</p>
+<p>mysql&gt; set global log_bin_trust_routine_creators=1;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/09/29/w/e5-ad-a6-e4-b9-a0mysql-5-e6-9d-83-e5-a8-81-e6-8c-87-e5-8d-97/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/24/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/26/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

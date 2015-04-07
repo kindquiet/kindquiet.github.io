@@ -1,0 +1,509 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-08T05:27:01.000Z" class="post__time">四月 8, 2009</time><h1 class="post__title"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/"> nfs的实用配置和安全</a></h1></header><div class="post__main"><p>网络文件系统是unix支持的文件系统中的一种， 也被称为 NFS。 NFS允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序可以象访问本地文件一样访问远端系统上的文件。以下是NFS的好处：</p>
+<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 本地工作站使用更少的磁盘空间，因为通常的数据可以存放在一台机器上而且可以通过网络访问到。</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 用户不必在每个网络上机器里头都有一个home目录。Home目录 可以被放在NFS服务器上并且在网络上处处可用。</p>
+<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 诸如软驱，CDROM，和 ZipU+00AE 之类的存储设备可以在网络上面被别的机器使用。这可以减少整个网络上的可移动介质设备的数量。</p>
+<p>nfs的构成分成两个部份</p>
+<p>1.被分享的目录的机器通常称之为nfs server</p>
+<p>2.连接nfs的通常称之为nfs client</p>
+<p>创建或修改/etc/exports 配置文件</p>
+<p>这个文件的内容非常简单，每一行由提供路径，客户名列表以及每个客户名后紧跟的访问选项构成：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [共享的目录] [主机名或IP(参数,参数)] </p>
+<p>其中参数是可选的，当不指定参数时，nfs将使用默认选项。默认的共享选项是</p>
+<p>sync,ro,root_squash,no_delay。</p>
+<p>当主机名或IP地址为空时，则代表共享给任意客户机提供服务。</p>
+<p>当将同一目录共享给多个客户机，但对每个客户机提供的权限不同时，可以这样：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [共享的目录] [主机名1或IP1(参数1,参数2)] [主机名2或IP2(参数3,参数4)]</p>
+<p>以下是在centos linux上的配置:</p>
+<p>nfs服务器:</p>
+<p>vi /etc/exports </p>
+<p>/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 172.16.1.0/24(ro,async,all_squash)</p>
+<p>/var/log/httpd&nbsp;&nbsp;&nbsp; 172.16.1.0/24(rw,async,all_squash)</p>
+<h1 id="/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_*(ro,async,all_squash)">/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *(ro,async,all_squash)</h1><h1 id="/khsys/vod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_172-16-1-0/24(ro,async,all_squash，anonuid=99)">/khsys/vod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 172.16.1.0/24(ro,async,all_squash，anonuid=99)</h1><p>root_squash：在登入 NFS 主机使用分享之目录的使用者如果是 root，那使用者的UID&nbsp; GID 变成 nobody 身份</p>
+<p>All_squash 客户机上的任何用户访问该共享目录时都映射成匿名用户 </p>
+<p>将客户机的用户都映射成服务器上的匿名用户(all_squash),相当于在服务器上用nobody用户访问该目录（若客户机要在该共享目录上保存文件（即写操作），则服务器上的nobody用户对该目录必须有写的权限）</p>
+<p>Async 资料会先暂存于内存中，而非直接写入硬盘 </p>
+<p>下面是一些NFS共享的常用参数：</p>
+<p>&nbsp;&nbsp;&nbsp; ro&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 只读访问 </p>
+<p>&nbsp;&nbsp;&nbsp; rw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 读写访问 </p>
+<p>&nbsp;&nbsp;&nbsp; sync&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 所有数据在请求时写入共享 </p>
+<p>&nbsp;&nbsp;&nbsp; async&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS在写入数据前可以相应请求 </p>
+<p>&nbsp;&nbsp;&nbsp; secure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS通过1024以下的安全TCP/IP端口发送 </p>
+<p>&nbsp;&nbsp;&nbsp; insecure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS通过1024以上的端口发送 </p>
+<p>&nbsp;&nbsp;&nbsp; wdelay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果多个用户要写入NFS目录，则归组写入（默认</p>
+<p>&nbsp;&nbsp;&nbsp; no_wdelay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果多个用户要写入NFS目录，则立即写入，当使</p>
+<p>&nbsp;&nbsp;&nbsp; hide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在NFS共享目录中不共享其子目录 </p>
+<p>&nbsp;&nbsp;&nbsp; no_hide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 共享NFS目录的子目录 </p>
+<p>&nbsp;&nbsp;&nbsp; subtree_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果共享/usr/bin之类的子目录时，强制NFS检查</p>
+<p>&nbsp;&nbsp;&nbsp; no_subtree_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 和上面相对，不检查父目录权限 </p>
+<p>&nbsp;&nbsp;&nbsp; all_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 共享文件的UID和GID映射匿名用户anonymous，适合</p>
+<p>&nbsp;&nbsp;&nbsp; no_all_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 保留共享文件的UID和GID（默认） </p>
+<p>&nbsp;&nbsp;&nbsp; root_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root用户的所有请求映射成如anonymous用户一样</p>
+<p>&nbsp;&nbsp;&nbsp; no_root_squas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root用户具有根目录的完全管理访问权限 </p>
+<p>&nbsp;&nbsp;&nbsp; anonuid=xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定NFS服务器/etc/passwd文件中匿名用户的UID </p>
+<p>&nbsp;&nbsp;&nbsp; anongid=xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定NFS服务器/etc/passwd文件中匿名用户的GID</p>
+<p>启动服务:</p>
+<p>/etc/init.d/portmap restart</p>
+<p>/etc/init.d/nfs restart</p>
+<p>开机自启动:</p>
+<p>chkconfig —level 345 nfs on</p>
+<p>修改/etc/hosts.allow和/etc/hosts.deny达到限制CLIENT的目的 </p>
+<p>vi /etc/hosts.allow </p>
+<p>portmap: 192.168.0.0/255.255.255.0 : allow </p>
+<p>portmap: 172.16.1.8 : allow </p>
+<p>&nbsp;</p>
+<p>vi /etc/hosts.deny </p>
+<p>portmap: ALL : deny </p>
+<p>卸载所有共享目录</p>
+<p>exportfs -au</p>
+<p>重新共享所有目录并输出详细信息</p>
+<p>exportfs -rv </p>
+<p>客户端的操作： </p>
+<p>&nbsp;1、showmount命令对于NFS的操作和查错有很大的帮助，所以我们先来看一下showmount的用法 </p>
+<p>&nbsp;showmount </p>
+<p>&nbsp;-a ：这个参数是一般在NFS SERVER上使用，是用来显示已经mount上本机nfs目录的cline机器。 </p>
+<p>&nbsp;-e ：显示指定的NFS SERVER上export出来的目录。</p>
+<p>&nbsp;2、mount nfs目录的方法： </p>
+<p>&nbsp;mount -t nfs hostname(orIP):/directory /mount/point </p>
+<p>&nbsp;具体例子： </p>
+<p>&nbsp;Linux:</p>
+<p>&nbsp;mount -t nfs 172.16.1.178:/tmp /mnt/nfs </p>
+<p>&nbsp;Solaris:mount -F nfs 172.16.1.178:/tmp /mnt/nfs </p>
+<p>&nbsp;BSD: mount 172.16.1.178:/tmp /mnt/nfs </p>
+<p>&nbsp;</p>
+<p>&nbsp;3、mount nfs的其它可选参数： </p>
+<p>&nbsp;HARD mount和SOFT MOUNT： </p>
+<p>&nbsp;HARD: NFS CLIENT会不断的尝试与SERVER的连接（在后台，不会给出任何提示信息,在LINUX下有的版本仍然会给出一些提示），直到MOUNT上。 </p>
+<p>&nbsp;SOFT:会在前台尝试与SERVER的连接，是默认的连接方式。当收到错误信息后终止mount尝试，并给出相关信息。 </p>
+<p>服务器端防火墙的配置:</p>
+<p>/etc/services</p>
+<p>nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2049/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nfsd</p>
+<p>nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2049/udp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nfsd</p>
+<p>/etc/sysconfig/network</p>
+<p>MOUNTD_PORT=1212</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp -s 172.16.1.0/24 —dport 111 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 111 -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp -s 172.16.1.0/24 —dport 1212 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 1212 -j ACCEPT</p>
+<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 2049 -j ACCEPT</p>
+<p>排错:</p>
+<p>！！！客户端必须启动，否则会长时间连不上</p>
+<p>/etc/init.d/portmap restar</p>
+<p>If your problem involves the inability mount or export shares please also include:</p>
+<p>a copy of your /etc/exports file</p>
+<p>the output of rpcinfo -p localhost run on the server</p>
+<p>the output of rpcinfo -p servername run on the client</p>
+<p>查看服务器上有关NFS服务器启动了哪些端口：</p>
+<p>lsof -i|grep rpc</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-07T03:56:33.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/">一个高度安全的iptables防火墙配置脚本</a></h1></header><div class="post__main"><p>管理linux服务器10年经验总结的一个linux iptables 防火墙。</p>
+<p>除了测试服务器，接入internet的linux服务器都应该打开iptables防火墙。</p>
+<p>vi /etc/sysconfig/iptables</p>
+<h1 id="created_by_dayu@veryi-com">created by dayu@veryi.com</h1><p>*filter</p>
+<p>:INPUT DROP [0:0]</p>
+<p>:FORWARD DROP [0:0]</p>
+<p>:OUTPUT DROP [0:0]</p>
+<p>:LOG_ACCEPT - [0:0]</p>
+<p>:LOG_DROP - [0:0]</p>
+<p>-A INPUT -i lo -j ACCEPT</p>
+<p>-A INPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A INPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A INPUT -p tcp —dport 80 -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 25 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 110 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<h1 id="pasv_ftp">pasv ftp</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_21_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 21 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_58000:58129_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 58000:58129 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><p>-A INPUT -s your_trust_ip -p tcp -m state —state NEW -m tcp —dport 22 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A OUTPUT -o lo -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A OUTPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A OUTPUT -p icmp -m icmp —icmp-type any -m state —state NEW -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m tcp —dport 25 -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m multiport —dports 20,21,22,43,80,443,3306,8080 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 161 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 123 -j ACCEPT</p>
+<p>-A LOG_ACCEPT -j LOG —log-prefix &quot;[ACCEPT] : &quot; —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_ACCEPT -j ACCEPT</p>
+<p>-A LOG_DROP -j LOG —log-prefix &quot;[DROP] : &quot; —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_DROP -j DROP</p>
+<p>COMMIT</p>
+<p>&nbsp;</p>
+<p>默认规则为禁止，并且对出去的包也作了限制，LOG_ACCEPT、LOG_DROP是调防火墙用的。</p>
+<p>ftp(vsftpd)需要配合以下参数:</p>
+<p>listen_port=21</p>
+<p>pasv_enable=YES</p>
+<p>pasv_min_port=58000</p>
+<p>pasv_max_port=58129</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
+<p>DenyHosts官方网站为：&nbsp;</p>
+<p><a href="http://denyhosts.sourceforge.net" target="_blank" rel="external">http://denyhosts.sourceforge.net</a></p>
+<p>如果没有python运行环境，需要先安装python</p>
+<p>wget <a href="http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2" target="_blank" rel="external">http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2</a></p>
+<pre><code>tar zxf Python-<span class="number">2.5</span>.<span class="number">2</span>.tar.gz
+
+<span class="keyword">cd</span> Python-<span class="number">2.5</span>.<span class="number">2</span>
+
+./configure --prefix=/usr/local
+
+<span class="keyword">make</span> -j6 &amp;amp;&amp;amp; <span class="keyword">make</span> install
+</code></pre><p>cd /usr/local/src</p>
+<pre><code>wget <span class="string">http:</span><span class="comment">//mesh.dl.sourceforge.net/sourceforge/denyhosts/DenyHosts-2.6.tar.gz</span>
+
+tar -zxf DenyHosts-<span class="number">2.6</span>.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>DenyHosts-<span class="number">2.6</span>
+
+python setup.py install
+</code></pre><p>默认是安装到/usr/share/denyhosts目录的。</p>
+<p>配置</p>
+<p>cd /usr/share/denyhosts/</p>
+<pre><code>cp denyhosts<span class="class">.cfg-dist</span> denyhosts<span class="class">.cfg</span>
+
+vi denyhosts.cfg
+</code></pre><p>根据自己需要进行相应的配置(解释见下文件的配置文件)。</p>
+<pre><code>设置启动脚本
+</code></pre><p>cp daemon-control-dist daemon-control</p>
+<pre><code>chown <span class="literal">root</span> daemon-<span class="literal">control</span>
+
+chmod <span class="number">700</span> daemon-<span class="literal">control</span>
+</code></pre><p>如果要使DenyHosts每次重起后自动启动还需做如下设置：</p>
+<pre><code><span class="keyword">cd</span> /etc/init.<span class="keyword">d</span>
+
+<span class="keyword">ln</span> -<span class="keyword">s</span> /usr/share/denyhosts/daemon-control denyhosts
+
+chkconfig --<span class="built_in">add</span> denyhosts
+
+chkconfig --level <span class="number">345</span> denyhosts <span class="keyword">on</span>
+
+chkconfig --<span class="keyword">list</span> denyhosts
+</code></pre><p>或者修改/etc/rc.local文件：</p>
+<pre><code><span class="preprocessor"># vi /etc/rc.local</span>
+
+加入下面这条命令
+</code></pre><p>/usr/share/denyhosts/daemon-control start</p>
+<p>DenyHosts配置文件：</p>
+<p>vi /etc/denyhosts.cfg</p>
+<p>SECURE_LOG = /var/log/secure</p>
+<pre><code><span class="id">#ssh</span> 日志文件，它是根据这个文件来判断的。
+</code></pre><p>HOSTS_DENY = /etc/hosts.deny</p>
+<pre><code><span class="preprocessor">#控制用户登陆的文件</span>
+</code></pre><p>PURGE_DENY = 7w</p>
+<pre><code><span class="preprocessor">#过多久后清除已经禁止的</span>
+</code></pre><p>BLOCK_SERVICE&nbsp; = sshd</p>
+<pre><code><span class="preprocessor">#禁止的服务名</span>
+</code></pre><p>DENY_THRESHOLD_INVALID = 1</p>
+<pre><code><span class="preprocessor">#允许无效用户失败的次数</span>
+</code></pre><p>DENY_THRESHOLD_VALID = 10</p>
+<pre><code><span class="preprocessor">#允许普通用户登陆失败的次数</span>
+</code></pre><p>DENY_THRESHOLD_ROOT = 5</p>
+<pre><code><span class="preprocessor">#允许root登陆失败的次数</span>
+</code></pre><p>HOSTNAME_LOOKUP=NO</p>
+<pre><code><span class="preprocessor">#是否做域名反解</span>
+</code></pre><p>ADMIN_EMAIL = dayu@veryi.com</p>
+<pre><code><span class="preprocessor">#管理员邮件地址</span>
+</code></pre><p>DAEMON_LOG = /var/log/denyhosts</p>
+<pre><code><span class="preprocessor">#denyhost的日志文件</span>
+</code></pre><p>完了之后执行daemon-contron start就可以了。</p>
+<pre><code><span class="regexp">/usr/</span>share<span class="regexp">/denyhosts/</span>daemon-control start
+</code></pre><p>参考: <a href="http://www.cublog.cn/u/12859/showart_247895.html" target="_blank" rel="external">http://www.cublog.cn/u/12859/showart_247895.html</a></p>
+<p>对于centos系统：</p>
+<h1 id="centos_6_x86_64">centos 6 x86_64</h1><pre><code>rpm -Uhv&amp;nbsp; <span class="string">http:</span><span class="comment">//pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</span>
+</code></pre><h1 id="centos_6_i386">centos 6 i386</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.i686.rpm
+
+<span class="comment">#&amp;nbsp; Red Hat Enterprise Linux 5 / i386:</span>
+
+rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el5.rf.i386.rpm
+</code></pre><h1 id="Red_Hat_Enterprise_Linux_5_/_x86_64:">Red Hat Enterprise Linux 5 / x86_64:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span><span class="regexp">/rpmforge-release-0.5.3-1.el5.rf.x86_64.rpm</span>
+</code></pre><h1 id="Red_Hat_Enterprise_Linux_4_/_i386:">Red Hat Enterprise Linux 4 / i386:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el4/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el4.rf.i386.rpm
+</code></pre><p>yum install denyhosts -y</p>
+<pre><code>vim <span class="regexp">/etc/</span>denyhosts/denyhosts.cfg
+
+&amp;nbsp;<span class="regexp">/etc/</span>init.d/denyhosts restart
+</code></pre><p>chkconfig —level 345 denyhosts on</p>
+<pre><code>chkconfig <span class="comment">--list denyhosts</span>
+</code></pre><p>即可。</p>
+<p>&nbsp;</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-03T07:22:19.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">vsftpd用pam_mysql实现mysql虚拟用户认证安装配置</a></h1></header><div class="post__main"><p>vsftpd已经很安全了，但是使用系统用户不方便管理，以下是在Linux系统中用pam_mysql实现mysql虚拟用户认证的安装配置过程。</p>
+<p>系统环境：</p>
+<pre><code>cat /etc/redhat-<span class="operator"><span class="keyword">release</span>
+
+CentOS <span class="keyword">release</span> <span class="number">5.2</span> (Final)
+
+vsftpd是CentOS（RedHat <span class="keyword">AS</span>）自带的。
+
+建立用于存放vsftpd虚拟用户的<span class="keyword">Schema</span>的过程：
+
+mysql -uroot -ppass
+
+<span class="keyword">create</span> <span class="keyword">database</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> vsftpd.* <span class="keyword">to</span> vsftpd@localhost <span class="keyword">identified</span> <span class="keyword">by</span> &amp;quot;</span>veryi.com&amp;quot; ;
+
+<span class="operator"><span class="keyword">use</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> users (
+
+&amp;nbsp;</span>id int AUTO_INCREMENT NOT NULL,
+
+&amp;nbsp;name char(16) binary NOT NULL,
+
+&amp;nbsp;passwd char(48) binary NOT NULL,
+
+&amp;nbsp;primary key(id)
+
+&amp;nbsp;);
+
+<span class="operator"><span class="keyword">describe</span> users;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">logs</span> (msg <span class="built_in">varchar</span>(<span class="number">255</span>),
+
+&amp;nbsp;</span>user char(16),
+
+&amp;nbsp;pid int,
+
+&amp;nbsp;host char(32),
+
+&amp;nbsp;rhost char(32),
+
+&amp;nbsp;logtime timestamp
+
+&amp;nbsp;);
+
+<span class="operator"><span class="keyword">describe</span> <span class="keyword">logs</span>;</span>
+
+插入用户信息：
+
+<span class="operator"><span class="keyword">insert</span> <span class="keyword">into</span> users (name,passwd) <span class="keyword">values</span>(&amp;#<span class="number">39</span>;</span>veryi&amp;#39;,password(&amp;#39;veryi.com&amp;#39;));
+
+<span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> users;</span>
+
+这里，用户密码这个字段的长度是48。这是根据MySQL加密函数的返回值的长度确定的。关于PASSWORD函数返回值的长度，可以参考这个：[http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html](http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html)
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">encrypt</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| 4Wwn2AXFYb.So&amp;nbsp; |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">password</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| *F3A2A51A9B0F2BE2468926B4132313728C250DBF |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">md5</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| acbd18db4cc2f85cedef654fccc4a4d8 |
+
+编译安装pam_mysql
+
+下载:
+
+wget -b [http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz](http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz)
+
+tar xfz pam_mysql-0.7RC1.tar.gz -C /usr/local/src
+
+cd&amp;nbsp; /usr/local/src/pam_mysql-0.7RC1
+
+./configure <span class="comment">--with-openssl --with-mysql=/usr/local/mysql</span>
+
+make &amp;amp;&amp;amp; make <span class="operator"><span class="keyword">install</span>
+
+加上<span class="comment">--with-openssl可以避免make时报有关md5.h的编译错误</span>
+
+vi /etc/pam.d/vsftpd.mysql
+
+auth&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; required&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+account required&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+vi /etc/security/pam_mysql.conf
+
+users.host=localhost
+
+users.database=vsftpd
+
+users.db_user=vsftpd
+
+users.db_passwd=veryi.com
+
+users.table=users
+
+users.user_column=name
+
+users.password_column=passwd
+
+users.password_crypt=2
+
+verbose=0
+
+log.enabled=0
+
+log.table=logs
+
+log.message_column=msg
+
+log.pid_column=pid
+
+log.user_column=user
+
+log.host_column=host
+
+log.rhost_column=rhost
+
+log.time_column=logtime
+
+建立/etc/vsftpd/vsftpd.mysql.conf（同样，不影响已有的vsftpd服务，执行service vsftpd restart时会启动两个vsftpd服务，端口不一样）
+
+主要的设置如下：
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+l
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+local_enable=YES
+
+write_enable=YES
+
+local_umask=002
+
+dirmessage_enable=YES
+
+xferlog_enable=YES
+
+xferlog_std_format=YES
+</code></pre><p>xferlog_file=/var/log/ftp/vsftpd.log</p>
+<pre><code><span class="constant">ftpd_banner</span>=veryi.com, thank you
+
+<span class="constant">listen</span>=YES
+
+<span class="constant">pam_service_name</span>=vsftpd
+
+<span class="constant">userlist_enable</span>=YES
+
+<span class="constant">chroot_local_user</span>=YES
+
+<span class="constant">chroot_list_enable</span>=YES
+
+<span class="constant">chroot_list_file</span>=/etc/vsftpd.chroot_list
+
+<span class="constant">tcp_wrappers</span>=YES
+
+<span class="constant">max_clients</span>=100
+
+<span class="constant">max_per_ip</span>=8
+
+<span class="constant">listen_port</span>=21
+
+<span class="constant">pasv_enable</span>=YES
+
+<span class="constant">pasv_min_port</span>=58000
+
+<span class="constant">pasv_max_port</span>=58129
+
+<span class="constant">guest_enable</span>=YES
+
+<span class="constant">guest_username</span>=vsftpdguest
+
+<span class="constant">virtual_use_local_privs</span>=YES
+
+<span class="constant">anonymous_enable</span>=no
+
+<span class="constant">pam_service_name</span>=vsftpd.mysql
+
+<span class="constant">user_config_dir</span>=/etc/vsftpd/vsftpd_user_conf
+
+<span class="constant">hide_ids</span>=YES
+
+<span class="constant">ssl_enable</span>=YES
+
+<span class="constant">ssl_tlsv1</span>=YES
+
+<span class="constant">rsa_cert_file</span>=/etc/vsftpd/vsftpd.pem
+
+<span class="constant">force_local_data_ssl</span>=NO
+
+<span class="constant">force_local_logins_ssl</span>=NO
+
+建立日志目录:
+</code></pre><p>mkdir /var/log/ftp</p>
+<pre><code>重新启动vsftpd
+
+<span class="regexp">/etc/i</span>nit.d<span class="regexp">/vsftpd restart</span>
+</code></pre><p>创建虚拟用户</p>
+<pre><code>VSFTPD采用PAM方式验证虚拟用户。由于虚拟用户的用户名/口令被单独保存，因此在验证时，VSFTPD需要用一个系统用户的身份来读取数据库文件或数据库服务器以完成验证，这就是VSFTPD的guest用户。这正如同匿名用户也需要有一个系统用户ftp一样。我们也可以把guest用户看成是虚拟用户在系统中的代表。下面在系统中添加vsftpdguest用户，作为VSFTPD的guest。
+
+useradd vsftpdguest
+
+当虚拟用户登录后，所在的位置为vsftpdguest的自家目录<span class="regexp">/home/</span>vsftpdguest。如果要让虚拟用户登录到<span class="regexp">/var/</span>ftp等其他目录，修改vsftpdguest的自家目录即可。
+
+无论是哪个虚拟用户，登录后所在的目录都是<span class="regexp">/home/</span>vsftpdguest。
+
+虚拟用户的个人目录:
+
+mkdir -p <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+cd <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+vi veryi
+
+local_root=<span class="regexp">/usr/</span>local/www
+
+修改目录权限:
+
+chown -R vsftpdguest.vsftpdguest <span class="regexp">/usr/</span>local/www
+</code></pre><p>&nbsp;</p>
+<p>日志轮询和分析统计:</p>
+<p>cat ftp_stats.sh</p>
+<pre><code><span class="shebang">#!/bin/sh
+</span>
+<span class="comment">#writed by dayu*veryi.com</span>
+
+<span class="comment">#</span>
+
+<span class="built_in">export</span> PATH=/bin:/usr/bin
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+/etc/init.d/vsftpd stop
+
+mv vsftpd.log vsftpd.`date +%F`.log
+
+/etc/init.d/vsftpd start
+
+<span class="built_in">cd</span> /var/www/cgi-bin/awstats
+
+./awstats.pl -update -config=ftp.veryi.com
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+bzip2 vsftpd.`date +%F`.log
+</code></pre><p>&nbsp;</p>
+<p>加入cron每天自动执行:</p>
+<p>crontab -e</p>
+<p>0 4 <em> </em> * /home/yang/work/ftp_stats.sh</p>
+<pre><code>附调试时困扰了很长时间的一个问题
+
+Q：
+
+<span class="function"><span class="title">pam_mysql_check_passwd</span><span class="params">()</span></span> returning <span class="number">6</span>.
+
+A：
+
+vsftpd pam_mysql
+
+crypt=<span class="number">0</span> 成功
+
+crypt=<span class="number">2</span> 不能登录，原因，centos <span class="number">5.2</span>自带的mysql启动，二进制安装的最新mysqld没有启动。
+</code></pre><p>Q:</p>
+<p>configure: error: Cannot find pam headers. Please check if your system is ready for pam module development.</p>
+<p>A:</p>
+<p>yum install pam-devel -y</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-03T05:39:24.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/">“不聪明”的wordpress在线编辑器-Dean's FCKEditor For Wordpress</a></h1></header><div class="post__main"><p>&nbsp;WP后台发表新文章或是编辑文章后，行前面的空格消失了。因为内建的编辑器会&ldquo;聪明地&rdquo;把空格删除。</p>
+<p>这样，在粘贴一些脚本或程序代码就会把缩进删除，不便阅读。</p>
+<p>试了Monsters Editor for WP Super Edit，似乎在wp2.7下不可用。</p>
+<p>TinyMCE Advanced，这个插件增强连WP的原始编辑器，增加了表格，查找与替换，表情，插入媒体等等。</p>
+<p>但依然会把空格去除。</p>
+<p>WP Super Edit 2.1，功能强大，依然很聪明，放弃。</p>
+<p>似乎我不得不手工&amp;nbsp了，试用了</p>
+<p>Dean’s FCKEditor For Wordpress</p>
+<p><a href="http://wordpress.org/extend/plugins/fckeditor-for-wordpress-plugin/" target="_blank" rel="external">下载</a></p>
+<p>这个老牌的富文本编辑器，会很辛苦地把空格转换为&amp;nbsp，而不是聪明的删除之。感谢，我不用很费时的编辑html源文件了。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/25/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/27/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
