@@ -9,21 +9,21 @@
 <p>　　4.安装参数</p>
 <p>　　—force 即使覆盖属于其它包的文件也强迫安装</p>
 <p>　　—nodeps 如果该RPM包的安装依赖其它包，即使其它包没装，也强迫安装。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.查询一个包是否被安装</p>
-<p>　　# rpm -q &lt; rpm package name&gt;</p>
+<p> 5.查询一个包是否被安装</p>
+<p>　　# rpm -q  rpm package name</p>
 <p>　　6.得到被安装的包的信息</p>
-<p>　　# rpm -qi &lt; rpm package name&gt;</p>
+<p>　　# rpm -qi  rpm package name</p>
 <p>　　7.列出该包中有哪些文件</p>
-<p>　　# rpm -ql &lt; rpm package name&gt;</p>
+<p>　　# rpm -ql  rpm package name</p>
 <p>　　8.列出服务器上的一个文件属于哪一个RPM包</p>
 <p>　　#rpm -qf</p>
 <p>　　9.可综合好几个参数一起用</p>
-<p>　　# rpm -qil &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;</p>
+<p>　　# rpm -qil  rpm package name yum provides  rpm package name</p>
 <p>　　10.列出所有被安装的rpm package</p>
 <p>　　# rpm -qa</p>
 <p>　　11.列出一个未被安装进系统的RPM包文件中包含有哪些文件？</p>
-<p>　　# rpm -qilp &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;</p>
-<p>　　&lt;&gt;</p>
+<p>　　# rpm -qilp  rpm package name yum provides  rpm package name</p>
+<p>　　</p>
 <p>　　一、安装</p>
 <p>　　命令格式：</p>
 <p>　　rpm -i ( or —install) options file1.rpm … fileN.rpm</p>
@@ -48,7 +48,7 @@
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安</p>
 <p>　　装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
@@ -63,7 +63,7 @@
 <p>　　—nodeps 不检查依赖性</p>
 <p>　　通用选项</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装</p>
 <p>　　程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
@@ -74,7 +74,7 @@
 <p>　　file1.rpm … fileN.rpm 软件包的名字</p>
 <p>　　详细选项</p>
 <p>　　-h (or —hash) 安装时输出hash记号 (``#&#39;&#39;)</p>
-<p>　　—oldpackage 允许&quot;升级&quot;到一个老版本</p>
+<p>　　—oldpackage 允许升级到一个老版本</p>
 <p>　　—test 只进行升级测试</p>
 <p>　　—excludedocs 不安装软件包中的文档文件</p>
 <p>　　—includedocs 安装文档</p>
@@ -92,7 +92,7 @@
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　四、查询</p>
@@ -122,7 +122,7 @@
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　五、校验已安装的软件包</p>
@@ -142,7 +142,7 @@
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　六、校验软件包中的文件</p>
@@ -169,4 +169,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

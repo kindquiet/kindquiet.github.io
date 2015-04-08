@@ -8,13 +8,13 @@
 <p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-plugins-1.4.13</p>
 <p>./configure -prefix=/usr/local/nagios-plugins -enable-redhat-pthread-workaround</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
-<h1 id="&ndash;enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem&hellip;_错误时使用">&ndash;enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem&hellip; 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
+<h1 id="enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem_错误时使用">enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
 <p>tar zxf nrpe-2.12.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nrpe-2.12</p>
 <p>./configure —enable-ssl —enable-command-args</p>
-<p>make all &amp;&amp;make install</p>
+<p>make all make install</p>
 <p>cp sample-config/nrpe.cfg /usr/local/nagios/etc</p>
 <p>chown -R nagios.nagios /usr/local/nagios</p>
 <p>vi /usr/local/nagios/etc/nrpe.cfg</p>
@@ -27,7 +27,7 @@
 <p>command[check_/data1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /data1</p>
 <p>command[check_/opt]=/usr/local/nagios/libexec/check_disk -w 20 -c 10 -p /opt</p>
 <p>vi /etc/rc.local</p>
-<p>echo &quot;/usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d&quot; &gt;&gt; /etc/rc.local</p>
+<p>echo /usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d  /etc/rc.local</p>
 <p>如果有防火墙也要开放tcp 5666</p>
 <p>vi /etc/sysconfig/iptables</p>
 <p>-A INPUT -s a.b.c.25 -p icmp -m icmp —icmp-type echo-request -m state —state NEW -j ACCEPT</p>
@@ -41,131 +41,130 @@
 <p>cd /usr/local/nagios/etc/</p>
 <p>mkdir servers/</p>
 <p>vi hosts.cfg</p>
-<h1 id="define_monitor&nbsp;_host">define monitor&nbsp; host</h1><p>define host{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc-server&nbsp;&nbsp;&nbsp; ; The name of this host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-host&nbsp;&nbsp;&nbsp; ; This template inherits other values from the generic-host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; By default, Linux hosts are checked round the clock</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check each Linux host 10 times (max)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive ; Default command to check Linux hosts</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; workhours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Linux admins hate to be woken up, so we only notify during the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Note that the notification_period variable is being overridden from</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; the value that is inherited from the generic-host template!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Resend notification every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Only send notifications for specific host states</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent to the admins by default</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<h6 id="#">#</h6><h1 id="IDC_servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">IDC servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
+<h1 id="define_monitor_host">define monitor host</h1><p>define host{</p>
+<p> name idc-server ; The name of this host template</p>
+<p> use generic-host ; This template inherits other values from the generic-host template</p>
+<p> check_period 24x7 ; By default, Linux hosts are checked round the clock</p>
+<p> max_check_attempts 10 ; Check each Linux host 10 times (max)</p>
+<p> check_command check-host-alive ; Default command to check Linux hosts</p>
+<p> notification_period workhours ; Linux admins hate to be woken up, so we only notify during the day</p>
+<p> ; Note that the notification_period variable is being overridden from</p>
+<p> ; the value that is inherited from the generic-host template!</p>
+<p> notification_interval 720 ; Resend notification every 12 hours</p>
+<p> notification_options d,r ; Only send notifications for specific host states</p>
+<p> contact_groups admingroup ; Notifications get sent to the admins by default</p>
+<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
+<p> }</p>
+<h6 id="#">#</h6><h1 id="IDC_servers">IDC servers</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web veryi blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.57</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
+<p> use idc-server</p>
+<p> host_name 57-185</p>
+<p> alias web veryi blog</p>
+<p> address a.b.c.57</p>
+<p> parents   inet switch</p>
 <p>}</p>
 <p>vi hostgroups.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define hostgroup {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostgroup_name&nbsp; blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blog1 servers</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
+<p> hostgroup_name blog</p>
+<p> alias blog1 servers</p>
+<p> members 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
 <p>}</p>
 <p>vi services.cfg</p>
-<p>define service{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The name of this service template&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from the generic-service definition</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The service can be checked at any time of the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; normal_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check the service every 5 minutes under normal conditions</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; retry_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service every minute until a hard state can be determined</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sagroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent out to everyone in the ‘admins’ group</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Send notifications about warning, unknown, critical, and recovery events</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-notify about service problems every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications can be sent out at any time</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
-<h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check-host-alive">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_d,u,r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,u,r</h1><p>}</p>
+<p>define service{ name remote-service ; The name of this service template use generic-service ; Inherit default values from the generic-service definition</p>
+<p> check_period 24x7 ; The service can be checked at any time of the day</p>
+<p> max_check_attempts 4 ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
+<p> normal_check_interval 5 ; Check the service every 5 minutes under normal conditions</p>
+<p> retry_check_interval 1 ; Re-check the service every minute until a hard state can be determined</p>
+<p> contact_groups sagroup ; Notifications get sent out to everyone in the ‘admins’ group</p>
+<p> notification_options c,r ; Send notifications about warning, unknown, critical, and recovery events</p>
+<p> notification_interval 720 ; Re-notify about service problems every 12 hours</p>
+<p> notification_period 24x7 ; Notifications can be sent out at any time</p>
+<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
+<h1 id="check_command_check-host-alive">check_command check-host-alive</h1><h1 id="notification_options_d,u,r">notification_options d,u,r</h1><p>}</p>
 <p>define service{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Name of service template to use</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *,!localhost</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PING</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; check_ping!100.0,20%!500.0,60%</p>
+<p> use remote-service ; Name of service template to use</p>
+<p> host_name *,!localhost</p>
+<p> service_description PING</p>
+<p> check_command   check_ping!100.0,20%!500.0,60%</p>
 <p>}</p>
 <p>//这里只举一个例子</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; check_tcp 80</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_tcp!80</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description check_tcp 80</p>
+<p> check_command check_tcp!80</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; / Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check<em>command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check</em>/</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description / Free Space</p>
+<p> check<em>command check_nrpe!check</em>/</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPU Load</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_load</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description CPU Load</p>
+<p> check_command check_nrpe!check_load</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; swap Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_swap</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description swap Free Space</p>
+<p> check_command check_nrpe!check_swap</p>
+<p> }</p>
 <p>vi servicegroups.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define servicegroup{</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; servicegroup_name&nbsp;&nbsp;&nbsp; linux disks</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; free disk Services</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 37-165,/var Free Space,37-165,/opt&nbsp; Free Space,37-165,/data1 Free Space,37-165,/usr/local&nbsp; Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</p>
+<p>  servicegroup_name linux disks</p>
+<p>  alias   free disk Services</p>
+<p>  members   37-165,/var Free Space,37-165,/opt Free Space,37-165,/data1 Free Space,37-165,/usr/local Free Space</p>
+<p>  }</p>
 <p>进阶:</p>
-<p>Nagios is able to determine whether the hosts you&rsquo;re monitoring are in a DOWN or UNREACHABLE</p>
+<p>Nagios is able to determine whether the hosts youre monitoring are in a DOWN or UNREACHABLE</p>
 <p>state. These are very different (although related) states and can help you quickly determine the root</p>
-<p>cause of network problems. Here&rsquo;s how the reachability logic works to distinguish between these two </p>
+<p>cause of network problems. Heres how the reachability logic works to distinguish between these two </p>
 <p>states…</p>
 <p>定义主机父子关系</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.1</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
+<p> use idc-server</p>
+<p> host_name idc router</p>
+<p> alias beijing idc</p>
+<p> address a.b.c.1</p>
+<p> parents   inet switch</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inet switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.0.8.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
+<p> use idc-server</p>
+<p> host_name inet switch</p>
+<p> alias beijing idc</p>
+<p> address 10.0.8.90</p>
+<p> parents   localhost</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing beiyuan</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.12.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
+<p> use idc-server</p>
+<p> host_name int switch</p>
+<p> alias beijing beiyuan</p>
+<p> address 192.168.12.90</p>
+<p> parents   localhost</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.161</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; idc router</p>
+<p> use idc-server</p>
+<p> host_name lan router</p>
+<p> alias beijing office</p>
+<p> address x.y.z.161</p>
+<p> parents  idc router</p>
 <p>}</p>
 <p>//这里只举一个例子</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; office.veryi.com</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; veryi office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.168</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>&nbsp;</p>
+<p> use idc-server</p>
+<p> host_name office.veryi.com</p>
+<p> alias veryi office</p>
+<p> address x.y.z.168</p>
+<p> parents  lan router</p>
+<p> }</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -173,4 +172,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

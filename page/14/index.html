@@ -1,13 +1,13 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-06-24T02:51:04.000Z" class="post__time">六月 24, 2011</time><h1 class="post__title"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/">邮件系统维护的常用命令</a></h1></header><div class="post__main"><p>查找发信最多的用户，如果账户被盗用，通常一天会发送成千上万封邮件</p>
-<p>gzip -cd maillog.1.gz |grep &quot;from=&quot;|cut -f 7 -d &quot; &quot;|cut -f 2 -d &quot;&lt;&quot;|sed &#39;s/&gt;,//g&#39;|sed &#39;/^$/d&#39;|grep &quot;@&quot;|awk -F&quot;:&quot; &#39;{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
+<p>gzip -cd maillog.1.gz |grep from=|cut -f 7 -d  |cut -f 2 -d |sed &#39;s/,//g&#39;|sed &#39;/^$/d&#39;|grep @|awk -F: &#39;{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
 <p>查找发现最多的ip：</p>
-<p>cat maillog.1|grep &quot; connect from&quot;|cut -f 8 -d &quot; &quot;|cut -f 2 -d &quot;[“|sed ‘s/]//g’|awk -F”:” ‘{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
+<p>cat maillog.1|grep  connect from|cut -f 8 -d  |cut -f 2 -d [“|sed ‘s/]//g’|awk -F”:” ‘{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
 <p>监控实时日志</p>
-<p>tail -f /var/log/mail/maillog|grep -v pop3|grep -v &quot;User unknown&quot;|grep -v &quot;Connection timed out&quot;|grep -v &quot;Host not found&quot;</p>
+<p>tail -f /var/log/mail/maillog|grep -v pop3|grep -v User unknown|grep -v Connection timed out|grep -v Host not found</p>
 <p>清空邮件队列（慎用）：</p>
 <p>postsuper -d ALL</p>
 <p>删除队列中某个用户的邮件：</p>
-<p>mailq | awk &#39;BEGIN { RS = &quot;&quot; } /nathalie.gervais@foo.com/ { print $1 }&#39; | tr -d &#39;*!&#39;| postsuper -d</p>
+<p>mailq | awk &#39;BEGIN { RS =  } /nathalie.gervais@foo.com/ { print $1 }&#39; | tr -d &#39;*!&#39;| postsuper -d</p>
 </div><footer class="post__foot u-cf"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-23T08:00:24.000Z" class="post__time">六月 23, 2011</time><h1 class="post__title"><a href="/2011/06/23/w/e8-99-9a-e4-ba-91-e8-80-81-e5-92-8c-e5-b0-9a-e8-b0-88-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e4-b9-8b-e8-80-81-e5-ae-9e-e5-bf-b5-e4-bd-9b/">虚云老和尚谈印光大师之老实念佛</a></h1></header><div class="post__main"><p>今天是印光老法师生西十二周年纪念。各位都是他的弟子。</p>
 <pre><code>在这里聚集一堂。饮水思源。追念师父。
 
@@ -19,7 +19,7 @@
 
 二十余年。从未离开一步。只是闭户潜修。所以他对教义极深。
 
-他虽深通教义。却以一句<span class="keyword">&amp;</span><span class="tag">ldquo</span>;阿弥陀佛<span class="keyword">&amp;</span><span class="tag">rdquo</span>;为日常行持。
+他虽深通教义。却以一句阿弥陀佛为日常行持。
 
 绝不觉得自己深通经教。便轻视念佛法门。
 
@@ -57,7 +57,7 @@
 
 不怨自己信心不定。却说佛祖欺哄众生。谤佛谤法。造无间业。
 
-因此。我劝大众。要坚信净土法门的利益。随印光老法师学<span class="keyword">&amp;</span><span class="tag">lsquo</span>;老实念佛。<span class="keyword">&amp;</span><span class="tag">rsquo</span>;立坚固志。发勇猛心。以西方净土为终身大事。
+因此。我劝大众。要坚信净土法门的利益。随印光老法师学老实念佛。立坚固志。发勇猛心。以西方净土为终身大事。
 
 参禅与念佛。在初发心的人看来是两件事。
 
@@ -83,49 +83,49 @@
 </div><footer class="post__foot u-cf"><a href="/2011/06/23/w/e8-99-9a-e4-ba-91-e8-80-81-e5-92-8c-e5-b0-9a-e8-b0-88-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e4-b9-8b-e8-80-81-e5-ae-9e-e5-bf-b5-e4-bd-9b/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-21T08:50:41.000Z" class="post__time">六月 21, 2011</time><h1 class="post__title"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/">Apache/Nginx 配置 Cache Last-Modified、Expires</a></h1></header><div class="post__main"><p>正确使用Expires标识处理，可以使得页面更加有效被缓冲，节约带宽资源。</p>
 <pre><code>apache配置：
 
-&amp;lt;IfModule mod_expires.c&amp;gt;
+IfModule mod_expires.c
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive On
+ ExpiresActive On
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/gif A2592000
+ ExpiresByType image/gif A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/jpeg A2592000
+ ExpiresByType image/jpeg A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/png A2592000
+ ExpiresByType image/png A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/x-icon A2592000
+ ExpiresByType image/x-icon A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType application/x-javascript A604800
+ ExpiresByType application/x-javascript A604800
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType text/css A604800
+ ExpiresByType text/css A604800
 
-&amp;lt;/IfModule&amp;gt;
+/IfModule
 
 或者
 
-&amp;lt;ifmodule mod_expires.c&amp;gt;
+ifmodule mod_expires.c
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
+ filesmatch \.(jpg|gif|png|css|js)$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive on
+ ExpiresActive on
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 600 minutes&amp;quot;
+ ExpiresDefault access plus 600 minutes
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;/filesmatch&amp;gt;
+ /filesmatch
 
-&amp;lt;/ifmodule&amp;gt;
+/ifmodule
 
-可以选用的时间参数有years&amp;nbsp;&amp;nbsp;&amp;nbsp; months&amp;nbsp;&amp;nbsp;&amp;nbsp; weeks&amp;nbsp;&amp;nbsp;&amp;nbsp; days&amp;nbsp;&amp;nbsp;&amp;nbsp; hours&amp;nbsp;&amp;nbsp;&amp;nbsp; minutes&amp;nbsp;&amp;nbsp;&amp;nbsp; seconds
+可以选用的时间参数有years months weeks days hours minutes seconds
 
 也可以加在.htaccess文件：
 
 #Expire Header
 
-&amp;lt;FilesMatch &amp;quot;\.(ico|jpg|jpeg|png|gif|js|css|swf)$&amp;quot;&amp;gt;
+FilesMatch \.(ico|jpg|jpeg|png|gif|js|css|swf)$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 2 hours&amp;quot;
+ ExpiresDefault access plus 2 hours
 
-&amp;lt;/FilesMatch&amp;gt;
+/FilesMatch
 
 or
 
@@ -153,55 +153,55 @@ ExpiresByType text/javascript A2592000
 
 nginx配置：
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~* ^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js|flv|mp3|wma|wmv|ram|rm)$ {
+  location ~* ^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js|flv|mp3|wma|wmv|ram|rm)$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+   valid_referers none blocked *.veryi.com;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+   if ($invalid_referer) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://veryi.com/cloud.gif;
+    #rewrite ^/ http://veryi.com/cloud.gif;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #return 412;
+    #return 412;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+    return 403;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+   }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; access_log off;
+   access_log off;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root /opt/www;
+   root /opt/www;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires 10h;
+   expires 10h;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; break;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+   break; 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-或者&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+或者 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.(gif|jpg|png|swf|flv|bmp)$ {
+ location ~ \.(gif|jpg|png|swf|flv|bmp)$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+ valid_referers none blocked *.veryi.com;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+ if ($invalid_referer) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://www.veryi.com/403.JPG;
+ #rewrite ^/ http://www.veryi.com/403.JPG;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+ return 403;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 30d;
+ expires 30d;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ .*\.(js|css)?$
+  location ~ .*\.(js|css)?$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; {
+  {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3d;
+  expires 3d;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; } 
+  } 
 
 测试：
 
@@ -247,7 +247,7 @@ Content-Length: <span class="number">83185</span>
 
 Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
 
-Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: <span class="number">5</span>d8c72a5edda8d6a:<span class="number">3239</span>&amp;Prime;</span>
 
 客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应并记录相关记录属性标记文件没有发生改动,服务器端返回304，直接从缓存中读取：
 
@@ -265,7 +265,7 @@ Last-Modified: Tue, 24 Feb 2009 08:01:04 GMT
 
 Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
 
-Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: <span class="number">5</span>d8c72a5edda8d6a:<span class="number">3239</span>&amp;Prime;</span>
 
 其中Last-Modified、Expires和Etag是标记页面缓存标识
 
@@ -287,21 +287,21 @@ If-Modified-Since: Tue, 24 Feb 2009 08:01:04 GMT
 
 2、Etag工作原理
 
-HTTP 协议规格说明定义ETag为&amp;ldquo;被请求变量的实体标记&amp;rdquo; （参见14.19）。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+HTTP 协议规格说明定义ETag为被请求变量的实体标记 （参见14.19）。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
 
-Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: 5d8c72a5edda8d6a:3239&amp;Prime;
 
 客户端的查询更新格式是这样的：
 
-If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+If-None-Match: 5d8c72a5edda8d6a:3239&amp;Prime;
 
 如果ETag没改变，则返回状态304。
 
-即:在客户端发出请求后，Http Reponse Header中包含 Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+即:在客户端发出请求后，Http Reponse Header中包含 Etag: 5d8c72a5edda8d6a:3239&amp;Prime;
 
-标识，等于告诉Client端，你拿到的这个的资源有表示ID：5d8c72a5edda8d6a:3239。当下次需要发Request索要同一个URI的时候，浏览器同时发出一个If-None-Match报头( Http Request Header)此时包头中信息包含上次访问得到的Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;标识。
+标识，等于告诉Client端，你拿到的这个的资源有表示ID：5d8c72a5edda8d6a:3239。当下次需要发Request索要同一个URI的时候，浏览器同时发出一个If-None-Match报头( Http Request Header)此时包头中信息包含上次访问得到的Etag: 5d8c72a5edda8d6a:3239&amp;Prime;标识。
 
-If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;ldquo;
+If-None-Match: 5d8c72a5edda8d6a:3239
 
 ,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>-None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
 
@@ -373,21 +373,21 @@ HTTP/<span class="number">1.</span>x <span class="number">304</span> <span class
 
 <span class="number">2</span>、Etag工作原理
 
-HTTP 协议规格说明定义ETag为&amp;rdquo;</span>被请求变量的实体标记&amp;rdquo; 。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+HTTP 协议规格说明定义ETag为被请求变量的实体标记 。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
 
 Etag: 
 
 客户端的查询更新格式是这样的：
 
-If-None-Match: 
+<span class="keyword">If</span>-None-<span class="keyword">Match</span>: 
 
-如果ETag没改变，则返回状态304。
+如果ETag没改变，则返回状态<span class="number">304</span>。
 
-即:在客户端发出请求 后，Http Reponse Header中包含 Etag标识，等于告诉Client端，你拿到的这个的资源有表示 ID。当下次需要发Request索要同一个 URI的时候，浏览器同时发出一个If-None-Match报头( Http RequestHeader)此时包头中信息包含上次访问得到的Etag标识。
+即:在客户端发出请求 后，Http Reponse Header中包含 Etag标识，等于告诉Client端，你拿到的这个的资源有表示 ID。当下次需要发Request索要同一个 URI的时候，浏览器同时发出一个<span class="keyword">If</span>-None-<span class="keyword">Match</span>报头( Http RequestHeader)此时包头中信息包含上次访问得到的Etag标识。
 
-If-None-Match: &amp;quot;xok.la-961AA72-4CEA99B4415628&amp;quot;
+<span class="keyword">If</span>-None-<span class="keyword">Match</span>: xok.la-<span class="number">961</span>AA72-<span class="number">4</span>CEA99B4415628
 
-,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>- None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
+,这样，Client端等于<span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>- None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
 
 <span class="number">3</span>、Expires
 
@@ -439,45 +439,45 @@ A<span class="number">.1</span>、 Apache Etag
 
 ExpiresActive <span class="keyword">On</span>
 
-ExpiresByType image/gif &amp;quot;</span>access plus 1 month&amp;quot;
+ExpiresByType image/gif access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/jpg &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/jpg access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/jpeg &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/jpeg access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/x-icon &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/x-icon access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/bmp &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/bmp access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/png &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/png access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType text/html &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/html access plus <span class="number">30</span> minutes
 
-ExpiresByType text/css&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/css access plus <span class="number">30</span> minutes
 
-ExpiresByType text/txt&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/txt access plus <span class="number">30</span> minutes
 
-ExpiresByType text/js&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/js access plus <span class="number">30</span> minutes
 
-ExpiresByType application/x-javascript&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType application/x-javascript access plus <span class="number">30</span> minutes
 
-ExpiresByType application/x-shockwave-flash&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType application/x-shockwave-flash access plus <span class="number">30</span> minutes
 
 或
 
-&amp;lt;ifmodule mod_expires.c&amp;gt;
+ifmodule mod_expires.c
 
-&amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
+filesmatch \.(jpg|gif|png|css|js)$
 
-ExpiresActive on
+ExpiresActive <span class="keyword">on</span>
 
-ExpiresDefault &amp;quot;access plus 1 year&amp;quot;
+ExpiresDefault access plus <span class="number">1</span> <span class="keyword">year</span>
 
-&amp;lt;/filesmatch&amp;gt;
+/filesmatch
 
-&amp;lt;/ifmodule&amp;gt;
+/ifmodule
 
-当设置了expires后，会自动输出<span class="operator"><span class="keyword">Cache</span>-Control 的<span class="keyword">max</span>-age 信息
+当设置了expires后，会自动输出<span class="keyword">Cache</span>-Control 的<span class="keyword">max</span>-age 信息
 
 具体关于 Expires 详细内容可以查看Apache官方文档。
 
@@ -517,39 +517,39 @@ A<span class="number">.2</span>、Lighttpd Expires
 
 下面的设置是让URI中所有images目录下的文件<span class="number">1</span>小时后过期；
 
-expire.url = ( &amp;quot;</span>/images/&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
+expire.url = ( /images/ = access <span class="number">1</span> hours )
 
 下面是让作用于images目录及其子目录的文件；
 
-$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;^/images/&amp;quot; {
+$HTTP[url] =~ ^/images/ {
 
-&amp;nbsp;
 
-expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
 
-&amp;nbsp;
+expire.url = (  = access <span class="number">1</span> hours )
+
+
 
 }
 
 也可以指定文件的类型；
 
-$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot; {
+$HTTP[url] =~ \.(jpg|gif|png|css|js)$ {
 
-&amp;nbsp;
 
-expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
 
-&amp;nbsp;
+expire.url = (  = access <span class="number">1</span> hours )
+
+
 
 }
 
 具体参考Lighttpd官方Expires解释
 
-A.3、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+A<span class="number">.3</span>、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 
 {
 
-expires 30d;
+expires <span class="number">30</span>d;</span>
 
 }
 
@@ -561,37 +561,37 @@ expires 1h;
 
 }
 
-这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的&amp;rdquo; Expires &amp;ldquo;和&amp;rdquo; <span class="operator"><span class="keyword">Cache</span>-Control &amp;ldquo;</span>的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
+这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的 Expires 和 <span class="operator"><span class="keyword">Cache</span>-Control 的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
 
-B.1、Apache中Etag设置
+B<span class="number">.1</span>、Apache中Etag设置
 
 在Apache中设置Etag的支持比较简单，只用在含有静态文件的目录中建立一个文件.htaccess, 里面加入：
 
-FileETag MTime Size
+FileETag MTime <span class="keyword">Size</span>
 
 这样就行了，详细的可以参考Apache的FileEtag文档页
 
-B.2、 Lighttpd Etag
+B<span class="number">.2</span>、 Lighttpd Etag
 
 在Lighttpd中设置Etag支持：
 
-etag.use-inode: 是否使用inode作为Etag
+etag.<span class="keyword">use</span>-inode: 是否使用inode作为Etag
 
-etag.use-mtime: 是否使用文件修改时间作为Etag
+etag.<span class="keyword">use</span>-mtime: 是否使用文件修改时间作为Etag
 
-etag.use-size: 是否使用文件大小作为Etag
+etag.<span class="keyword">use</span>-<span class="keyword">size</span>: 是否使用文件大小作为Etag
 
 static-file.etags: 是否启用Etag的功能
 
 第四个参数肯定是要enable的， 前面三个就看实际的需要来选吧，推荐使用修改时间
 
-B.3、 Nginx Etag
+B<span class="number">.3</span>、 Nginx Etag
 
-Nginx中默认没有添加对Etag标识.Igor Sysoev的观点&amp;rdquo;在对静态文件处理上看不出如何Etag好于Last-Modified标识。&amp;rdquo;
+Nginx中默认没有添加对Etag标识.Igor Sysoev的观点在对静态文件处理上看不出如何Etag好于<span class="keyword">Last</span>-Modified标识。
 
 Note:
 
-Yes, it&amp;#39;s addition,and it&amp;#39;s easy to add, however, I <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> see howETag <span class="keyword">is</span> better than <span class="keyword">Last</span>-Modified <span class="keyword">for</span> static files. -Igor Sysoev
+Yes, it&amp;#<span class="number">39</span>;</span>s addition,and it&amp;#39;s easy to add, however, I <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> see howETag <span class="keyword">is</span> better than <span class="keyword">Last</span>-Modified <span class="keyword">for</span> static files. -Igor Sysoev
 
 A nice short description <span class="keyword">is</span> here:
 
@@ -613,23 +613,23 @@ https://github.com/mikewest/nginx-static-etags
 
 如expires.php
 
-&amp;lt;</span>?php
+?php
 
-&amp;nbsp;
 
-header(&amp;#39;<span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">86400</span>,must-revalidate&amp;#<span class="number">39</span>;</span>);
 
-&amp;nbsp;
+header(&amp;#<span class="number">39</span>;</span><span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">86400</span>,must-revalidate&amp;#<span class="number">39</span>;</span>);
+
+
 
 header(&amp;#39;Last-Modified: &amp;#39; .gmdate(&amp;#39;D, d M Y H:i:s&amp;#39;) . &amp;#39; GMT&amp;#39; );
 
-&amp;nbsp;
 
-header(&amp;quot;Expires: &amp;quot; .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, time() + &amp;#39;86400&amp;prime; ). &amp;#39; GMT&amp;#39;);
 
-&amp;nbsp;
+header(Expires:  .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, time() + &amp;#39;86400 ). &amp;#39; GMT&amp;#39;);
 
-?&amp;gt;
+
+
+?
 
 以上信息表示该文件自请求后24小时后过期。
 
@@ -641,17 +641,17 @@ header(&amp;quot;Expires: &amp;quot; .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, 
 
 如etag.php
 
-&amp;gt;
+
 
 <span class="operator"><span class="keyword">cache</span>();</span>
 
-echo date(&amp;quot;Y-m-d H:i:s&amp;quot;);
+echo date(Y-m-d H:i:s);
 
 function <span class="operator"><span class="keyword">cache</span>()
 
 {
 
-$etag = &amp;quot;</span>http://xok.la&amp;quot;;
+$etag = http://xok.la;</span>
 
 if ($_SERVER[&amp;#39;HTTP_IF_NONE_MATCH&amp;#39;] == $etag)
 
@@ -667,9 +667,8 @@ else header(&amp;#39;Etag:&amp;#39;.$etag);
 
 }
 
-?&amp;gt;
+?
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-16T03:21:17.000Z" class="post__time">六月 16, 2011</time><h1 class="post__title"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/">squid透明代理访问非80端口http服务</a></h1></header><div class="post__main"><p>实现linux服务器配置squid透明代理访问非80端口，允许部分地址不通过代理服务器直接访问。</p>
-<p>&nbsp;</p>
 <p>iptables相关配置：</p>
 <p>*mangle</p>
 <pre><code>-A PREROUTING -<span class="keyword">d</span> 10.11.48.0/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
@@ -718,29 +717,27 @@ COMMIT
 
 COMMIT
 </code></pre><p>代理服务器概述 </p>
-<pre><code>&amp;nbsp<span class="comment">; </span>
-
-<span class="number">1.1</span>什么是代理服务器&amp;nbsp<span class="comment">; </span>
+<pre><code><span class="number">1.1</span>什么是代理服务器 
 
 在TCP/<span class="literal">IP</span>网络中，传统的通信过程是这样的：客户端向服务器请求数据，服务器响应该请求，将数据传送给客户端。在引入了代理服务器以后，这一 过程变成了这样：客户端向服务器发起请求，该请求被送到代理服务器；代理服务器分析该请求，先查看自己缓存中是否有请求数据，如果有就直接传送给客户端， 如果没有就代替客户端向该服务器发出请求。服务器响应以后，代理服务器将响应的数据传送给客户端，同时在自己的缓存中保留一份该数据的拷贝。这样，再有客 户端请求相同的数据时，代理服务器就可以直接将数据传送给客户端，而不需要再向该服务器发起请求。 
 
-&amp;nbsp<span class="comment">; </span>
 
-<span class="number">1.2</span>&amp;nbsp<span class="comment">;代理服务器的功能&amp;nbsp; </span>
 
-一般说来，代理服务器具有以下的功能：&amp;nbsp<span class="comment">; </span>
+<span class="number">1.2</span>代理服务器的功能 
 
-<span class="number">1</span>.通过缓存增加访问速度&amp;nbsp<span class="comment">; </span>
+一般说来，代理服务器具有以下的功能： 
 
-随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。&amp;nbsp<span class="comment">; </span>
+<span class="number">1</span>.通过缓存增加访问速度 
 
-通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。&amp;nbsp<span class="comment">; </span>
+随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。 
 
-<span class="number">2</span>.提供用私有<span class="literal">IP</span>访问Internet的方法&amp;nbsp<span class="comment">; </span>
+通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。 
 
-<span class="literal">IP</span>地址是不可再生的宝贵资源，假如你只有有限的<span class="literal">IP</span>地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。&amp;nbsp<span class="comment">; </span>
+<span class="number">2</span>.提供用私有<span class="literal">IP</span>访问Internet的方法 
 
-<span class="number">3</span>.提高网络的安全性&amp;nbsp<span class="comment">; </span>
+<span class="literal">IP</span>地址是不可再生的宝贵资源，假如你只有有限的<span class="literal">IP</span>地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。 
+
+<span class="number">3</span>.提高网络的安全性 
 
 这一点是很明显的，如果内部用户访问Internet都是通过代理服务器，那么，代理服务器就成为进入Internet的唯一通道；反过来说，代 理服务器也是Internet访问内部网的唯一通道，如果你没有做反向代理，则对于Internet上的主机来说，你的整个内部网只有代理服务器是可见 的，从而大大增强了网络的安全性。
 </code></pre><p>反向代理:</p>
@@ -752,17 +749,17 @@ Web服务器加速（反向代理）是针对Web服务器提供加速功能的�
 
 下面将对几种典型的代理服务作一个简单的比较。在网络上常见的代理服务器有三种：
 
-<span class="number">1</span>．&amp;nbsp;</span> 标准的代理缓冲服务器
+<span class="number">1</span>． 标准的代理缓冲服务器
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 一个标准的代理缓冲服务被用于缓存静态的网页（例如：html文件和图片文件等）到本地网络上的一台主机上（即代理服务器）。当被缓存的页面被第二次访问的时候，浏览器将直接从本地代理服务器那里获取请求数据而不再向原web站点请求数据。这样就节省了宝贵的网络带宽，而且提高了访问速度。但是，要想实现这种方式，必须在每一个内部主机的浏览器上明确指明代理服务器的IP地址和端口号。客户端上网时，每次都把请求送给代理服务器处理，代理服务器根据请求确定是否连接到远程web服务器获取数据。如果在本地缓冲区有目标文件，则直接将文件传给用户即可。如果没有的话则先取回文件，先在本地保存一份缓冲，然后将文件发给客户端浏览器。
+ 一个标准的代理缓冲服务被用于缓存静态的网页（例如：html文件和图片文件等）到本地网络上的一台主机上（即代理服务器）。当被缓存的页面被第二次访问的时候，浏览器将直接从本地代理服务器那里获取请求数据而不再向原web站点请求数据。这样就节省了宝贵的网络带宽，而且提高了访问速度。但是，要想实现这种方式，必须在每一个内部主机的浏览器上明确指明代理服务器的IP地址和端口号。客户端上网时，每次都把请求送给代理服务器处理，代理服务器根据请求确定是否连接到远程web服务器获取数据。如果在本地缓冲区有目标文件，则直接将文件传给用户即可。如果没有的话则先取回文件，先在本地保存一份缓冲，然后将文件发给客户端浏览器。
 
-2．&amp;nbsp; 透明代理缓冲服务器
+<span class="number">2</span>． 透明代理缓冲服务器
 
-&amp;nbsp; 通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。
+ 通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。</span>
 </code></pre><p>透明代理缓冲服务和标准代理服务器的功能完全相同。但是，代理操作对客户端的浏览器是透明的（即不需指明代理服务器的IP和端口）。透明代理服务器阻断网络通信，并且过滤出访问外部的HTTP（80端口）流量。如果客户端的请求在本地有缓冲则将缓冲的数据直接发给用户，如果在本地没有缓冲则向远程web服务器发出请求，其余操作和标准的代理服务器完全相同。对于Linux操作系统来说，透明代理使用Iptables或者Ipchains实现。因为不需要对浏览器作任何设置，所以，透明代理对于ISP（Internet服务器提供商）特别有用。</p>
-<pre><code>3．&amp;nbsp; 反向代理缓冲服务器
+<pre><code>3． 反向代理缓冲服务器
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
+ 反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
 <pre><code>PHP <span class="number">5.3</span><span class="number">.6</span>
 
@@ -774,7 +771,7 @@ pureftp
 
 wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
 
-tar -C <span class="regexp">/usr/</span>local -xzf&amp;nbsp; mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
 
 cd <span class="regexp">/usr/</span>local
 
@@ -796,7 +793,7 @@ sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_quer
 
 cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
 
-vim&amp;nbsp; my.cnf
+vim my.cnf
 
 #max_allowed_packet = <span class="number">1</span>M
 
@@ -908,7 +905,7 @@ chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</spa
 
 <span class="regexp">/sbin/</span>chkconfig --list mysqld
 
-echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
 
 cat <span class="regexp">/etc/</span>ld.so.conf
 
@@ -918,7 +915,7 @@ mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
 
 ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
 
-#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe &amp;amp;
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe 
 
 mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
 
@@ -926,7 +923,7 @@ chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</s
 
 #加入mysql到路径
 
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
 
 #执行一下，保证mysql在路径环境变量中
 
@@ -955,6 +952,4 @@ mysql_upgrade包含一下三个命令：
 sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
-
-&amp;nbsp;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/13/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/15/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/13/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/15/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,464 +1,238 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-24T06:12:50.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/">企业级网管开源软件Nagios 远程监控软件的配置</a></h1></header><div class="post__main"><p>创建nagios用户及其组，让nagios的运行用户为nagios 而不是root。再把目录/usr/local/nagios的属主设置为nagios，以保证系统的安全。</p>
 <p>1、添加系统帐户nagios: useradd nagios 就很容易的把用户和组nagios添加到系统。有的类型的linux发行版添加用户和组要麻烦一些-需要要添加组，然后再执行 useradd -g nagios nagios这样的操作。在实际的运用场景，nagios用户并没有必要作为系统用户来登录linux系统，因此可以不必设置nagios的用户密码，甚至可以把nagios用户的登录shell设置成/bin/false。</p>
-<p>2、更改目录属组：chown -R nagios.nagios /usr/local/nagios 。请注意，有的unix/linux的版本用户和属组分隔符号不是&ldquo;.&rdquo;,可能会是这样的形式 chown -R nagios:nagios /usr/local/nagios 。</p>
+<p>2、更改目录属组：chown -R nagios.nagios /usr/local/nagios 。请注意，有的unix/linux的版本用户和属组分隔符号不是.,可能会是这样的形式 chown -R nagios:nagios /usr/local/nagios 。</p>
 <p>3、sendmail。看看sendmail是否正常运行？我们需要使用sendmail来发送故障报警信息，所以这个包必须能够正常工作。Sendmail分为服务器和客户端两部分，有2种发送报警邮件的方式：</p>
 <p>（1）nagios所在的机器通过sendmail客户端程序把邮件发送到专门的邮件服务器，再由邮件服务器把消息发送到用户邮箱。</p>
-<p>&nbsp;</p>
 <p>（2）邮件客户端和服务器端就用nagios所在系统sendmail。第一种方式用起来非常规范，但更麻烦，例如需要做地址解析、修改邮件服务器的配置；另外还有一个问题-它还依赖别的系统，增加了故障点和复杂度。第二种方法十分简单，只需启动sendmail服务即可，而且它不再依赖于别的系统和服务。在我工作的实际场景，这两种方法都使用，用专门的邮件服务器会有发送延迟的情况（因为邮件服务器要处理很多其他用户邮件的收发）；而直接用sendmail做服务器和客户端就异常简单和方便了。非常幸运的是，几乎所有的linux/unix发行版都默认安装并启动了sendmail。</p>
-<p>&nbsp;</p>
 <p>4、手机短信发送工具。如果有自己的短信通道，直接把发送短信的客户端程序sms_send拷贝到目录/usr/local/bin/下。如果没有短信下发的网关通道，那怎么办呢？网络上有很多短信发送的客户端程序，很有名的就是smsclient,把它下载下来，解包后安装。不要忘记购买手机modem和手机卡，modem只支持SIM卡而不支持 cdma。安装完smsclient软件和硬件modem后，测试一下是否正常。如果没有modem又怎么办？办法还是有的：让你的手机号可以接受邮件，这需要你去营业厅开通这项功能。短信报警功能是最有用的功能，我们不可能成天盯着监视屏幕，也不可能成天接受电子邮件，但我们的手机却可以24小时在线，只要被监控对象发生故障，马上就可以收到故障报警短信。还可以用中国移动的飞信。建议启用nagios的短信故障报警功能。</p>
 <p>配置</p>
-<p>&nbsp;</p>
 <p>一、apache 配置</p>
-<p>&nbsp;</p>
 <p>第一步是修改apache的配置文件httpd.conf,这里的文件路径是 /usr/local/httpd/conf/httpd.conf 。把apache的运行用户和运行组改成nagios。</p>
 <p>vi /usr/local/httpd/conf/httpd.conf</p>
-<p>&nbsp;</p>
 <p>修改:</p>
-<p>&nbsp;</p>
 <p>User nagios</p>
-<p>&nbsp;</p>
 <p>Group nagios</p>
-<p>&nbsp;</p>
 <p>添加:</p>
-<p>&nbsp;</p>
-<p>Alias /nagios/cgi-bin/images/ &quot;/usr/local/nagios/share/images/&quot;</p>
-<p>&nbsp;</p>
-<p>&lt;Directory &quot;/usr/local/nagios/share/images/&quot;&gt;</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Options None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
-<p>&nbsp;</p>
-<p>&lt;/Directory&gt;</p>
-<p>&nbsp;</p>
-<p>ScriptAlias /nagios/cgi-bin/ &quot;/usr/local/nagios/sbin/&quot;</p>
-<p>&nbsp;</p>
-<p>&lt;Directory &quot;/usr/local/nagios/sbin/&quot;&gt;</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Options None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthName &quot;Nagios Access&quot;</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthType Basic</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Require valid-user</p>
-<p>&nbsp;</p>
-<p>&lt;/Directory&gt;</p>
-<p>&nbsp;</p>
-<p>Alias /nagios/ &quot;/usr/local/nagios/share/&quot;</p>
-<p>&nbsp;</p>
-<p>&lt;Directory &quot;/usr/local/nagios/share/&quot;&gt;</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AllowOverride None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Options None</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Order allow,deny</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Allow from all</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthName &quot;Nagios Access&quot;</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthType Basic</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; Require valid-user</p>
-<p>&nbsp;</p>
-<p>&lt;/Directory&gt;</p>
+<p>Alias /nagios/cgi-bin/images/ /usr/local/nagios/share/images/</p>
+<p>Directory /usr/local/nagios/share/images/</p>
+<p> AllowOverride None</p>
+<p> Options None</p>
+<p> Order allow,deny</p>
+<p> Allow from all</p>
+<p>/Directory</p>
+<p>ScriptAlias /nagios/cgi-bin/ /usr/local/nagios/sbin/</p>
+<p>Directory /usr/local/nagios/sbin/</p>
+<p> AllowOverride None</p>
+<p> Options None</p>
+<p> Order allow,deny</p>
+<p> Allow from all</p>
+<p> AuthName Nagios Access</p>
+<p> AuthType Basic</p>
+<p> AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
+<p> Require valid-user</p>
+<p>/Directory</p>
+<p>Alias /nagios/ /usr/local/nagios/share/</p>
+<p>Directory /usr/local/nagios/share/</p>
+<p> AllowOverride None</p>
+<p> Options None</p>
+<p> Order allow,deny</p>
+<p> Allow from all</p>
+<p> AuthName Nagios Access</p>
+<p> AuthType Basic</p>
+<p> AuthUserFile /usr/local/nagios/etc/htpasswd.users</p>
+<p> Require valid-user</p>
+<p>/Directory</p>
 <p>2、设置访问权限</p>
-<p>&nbsp;</p>
 <p>在/usr/local/nagios/share目录下</p>
-<p>&nbsp;</p>
-<p>/usr/local/httpd/bin/htpasswd -c&nbsp; /usr/local/nagios/etc/htpasswd.users sushixiaoti</p>
-<p>&nbsp;</p>
+<p>/usr/local/httpd/bin/htpasswd -c /usr/local/nagios/etc/htpasswd.users sushixiaoti</p>
 <p>这个apache目录根据安装目录的不同而不同,用htpasswd这个命令生成用户名和密码。-c是生成用户验证文件.</p>
-<p>&nbsp;</p>
-<p>如果还要添加更多的用户，执行命令 htpasswd 就不需要选项 &ldquo;-c&rdquo;,否则就会覆盖所有已经生成的行。</p>
-<p>&nbsp;</p>
-<p>配置完成后，执行/usr/local/httpd/bin/apachctl -t&nbsp; 检查apache配置文件是否有语法错误。</p>
-<p>&nbsp;</p>
-<p>用/usr/local/httpd/bin/apachctl restart&nbsp; 把apache启动，然后从浏览器输入nagios 的访问地址（如：<a href="http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：" target="_blank" rel="external">http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：</a></p>
-<p>&nbsp;</p>
-<p>&nbsp;输入用htpasswd创建的用户名和密码测试一下，没有问题的话，进行下一步配置操作。</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>如果还要添加更多的用户，执行命令 htpasswd 就不需要选项 -c,否则就会覆盖所有已经生成的行。</p>
+<p>配置完成后，执行/usr/local/httpd/bin/apachctl -t 检查apache配置文件是否有语法错误。</p>
+<p>用/usr/local/httpd/bin/apachctl restart 把apache启动，然后从浏览器输入nagios 的访问地址（如：<a href="http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：" target="_blank" rel="external">http://ip/nagios），如果正常，将出现登录验证窗口等待用户输入：</a></p>
+<p>输入用htpasswd创建的用户名和密码测试一下，没有问题的话，进行下一步配置操作。</p>
 <p>二、nagios配置</p>
-<p>&nbsp;</p>
 <p>配置nagios</p>
-<p>&nbsp;</p>
 <p>刚安装完成的nagios，其配置文件的目录是/usr/local/nagios/etc，从nagios2.6版开始，不用修改配置文件localhost.cfg就可以直接运行../bin/nagios -v nagios.cfg验证程序是否能正常运行。</p>
 <p>1、修改配置文件</p>
-<p>&nbsp;</p>
 <p>Nagios的主配置文件是nagios.cfg:</p>
-<p>&nbsp;</p>
 <p>cd /usr/local/nagios/etc</p>
-<p>&nbsp;</p>
 <p>vi nagios.cfg</p>
-<p>&nbsp;</p>
 <p>log_file=/usr/local/nagios/var/nagios.log</p>
-<p>&nbsp;</p>
 <p>cfg_file=/usr/local/nagios/etc/objects/commands.cfg</p>
-<p>&nbsp;</p>
 <p>cfg_file=/usr/local/nagios/etc/objects/contacts.cfg</p>
-<p>&nbsp;</p>
 <p>cfg_file=/usr/local/nagios/etc/objects/timeperiods.cfg</p>
-<p>&nbsp;</p>
 <p>cfg_file=/usr/local/nagios/etc/objects/templates.cfg</p>
-<p>&nbsp;</p>
 <p>cfg_file=/usr/local/nagios/etc/objects/localhost.cfg</p>
-<p>&nbsp;</p>
 <p>cfg_dir=/usr/local/nagios/etc/servers</p>
-<p>&nbsp;</p>
 <p>object_cache_file=/usr/local/nagios/var/objects.cache</p>
-<p>&nbsp;</p>
 <p>precached_object_file=/usr/local/nagios/var/objects.precache</p>
-<p>&nbsp;</p>
 <p>resource_file=/usr/local/nagios/etc/resource.cfg</p>
-<p>&nbsp;</p>
 <p>status_file=/usr/local/nagios/var/status.dat</p>
-<p>&nbsp;</p>
 <p>status_update_interval=10</p>
-<p>&nbsp;</p>
 <p>nagios_user=nagios</p>
-<p>&nbsp;</p>
 <p>nagios_group=nagios</p>
-<p>&nbsp;</p>
 <p>check_external_commands=1</p>
-<p>&nbsp;</p>
 <p>command_check_interval=-1</p>
-<p>&nbsp;</p>
 <p>command_file=/usr/local/nagios/var/rw/nagios.cmd</p>
-<p>&nbsp;</p>
 <p>external_command_buffer_slots=4096</p>
-<p>&nbsp;</p>
 <p>lock_file=/usr/local/nagios/var/nagios.lock</p>
-<p>&nbsp;</p>
 <p>temp_file=/usr/local/nagios/var/nagios.tmp</p>
-<p>&nbsp;</p>
 <p>temp_path=/tmp</p>
-<p>&nbsp;</p>
 <p>event_broker_options=-1</p>
-<p>&nbsp;</p>
 <p>log_rotation_method=d</p>
-<p>&nbsp;</p>
 <p>log_archive_path=/usr/local/nagios/var/archives</p>
-<p>&nbsp;</p>
 <p>use_syslog=1</p>
-<p>&nbsp;</p>
 <p>log_notifications=1</p>
-<p>&nbsp;</p>
 <p>log_service_retries=1</p>
-<p>&nbsp;</p>
 <p>log_host_retries=1</p>
-<p>&nbsp;</p>
 <p>log_event_handlers=1</p>
-<p>&nbsp;</p>
 <p>log_initial_states=0</p>
-<p>&nbsp;</p>
 <p>log_external_commands=1</p>
-<p>&nbsp;</p>
 <p>log_passive_checks=1</p>
-<p>&nbsp;</p>
 <p>service_inter_check_delay_method=s</p>
-<p>&nbsp;</p>
 <p>max_service_check_spread=30</p>
-<p>&nbsp;</p>
 <p>service_interleave_factor=s</p>
-<p>&nbsp;</p>
 <p>host_inter_check_delay_method=s</p>
-<p>&nbsp;</p>
 <p>max_host_check_spread=30</p>
-<p>&nbsp;</p>
 <p>max_concurrent_checks=0</p>
-<p>&nbsp;</p>
 <p>check_result_reaper_frequency=10</p>
-<p>&nbsp;</p>
 <p>max_check_result_reaper_time=30</p>
-<p>&nbsp;</p>
 <p>check_result_path=/usr/local/nagios/var/spool/checkresults</p>
-<p>&nbsp;</p>
 <p>max_check_result_file_age=3600</p>
-<p>&nbsp;</p>
 <p>cached_host_check_horizon=15</p>
-<p>&nbsp;</p>
 <p>cached_service_check_horizon=15</p>
-<p>&nbsp;</p>
 <p>enable_predictive_host_dependency_checks=1</p>
-<p>&nbsp;</p>
 <p>enable_predictive_service_dependency_checks=1</p>
-<p>&nbsp;</p>
 <p>soft_state_dependencies=0</p>
-<p>&nbsp;</p>
 <p>auto_reschedule_checks=0</p>
-<p>&nbsp;</p>
 <p>auto_rescheduling_interval=30</p>
-<p>&nbsp;</p>
 <p>auto_rescheduling_window=180</p>
-<p>&nbsp;</p>
 <p>sleep_time=0.25</p>
-<p>&nbsp;</p>
 <p>service_check_timeout=60</p>
-<p>&nbsp;</p>
 <p>host_check_timeout=30</p>
-<p>&nbsp;</p>
 <p>event_handler_timeout=30</p>
-<p>&nbsp;</p>
 <p>notification_timeout=30</p>
-<p>&nbsp;</p>
 <p>ocsp_timeout=5</p>
-<p>&nbsp;</p>
 <p>perfdata_timeout=5</p>
-<p>&nbsp;</p>
 <p>retain_state_information=1</p>
-<p>&nbsp;</p>
 <p>state_retention_file=/usr/local/nagios/var/retention.dat</p>
-<p>&nbsp;</p>
 <p>retention_update_interval=60</p>
-<p>&nbsp;</p>
 <p>use_retained_program_state=1</p>
-<p>&nbsp;</p>
 <p>use_retained_scheduling_info=1</p>
-<p>&nbsp;</p>
 <p>retained_host_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>retained_service_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>retained_process_host_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>retained_process_service_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>retained_contact_host_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>retained_contact_service_attribute_mask=0</p>
-<p>&nbsp;</p>
 <p>interval_length=60</p>
-<p>&nbsp;</p>
 <p>use_aggressive_host_checking=0</p>
-<p>&nbsp;</p>
 <p>execute_service_checks=1</p>
-<p>&nbsp;</p>
 <p>accept_passive_service_checks=1</p>
-<p>&nbsp;</p>
 <p>execute_host_checks=1</p>
-<p>&nbsp;</p>
 <p>accept_passive_host_checks=1</p>
-<p>&nbsp;</p>
 <p>enable_notifications=1</p>
-<p>&nbsp;</p>
 <p>enable_event_handlers=1</p>
-<p>&nbsp;</p>
 <p>process_performance_data=0</p>
-<p>&nbsp;</p>
 <p>obsess_over_services=0</p>
-<p>&nbsp;</p>
 <p>obsess_over_hosts=0</p>
-<p>&nbsp;</p>
 <p>translate_passive_host_checks=0</p>
-<p>&nbsp;</p>
 <p>passive_host_checks_are_soft=0</p>
-<p>&nbsp;</p>
 <p>check_for_orphaned_services=1</p>
-<p>&nbsp;</p>
 <p>check_for_orphaned_hosts=1</p>
-<p>&nbsp;</p>
 <p>check_service_freshness=1</p>
-<p>&nbsp;</p>
 <p>service_freshness_check_interval=60</p>
-<p>&nbsp;</p>
 <p>check_host_freshness=0</p>
-<p>&nbsp;</p>
 <p>host_freshness_check_interval=60</p>
-<p>&nbsp;</p>
 <p>additional_freshness_latency=15</p>
-<p>&nbsp;</p>
 <p>enable_flap_detection=1</p>
-<p>&nbsp;</p>
 <p>low_service_flap_threshold=5.0</p>
-<p>&nbsp;</p>
 <p>high_service_flap_threshold=20.0</p>
-<p>&nbsp;</p>
 <p>low_host_flap_threshold=5.0</p>
-<p>&nbsp;</p>
 <p>high_host_flap_threshold=20.0</p>
-<p>&nbsp;</p>
 <p>date_format=us</p>
-<p>&nbsp;</p>
 <p>p1_file=/usr/local/nagios/bin/p1.pl</p>
-<p>&nbsp;</p>
 <p>enable_embedded_perl=1</p>
-<p>&nbsp;</p>
 <p>use_embedded_perl_implicitly=1</p>
-<p>&nbsp;</p>
-<p>illegal_object_name_chars=`~!$%^&amp;*|’&quot;&lt;&gt;?,()=</p>
-<p>&nbsp;</p>
-<p>illegal_macro_output_chars=`~$&amp;|’&quot;&lt;&gt;</p>
-<p>&nbsp;</p>
+<p>illegal_object_name_chars=`~!$%^*|’?,()=</p>
+<p>illegal_macro_output_chars=`~$|’</p>
 <p>use_regexp_matching=0</p>
-<p>&nbsp;</p>
 <p>use_true_regexp_matching=0</p>
-<p>&nbsp;</p>
 <p>admin_email=nagios@localhost</p>
-<p>&nbsp;</p>
 <p>admin_pager=pagenagios@localhost</p>
-<p>&nbsp;</p>
 <p>daemon_dumps_core=0</p>
-<p>&nbsp;</p>
 <p>use_large_installation_tweaks=0</p>
-<p>&nbsp;</p>
 <p>enable_environment_macros=1</p>
-<p>&nbsp;</p>
 <p>debug_level=0</p>
-<p>&nbsp;</p>
 <p>debug_verbosity=1</p>
-<p>&nbsp;</p>
 <p>debug_file=/usr/local/nagios/var/nagios.debug</p>
-<p>&nbsp;</p>
 <p>max_debug_file_size=1000000</p>
 <p>改check_external_commands =0为</p>
-<p>&nbsp;</p>
 <p>check_external_commands=1</p>
-<p>&nbsp;</p>
 <p>//这行的作用是允许执行在web界面下重启nagios、停止主机/服务检查等操作。把command_check_interval的值从默认的1改成</p>
-<p>&nbsp;</p>
 <p>command_check_interval=15s</p>
-<p>&nbsp;</p>
 <p>//Note: By setting this value to -1, Nagios will check for external commands as often as possible.</p>
 <p>第二个要修改的配置文件是cgi.cfg，它的作用是控制相关cgi脚本。</p>
-<p>&nbsp;</p>
 <p>vi cgi.cfg</p>
-<p>&nbsp;</p>
 <p>main_config_file=/usr/local/nagios/etc/nagios.cfg</p>
-<p>&nbsp;</p>
 <p>physical_html_path=/usr/local/nagios/share</p>
-<p>&nbsp;</p>
 <p>url_html_path=/nagios</p>
-<p>&nbsp;</p>
 <p>show_context_help=0</p>
-<p>&nbsp;</p>
 <p>use_pending_states=1</p>
-<p>&nbsp;</p>
 <p>use_authentication=1</p>
-<p>&nbsp;</p>
 <p>use_ssl_authentication=0</p>
-<p>&nbsp;</p>
 <p>authorized_for_system_information=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_configuration_information=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_system_commands=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_all_services=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_all_hosts=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_all_service_commands=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>authorized_for_all_host_commands=nagiosadmin,sushixiaoti</p>
-<p>&nbsp;</p>
 <p>default_statusmap_layout=5</p>
-<p>&nbsp;</p>
 <p>default_statuswrl_layout=4</p>
-<p>&nbsp;</p>
 <p>ping_syntax=/bin/ping -n -U -c 5 $HOSTADDRESS$</p>
-<p>&nbsp;</p>
 <p>refresh_rate=90</p>
-<p>&nbsp;</p>
 <p>escape_html_tags=1</p>
-<p>&nbsp;</p>
 <p>action_url_target=_blank</p>
-<p>&nbsp;</p>
 <p>notes_url_target=_blank</p>
-<p>&nbsp;</p>
 <p>lock_author_names=1</p>
-<p>&nbsp;</p>
-<p>//确保use_authentication=1。把 use_authentication的值设置成&rdquo;0&rdquo;来取消验证是一个十分糟糕的想法。接下来修改default_user_name=sushixiaoti</p>
+<p>//确保use_authentication=1。把 use_authentication的值设置成0来取消验证是一个十分糟糕的想法。接下来修改default_user_name=sushixiaoti</p>
 <p>上述用户名是执行命令</p>
-<p>&nbsp;</p>
 <p>/usr/local/httpd/bin/htpasswd -c /usr/local/nagios/etc/htpasswd sushixiaoti</p>
-<p>&nbsp;</p>
 <p>所生成的。</p>
-<p>&nbsp;</p>
 <p>nagios 3的其它配置文件在objects目录下:</p>
-<p>&nbsp;</p>
-<p>cd&nbsp; objects</p>
-<p>&nbsp;</p>
+<p>cd objects</p>
 <p>vi contacts.cfg</p>
-<p>&nbsp;</p>
 <p>添加</p>
-<p>&nbsp;</p>
 <p>define contact {</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; system administrator</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti@veryi.com</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-contact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from generic-contact template (defined above)</p>
-<p>&nbsp;</p>
+<p> contact_name sushixiaoti</p>
+<p> alias system administrator</p>
+<p> email sushixiaoti@veryi.com</p>
+<p> use generic-contact ; Inherit default values from generic-contact template (defined above)</p>
 <p>}</p>
-<p>&nbsp;</p>
 <p>define contactgroup{</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contactgroup_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nagios info</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sushixiaoti</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>&nbsp;</p>
-<h1 id="contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_//不要有空格">contact_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //不要有空格</h1><p>vi commands.cf</p>
-<p>&nbsp;</p>
+<p> contactgroup_name admingroup</p>
+<p> alias Nagios info</p>
+<p> members sushixiaoti</p>
+<p> }</p>
+<h1 id="contact_name_//不要有空格">contact_name //不要有空格</h1><p>vi commands.cf</p>
 <p>添加</p>
-<p>&nbsp;</p>
-<h1 id="NRPE_COMMAND">NRPE COMMAND</h1><p>&nbsp;</p>
-<p>#</p>
-<p>&nbsp;</p>
-<h6 id="#">#</h6><p>&nbsp;</p>
-<h1 id="\’check_nrpe_\’_command_definition">\’check_nrpe \’ command definition</h1><p>&nbsp;</p>
-<p>#</p>
-<p>&nbsp;</p>
+<h1 id="NRPE_COMMAND">NRPE COMMAND</h1><p>#</p>
+<h6 id="#">#</h6><h1 id="\’check_nrpe_\’_command_definition">\’check_nrpe \’ command definition</h1><p>#</p>
 <p>define command{</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_name check_nrpe</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>&nbsp;</p>
+<p> command_name check_nrpe</p>
+<p> command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$</p>
+<p> }</p>
 <p>define command{</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_name check_rdisk</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$ $ARG3$ $ARG4$</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p> command_name check_rdisk</p>
+<p> command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$ $ARG3$ $ARG4$</p>
+<p> }</p>
 <p>运行程序</p>
-<p>&nbsp;</p>
 <p>/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg</p>
-<p>&nbsp;</p>
 <p>来检查所有配置文件的正确性。</p>
 <p>启动nagios</p>
-<p>&nbsp;</p>
 <p>/usr/local/nagios/bin/nagios -d /usr/local/nagios/etc/nagios.cfg</p>
-<p>&nbsp;</p>
 <p>mkdir -p /var/log/nagios</p>
-<p>&nbsp;</p>
 <p>chown nagios.nagios /var/log/nagios</p>
 <p>chmod +x /etc/init.d/nagios</p>
 <p>nagios 最基本的安装配置已经完成，只有对本地主机的监控。</p>
@@ -469,8 +243,7 @@
 <p>2. 预警处理</p>
 <p>3. 集中，规模化管理</p>
 <p>4. 可视化显示方式</p>
-<p>nagios的实现方式：nagios采用分布-集中的管理模式。在nagios服务器上安装nagios主程序，在被监控主机上安装nagios代理程序。通过nagios主程序和nagios代理程序之间的通讯，监视主机状态。主程序和代理程序之间有两种工作方式，一种是主程序—&gt;Active—&gt;代理程序；另一种是主程序—&gt;passive—&gt;代理程序；顾名思义，是以一方向另一方主动提出通讯需求来划分的。</p>
-<p>&nbsp;&nbsp;&nbsp; </p>
+<p>nagios的实现方式：nagios采用分布-集中的管理模式。在nagios服务器上安装nagios主程序，在被监控主机上安装nagios代理程序。通过nagios主程序和nagios代理程序之间的通讯，监视主机状态。主程序和代理程序之间有两种工作方式，一种是主程序—Active—代理程序；另一种是主程序—passive—代理程序；顾名思义，是以一方向另一方主动提出通讯需求来划分的。</p>
 <p>nagios服务器上需要安装以下包，nagios主程序，nagios的plugin程序，check_nrpe程序，imagepak包；</p>
 <p>没有插件，nagios将什么作用也没有，插件也是nagios扩展功能的强大武器，除了下载常用的插件外，我们还可以根据实际要求编写自己的插件。插件与nagios之间的版本关联不大。在配置过程指定的安装路径是/usr/local/nagios，而不是/usr/local/nagios-plugin,安装完成后，将在目录/usr/local/nagios生成目录libexec（里面有很多文件），这正是nagios所需要的。</p>
 <p>安装web服务器apache</p>
@@ -487,32 +260,39 @@
 <p>tar zxf nagios-3.0.6.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-3.0.6/</p>
 <p>./configure -prefix=/usr/local/nagios</p>
-<h1 id="&ndash;with-gd-lib=/usr/local/lib_&ndash;with-gd-inc=/usr/local/include">&ndash;with-gd-lib=/usr/local/lib &ndash;with-gd-inc=/usr/local/include</h1><p>make -j6 all &amp;&amp; make install </p>
-<p>make install-init &amp;&amp; make install-commandmode &amp;&amp;make install-config</p>
-<p>cp&nbsp; daemon-init.in&nbsp; /etc/init.d/nagios</p>
-<p>&nbsp; make install</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the main program, CGIs, and HTML files</p>
-<p>&nbsp; make install-init</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the init script in /etc/rc.d/init.d</p>
-<p>&nbsp; make install-commandmode</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs and configures permissions on the</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory for holding the external command file</p>
-<p>&nbsp; make install-config</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs <em>SAMPLE</em> config files in /usr/local/nagios/etc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You’ll have to modify these sample files before you can</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use Nagios.&nbsp; Read the HTML documentation for more info</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on doing this.&nbsp; Pay particular attention to the docs on</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; object configuration files, as they determine what/how</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; things get monitored!</p>
-<p>&nbsp; make install-webconf</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the Apache config file for the Nagios</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web interface</p>
+<h1 id="with-gd-lib=/usr/local/lib_with-gd-inc=/usr/local/include">with-gd-lib=/usr/local/lib with-gd-inc=/usr/local/include</h1><p>make -j6 all  make install </p>
+<p>make install-init  make install-commandmode make install-config</p>
+<p>cp daemon-init.in /etc/init.d/nagios</p>
+<p> make install</p>
+<ul>
+<li><p>This installs the main program, CGIs, and HTML files</p>
+<p>make install-init</p>
+</li>
+<li><p>This installs the init script in /etc/rc.d/init.d</p>
+<p>make install-commandmode</p>
+</li>
+<li><p>This installs and configures permissions on the</p>
+<p>directory for holding the external command file</p>
+<p>make install-config</p>
+</li>
+<li><p>This installs <em>SAMPLE</em> config files in /usr/local/nagios/etc</p>
+<p>You’ll have to modify these sample files before you can</p>
+<p>use Nagios. Read the HTML documentation for more info</p>
+<p>on doing this. Pay particular attention to the docs on</p>
+<p>object configuration files, as they determine what/how</p>
+<p>things get monitored!</p>
+<p>make install-webconf</p>
+</li>
+<li><p>This installs the Apache config file for the Nagios</p>
+<p>web interface</p>
+</li>
+</ul>
 <p>安装nagios-plugin</p>
 <p>wget <a href="http://jaist.dl.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.13.tar.gz" target="_blank" rel="external">http://jaist.dl.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.13.tar.gz</a></p>
 <p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-plugins-1.4.13</p>
 <p>./configure -prefix=/usr/local/nagios-plugins</p>
-<h1 id="-enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem&hellip;_错误时使用">-enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem&hellip; 错误时使用</h1><p>make -j6 &amp;&amp; make install</p>
+<h1 id="-enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem_错误时使用">-enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem 错误时使用</h1><p>make -j6  make install</p>
 <p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
 <p>安装imagepak-base.tar.gz</p>
 <p>下载：</p>
@@ -528,7 +308,6 @@
 <p>make all</p>
 <p>cp src/check_nrpe /usr/local/nagios/libexec</p>
 <p>chown -R nagios.nagios /usr/local/nagios</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/linux config nagios-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-21T07:08:59.000Z" class="post__time">四月 21, 2009</time><h1 class="post__title"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/">在Linux上源代码安装与配置bind 9 dns</a></h1></header><div class="post__main"><p>支持ipv6，参考rfc1912配置。</p>
 <p>Bind是一款开放源码的DNS服务器软件，Bind由美国加州大学Berkeley分校开发和维护的，全名为Berkeley Internet Name Domain它是目前世界上使用最为广泛的DNS服务器软件，支持各种unix平台和windows平台。</p>
 <p>操作系统:</p>
@@ -540,23 +319,22 @@
 <p>tar xfj zlib-1.2.3.tar.bz2 -C /usr/local/src</p>
 <p>cd /usr/local/src/zlib-1.2.3</p>
 <p>./configure</p>
-<p>make -j6 &amp;&amp; make install </p>
-<p>echo &quot;/usr/local/lib&quot; &gt;&gt; /etc/ld.so.conf</p>
+<p>make -j6  make install </p>
+<p>echo /usr/local/lib  /etc/ld.so.conf</p>
 <p>ldconfig</p>
-<p>&nbsp;</p>
 <p>安装openssl</p>
 <p><a href="http://www.openssl.org/source/" target="_blank" rel="external">http://www.openssl.org/source/</a></p>
-<p>tar zxf openssl-0.9.8k.tar.gz&nbsp; -C /usr/local/src</p>
-<p>cd&nbsp; /usr/local/src/openssl-0.9.8k</p>
+<p>tar zxf openssl-0.9.8k.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/openssl-0.9.8k</p>
 <p>./config —prefix=/usr/local/openssl —openssldir=/usr/local/openssl shared zlib</p>
-<p>make &amp;&amp; make test &amp;&amp; make install</p>
+<p>make  make test  make install</p>
 <p>/usr/local/openssl/lib/</p>
-<p>echo &quot;/usr/local/openssl/lib/&quot; &gt;&gt; /etc/ld.so.conf</p>
+<p>echo /usr/local/openssl/lib/  /etc/ld.so.conf</p>
 <p>ldconfig</p>
 <p>tar xfz bind-9.6.0-P1.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/bind-9.6.0-P1</p>
 <p>./configure —prefix=/usr/local/named —enable-threads —enable-ipv6 —with-openssl=/usr/local/openssl —with-dlz-mysql</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>建立BIND用户：</p>
 <p>groupadd bind</p>
 <p>useradd -g bind -d /usr/local/named -s /sbin/nologin bind</p>
@@ -575,264 +353,262 @@
 <p>建立启动脚本：</p>
 <p>vi /etc/init.d/named</p>
 <h1 id="!/bin/bash">!/bin/bash</h1><p>#</p>
-<h1 id="named&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_This_shell_script_takes_care_of_starting_and_stopping">named&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This shell script takes care of starting and stopping</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_named_(BIND_DNS_server)-">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; named (BIND DNS server).</h1><p>#</p>
+<h1 id="named_This_shell_script_takes_care_of_starting_and_stopping">named This shell script takes care of starting and stopping</h1><h1 id="named_(BIND_DNS_server)-">named (BIND DNS server).</h1><p>#</p>
 <h1 id="chkconfig:_-_55_45">chkconfig: - 55 45</h1><h1 id="description:_named_(BIND)_is_a_Domain_Name_Server_(DNS)_\">description: named (BIND) is a Domain Name Server (DNS) \</h1><h1 id="that_is_used_to_resolve_host_names_to_IP_addresses-">that is used to resolve host names to IP addresses.</h1><h1 id="probe:_true">probe: true</h1><h1 id="Source_function_library-">Source function library.</h1><p>. /etc/rc.d/init.d/functions</p>
-<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ] &amp;&amp; . /etc/sysconfig/network</p>
-<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ]  . /etc/sysconfig/network</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = no ]  exit 0</p>
 <p>[ -x /usr/local/named/sbin/named ] || exit 0</p>
 <p>RETVAL=0</p>
-<p>prog=&quot;named&quot;</p>
+<p>prog=named</p>
 <p>if [ <code>id -u</code> -ne 0 ]</p>
 <p>then</p>
-<p>echo &quot;ERROR:For bind to port 53,must run as root.&quot;</p>
+<p>echo ERROR:For bind to port 53,must run as root.</p>
 <p>exit 1</p>
 <p>fi</p>
-<p>case &quot;$1&quot; in</p>
+<p>case $1 in</p>
 <p>start)</p>
 <p>if [ -x /usr/local/named/sbin/named ]; then</p>
-<p>&nbsp; /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server started.’</p>
+<p> /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf  echo .  echo ‘BIND9 server started.’</p>
 <p>fi</p>
 <p>;;</p>
 <p>stop)</p>
-<p>&nbsp; #kill <code>cat /var/run/named/pid</code> &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server stopped.’</p>
-<p>&nbsp; killproc $prog &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server stopped.’</p>
+<h1 id="kill_cat_/var/run/named/pid_echo_-_echo_‘BIND9_server_stopped-’">kill <code>cat /var/run/named/pid</code>  echo .  echo ‘BIND9 server stopped.’</h1><p> killproc $prog  echo .  echo ‘BIND9 server stopped.’</p>
 <p>;;</p>
 <p>restart)</p>
 <p>echo .</p>
-<p>echo &quot;Restart BIND9 server&quot;</p>
+<p>echo Restart BIND9 server</p>
 <p>$0 stop</p>
 <h1 id="sleep_10">sleep 10</h1><p>$0 start</p>
 <p>;;</p>
 <p>*)</p>
-<p>echo &quot;$0 start | stop | restart&quot;</p>
+<p>echo $0 start | stop | restart</p>
 <p>;;</p>
 <p>esac</p>
 <p>chmod 755 /etc/init.d/named</p>
 <p>chown root:root /etc/init.d/named</p>
 <p>chkconfig —add named</p>
-<p>chkconfig —level 345&nbsp; named on</p>
+<p>chkconfig —level 345 named on</p>
 <p>chkconfig —list named</p>
 <p>到这里bind已经安装完毕 .下面是解析部分.创建主要的配置文件：</p>
 <p>cd /usr/local/named/etc/</p>
 <p>vi /usr/local/named/etc/named.conf</p>
-<p>acl &quot;reserv-lan&quot; { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
-<p>acl &quot;query-lan&quot; { 0/0; };</p>
-<p>acl &quot;trusted-lan&quot; { 192.168.6.0/23; a.b.c.168/32; };</p>
+<p>acl reserv-lan { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
+<p>acl query-lan { 0/0; };</p>
+<p>acl trusted-lan { 192.168.6.0/23; a.b.c.168/32; };</p>
 <p>options {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory &quot;/usr/local/named/etc&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; listen-on {127.0.0.1; a.b.c.168;};</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pid-file &quot;/var/log/named/named.pid&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; memstatistics-file &quot;/var/log/named/data/named_mem_stats.txt&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump-file &quot;/var/log/named/data/cache_dump.db&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; max-cache-size 64M;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //最大的缓存大小为64MB</p>
-<p>&nbsp;&nbsp;&nbsp; tcp-clients 256;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //最大的客户端为256个</p>
-<p>&nbsp;&nbsp;&nbsp; recursive-clients 4000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
-<p>&nbsp;&nbsp;&nbsp; interface-interval 0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //启动named时才检查监听的网络接口</p>
-<p>&nbsp;&nbsp;&nbsp; cleaning-interval 480;&nbsp; //每隔480分钟将统计日志写入文件</p>
-<p>&nbsp;&nbsp;&nbsp; lame-ttl 1800;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //设定缓存有问题服务器指示的秒数为30分钟</p>
-<p>&nbsp;&nbsp;&nbsp; max-ncache-ttl 168000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //为降低网络流量和提升服务器存储否定回答的性能</p>
-<p>&nbsp;&nbsp;&nbsp; max-cache-ttl 86400;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //设定了服务器储存普通(肯定)答案的最大时间</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version &quot;www.veryi.com&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; datasize 512M;</p>
-<p>&nbsp;&nbsp;&nbsp; auth-nxdomain yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; recursion yes;</p>
-<p>&nbsp;&nbsp;&nbsp; zone-statistics yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; statistics-file &quot;/var/log/named/data/named.stats&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-transfer { none; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-query { &quot;any&quot;; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-recursion {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;query-lan&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-notify {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;trusted-lan&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> directory /usr/local/named/etc;</p>
+<p> listen-on {127.0.0.1; a.b.c.168;};</p>
+<p> pid-file /var/log/named/named.pid;</p>
+<p> memstatistics-file /var/log/named/data/named_mem_stats.txt;</p>
+<p> dump-file /var/log/named/data/cache_dump.db;</p>
+<p> max-cache-size 64M; //最大的缓存大小为64MB</p>
+<p> tcp-clients 256; //最大的客户端为256个</p>
+<p> recursive-clients 4000; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
+<p> interface-interval 0; //启动named时才检查监听的网络接口</p>
+<p> cleaning-interval 480; //每隔480分钟将统计日志写入文件</p>
+<p> lame-ttl 1800; //设定缓存有问题服务器指示的秒数为30分钟</p>
+<p> max-ncache-ttl 168000; //为降低网络流量和提升服务器存储否定回答的性能</p>
+<p> max-cache-ttl 86400; //设定了服务器储存普通(肯定)答案的最大时间</p>
+<p> version www.veryi.com;</p>
+<p> datasize 512M;</p>
+<p> auth-nxdomain yes;</p>
+<p> recursion yes;</p>
+<p> zone-statistics yes;</p>
+<p> statistics-file /var/log/named/data/named.stats;</p>
+<p> allow-transfer { none; };</p>
+<p> allow-query { any; };</p>
+<p> allow-recursion {</p>
+<p> query-lan;</p>
+<p> };</p>
+<p> allow-notify {</p>
+<p> trusted-lan;</p>
+<p> };</p>
 <p>/<strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; forward first;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; forwarders {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 208.67.220.220;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 208.67.222.222;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 202.106.0.20;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 202.106.196.115;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> forward first;</p>
+<p> forwarders {</p>
+<p> 208.67.220.220;</p>
+<p> 208.67.222.222;</p>
+<p> 202.106.0.20;</p>
+<p> 202.106.196.115;</p>
+<p> };</p>
 <p><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong>/</p>
 <p>};</p>
-<p>include &quot;rndc.key&quot;;</p>
-<p>include &quot;named_log.conf&quot;;</p>
-<p>zone &quot;.&quot; {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type hint;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;named.root&quot;;</p>
+<p>include rndc.key;</p>
+<p>include named_log.conf;</p>
+<p>zone . {</p>
+<p> type hint;</p>
+<p> file named.root;</p>
 <p>};</p>
-<p>include &quot;named.rfc1912.zones&quot;;</p>
-<p>zone &quot;6.168.192.in-addr.arpa&quot; {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;primary/192.168.6.in-addr.arpa.zone&quot;;</p>
+<p>include named.rfc1912.zones;</p>
+<p>zone 6.168.192.in-addr.arpa {</p>
+<p> type master;</p>
+<p> file primary/192.168.6.in-addr.arpa.zone;</p>
 <p>};</p>
-<p>&nbsp;&nbsp;&nbsp; </p>
 <p>生成rndc-key:</p>
 <p>cd /usr/local/named/etc/</p>
-<p>../sbin/rndc-confgen | head -5&nbsp; &gt; rndc.key</p>
+<p>../sbin/rndc-confgen | head -5  rndc.key</p>
 <p>添加完成后，保存。</p>
 <p>更新根区文件：</p>
 <p>cd /usr/local/named/etc/</p>
 <p>wget ftp://ftp.internic.org/domain/named.root</p>
 <p>或者:</p>
 <p>dig</p>
-<p>dig&nbsp; @192.58.128.30 &gt;named.root</p>
+<p>dig @192.58.128.30 named.root</p>
 <p>vi named_log.conf</p>
 <p>logging {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel default_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/default_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category default {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel queries_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/queries_log&quot; versions 8 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category queries {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; queries_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel general_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/general_log&quot; versions 8 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category general { general_log; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel client_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/client_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category client { client_log; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel config_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/config_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category config {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; config_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel database_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/database_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category database {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; database_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel dnssec_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/dnssec_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category dnssec {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dnssec_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel lame-servers_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/lame-servers_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category lame-servers {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lame-servers_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel network_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/network_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category network {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel notify_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/notify_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category notify {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notify_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel resolver_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/resolver_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category resolver {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolver_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel security_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/security_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category security {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; security_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel update_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/update_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category update {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel xfer-in_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/xfer-in_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category xfer-in {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xfer-in_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel xfer-out_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/xfer-out_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category xfer-out {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xfer-out_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel default_debug {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;/var/log/named/named.run_log&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity dynamic;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> channel default_log</p>
+<p> { file /var/log/named/default_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category default {</p>
+<p> default_log;</p>
+<p> };</p>
+<p> channel queries_log</p>
+<p> { file /var/log/named/queries_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category queries {</p>
+<p> queries_log;</p>
+<p> };</p>
+<p> channel general_log</p>
+<p> { file /var/log/named/general_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category general { general_log; };</p>
+<p> channel client_log</p>
+<p> { file /var/log/named/client_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category client { client_log; };</p>
+<p> channel config_log</p>
+<p> { file /var/log/named/config_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category config {</p>
+<p> config_log;</p>
+<p> };</p>
+<p> channel database_log</p>
+<p> { file /var/log/named/database_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category database {</p>
+<p> database_log;</p>
+<p> };</p>
+<p> channel dnssec_log</p>
+<p> { file /var/log/named/dnssec_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category dnssec {</p>
+<p> dnssec_log;</p>
+<p> };</p>
+<p> channel lame-servers_log</p>
+<p> { file /var/log/named/lame-servers_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category lame-servers {</p>
+<p> lame-servers_log;</p>
+<p> };</p>
+<p> channel network_log</p>
+<p> { file /var/log/named/network_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category network {</p>
+<p> network_log;</p>
+<p> };</p>
+<p> channel notify_log</p>
+<p> { file /var/log/named/notify_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category notify {</p>
+<p> notify_log;</p>
+<p> };</p>
+<p> channel resolver_log</p>
+<p> { file /var/log/named/resolver_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category resolver {</p>
+<p> resolver_log;</p>
+<p> };</p>
+<p> channel security_log</p>
+<p> { file /var/log/named/security_log versions 3 size 8192k;</p>
+<p> //severity info;</p>
+<p> severity warning;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category security {</p>
+<p> security_log;</p>
+<p> };</p>
+<p> channel update_log</p>
+<p> { file /var/log/named/update_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category update {</p>
+<p> update_log;</p>
+<p> };</p>
+<p> channel xfer-in_log</p>
+<p> { file /var/log/named/xfer-in_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-in {</p>
+<p> xfer-in_log;</p>
+<p> };</p>
+<p> channel xfer-out_log</p>
+<p> { file /var/log/named/xfer-out_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-out {</p>
+<p> xfer-out_log;</p>
+<p> };</p>
+<p> channel default_debug {</p>
+<p> file /var/log/named/named.run_log;</p>
+<p> severity dynamic;</p>
+<p> };</p>
 <p>};</p>
 <p>vi named.rfc1912.zones</p>
 <p>// named.rfc1912.zones:</p>
@@ -840,128 +616,139 @@
 <p>// ISC BIND named zone configuration for zones recommended by</p>
 <p>// RFC 1912 section 4.1 : localhost TLDs and address zones</p>
 <p>// </p>
-<p>zone &quot;localdomain&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;localdomain.zone&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone localdomain IN {</p>
+<p> type master;</p>
+<p> file localdomain.zone;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;localhost&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;localhost.zone&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone localhost IN {</p>
+<p> type master;</p>
+<p> file localhost.zone;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.0.127.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.local&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.0.127.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.local;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.ip6.local&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa IN {</p>
+<p> type master;</p>
+<p> file named.ip6.local;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;255.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.broadcast&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 255.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.broadcast;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.zero&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.zero;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
 <p>vi named.local</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SOA&nbsp;&nbsp;&nbsp;&nbsp; localhost. root.localhost.&nbsp; (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1997022700 ; Serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 28800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; Expire</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 86400 )&nbsp;&nbsp;&nbsp; ; Minimum</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
-<p>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
 <p>vi local.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; @&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN AAAA&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ::1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
 <p>vi localhost.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; @&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN AAAA&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ::1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
 <p>vi localdomain.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; localhost root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
-<p>localhost&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA localhost root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  localhost</p>
+<p>localhost IN A  127.0.0.1</p>
 <p>vi named.zero</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN SOA&nbsp; localhost.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root.localhost. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
 <p>vi named.broadcas</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN SOA&nbsp; localhost.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root.localhost. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
 <p>vi named.ip6.local</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SOA&nbsp;&nbsp;&nbsp;&nbsp; localhost. root.localhost.&nbsp; (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1997022700 ; Serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 28800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; Expire</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 86400 )&nbsp;&nbsp;&nbsp; ; Minimum</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
-<p>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
 <p>vi primary/192.168.6.in-addr.arpa.zone</p>
 <p>$ORIGIN .</p>
-<p>$TTL 203616&nbsp;&nbsp;&nbsp;&nbsp; ; 2 days 8 hours 33 minutes 36 seconds</p>
-<p>6.168.192.in-addr.arpa.&nbsp; IN SOA&nbsp; localhost. acy.163.com. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2003080900 ; serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh (1 hour)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry (5 minutes)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; expire (5 weeks 6 days 16 hours)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum (0 seconds)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</p>
-<p>$TTL 20000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 5 hours 33 minutes 20 seconds</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mail.veryi.com.</p>
+<p>$TTL 203616 ; 2 days 8 hours 33 minutes 36 seconds</p>
+<p>6.168.192.in-addr.arpa. IN SOA localhost. acy.163.com. (</p>
+<p> 2003080900 ; serial</p>
+<p> 3600 ; refresh (1 hour)</p>
+<p> 300 ; retry (5 minutes)</p>
+<p> 3600000 ; expire (5 weeks 6 days 16 hours)</p>
+<p> 0 ; minimum (0 seconds)</p>
+<p> )</p>
+<p>$TTL 20000 ; 5 hours 33 minutes 20 seconds</p>
+<p> IN NS localhost</p>
+<p> IN NS mail.veryi.com.</p>
 <p>$ORIGIN 6.168.192.in-addr.arpa.</p>
-<p>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; mx6.veryi.com.</p>
+<p>2 IN PTR mx6.veryi.com.</p>
 <p>$GENERATE 3-34 $ PTR pc$.veryi.com.</p>
-<p>35&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp; veryi.veryi.com.</p>
+<p>35 IN PTR veryi.veryi.com.</p>
 <p>运行测试：</p>
-<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf_&amp;">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf &amp;</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
+<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
 <p>状态检查：</p>
 <p>/usr/local/named/sbin/rndc status</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
 <p>Your boot partition is on a disk using the GPT partitioning Scheme but this machines cannot boot using GPT.</p>
 <pre><code>用linux live CD，推荐slax <span class="function_start"><span class="keyword">on</span></span> usb disk,启动系统以后，执行:
@@ -993,32 +780,19 @@ GPT ，全局唯一标识磁盘分区表 (GUID <span class="keyword">Partition</
 
 管理 GPT 分区。
 </code></pre></div><footer class="post__foot u-cf"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-10T01:19:36.000Z" class="post__time">四月 10, 2009</time><h1 class="post__title"><a href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/">linux lvs集群 应用经验谈</a></h1></header><div class="post__main"><p>lvs(Linux Virtual Server)负载均衡的安装配置网上的文章很多了，这里把lvs集群2年应用中的一些经验写出来，欢迎大家提宝贵意见：</p>
-<p>&nbsp;</p>
 <p>应用环境：</p>
-<p>&nbsp;</p>
 <p>前置机（负载均衡器）：Xeon(TM) CPU 3.00GHz/2G</p>
-<p>&nbsp;</p>
 <p>CentOS release 5 (Final)，kernel： 2.6.21.5</p>
-<p>&nbsp;</p>
 <p>lvs DR: Weighted Round Robin；</p>
-<p>&nbsp;</p>
 <p>heartbeat（实际没用上）；mon（监控real server)</p>
-<p>&nbsp;</p>
 <p>real server:</p>
-<p>&nbsp;</p>
 <p>各种配置，pc机不少。</p>
-<p>&nbsp;</p>
 <p>因为是在线集中培训，用户要提交作业、发表评论，以动态内容为主。一天内的最大在线用户5万以上。</p>
-<p>&nbsp;</p>
 <p>1、lvs NAT的效率较低，抗攻击能力差，建议用lvs DR、lvs TUN方式。</p>
-<p>&nbsp;</p>
 <p>2、lvs DR不能转发到端口，比如说，只能80到80，不能80到8080。</p>
-<p>&nbsp;</p>
 <p>3、lvs非常稳定，因为一些原因，</p>
 <p><strong>load balancer</strong></p>
 <p>没有后备系统，但LB从未发生过停止服务。</p>
-<p>&nbsp;</p>
 <p>4、lvs LB在被攻击时，负载略有提高，real server很快停止响应，在增加一定数量real server后，恢复正常服务。</p>
-<p>&nbsp;</p>
-<p>5、前置机的负载很低，ipvsadm -Lnc|wc -l超过十万时，cpu的使用率&lt;10%。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/29/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/31/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+<p>5、前置机的负载很低，ipvsadm -Lnc|wc -l超过十万时，cpu的使用率10%。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/10/w/linux-lvs-e9-9b-86-e7-be-a4-e5-ba-94-e7-94-a8-e7-bb-8f-e9-aa-8c-e8-b0-88/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/29/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/31/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

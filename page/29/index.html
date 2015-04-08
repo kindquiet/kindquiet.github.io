@@ -2,28 +2,28 @@
 <p>　　先从ASCII说起。ASCII是用来表示英文字符的一种编码规范，每个ASCII字符占用1个字节（8bits）</p>
 <p>　　因此，ASCII编码可以表示的最大字符数是256，其实英文字符并没有那么多，一般只用前128个（最高位为0），其中包括了控制字符、数字、大小写字母和其他一些符号 </p>
 <p>。</p>
-<p>　　而最高位为1的另128个字符被成为&ldquo;扩展ASCII&rdquo;，一般用来存放英文的制表符、部分音标字符等等的一些其他符号，这种字符编码规范显然用 来处理英文没有什么问题。（实际上也可以用来处理法文、德文等一些其他的西欧字符，但是不能和英文通用），但是面对中文、阿拉伯文之类复杂的文字，255 个字符显然不够用</p>
-<p>　　于是，各个国家纷纷制定了自己的文字编码规范，其中中文的文字编码规范叫做&ldquo;GB2312-80&rdquo;，它是和ASCII兼容的一种编码规范，其实就是利用扩展ASCII没有真正标准化这一点，把一个中文字符用两个扩展ASCII字符来表示。</p>
-<p>　　但是这个方法有问题，最大的问题就是，中文文字没有真正属于自己的编码，因为扩展ASCII码虽然没有真正的标准化，但是PC里的ASCII码 还是有一个事实标准的（存放着英文制表符），所以很多软件利用这些符号来画表格。这样的软件用到中文系统中，这些表格符就会被误认作中文字，破坏版面。而 且，统计中英文混合字符串中的字数，也是比较复杂的，我们必须判断一个ASCII码是否扩展，以及它的下一个ASCII是否扩展，然后才&ldquo;猜&rdquo;那可能是一 个中文字 </p>
+<p>　　而最高位为1的另128个字符被成为扩展ASCII，一般用来存放英文的制表符、部分音标字符等等的一些其他符号，这种字符编码规范显然用 来处理英文没有什么问题。（实际上也可以用来处理法文、德文等一些其他的西欧字符，但是不能和英文通用），但是面对中文、阿拉伯文之类复杂的文字，255 个字符显然不够用</p>
+<p>　　于是，各个国家纷纷制定了自己的文字编码规范，其中中文的文字编码规范叫做GB2312-80，它是和ASCII兼容的一种编码规范，其实就是利用扩展ASCII没有真正标准化这一点，把一个中文字符用两个扩展ASCII字符来表示。</p>
+<p>　　但是这个方法有问题，最大的问题就是，中文文字没有真正属于自己的编码，因为扩展ASCII码虽然没有真正的标准化，但是PC里的ASCII码 还是有一个事实标准的（存放着英文制表符），所以很多软件利用这些符号来画表格。这样的软件用到中文系统中，这些表格符就会被误认作中文字，破坏版面。而 且，统计中英文混合字符串中的字数，也是比较复杂的，我们必须判断一个ASCII码是否扩展，以及它的下一个ASCII是否扩展，然后才猜那可能是一 个中文字 </p>
 <p>。</p>
-<p>　　总之当时处理中文是很痛苦的。而更痛苦的是GB2312是国家标准，台湾当时有一个Big5编码标准，很多编码和GB是相同的，所以&hellip;&hellip;，嘿嘿。</p>
-<p>　　这时候，我们就知道，要真正解决中文问题，不能从扩展ASCII的角度入手，也不能仅靠中国一家来解决。而必须有一个全新的编码系统，这个系统 要可以将中文、英文、法文、德文&hellip;&hellip;等等所有的文字统一起来考虑，为每个文字都分配一个单独的编码，这样才不会有上面那种现象出现。</p>
+<p>　　总之当时处理中文是很痛苦的。而更痛苦的是GB2312是国家标准，台湾当时有一个Big5编码标准，很多编码和GB是相同的，所以，嘿嘿。</p>
+<p>　　这时候，我们就知道，要真正解决中文问题，不能从扩展ASCII的角度入手，也不能仅靠中国一家来解决。而必须有一个全新的编码系统，这个系统 要可以将中文、英文、法文、德文等等所有的文字统一起来考虑，为每个文字都分配一个单独的编码，这样才不会有上面那种现象出现。</p>
 <p>　　于是，Unicode诞生了。</p>
 <p>　　Unicode有两套标准，一套叫UCS-2(Unicode-16)，用2个字节为字符编码，另一套叫UCS-4(Unicode-32)，用4个字节为字符编码。</p>
 <p>　　以目前常用的UCS-2为例，它可以表示的字符数为2^16=65535，基本上可以容纳所有的欧美字符和绝大部分的亚洲字符 </p>
 <p>。</p>
 <p>　　UTF-8的问题后面会提到 。</p>
-<p>　　在Unicode里，所有的字符被一视同仁。汉字不再使用&ldquo;两个扩展ASCII&rdquo;，而是使用&ldquo;1个Unicode&rdquo;，注意，现在的汉字是&ldquo;一个字符&rdquo;了，于是，拆字、统计字数这些问题也就自然而然的解决了 </p>
+<p>　　在Unicode里，所有的字符被一视同仁。汉字不再使用两个扩展ASCII，而是使用1个Unicode，注意，现在的汉字是一个字符了，于是，拆字、统计字数这些问题也就自然而然的解决了 </p>
 <p>。</p>
 <p>　　但是，这个世界不是理想的，不可能在一夜之间所有的系统都使用Unicode来处理字符，所以Unicode在诞生之日，就必须考虑一个严峻的问题：和ASCII字符集之间的不兼容问题。</p>
-<p>　　我们知道，ASCII字符是单个字节的，比如&ldquo;A&rdquo;的ASCII是65。而Unicode是双字节的，比如&ldquo;A&rdquo;的Unicode是0065，这就造成了一个非常大的问题：以前处理ASCII的那套机制不能被用来处理Unicode了 </p>
+<p>　　我们知道，ASCII字符是单个字节的，比如A的ASCII是65。而Unicode是双字节的，比如A的Unicode是0065，这就造成了一个非常大的问题：以前处理ASCII的那套机制不能被用来处理Unicode了 </p>
 <p>。</p>
 <p>　　另一个更加严重的问题是，C语言使用’\0’作为字符串结尾，而Unicode里恰恰有很多字符都有一个字节为0，这样一来，C语言的字符串函数将无法正常处理Unicode，除非把世界上所有用C写的程序以及他们所用的函数库全部换掉 </p>
 <p>。</p>
 <p>　　于是，比Unicode更伟大的东东诞生了，之所以说它更伟大是因为它让Unicode不再存在于纸上，而是真实的存在于我们大家的电脑中。那就是：UTF。</p>
 <p>　　UTF= UCS Transformation Format UCS转换格式，它是将Unicode编码规则和计算机的实际编码对应起来的一个规则。现在流行的UTF有2种：UTF-8和UTF-16 </p>
 <p>。</p>
-<p>　　其中UTF-16和上面提到的Unicode本身的编码规范是一致的，这里不多说了。而UTF-8不同，它定义了一种&ldquo;区间规则&rdquo;，这种规则可以和ASCII编码保持最大程度的兼容 </p>
+<p>　　其中UTF-16和上面提到的Unicode本身的编码规范是一致的，这里不多说了。而UTF-8不同，它定义了一种区间规则，这种规则可以和ASCII编码保持最大程度的兼容 </p>
 <p>。</p>
 <p>　　UTF-8有点类似于Haffman编码，它将Unicode编码为00000000-0000007F的字符，用单个字节来表示；</p>
 <p>　　　　00000080-000007FF的字符用两个字节表示</p>
@@ -42,7 +42,7 @@
 <p>　　谈谈Unicode编码，简要解释UCS、UTF、BMP、BOM等名词</p>
 <p>这是一篇程序员写给程序员的趣味读物。所谓趣味是指可以比较轻松地了解一些原来不清楚的概念，增进知识，类似于打RPG游戏的升级。整理这篇文章的动机是两个问题：</p>
 <p>　　问题一：</p>
-<p>使用Windows记事本的&ldquo;另存为&rdquo;，可以在GBK、Unicode、Unicode big </p>
+<p>使用Windows记事本的另存为，可以在GBK、Unicode、Unicode big </p>
 <p>endian和UTF-8这几种编码方式间相互转换。同样是txt文件，Windows是怎样识别编码方式的呢？</p>
 <p>　　我很早前就发现Unicode、Unicode big endian和UTF-8编码的txt文件的开头会多出几个字节，分别是FF、FE（Unicode）,FE、FF（Unicode big endian）,EF、BB、BF（UTF-8）。但这些标记是基于什么标准呢？</p>
 <p>　　问题二：</p>
@@ -50,9 +50,9 @@
 <p>查了查相关资料，总算将这些问题弄清楚了，顺带也了解了一些Unicode的细节。写成一篇文章，送给有过类似疑问的朋友。本文在写作时尽量做到通俗易懂，但要求读者知道什么是字节，什么是十六进制。</p>
 <p>　　0、big endian和little endian</p>
 <p>big endian和little </p>
-<p>endian是CPU处理多字节数的不同方式。例如&ldquo;汉&rdquo;字的Unicode编码是6C49。那么写到文件里时，究竟是将6C写在前面，还是将49写在前面？如果将6C写在前面，就是big endian。还是将49写在前面，就是little endian。</p>
-<p>　　&ldquo;endian&rdquo;这个词出自《格列佛游记》。小人国的内战就源于吃鸡蛋时是究竟从大头(Big-Endian)敲开还是从小头(Little-Endian)敲开，由此曾发生过六次叛乱，其中一个皇帝送了命，另一个丢了王位。</p>
-<p>　　我们一般将endian翻译成&ldquo;字节序&rdquo;，将big endian和little endian称作&ldquo;大尾&rdquo;和&ldquo;小尾&rdquo;。</p>
+<p>endian是CPU处理多字节数的不同方式。例如汉字的Unicode编码是6C49。那么写到文件里时，究竟是将6C写在前面，还是将49写在前面？如果将6C写在前面，就是big endian。还是将49写在前面，就是little endian。</p>
+<p>　　endian这个词出自《格列佛游记》。小人国的内战就源于吃鸡蛋时是究竟从大头(Big-Endian)敲开还是从小头(Little-Endian)敲开，由此曾发生过六次叛乱，其中一个皇帝送了命，另一个丢了王位。</p>
+<p>　　我们一般将endian翻译成字节序，将big endian和little endian称作大尾和小尾。</p>
 <p>　　1、字符编码、内码，顺带介绍汉字编码</p>
 <p>字符必须编码后才能被计算机处理。计算机使用的缺省编码方式就是计算机的内码。早期的计算机使用7位的ASCII编码，为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5。</p>
 <p>　　GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。汉字区的内码范围高字节从B0-F7，低字节从A1-FE，占用的码位是72*94=6768。其中有5个空位是D7FA-D7FE。</p>
@@ -65,9 +65,9 @@
 <p>　　在DBCS中，GB内码的存储格式始终是big endian，即高位在前。</p>
 <p>　　GB2312的两个字节的最高位都是1。但符合这个条件的码位只有128*128=16384个。所以GBK和GB18030的低字节最高位都 可能不是1。不过这不影响DBCS字符流的解析：在读取DBCS字符流时，只要遇到高位为1的字节，就可以将下两个字节作为一个双字节编码，而不用管低字 节的高位是什么。</p>
 <p>　　2、Unicode、UCS和UTF</p>
-<p>前面提到从ASCII、GB2312、GBK到GB18030的编码方法是向下兼容的。而Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如&ldquo;汉&rdquo;字的Unicode编码是6C49，而GB码是BABA。</p>
-<p>　　Unicode也是一种字符编码方法，不过它是由国际组织设计，可以容纳全世界所有语言文字的编码方案。Unicode的学名&quot;Universal </p>
-<p>Multiple-Octet Coded Character Set&quot;，简称为UCS。UCS可以看作是&quot;Unicode Character Set&quot;的缩写。</p>
+<p>前面提到从ASCII、GB2312、GBK到GB18030的编码方法是向下兼容的。而Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如汉字的Unicode编码是6C49，而GB码是BABA。</p>
+<p>　　Unicode也是一种字符编码方法，不过它是由国际组织设计，可以容纳全世界所有语言文字的编码方案。Unicode的学名Universal </p>
+<p>Multiple-Octet Coded Character Set，简称为UCS。UCS可以看作是Unicode Character Set的缩写。</p>
 <p>　　根据维基百科全书(<a href="http://zh.wikipedia.org/wiki/" target="_blank" rel="external">http://zh.wikipedia.org/wiki/</a>)的记载：历史上存在两个试图独立设计Unicode的组织，即国际标准化组织（ISO）和一个软件制造商的协会（unicode.org）。ISO开发了ISO </p>
 <p>10646项目，Unicode协会开发了Unicode项目。</p>
 <p>　　在1991年前后，双方都认识到世界不需要两个不兼容的字符集。于是它们开始合并双方的工作成果，并为创立一个单一编码表而协同工作。从Unicode2.0开始，Unicode项目采用了与ISO </p>
@@ -88,50 +88,48 @@
 <p>0000 - 007F 0xxxxxxx</p>
 <p>0080 - 07FF 110xxxxx 10xxxxxx</p>
 <p>0800 - FFFF 1110xxxx 10xxxxxx 10xxxxxx</p>
-<p>　　例如&ldquo;汉&rdquo;字的Unicode编码是6C49。6C49在0800-FFFF之间，所以肯定要用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将6C49写成二进制是：0110 110001 001001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。</p>
+<p>　　例如汉字的Unicode编码是6C49。6C49在0800-FFFF之间，所以肯定要用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将6C49写成二进制是：0110 110001 001001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。</p>
 <p>　　读者可以用记事本测试一下我们的编码是否正确。</p>
 <p>　　UTF-16以16位为单元对UCS进行编码。对于小于0x10000的UCS码，UTF-16编码就等于UCS码对应的16位无符号整数。对 于不小于0x10000的UCS码，定义了一个算法。不过由于实际使用的UCS2，或者UCS4的BMP必然小于0x10000，所以就目前而言，可以认 为UTF-16和UCS-2基本相同。但UCS-2只是一个编码方案，UTF-16却要用于实际的传输，所以就不得不考虑字节序的问题。</p>
 <p>　　5、UTF的字节序和BOM</p>
-<p>UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，在解释一个 UTF-16文本前，首先要弄清楚每个编码单元的字节序。例如收到一个&ldquo;奎&rdquo;的Unicode编码是594E，&ldquo;乙&rdquo;的Unicode编码是4E59。如 果我们收到UTF-16字节流&ldquo;594E&rdquo;，那么这是&ldquo;奎&rdquo;还是&ldquo;乙&rdquo;？</p>
-<p>　　Unicode规范中推荐的标记字节顺序的方法是BOM。BOM不是&ldquo;Bill Of Material&rdquo;的BOM表，而是Byte Order Mark。BOM是一个有点小聪明的想法：</p>
-<p>　　在UCS编码中有一个叫做&quot;ZERO WIDTH NO-BREAK </p>
-<p>SPACE&quot;的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。UCS规范建议我们在传输字节流前，先传输字符&quot;ZERO </p>
-<p>WIDTH NO-BREAK SPACE&quot;。</p>
-<p>　　这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。因此字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;又被称作BOM。</p>
-<p>　　UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;的UTF-8编码是EF BB BF（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB </p>
+<p>UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，在解释一个 UTF-16文本前，首先要弄清楚每个编码单元的字节序。例如收到一个奎的Unicode编码是594E，乙的Unicode编码是4E59。如 果我们收到UTF-16字节流594E，那么这是奎还是乙？</p>
+<p>　　Unicode规范中推荐的标记字节顺序的方法是BOM。BOM不是Bill Of Material的BOM表，而是Byte Order Mark。BOM是一个有点小聪明的想法：</p>
+<p>　　在UCS编码中有一个叫做ZERO WIDTH NO-BREAK </p>
+<p>SPACE的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。UCS规范建议我们在传输字节流前，先传输字符ZERO </p>
+<p>WIDTH NO-BREAK SPACE。</p>
+<p>　　这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。因此字符ZERO WIDTH NO-BREAK SPACE又被称作BOM。</p>
+<p>　　UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符ZERO WIDTH NO-BREAK SPACE的UTF-8编码是EF BB BF（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB </p>
 <p>BF开头的字节流，就知道这是UTF-8编码了。</p>
 <p>　　Windows就是使用BOM来标记文本文件的编码方式的。</p>
 <p>　　6、进一步的参考资料</p>
-<p>本文主要参考的资料是 &quot;Short overview of ISO-IEC 10646 and Unicode&quot; </p>
+<p>本文主要参考的资料是 Short overview of ISO-IEC 10646 and Unicode </p>
 <p>(<a href="http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html" target="_blank" rel="external">http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html</a>)。</p>
-<p>&nbsp;</p>
 <p>原文出处：<a href="http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html" target="_blank" rel="external">http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html</a></p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T07:56:13.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e5-9c-a8-e5-ae-b6-e4-ba-ba-e8-83-bd-e8-ae-ba-e5-83-a7-e4-ba-8b-e5-90-97-ef-bc-9f/">在家人能论僧事吗？</a></h1></header><div class="post__main"><p>　　我们首先应当承认，中国的佛教，尤其是正在近世以来，根本是谈不上律制的。所以僧人少有如律而行的，俗人（在家佛子）也就更不懂得律制了。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　僧人多不崇律，生活仪节不能没有失措之处；俗人不知律规，见到僧人的不顺眼者，往往加以指谪。甚至形成僧人不谈僧制僧规，僧制僧规的讨论，竟然落到了俗人的文字与言谈之中。说起来，实在是一件非常痛心的事！&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　当然，俗人之会讨论僧制，指谪僧仪，责任应由我们僧人来负，俗人是无辜的。因为俗人皆是僧人弟子，弟子批评其师，岂非师教之失败？俗人不知道以其俗人的身分来论究僧制，是不合佛制的行为，所以他们出乎爱护教誉的热忱，来批评僧人的生活，是无可责斥的。不过，我想在此指出，俗人批评僧事，仍是绝对的罪过，即使此一罪过，应由僧人分担。（《优婆塞戒经》卷三&lt;摄取品&gt;中说：宁受恶戒，一日中断无量命根，终不养畜弊恶弟子，不能调伏。)在我国的律典中，没有一部是允许俗人来批评僧事的，特别是大乘菩萨戒，不要说是批评僧事，即使僧俗四众弟子中的任何一人犯了过失，也不应无拘束地广肆批评，否则便犯了《梵网经》重戒第六条「说四众过戒」。在泰国，虽然鼓励俗人研究比丘戒，但是俗人绝对不敢论涉僧制，我想泰国佛教之允许俗人看僧律，用意当在使得俗人更能了解佛制的比丘生活，而对僧人更能发出无上的崇敬之心。当俗人知道了律制之后，自也不敢甘冒犯过的罪愆，而来抨击僧人的律仪了。&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　根据律制，佛弟子的事，应由僧团的会议来共同解决，比丘犯了戒，轻则向一位清净比丘悔过，中则向二个以上清净比丘悔过，次重则在二十位清净比丘中出罪，最重则失戒体，逐出僧团之外。菩萨戒犯轻罪则对一比丘悔过，中罪则对三比丘悔过，重罪则失戒体，应当在佛菩萨像前忏悔，得到了好相&mdash;&mdash;见光见华，见佛菩萨来手摩其顶之后，方可允许重受。五戒弟子犯了戒，也是分为三等：上罪不可悔，中罪可悔，下罪可悔。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　佛弟子犯戒，绝对不许大肆声张，逢人便说。但是仍有处理的途径，犯戒者如能自行发露，在清净比丘前至诚忏侮，当然是最好。如果犯戒者自已已将犯戒的事情忘了，或者虽未忘记，仍不坦白发露，那时可由有德资深的比丘，在集会之中，当众为之举罪，逼他发露忏悔，以求僧团的清净。如果虽遭举罪之事证俱在，而犹不肯认罪者，可由僧团会议，公推一位清净的有德比丘，去向施主宣布他的罪过，以期断绝他的信施，使他就范忏悔。可见，虽然比丘与比丘之间，也不得随意宣说他人的过失，何况俗人能够议论僧事？&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　 　但是，俗人对于犯戒的僧人，并非没有说话的机会，唯其须是最最亲善的人，以私人的关系，密下为之劝告，终不得发诸议论而笔诸文字。&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　还有一个规矩，那就是举罪与忏罪的问题。佛弟子共分僧俗大小的七众，僧人可举俗人之罪，并可受俗人的悔过，俗人则不得举僧人之罪，亦不得受僧人的悔过；大众（比丘与比丘尼）可举小众（式叉摩尼与沙弥沙弥尼）之罪，并可受小众的悔过，小众不得举大众之罪，亦不得受大众的悔过；比丘可举其下六众之罪，并得受其悔过，其下六众不得举比丘之罪，亦不得受比丘悔过。即在比丘之中，戒腊在五夏之前，不得为师，也不得离师&mdash;&mdash;以其尚未通晓戒律的轻重与持犯，因此，比丘虽已超过五夏的戒腊，乃至已届百岁高龄，如其不学无知，不明戒律的轻重持犯，仍然不得举人之罪。准此而言，俗人而来议论僧事，而来讨论批评僧人的威仪作法，自为佛制之所严禁的事了。&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　这不是佛陀制戒包庇僧人，实在是未届其位而不识其境的缘故。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 佛弟子的七众之中以比丘的位置最高，戒律之中，也以比丘及比丘尼律最繁，即使身为比丘，潜心于律制的研究，也非十年八年的工夫所能穷究透彻，何况是一介俗人，单凭主观眼光的好坏，而来批评僧事呢？正像一个国家的法律，只有律师懂得较多，但至于解释宪法，又非由大法官来专任不可了。如果下一个譬喻，俗人之论僧事者，则似小学的蒙童而去评阅博士的论文，试问：那能评阅出什么名堂来呢？&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　我不怪今时的俗人议论僧事，所谓「不知者不罪」，因为那是出于他们由于「不知」而产生的错误。同时这一错误的产生，多半还是出于爱护佛教的热忱。但我希望我的这篇文字，能起一点说明的作用，能使俗人最低限度不再不知高下地批评僧事。诚然，最要紧的，还要靠我们身为僧人的人，大家都能尊重律制、学习律制，并且尽可能地遵行律制。否则，以谤止谤，固然不对；实则不善而又欲人无谤者，也是不公道的。即使在俗的佛子们，为了持戒而不谤僧，却也无法禁止非佛弟子乃至外道徒众的借机破坏！</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　　如今，我国的佛教，尤其在台湾，根本少有遵行僧团制度的约束与制衡，要想事事如律，自也无法办到。但是我们如能多懂一点律制的知识，至少也可有些警策的效用，至少在我们犯了过失之后（戒是条条都有犯的可能的&mdash;&mdash;人非圣贤，孰能无过？未得定共戒、道共戒之前的凡夫，犯戒是难免的，特别是威仪戒），也会生起惭愧之心，无法求得清净僧中悔过，自在佛前恳切忏悔，小罪也可忏除的。</p>
-<p>&nbsp;&nbsp; &nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 　圣严法师《觉世》一九二期</p>
+<p> 　　僧人多不崇律，生活仪节不能没有失措之处；俗人不知律规，见到僧人的不顺眼者，往往加以指谪。甚至形成僧人不谈僧制僧规，僧制僧规的讨论，竟然落到了俗人的文字与言谈之中。说起来，实在是一件非常痛心的事！ </p>
+<p> 　　当然，俗人之会讨论僧制，指谪僧仪，责任应由我们僧人来负，俗人是无辜的。因为俗人皆是僧人弟子，弟子批评其师，岂非师教之失败？俗人不知道以其俗人的身分来论究僧制，是不合佛制的行为，所以他们出乎爱护教誉的热忱，来批评僧人的生活，是无可责斥的。不过，我想在此指出，俗人批评僧事，仍是绝对的罪过，即使此一罪过，应由僧人分担。（《优婆塞戒经》卷三摄取品中说：宁受恶戒，一日中断无量命根，终不养畜弊恶弟子，不能调伏。)在我国的律典中，没有一部是允许俗人来批评僧事的，特别是大乘菩萨戒，不要说是批评僧事，即使僧俗四众弟子中的任何一人犯了过失，也不应无拘束地广肆批评，否则便犯了《梵网经》重戒第六条「说四众过戒」。在泰国，虽然鼓励俗人研究比丘戒，但是俗人绝对不敢论涉僧制，我想泰国佛教之允许俗人看僧律，用意当在使得俗人更能了解佛制的比丘生活，而对僧人更能发出无上的崇敬之心。当俗人知道了律制之后，自也不敢甘冒犯过的罪愆，而来抨击僧人的律仪了。 </p>
+<p> 　　根据律制，佛弟子的事，应由僧团的会议来共同解决，比丘犯了戒，轻则向一位清净比丘悔过，中则向二个以上清净比丘悔过，次重则在二十位清净比丘中出罪，最重则失戒体，逐出僧团之外。菩萨戒犯轻罪则对一比丘悔过，中罪则对三比丘悔过，重罪则失戒体，应当在佛菩萨像前忏悔，得到了好相见光见华，见佛菩萨来手摩其顶之后，方可允许重受。五戒弟子犯了戒，也是分为三等：上罪不可悔，中罪可悔，下罪可悔。</p>
+<p> 　　佛弟子犯戒，绝对不许大肆声张，逢人便说。但是仍有处理的途径，犯戒者如能自行发露，在清净比丘前至诚忏侮，当然是最好。如果犯戒者自已已将犯戒的事情忘了，或者虽未忘记，仍不坦白发露，那时可由有德资深的比丘，在集会之中，当众为之举罪，逼他发露忏悔，以求僧团的清净。如果虽遭举罪之事证俱在，而犹不肯认罪者，可由僧团会议，公推一位清净的有德比丘，去向施主宣布他的罪过，以期断绝他的信施，使他就范忏悔。可见，虽然比丘与比丘之间，也不得随意宣说他人的过失，何况俗人能够议论僧事？ </p>
+<p> 　 　但是，俗人对于犯戒的僧人，并非没有说话的机会，唯其须是最最亲善的人，以私人的关系，密下为之劝告，终不得发诸议论而笔诸文字。 </p>
+<p> 　　还有一个规矩，那就是举罪与忏罪的问题。佛弟子共分僧俗大小的七众，僧人可举俗人之罪，并可受俗人的悔过，俗人则不得举僧人之罪，亦不得受僧人的悔过；大众（比丘与比丘尼）可举小众（式叉摩尼与沙弥沙弥尼）之罪，并可受小众的悔过，小众不得举大众之罪，亦不得受大众的悔过；比丘可举其下六众之罪，并得受其悔过，其下六众不得举比丘之罪，亦不得受比丘悔过。即在比丘之中，戒腊在五夏之前，不得为师，也不得离师以其尚未通晓戒律的轻重与持犯，因此，比丘虽已超过五夏的戒腊，乃至已届百岁高龄，如其不学无知，不明戒律的轻重持犯，仍然不得举人之罪。准此而言，俗人而来议论僧事，而来讨论批评僧人的威仪作法，自为佛制之所严禁的事了。 </p>
+<p> 　　这不是佛陀制戒包庇僧人，实在是未届其位而不识其境的缘故。</p>
+<p> 佛弟子的七众之中以比丘的位置最高，戒律之中，也以比丘及比丘尼律最繁，即使身为比丘，潜心于律制的研究，也非十年八年的工夫所能穷究透彻，何况是一介俗人，单凭主观眼光的好坏，而来批评僧事呢？正像一个国家的法律，只有律师懂得较多，但至于解释宪法，又非由大法官来专任不可了。如果下一个譬喻，俗人之论僧事者，则似小学的蒙童而去评阅博士的论文，试问：那能评阅出什么名堂来呢？ </p>
+<p> 　　我不怪今时的俗人议论僧事，所谓「不知者不罪」，因为那是出于他们由于「不知」而产生的错误。同时这一错误的产生，多半还是出于爱护佛教的热忱。但我希望我的这篇文字，能起一点说明的作用，能使俗人最低限度不再不知高下地批评僧事。诚然，最要紧的，还要靠我们身为僧人的人，大家都能尊重律制、学习律制，并且尽可能地遵行律制。否则，以谤止谤，固然不对；实则不善而又欲人无谤者，也是不公道的。即使在俗的佛子们，为了持戒而不谤僧，却也无法禁止非佛弟子乃至外道徒众的借机破坏！</p>
+<p> 　　如今，我国的佛教，尤其在台湾，根本少有遵行僧团制度的约束与制衡，要想事事如律，自也无法办到。但是我们如能多懂一点律制的知识，至少也可有些警策的效用，至少在我们犯了过失之后（戒是条条都有犯的可能的人非圣贤，孰能无过？未得定共戒、道共戒之前的凡夫，犯戒是难免的，特别是威仪戒），也会生起惭愧之心，无法求得清净僧中悔过，自在佛前恳切忏悔，小罪也可忏除的。</p>
+<p> 　 　圣严法师《觉世》一九二期</p>
 <p><a href="http://qzone.qq.com/blog/48966408-1231352061" target="_blank" rel="external">http://qzone.qq.com/blog/48966408-1231352061</a></p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e5-9c-a8-e5-ae-b6-e4-ba-ba-e8-83-bd-e8-ae-ba-e5-83-a7-e4-ba-8b-e5-90-97-ef-bc-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T07:44:06.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e5-b0-91-e7-9d-a1-e7-9a-84-e5-a5-bd-e5-a4-84/">少睡的好处</a></h1></header><div class="post__main"><p>贪睡虽不是什么罪恶事，佛教认为它是一种过失，一生中大好辰光都在昏睡中浪费了，所以佛说：&ldquo;咄咄为何睡，螺师蛤蚌类，一睡一千年，佛法不闻知&rdquo;。可为警惕。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e5-9c-a8-e5-ae-b6-e4-ba-ba-e8-83-bd-e8-ae-ba-e5-83-a7-e4-ba-8b-e5-90-97-ef-bc-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T07:44:06.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e5-b0-91-e7-9d-a1-e7-9a-84-e5-a5-bd-e5-a4-84/">少睡的好处</a></h1></header><div class="post__main"><p>贪睡虽不是什么罪恶事，佛教认为它是一种过失，一生中大好辰光都在昏睡中浪费了，所以佛说：咄咄为何睡，螺师蛤蚌类，一睡一千年，佛法不闻知。可为警惕。</p>
 <p>大悲寺住持 妙祥法师</p>
 <p>睡眠为四个小时。这个规定不是咱们僧团创造出来，佛在世的时候就规定了僧人四个小时的睡眠，我们能得到这个四个小时的睡眠时间这种修行方式是很殊胜的。这种睡眠四个小时是来源于《阿含经》。《阿含经》讲述佛当时领导的僧团是怎样修行的，其中睡眠就是四个小时。到十点锺，晚上都在讲法，晚上都是讲法的时间。</p>
 <p>睡眠对我们来讲是五盖之一，财、色、名、食、睡，最后就是个睡。我们有时候很容易堕落睡眠里去，因为我们认为这个睡眠必须保证，医生也是这么讲：你身体需要，要保证睡眠，不要得官能症，最起码的不能睡八个小时，你得睡七个小时。甚至告诉你睡十个小时、十二个小时，就让你使劲睡。睡觉，我们在世间上不知道它的坏处，但知道睡过多了，你不起来去干活，没人干，你不去挣钱没有吃的，所以他就起来去做，但是睡眠也是多。</p>
 <p>为什么睡眠不能过多？因为这个睡眠，当我们需要睡眠的时候，也就是休息状态，也就是你从睡到醒这一段时间是你的需要量，这是个需要量。当我们醒来的时候，你这个需要量已经满足了，它已经休息过了。再睡，那就是做梦，胡思乱想，天南海北，又飞又跑的，再醒了的时间，它就特别地疲劳，因为这个脑子的运动已经开始活跃了，不再休息，甚至有时候比白天还累。所以说，在修禅人，特别体清老和尚就告诉大家：你睡一觉就起来，睡醒就起来。他每天都是半夜起来，有时候就诵咒，就这么精进。他睡一觉就起来了，就不再睡了。</p>
 <p>实际上我们睡四个小时就足够用了，为什么还困？是我们的习性在困，并不是我们身体需要。多睡，一个是多梦、疲劳，更主要的，欲漏，都在醒了以后再睡觉的这一过程，因为有了梦境，它就産生各种的色相，它就会导致欲漏了。我们修行知道：欲要不除，三界不可出。所以我们想除欲，必须从睡眠这块要下手，要少睡。睡眠能毁掉我们的清净心，也会破坏我们的禅定力，也会使我们没有智慧。睡眠多了，这害处很大。</p>
-<p>过去佛在世不是讲过嘛，有一个尊者，因为一讲法他就困，一讲法就困，佛就呵斥他：一睡一千年，是蛤蚌类。就是说，这一睡就会睡到一千年去，这样的果报。这样的果报是什么样呢？也就是蛤蚌类。蛤蚌我们知道，生在海底的那些动物，一种一开一合的，中间有肉的就是蛤蚌。一睡一千年，这一千年都在昏沈之中。所以多睡会堕落畜生道，不是没有因果。说我睡觉无所谓的，还有人说我是睡仙，还有&ldquo;睡禅定&rdquo;，睡觉做禅定等等的，这都是自己在给自己讲一个很吸引人的童话来欺骗自己、来欺骗别人，这是不合适的。</p>
+<p>过去佛在世不是讲过嘛，有一个尊者，因为一讲法他就困，一讲法就困，佛就呵斥他：一睡一千年，是蛤蚌类。就是说，这一睡就会睡到一千年去，这样的果报。这样的果报是什么样呢？也就是蛤蚌类。蛤蚌我们知道，生在海底的那些动物，一种一开一合的，中间有肉的就是蛤蚌。一睡一千年，这一千年都在昏沈之中。所以多睡会堕落畜生道，不是没有因果。说我睡觉无所谓的，还有人说我是睡仙，还有睡禅定，睡觉做禅定等等的，这都是自己在给自己讲一个很吸引人的童话来欺骗自己、来欺骗别人，这是不合适的。</p>
 <p>我们知道睡眠的害处，睡眠会堕落；另外睡眠多了，可以耽误我们的修行，使我们正念提不起来。我们如果稍稍一贪睡的时候，那几个小时一会就过去了。睡四个小时也不大得劲，两点起来睡到六点，他也能睡。这四个小时，你知道要做多少事情？我们可以两点锺起来，跑香、坐禅、上殿、诵咒，四个小时完成很多的事情。要是这四个小时的时间你抓住了，这个成佛的机会就越来越大；如果你失去了，反而失去了成佛的机会。</p>
 <p>那少睡，我们困不困呢？</p>
 <p>从习惯来讲是困的，但是你真正少睡，它反而不困。你看今天两点锺起来，它很精神；你要三点钟起来，它就不精神；六点钟起来，它也不精神。说六点钟我挺精神。眼睛是瞪得挺大，但脑袋就象浆似的，它没法运转，糊涂，什么事也想不起来，另外分析问题，它也软弱。所以睡眠过多了没有智慧。睡眠多一个破坏了我们的修行，另外没有智慧，这也是一个大原因。我们早起来，四个小时一觉起来以后，反而不困，主要是个习惯性。现在大家可能基本上也好多了，因为大家到时候起来，两点钟起来打坐，很好的去做，也很清净、很清凉。但是，大家还有一个后备军，等到下了殿回到屋里，还可以躺下来一觉，发现有这样的人。这个不好。因为要多打坐、多诵咒，两点钟起来，起来以后就不要再贪睡了。有时候困怎么办？你打坐，慢慢地就把它调过来了。所以少睡并不困，多睡困。多睡没有智慧，脑袋昏沈。</p>
 <p>到中午的时候，我们有时候吃完饭，这困劲就来了，特别年龄大的，这个困劲就特别强。这一段有的甚至你不眯上个三分五分、十分八分、或半个小时，它缓不过这个劲。因为食物进入胃肠以后，有时候脑袋缺血，会造成这个状态，一缺血它就要昏沈。我们怎么办来克服？就是我们中午要找事情做，吃完饭不要进屋，不要找床，在外面。</p>
-<p>刚来大悲寺的时候，一到中午的时候，我就拿个小铁丝做条鈎子，去捡东西。那时候有沟，上沟里捡塑料布、捡个破东西，拿个口袋往里装，天天中午就干这些事。这里还有一个笑话。就是有一回我正在捡，来了几个拜佛的，就问我：&ldquo;你们那个住持师父在哪呢？我们找师父，上哪去找？&rdquo;我说那你上客堂。告诉他上客堂，他挺谢谢我。上客堂，客堂又给领回来了，告诉他在那头呢，说那个捡破烂的就是师父。这他还挺惊讶，惊讶以后，我在沟底下，他在沟上面就磕头了，挺感动，也没想到这个师父是个捡破烂的。</p>
+<p>刚来大悲寺的时候，一到中午的时候，我就拿个小铁丝做条鈎子，去捡东西。那时候有沟，上沟里捡塑料布、捡个破东西，拿个口袋往里装，天天中午就干这些事。这里还有一个笑话。就是有一回我正在捡，来了几个拜佛的，就问我：你们那个住持师父在哪呢？我们找师父，上哪去找？我说那你上客堂。告诉他上客堂，他挺谢谢我。上客堂，客堂又给领回来了，告诉他在那头呢，说那个捡破烂的就是师父。这他还挺惊讶，惊讶以后，我在沟底下，他在沟上面就磕头了，挺感动，也没想到这个师父是个捡破烂的。</p>
 <p>所以我们为了减少睡眠、不困，中午你可以去做户外活动，一个吸收空气，另外克服这个睡魔，另外呢，受人尊重。你看多受人尊重，你看你要去做了，没准他也能给你顶礼，这个是很好的事情。</p>
 <p>少睡对我们的修行是一个抓紧时间、了脱生死的好因缘，别人修八个小时，你要修十个小时，那你就超越别人不止一倍两倍的问题了，因为你这里有一个努力的问题。因为这个努力可不是那一般人所能做到的，所以这个努力太珍贵了，了脱生死往往就在后面你是否再进一步努力的时候。你看你四个小时都克服了，但是你到中午又给它睡一觉，或是我找时间我再睡一觉，那就不行了。如果我们少睡，就给我们了脱生死创造了一个很好的机会和因素，给我们创造了这么大一个因缘，那是我们修行所想达到的。有时候我们根本费了很大劲都找不着，但是由于我们少睡，这个因缘它就来了，这么殊胜。</p>
 <p>有的人可能担心：我睡少了，脑子糊涂，有时候记不住东西。是，这面记不住东西，但你少睡和努力以后，它有智慧，智慧慢慢从心里就生出来了。本来你想把一个事情做好，你睡得挺多，你不见得把事情做得很好；如果你能够减少睡眠，有时候你想达到的目标，没有费劲，你也没有去做过多的努力，它就会因缘成熟。因为精勤也就叫勇猛。文殊菩萨讲，勇猛就是智慧。我们减少睡眠就是勇猛，就是智慧。有时候我们从文字上、从经书上，甚至参学去，做了种种的努力，你不知道睡眠少了就是智慧。我们有时候捡到了西瓜，反而给扔了，认为它不是西瓜，我们再去找西瓜，再去找。所以我们有时候很可惜的。现在我们要是把这个宝贝抓住了，我们何必再去找呢，是不是？你想抓住这个西瓜，少睡就能抓住，多睡就抓不住了。</p>
@@ -143,16 +141,14 @@
 <p>如何调伏？我们应该向这个尊者学习，要勇猛。但是这勇猛也不好勇猛，现在有的人就不勇猛了，刚才已经听出不勇猛的信息，这就不好。我在这讲了，他还不勇猛，看来就是平时多睡的原因，平时要是少睡，这时候他就不能发出这样的信息了。你这个多理解，慢慢克服。</p>
 <p><a href="http://user.qzone.qq.com/852661159/blog/1239942890" target="_blank" rel="external">http://user.qzone.qq.com/852661159/blog/1239942890</a></p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e5-b0-91-e7-9d-a1-e7-9a-84-e5-a5-bd-e5-a4-84/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T07:08:35.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/">企业级网管开源软件nagios 监控Windows远程服务器</a></h1></header><div class="post__main"><p>在nagios的libexec下有check_nt这个插件,它就是用来检查windows机器的服务的,其功能类似于上一章讲的check_nrpe.不过还需要搭配另外一个软件NSClient,它则类似于NRPE</p>
-<p>&nbsp;,NSClient与nrpe最大的区别就是:</p>
+<p>,NSClient与nrpe最大的区别就是:</p>
 <p>—被监控机上安装有nrpe,并且还有插件,最终的监控是由这些插件来进行的.当监控主机将监控请求发给nrpe后,nrpe调用插件来完成监控.—NSClient则不同,被监控机上只安装NSClient,没有任何的插件.当监控主机将监控请求发给NSClient后,NSClient直接完成监控,所有的监控是由NSClient完成的.</p>
-<p>&nbsp;</p>
 <p>安装NSClient</p>
 <p>从</p>
 <p><a href="http://sourceforge.net/projects/nscplus" target="_blank" rel="external">http://sourceforge.net/projects/nscplus</a></p>
 <p>下载NSClient++-Win32-0.3.5.msi(或者NSClient++-x64-0.3.5.msi，64位机)，双击安装。</p>
-<p>在开始-运行里面输入services.msc打开&rdquo;服务&rdquo;，启动服务:</p>
+<p>在开始-运行里面输入services.msc打开服务，启动服务:</p>
 <p>NSClientpp</p>
-<p>&nbsp;</p>
 <p>编辑NSC.ini文件，</p>
 <p>C:\Program Files\NSClient++</p>
 <p>将 [modules]部分的所有模块前面的注释都去掉,除了CheckWMI.dll， RemoteConfiguration.dll，SysTray.dll。</p>
@@ -162,29 +158,26 @@
 <p>以逗号相隔.这个地方是支持子网的,如果写成192.168.0.0/24则表示该子网内的所有机器都可以访问.如果这个地方是空白则表示所有的主机都可以连接上来.</p>
 <p>[NSClient]的’port’选项取消注释,,这是NSClient的默认监听端口</p>
 <p>port=12489</p>
-<p>查看服务，在cmd里面执行netstat &ndash;an可以看到已经开始监听tcp的12489端口了。</p>
+<p>查看服务，在cmd里面执行netstat an可以看到已经开始监听tcp的12489端口了。</p>
 <p>防火墙也要打开tcp的12489端口,否则nagios检查此服务的时候会报socket 超时错误.</p>
-<p>&nbsp;</p>
 <p>监控主机的配置</p>
 <p>在监控主机上做的就是:</p>
 <p>1.安装监控windows的插件(已经默认安装了,check_nt)</p>
 <p>2.定义命令</p>
 <p>3.定义要监控的项目</p>
-<p>&nbsp;</p>
 <p>cd /usr/local/nagios/etc/servers</p>
 <p>vi services.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eblog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPULOAD</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nt!CPULOAD! -l 5,80,95</p>
+<p> use remote-service</p>
+<p> host_name eblog</p>
+<p> service_description CPULOAD</p>
+<p> check_command check_nt!CPULOAD! -l 5,80,95</p>
 <p>}</p>
 <p>如果NSClient设置了连接需要密码,则应写成如下格式</p>
-<p>check_nt!CPULOAD!&nbsp; -s PASSWORD -l 5,80,95</p>
+<p>check_nt!CPULOAD! -s PASSWORD -l 5,80,95</p>
 <p>可以通过以下指令测试设备响应是否正常</p>
 <p>/usr/local/nagios/libexec/check_nt -H 主机IP -p 12489 -s 密码 -v UPTIME </p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T06:14:22.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">企业级网管开源软件nagios远程主机的安装配置</a></h1></header><div class="post__main"><p>远程主机（被监控机）安装部分</p>
 <h1 id="yum_install_openssl">yum install openssl</h1><p>rpm -ihv gd-devel-2.0.28-4.4E.1.i386.rpm</p>
 <p>安装nagios-plugin</p>
@@ -195,13 +188,13 @@
 <p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-plugins-1.4.13</p>
 <p>./configure -prefix=/usr/local/nagios-plugins -enable-redhat-pthread-workaround</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
-<h1 id="&ndash;enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem&hellip;_错误时使用">&ndash;enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem&hellip; 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
+<h1 id="enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem_错误时使用">enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
 <p>tar zxf nrpe-2.12.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nrpe-2.12</p>
 <p>./configure —enable-ssl —enable-command-args</p>
-<p>make all &amp;&amp;make install</p>
+<p>make all make install</p>
 <p>cp sample-config/nrpe.cfg /usr/local/nagios/etc</p>
 <p>chown -R nagios.nagios /usr/local/nagios</p>
 <p>vi /usr/local/nagios/etc/nrpe.cfg</p>
@@ -214,7 +207,7 @@
 <p>command[check_/data1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /data1</p>
 <p>command[check_/opt]=/usr/local/nagios/libexec/check_disk -w 20 -c 10 -p /opt</p>
 <p>vi /etc/rc.local</p>
-<p>echo &quot;/usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d&quot; &gt;&gt; /etc/rc.local</p>
+<p>echo /usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d  /etc/rc.local</p>
 <p>如果有防火墙也要开放tcp 5666</p>
 <p>vi /etc/sysconfig/iptables</p>
 <p>-A INPUT -s a.b.c.25 -p icmp -m icmp —icmp-type echo-request -m state —state NEW -j ACCEPT</p>
@@ -228,129 +221,128 @@
 <p>cd /usr/local/nagios/etc/</p>
 <p>mkdir servers/</p>
 <p>vi hosts.cfg</p>
-<h1 id="define_monitor&nbsp;_host">define monitor&nbsp; host</h1><p>define host{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc-server&nbsp;&nbsp;&nbsp; ; The name of this host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-host&nbsp;&nbsp;&nbsp; ; This template inherits other values from the generic-host template</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; By default, Linux hosts are checked round the clock</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check each Linux host 10 times (max)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive ; Default command to check Linux hosts</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; workhours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Linux admins hate to be woken up, so we only notify during the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Note that the notification_period variable is being overridden from</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; the value that is inherited from the generic-host template!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Resend notification every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Only send notifications for specific host states</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent to the admins by default</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<h6 id="#">#</h6><h1 id="IDC_servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">IDC servers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
+<h1 id="define_monitor_host">define monitor host</h1><p>define host{</p>
+<p> name idc-server ; The name of this host template</p>
+<p> use generic-host ; This template inherits other values from the generic-host template</p>
+<p> check_period 24x7 ; By default, Linux hosts are checked round the clock</p>
+<p> max_check_attempts 10 ; Check each Linux host 10 times (max)</p>
+<p> check_command check-host-alive ; Default command to check Linux hosts</p>
+<p> notification_period workhours ; Linux admins hate to be woken up, so we only notify during the day</p>
+<p> ; Note that the notification_period variable is being overridden from</p>
+<p> ; the value that is inherited from the generic-host template!</p>
+<p> notification_interval 720 ; Resend notification every 12 hours</p>
+<p> notification_options d,r ; Only send notifications for specific host states</p>
+<p> contact_groups admingroup ; Notifications get sent to the admins by default</p>
+<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
+<p> }</p>
+<h6 id="#">#</h6><h1 id="IDC_servers">IDC servers</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web veryi blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.57</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
+<p> use idc-server</p>
+<p> host_name 57-185</p>
+<p> alias web veryi blog</p>
+<p> address a.b.c.57</p>
+<p> parents   inet switch</p>
 <p>}</p>
 <p>vi hostgroups.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define hostgroup {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostgroup_name&nbsp; blog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; blog1 servers</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
+<p> hostgroup_name blog</p>
+<p> alias blog1 servers</p>
+<p> members 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
 <p>}</p>
 <p>vi services.cfg</p>
-<p>define service{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The name of this service template&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generic-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Inherit default values from the generic-service definition</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; The service can be checked at any time of the day</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_check_attempts&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; normal_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Check the service every 5 minutes under normal conditions</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; retry_check_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-check the service every minute until a hard state can be determined</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sagroup&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications get sent out to everyone in the ‘admins’ group</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c,r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Send notifications about warning, unknown, critical, and recovery events</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_interval&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 720&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Re-notify about service problems every 12 hours</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_period&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24x7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Notifications can be sent out at any time</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
-<h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check-host-alive">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check-host-alive</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_d,u,r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notification_options&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d,u,r</h1><p>}</p>
+<p>define service{ name remote-service ; The name of this service template use generic-service ; Inherit default values from the generic-service definition</p>
+<p> check_period 24x7 ; The service can be checked at any time of the day</p>
+<p> max_check_attempts 4 ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
+<p> normal_check_interval 5 ; Check the service every 5 minutes under normal conditions</p>
+<p> retry_check_interval 1 ; Re-check the service every minute until a hard state can be determined</p>
+<p> contact_groups sagroup ; Notifications get sent out to everyone in the ‘admins’ group</p>
+<p> notification_options c,r ; Send notifications about warning, unknown, critical, and recovery events</p>
+<p> notification_interval 720 ; Re-notify about service problems every 12 hours</p>
+<p> notification_period 24x7 ; Notifications can be sent out at any time</p>
+<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
+<h1 id="check_command_check-host-alive">check_command check-host-alive</h1><h1 id="notification_options_d,u,r">notification_options d,u,r</h1><p>}</p>
 <p>define service{</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; remote-service&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Name of service template to use</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *,!localhost</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PING</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; check_ping!100.0,20%!500.0,60%</p>
+<p> use remote-service ; Name of service template to use</p>
+<p> host_name *,!localhost</p>
+<p> service_description PING</p>
+<p> check_command   check_ping!100.0,20%!500.0,60%</p>
 <p>}</p>
 <p>//这里只举一个例子</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; check_tcp 80</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_tcp!80</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description check_tcp 80</p>
+<p> check_command check_tcp!80</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; / Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check<em>command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check</em>/</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description / Free Space</p>
+<p> check<em>command check_nrpe!check</em>/</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPU Load</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_load</p>
-<p>&nbsp;&nbsp;&nbsp; contact_groups&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; admingroup</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description CPU Load</p>
+<p> check_command check_nrpe!check_load</p>
+<p> contact_groups admingroup</p>
 <p>}</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 57-185</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; swap Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nrpe!check_swap</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p> use remote-service</p>
+<p> host_name 57-185</p>
+<p> service_description swap Free Space</p>
+<p> check_command check_nrpe!check_swap</p>
+<p> }</p>
 <p>vi servicegroups.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define servicegroup{</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; servicegroup_name&nbsp;&nbsp;&nbsp; linux disks</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; free disk Services</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; members&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 37-165,/var Free Space,37-165,/opt&nbsp; Free Space,37-165,/data1 Free Space,37-165,/usr/local&nbsp; Free Space</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; }</p>
+<p>  servicegroup_name linux disks</p>
+<p>  alias   free disk Services</p>
+<p>  members   37-165,/var Free Space,37-165,/opt Free Space,37-165,/data1 Free Space,37-165,/usr/local Free Space</p>
+<p>  }</p>
 <p>进阶:</p>
-<p>Nagios is able to determine whether the hosts you&rsquo;re monitoring are in a DOWN or UNREACHABLE</p>
+<p>Nagios is able to determine whether the hosts youre monitoring are in a DOWN or UNREACHABLE</p>
 <p>state. These are very different (although related) states and can help you quickly determine the root</p>
-<p>cause of network problems. Here&rsquo;s how the reachability logic works to distinguish between these two </p>
+<p>cause of network problems. Heres how the reachability logic works to distinguish between these two </p>
 <p>states…</p>
 <p>定义主机父子关系</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; idc router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.b.c.1</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;inet switch</p>
+<p> use idc-server</p>
+<p> host_name idc router</p>
+<p> alias beijing idc</p>
+<p> address a.b.c.1</p>
+<p> parents   inet switch</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inet switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing idc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.0.8.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
+<p> use idc-server</p>
+<p> host_name inet switch</p>
+<p> alias beijing idc</p>
+<p> address 10.0.8.90</p>
+<p> parents   localhost</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int switch</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing beiyuan</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.12.90</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
+<p> use idc-server</p>
+<p> host_name int switch</p>
+<p> alias beijing beiyuan</p>
+<p> address 192.168.12.90</p>
+<p> parents   localhost</p>
 <p>}</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; beijing office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.161</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; idc router</p>
+<p> use idc-server</p>
+<p> host_name lan router</p>
+<p> alias beijing office</p>
+<p> address x.y.z.161</p>
+<p> parents  idc router</p>
 <p>}</p>
 <p>//这里只举一个例子</p>
 <p>define host {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use idc-server</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; office.veryi.com</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alias&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; veryi office</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x.y.z.168</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; parents&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; lan router</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/28/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/30/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+<p> use idc-server</p>
+<p> host_name office.veryi.com</p>
+<p> alias veryi office</p>
+<p> address x.y.z.168</p>
+<p> parents  lan router</p>
+<p> }</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/28/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/30/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -7,153 +7,153 @@
 
 log-bin=/opt/data/mysql-bin
 
-&amp;ldquo;log-bin=&amp;rdquo;后的字符串为日志记载目录，一般建议放在不同于mysql数据目录的磁盘上。
+log-bin=后的字符串为日志记载目录，一般建议放在不同于mysql数据目录的磁盘上。
 
 [ 完全备份]
 
 假定星期日下午1点执行完全备份，适用于MyISAM存储引擎。
 
-mysqldump &amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span> &amp;ndash;</span><span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> &amp;ndash;</span>master-data=2 -u root -p test &amp;gt; backup_sunday_1_PM.sql
+mysqldump <span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span> <span class="keyword">flush</span>-<span class="keyword">logs</span> <span class="keyword">master</span>-<span class="keyword">data</span>=<span class="number">2</span> -u root -p test  backup_sunday_1_PM.<span class="keyword">sql</span>
 
-对于InnoDB 将&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span>替换为&amp;ndash;</span>single-transaction
+对于<span class="keyword">InnoDB</span> 将<span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span>替换为single-<span class="keyword">transaction</span>
 
-&amp;ndash;<span class="operator"><span class="keyword">flush</span>-<span class="keyword">logs</span> 为结束当前日志，生成新日志文件
+<span class="keyword">flush</span>-<span class="keyword">logs</span> 为结束当前日志，生成新日志文件
 
-&amp;ndash;</span>master-data=2 选项将会在输出SQL中记录下完全备份后新日志文件的名称，
+<span class="keyword">master</span>-<span class="keyword">data</span>=<span class="number">2</span> 选项将会在输出<span class="keyword">SQL</span>中记录下完全备份后新日志文件的名称，
 
-用于日后恢复时参考，例如输出的备份SQL文件中含有：
+用于日后恢复时参考，例如输出的备份<span class="keyword">SQL</span>文件中含有：
 
-&amp;ndash; <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=&amp;rsquo;</span>mysql-bin.000002&amp;prime;, MASTER_LOG_POS=106;
+ <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=mysql-<span class="keyword">bin</span><span class="number">.000002</span>, MASTER_LOG_POS=<span class="number">106</span>;</span>
 
 <span class="comment">--master-data[=value]</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Write the binary log filename and position to the output. This option requires the RELOAD privilege and the binary log must be
+ Write the binary log filename and position to the output. This option requires the RELOAD privilege and the binary log must be
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; enabled. If the option value is equal to 1, the position and filename are written to the dump output in the form of a <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+ enabled. If the option value is equal to 1, the position and filename are written to the dump output in the form of a <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement. If the dump is from a master server and you <span class="operator"><span class="keyword">use</span> it <span class="keyword">to</span> <span class="keyword">set</span> up a <span class="keyword">slave</span> <span class="keyword">server</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> statement causes the
+ statement. <span class="keyword">If</span> the dump <span class="keyword">is</span> <span class="keyword">from</span> a <span class="keyword">master</span> <span class="keyword">server</span> <span class="keyword">and</span> you <span class="keyword">use</span> it <span class="keyword">to</span> <span class="keyword">set</span> up a <span class="keyword">slave</span> <span class="keyword">server</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> statement causes the
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; slave to <span class="operator"><span class="keyword">start</span> <span class="keyword">from</span> the correct <span class="keyword">position</span> <span class="keyword">in</span> the masters <span class="built_in">binary</span> <span class="keyword">logs</span>. <span class="keyword">If</span> the <span class="keyword">option</span> <span class="keyword">value</span> <span class="keyword">is</span> equal <span class="keyword">to</span> <span class="number">2</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
+ <span class="keyword">slave</span> <span class="keyword">to</span> <span class="keyword">start</span> <span class="keyword">from</span> the correct <span class="keyword">position</span> <span class="keyword">in</span> the masters <span class="built_in">binary</span> <span class="keyword">logs</span>. <span class="keyword">If</span> the <span class="keyword">option</span> <span class="keyword">value</span> <span class="keyword">is</span> equal <span class="keyword">to</span> <span class="number">2</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; statement is written as an SQL comment. (This is the default action if value is omitted.)
+ statement <span class="keyword">is</span> written <span class="keyword">as</span> an <span class="keyword">SQL</span> comment. (This <span class="keyword">is</span> the <span class="keyword">default</span> <span class="keyword">action</span> <span class="keyword">if</span> <span class="keyword">value</span> <span class="keyword">is</span> omitted.)
 
 其他说明：
 
-如果 mysqldump加上&amp;ndash;<span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span> 则清除以前的日志，以释放空间。但是如果服务器配置为镜像的复制主服务器，用mysqldump &amp;ndash;</span><span class="operator"><span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span>删掉MySQL二进制日志很危险，因为从服务器可能还没有完全处理该二进制日志的内容。在这种情况下，使用 <span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span>更为安全。
+如果 mysqldump加上<span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span> 则清除以前的日志，以释放空间。但是如果服务器配置为镜像的复制主服务器，用mysqldump <span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span>删掉MySQL二进制日志很危险，因为从服务器可能还没有完全处理该二进制日志的内容。在这种情况下，使用 <span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span>更为安全。
 
 [ 增量备份 ]
 
 每日定时使用 mysqladmin <span class="keyword">flush</span>-<span class="keyword">logs</span>来创建新日志，并结束前一日志写入过程。并
 
-把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span><span class="number">.000002</span> , &amp;hellip;</span>
+把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span><span class="number">.000002</span> , 
 
 [ 从备份中恢复 ]
 
 * 恢复完全备份
 
-mysql -u root -p &amp;lt; backup_sunday_1_PM.sql
+mysql -u root -p  backup_sunday_1_PM.<span class="keyword">sql</span>
 
 * 恢复增量备份
 
-mysqlbinlog mysql-bin.000002 &amp;hellip; | mysql -u root -p
+mysqlbinlog mysql-<span class="keyword">bin</span><span class="number">.000002</span>  | mysql -u root -p
 
 注意此次恢复过程亦会写入日志文件，如果数据量很大，建议先关闭日志功能
 
-参考：http://bbs.bitscn.com /171622
+参考：http://bbs.bitscn.com /<span class="number">171622</span>
 
 常用参数：
 
-&amp;ndash;<span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span>, -l
+<span class="keyword">lock</span>-<span class="keyword">tables</span>, -l
 
 <span class="keyword">Lock</span> <span class="keyword">all</span> <span class="keyword">tables</span> <span class="keyword">before</span> dumping them. The <span class="keyword">tables</span> <span class="keyword">are</span> locked <span class="keyword">with</span> <span class="keyword">READ</span> <span class="keyword">LOCAL</span> <span class="keyword">to</span> allow <span class="keyword">concurrent</span> inserts <span class="keyword">in</span> the <span class="keyword">case</span> <span class="keyword">of</span> MyISAM
 
-<span class="keyword">tables</span>. <span class="keyword">For</span> transactional <span class="keyword">tables</span> such <span class="keyword">as</span> <span class="keyword">InnoDB</span> <span class="keyword">and</span> BDB, &amp;ndash;</span>single-transaction is a much better option, because it does not need
+<span class="keyword">tables</span>. <span class="keyword">For</span> transactional <span class="keyword">tables</span> such <span class="keyword">as</span> <span class="keyword">InnoDB</span> <span class="keyword">and</span> BDB, single-<span class="keyword">transaction</span> <span class="keyword">is</span> a much better <span class="keyword">option</span>, because it does <span class="keyword">not</span> need
 
-to <span class="operator"><span class="keyword">lock</span> the <span class="keyword">tables</span> <span class="keyword">at</span> <span class="keyword">all</span>.
+<span class="keyword">to</span> <span class="keyword">lock</span> the <span class="keyword">tables</span> <span class="keyword">at</span> <span class="keyword">all</span>.
 
-Please note that <span class="keyword">when</span> dumping multiple <span class="keyword">databases</span>, &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> locks <span class="keyword">tables</span> <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">database</span> separately. Therefore, this
+Please note that <span class="keyword">when</span> dumping multiple <span class="keyword">databases</span>, <span class="keyword">lock</span>-<span class="keyword">tables</span> locks <span class="keyword">tables</span> <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">database</span> separately. Therefore, this
 
 <span class="keyword">option</span> does <span class="keyword">not</span> guarantee that the <span class="keyword">tables</span> <span class="keyword">in</span> the dump file <span class="keyword">are</span> logically <span class="keyword">consistent</span> <span class="keyword">between</span> <span class="keyword">databases</span>. <span class="keyword">Tables</span> <span class="keyword">in</span> different
 
 <span class="keyword">databases</span> may be dumped <span class="keyword">in</span> completely different states.
 
-&amp;ndash;</span>no-data, -d
+<span class="keyword">no</span>-<span class="keyword">data</span>, -d
 
-<span class="operator"><span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">write</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">row</span> information (that <span class="keyword">is</span>, <span class="keyword">do</span> <span class="keyword">not</span> dump <span class="keyword">table</span> contents). This <span class="keyword">is</span> very useful <span class="keyword">if</span> you want <span class="keyword">to</span> dump <span class="keyword">only</span> the
+<span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">write</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">row</span> information (that <span class="keyword">is</span>, <span class="keyword">do</span> <span class="keyword">not</span> dump <span class="keyword">table</span> contents). This <span class="keyword">is</span> very useful <span class="keyword">if</span> you want <span class="keyword">to</span> dump <span class="keyword">only</span> the
 
 <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> statement <span class="keyword">for</span> the <span class="keyword">table</span>.
 
-&amp;ndash;</span>extended-<span class="operator"><span class="keyword">insert</span> &amp;ndash;</span><span class="operator"><span class="keyword">lock</span>-<span class="keyword">tables</span> &amp;ndash;</span>quick &amp;ndash;<span class="operator"><span class="keyword">set</span>-<span class="keyword">charset</span>. It should give you a <span class="keyword">fast</span> dump operation <span class="keyword">and</span> produce a dump file that can
+<span class="keyword">extended</span>-<span class="keyword">insert</span> <span class="keyword">lock</span>-<span class="keyword">tables</span> <span class="keyword">quick</span> <span class="keyword">set</span>-<span class="keyword">charset</span>. It should give you a <span class="keyword">fast</span> dump operation <span class="keyword">and</span> produce a dump file that can
 
 be reloaded <span class="keyword">into</span> a MySQL <span class="keyword">server</span> quickly.
 
-The &amp;ndash;</span>opt option is enabled by default. <span class="operator"><span class="keyword">Use</span> &amp;ndash;</span>skip-opt to disable it.&amp;nbsp; See the discussion at the beginning of this section for
+The opt <span class="keyword">option</span> <span class="keyword">is</span> enabled <span class="keyword">by</span> <span class="keyword">default</span>. <span class="keyword">Use</span> skip-opt <span class="keyword">to</span> disable it. See the discussion <span class="keyword">at</span> the beginning <span class="keyword">of</span> this <span class="keyword">section</span> <span class="keyword">for</span>
 
-information about selectively enabling or disabling certain of the options affected by &amp;ndash;opt.
+information about selectively enabling <span class="keyword">or</span> disabling certain <span class="keyword">of</span> the options affected <span class="keyword">by</span> opt.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--compatible=name</span>
+ * <span class="comment">--compatible=name</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。
+ 它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--complete-insert，-c</span>
+ * <span class="comment">--complete-insert，-c</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出的数据采用包含字段名的完整 <span class="operator"><span class="keyword">INSERT</span> 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。
+ 导出的数据采用包含字段名的完整 <span class="keyword">INSERT</span> 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--default-character-set=charset</span>
+ * <span class="comment">--default-character-set=charset</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。
+ 指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--disable-keys</span>
+ * <span class="comment">--disable-keys</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 告诉 mysqldump 在 <span class="operator"><span class="keyword">INSERT</span> 语句的开头和结尾增加 <span class="comment">/*!40000 ALTER TABLE table DISABLE KEYS */</span>;</span> 和 <span class="comment">/*!40000 ALTER TABLE table ENABLE KEYS */</span>; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。
+ 告诉 mysqldump 在 <span class="keyword">INSERT</span> 语句的开头和结尾增加 <span class="comment">/*!40000 ALTER TABLE table DISABLE KEYS */</span>;</span> 和 <span class="comment">/*!40000 ALTER TABLE table ENABLE KEYS */</span>; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--extended-insert = true|false</span>
+ * <span class="comment">--extended-insert = true|false</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 默认情况下，mysqldump 开启 <span class="comment">--complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</span>
+ 默认情况下，mysqldump 开启 <span class="comment">--complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--hex-blob</span>
+ * <span class="comment">--hex-blob</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。
+ 使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-all-tables，-x</span>
+ * <span class="comment">--lock-all-tables，-x</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 <span class="comment">--single-transaction 和 --lock-tables 选项。</span>
+ 在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 <span class="comment">--single-transaction 和 --lock-tables 选项。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--lock-tables</span>
+ * <span class="comment">--lock-tables</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 它和 <span class="comment">--lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</span>
+ 它和 <span class="comment">--lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--no-create-info，-t</span>
+ * <span class="comment">--no-create-info，-t</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 只导出数据，而不添加 <span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 语句。
+ 只导出数据，而不添加 <span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 语句。
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp; * <span class="comment">--no-data，-d</span>
+ * <span class="comment">--no-data，-d</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 不导出任何数据，只导出数据库表结构。
+ 不导出任何数据，只导出数据库表结构。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--opt</span>
+ * <span class="comment">--opt</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 这只是一个快捷选项，等同于同时添加 <span class="comment">--add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</span>
+ 这只是一个快捷选项，等同于同时添加 <span class="comment">--add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--quick，-q</span>
+ * <span class="comment">--quick，-q</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。
+ 该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--routines，-R</span>
+ * <span class="comment">--routines，-R</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 导出存储过程以及自定义函数。
+ 导出存储过程以及自定义函数。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--single-transaction</span>
+ * <span class="comment">--single-transaction</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该选项在导出数据之前提交一个 <span class="operator"><span class="keyword">BEGIN</span> <span class="keyword">SQL</span>语句，<span class="keyword">BEGIN</span> 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 <span class="keyword">InnoDB</span> 和 BDB。
+ 该选项在导出数据之前提交一个 <span class="keyword">BEGIN</span> <span class="keyword">SQL</span>语句，<span class="keyword">BEGIN</span> 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 <span class="keyword">InnoDB</span> 和 BDB。
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 本选项和 <span class="comment">--lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</span>
+ 本选项和 <span class="comment">--lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 要想导出大表的话，应结合使用 <span class="comment">--quick 选项。</span>
+ 要想导出大表的话，应结合使用 <span class="comment">--quick 选项。</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; * <span class="comment">--triggers</span>
+ * <span class="comment">--triggers</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span>
+ 同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span></span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/" data-url="http://blog.veryi.com/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -161,4 +161,4 @@ information about selectively enabling or disabling certain of the options affec
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

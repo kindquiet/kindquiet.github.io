@@ -1,6 +1,6 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-09T09:43:37.000Z" class="post__time">一月 9, 2012</time><h1 class="post__title"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">DNS劫持与RBL使用的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 使用opendns nameserver 208.67.220.220 208.67.222.222可以解决dns hijacking，缺点是web浏览时可能不会解析到最快的ip地址。电信、联通nameserver 如202.106.196.115 202.106.0.20 202.106.46.151多被劫持。导致邮件服务器使用rbl服务阻挡全部邮件。解决办法之一是用返回码验证。postfix修改main.cf：</p>
-<p>&nbsp; reject_rbl_client cblless.anti-spam.org.cn=127.0.8.5,</p>
-<pre><code><span class="attribute">&amp;nbsp; reject_rbl_client zen.spamhaus.org</span>=<span class="string">127.0.0.2, </span>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-09T09:43:37.000Z" class="post__time">一月 9, 2012</time><h1 class="post__title"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">DNS劫持与RBL使用的解决办法</a></h1></header><div class="post__main"><p> 使用opendns nameserver 208.67.220.220 208.67.222.222可以解决dns hijacking，缺点是web浏览时可能不会解析到最快的ip地址。电信、联通nameserver 如202.106.196.115 202.106.0.20 202.106.46.151多被劫持。导致邮件服务器使用rbl服务阻挡全部邮件。解决办法之一是用返回码验证。postfix修改main.cf：</p>
+<p> reject_rbl_client cblless.anti-spam.org.cn=127.0.8.5,</p>
+<pre><code>reject_rbl_client zen<span class="class">.spamhaus</span><span class="class">.org</span>=<span class="number">127.0</span>.<span class="number">0.2</span>, 
 </code></pre><p>…</p>
 <p>关于RBL的原理。目前用于垃圾邮件过滤的RBL服务，应该称之为基于DNS的实时黑名单查询，也就是说，这个服务是通过DNS协议来完成的。</p>
 <p>　　具体而言，当一个客户端希望查询某个IP地址（如1.2.3.4）是否在某个RBL（如cbl.anti-spam.org.cn）中 是，其实际上是查询如下地址是否存在解析： 4.3.2.1.cbl.anti-spam.org.cn. （IP地址逆转附加在RBL地址后）。DNS的解析分为几种类型，对于RBL查询，通常是查询这个地址是否存在A记录、TXT记录或者任意（ANY）记 录。</p>
@@ -12,35 +12,35 @@
 <p>下载bios镜像，复制到移动硬盘相应目录。</p>
 <p>编辑menu.lst，添加：</p>
 <p>title bios CD ISO</p>
-<pre><code>&amp;nbsp; fallback <span class="number">8</span>
+<pre><code> fallback <span class="number">8</span>
 
-&amp;nbsp; find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
+ find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
 
-&amp;nbsp; <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
+ <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
 
-&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+ <span class="keyword">map</span> <span class="comment">--hook</span>
 
-&amp;nbsp; chainloader (<span class="number">0xff</span>)
+ chainloader (<span class="number">0xff</span>)
 
-&amp;nbsp; savedefault <span class="comment">--wait=2</span>
+ savedefault <span class="comment">--wait=2</span>
 
 title bios DOS IMG
 
-&amp;nbsp; find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
+ find <span class="comment">--set-root --ignore-floppies /bios/ibm_fw_bios_zue166a_anyos_i386.img</span>
 
-&amp;nbsp; <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
+ <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.img (fd0)</span>
 
-&amp;nbsp; <span class="keyword">map</span> <span class="comment">--hook</span>
+ <span class="keyword">map</span> <span class="comment">--hook</span>
 
-&amp;nbsp; chainloader (fd0)+<span class="number">1</span>
+ chainloader (fd0)+<span class="number">1</span>
 
-&amp;nbsp; rootnoverify (fd0)
+ rootnoverify (fd0)
 </code></pre><p>文件名和目录要对应。</p>
 <p>升级过程：</p>
 <p>要保证供电稳定，启动服务器，按F12，选usb启动。然后选择cd iso或dos img加载。后面步骤参考</p>
 <p><a href="http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK" target="_blank" rel="external">http://www-900.ibm.com/cn/support/viewdoc/detail?DocId=QFAN-7UK6DK</a></p>
-</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T06:33:28.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/">AMD X4 631 必须使用独立显卡</a></h1></header><div class="post__main"><p>&nbsp; &nbsp; 一台新组装的pc机开机黑屏不显示，不报警，也没有滴的一声。配置为 AMD Athlon(tm) II X4 631 Quad-Core Processor，asus F1A55-M LX主板、A55 FCH（Hudson D2）芯片组。想当然认为是主板或cpu有问题。看到cpu盒子上写着&ldquo;需要独立显卡-Requires Discrete GPU&rdquo;，最后终于明白，这种主板上只是按照了vga的接口，而没有集成显示控制芯片，631又屏蔽了内部集成的显卡，不安装独立显卡，系统当然不会显示。</p>
-</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T05:57:06.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/">windows 7设置静态ip地址不生效</a></h1></header><div class="post__main"><p>&nbsp; windows 7设置静态ip地址不生效，ipconfig显示为一个以169开头的ip，开始以为是设置方法不对。最后找到原因：ip地址冲突，手工设定的ip地址不生效。系统不提示ip地址冲突，机子就自己给自己设置一个169.254.<em>.</em>的ip。所以用了不少时间查找原因。</p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T06:33:28.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/">AMD X4 631 必须使用独立显卡</a></h1></header><div class="post__main"><p>  一台新组装的pc机开机黑屏不显示，不报警，也没有滴的一声。配置为 AMD Athlon(tm) II X4 631 Quad-Core Processor，asus F1A55-M LX主板、A55 FCH（Hudson D2）芯片组。想当然认为是主板或cpu有问题。看到cpu盒子上写着需要独立显卡-Requires Discrete GPU，最后终于明白，这种主板上只是按照了vga的接口，而没有集成显示控制芯片，631又屏蔽了内部集成的显卡，不安装独立显卡，系统当然不会显示。</p>
+</div><footer class="post__foot u-cf"><a href="/2011/12/30/w/amd-x4-631-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e7-8b-ac-e7-ab-8b-e6-98-be-e5-8d-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-30T05:57:06.000Z" class="post__time">十二月 30, 2011</time><h1 class="post__title"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/">windows 7设置静态ip地址不生效</a></h1></header><div class="post__main"><p> windows 7设置静态ip地址不生效，ipconfig显示为一个以169开头的ip，开始以为是设置方法不对。最后找到原因：ip地址冲突，手工设定的ip地址不生效。系统不提示ip地址冲突，机子就自己给自己设置一个169.254.<em>.</em>的ip。所以用了不少时间查找原因。</p>
 </div><footer class="post__foot u-cf"><a href="/2011/12/30/w/windows-7-e8-ae-be-e7-bd-ae-e9-9d-99-e6-80-81ip-e5-9c-b0-e5-9d-80-e4-b8-8d-e7-94-9f-e6-95-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-12-01T07:32:41.000Z" class="post__time">十二月 1, 2011</time><h1 class="post__title"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/">centos 6 server dhcpd、squid和网络排错</a></h1></header><div class="post__main"><p>服务器需要停止的服务：</p>
 <pre><code>NetworkManager
 
@@ -50,103 +50,103 @@ dnsmasq
 
 cat /etc/resolv.conf
 
-# Generated <span class="keyword">by</span> NetworkManager
+<span class="comment"># Generated by NetworkManager</span>
 
 chkconfig dnsmasq off
 
-chkconfig --list dnsmasq
+chkconfig <span class="comment">--list dnsmasq</span>
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: No subnet declaration <span class="keyword">for</span> eth0 (no IPv4 addresses).
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: ** Ignoring requests <span class="keyword">on</span> eth0.&amp;nbsp; <span class="keyword">If</span> this <span class="keyword">is</span> <span class="keyword">not</span> what
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: ** Ignoring requests <span class="command"><span class="keyword">on</span> <span class="title">eth0</span>. <span class="title">If</span> <span class="title">this</span> <span class="title">is</span> <span class="title">not</span> <span class="title">what</span></span>
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; you want, please <span class="keyword">write</span> a subnet declaration
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: you want, please <span class="built_in">write</span> <span class="operator">a</span> subnet declaration
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">in</span> your dhcpd.conf file <span class="keyword">for</span> the network segment
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: <span class="operator">in</span> your dhcpd.conf <span class="built_in">file</span> <span class="keyword">for</span> <span class="operator">the</span> network segment
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd:&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> which <span class="keyword">interface</span> eth0 <span class="keyword">is</span> attached. **
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: <span class="built_in">to</span> which interface eth0 is attached. **
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: 
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: 
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: 
 
-Dec&amp;nbsp; <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span>&amp;nbsp; dhcpd: <span class="keyword">Not</span> configured <span class="keyword">to</span> listen <span class="keyword">on</span> any interfaces!
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: Not configured <span class="built_in">to</span> listen <span class="command"><span class="keyword">on</span> <span class="title">any</span> <span class="title">interfaces</span>!</span>
 
 在subnet里定义的网段要与你的网卡IP所处网段一致,
 
 实际情况是网卡eth0没启动。
 
-chkconfig --list dhcpd
+chkconfig <span class="comment">--list dhcpd</span>
 
 centos <span class="number">6</span> 启动eth0 网卡时报错：
 
-Error: Connection activation failed: Device <span class="keyword">not</span> managed <span class="keyword">by</span> NetworkManager
+Error: Connection activation failed: Device <span class="operator">not</span> managed <span class="keyword">by</span> NetworkManager
 
-<span class="number">1</span>\. <span class="keyword">Remove</span> Network Manager <span class="keyword">from</span> startup Services.
+<span class="number">1</span>\. Remove Network Manager <span class="built_in">from</span> startup Services.
 
 chkconfig NetworkManager off
 
-chkconfig --list NetworkManager
+chkconfig <span class="comment">--list NetworkManager</span>
 
-<span class="number">2</span>\. <span class="keyword">Add</span> <span class="keyword">Default</span> Net Manager
+<span class="number">2</span>\. Add Default Net Manager
 
-chkconfig network <span class="keyword">on</span>
+chkconfig network <span class="command"><span class="keyword">on</span></span>
 
-chkconfig --list network
+chkconfig <span class="comment">--list network</span>
 
-Stop NetworkManager first
+Stop NetworkManager <span class="keyword">first</span>
 
 service NetworkManager stop
 
-<span class="keyword">and</span> <span class="keyword">then</span> start <span class="keyword">Default</span> Manager
+<span class="operator">and</span> <span class="keyword">then</span> start Default Manager
 
 service network start
 
-<span class="keyword">or</span> you can change it easy:
+<span class="operator">or</span> you can change <span class="keyword">it</span> easy:
 
-system-config-network 
+<span class="keyword">system</span>-config-network 
 
-uncheck the box that sets the eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="keyword">and</span> <span class="keyword">set</span> IP info <span class="keyword">from</span> there.
+uncheck <span class="operator">the</span> box that sets <span class="operator">the</span> eth0 <span class="keyword">as</span> managed <span class="keyword">by</span> NetworkManager <span class="operator">and</span> <span class="built_in">set</span> IP info <span class="built_in">from</span> there.
 
-system-config-services 
+<span class="keyword">system</span>-config-services 
 
-stop <span class="keyword">and</span> disable NetworkManager , start <span class="keyword">and</span> enable network
+stop <span class="operator">and</span> disable NetworkManager , start <span class="operator">and</span> enable network
 
-you have problem because both <span class="keyword">of</span> NetworkManager <span class="keyword">and</span> Network <span class="keyword">using</span> same Network driver <span class="keyword">and</span> <span class="keyword">default</span> network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared after restart.
+you have problem because both <span class="operator">of</span> NetworkManager <span class="operator">and</span> Network <span class="keyword">using</span> same Network driver <span class="operator">and</span> default network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared <span class="keyword">after</span> restart.
 
-squid Version <span class="number">3.2</span>.<span class="number">0.13</span>: ERROR: No
+squid Version <span class="number">3.2</span><span class="number">.0</span><span class="number">.13</span>: ERROR: No
 
-<span class="keyword">forward</span>-proxy ports configured.
+forward-proxy ports configured.
 
-&amp;gt; #http/https ports
+ <span class="comment">#http/https ports</span>
 
-&amp;gt; http_port <span class="number">33070</span> transparent
+ http_port <span class="number">33070</span> transparent
 
-&amp;gt;
 
-So, only one port, <span class="keyword">and</span> its a NAT traffic receiving port. Looks like 
 
-Squid was right, &amp;quot;no <span class="keyword">forward</span>-proxy ports configured&amp;quot;.
+So, only <span class="constant">one</span> port, <span class="operator">and</span> its <span class="operator">a</span> NAT traffic receiving port. Looks like 
 
-Should <span class="keyword">not</span> be <span class="keyword">on</span> every request, that <span class="keyword">is</span> a sign <span class="keyword">of</span> some other problem 
+Squid was <span class="constant">right</span>, no forward-proxy ports configured.
 
-happening. Just <span class="keyword">on</span> the ones which need <span class="keyword">to</span> produce internal URLs (ie 
+Should <span class="operator">not</span> be <span class="command"><span class="keyword">on</span> <span class="title">every</span> <span class="title">request</span>, <span class="title">that</span> <span class="title">is</span> <span class="title">a</span> <span class="title">sign</span> <span class="title">of</span> <span class="title">some</span> <span class="title">other</span> <span class="title">problem</span> </span>
 
-error page icons, FTP directory icons, cache manager requests, etc). 
+happening. Just <span class="command"><span class="keyword">on</span> <span class="title">the</span> <span class="title">ones</span> <span class="title">which</span> <span class="title">need</span> <span class="title">to</span> <span class="title">produce</span> <span class="title">internal</span> <span class="title">URLs</span> (<span class="title">ie</span> </span>
 
-Squid requires a <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> the URL it tells the browser <span class="keyword">to</span> 
+error page icons, FTP <span class="built_in">directory</span> icons, cache manager requests, etc). 
 
-fetch those icons <span class="keyword">from</span>. A NAT <span class="keyword">or</span> TROXY receiving port <span class="keyword">is</span> somewhat 
+Squid requires <span class="operator">a</span> forward-proxy port <span class="keyword">for</span> <span class="operator">the</span> <span class="built_in">URL</span> <span class="keyword">it</span> tells <span class="operator">the</span> browser <span class="built_in">to</span> 
 
-vulnerable <span class="keyword">to</span> forgery attacks <span class="keyword">and</span> Squid now avoids publishing its 
+fetch those icons <span class="built_in">from</span>. A NAT <span class="operator">or</span> TROXY receiving port is somewhat 
 
-details. Accel ports have some problematic cases <span class="keyword">in</span> the parser <span class="keyword">and</span> <span class="keyword">until</span> 
+vulnerable <span class="built_in">to</span> forgery attacks <span class="operator">and</span> Squid now avoids publishing its 
 
-those are figured <span class="keyword">out</span> properly they are avoided <span class="keyword">as</span> well. Which just 
+details. Accel ports have some problematic cases <span class="operator">in</span> <span class="operator">the</span> parser <span class="operator">and</span> <span class="keyword">until</span> 
 
-leaves the regular <span class="keyword">old</span> <span class="keyword">forward</span>-proxy port <span class="keyword">for</span> now.
+those are figured out properly they are avoided <span class="keyword">as</span> well. Which just 
 
-Adding &amp;quot;http_port <span class="number">3128</span>&amp;quot; <span class="keyword">or</span> somesuch <span class="keyword">is</span> enough <span class="keyword">to</span> avoid this message
+leaves <span class="operator">the</span> regular old forward-proxy port <span class="keyword">for</span> now.
 
-http:<span class="comment">//web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/9/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/11/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+Adding http_port <span class="number">3128</span> <span class="operator">or</span> somesuch is enough <span class="built_in">to</span> avoid this message
+
+<span class="keyword">http</span>://web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/9/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/11/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

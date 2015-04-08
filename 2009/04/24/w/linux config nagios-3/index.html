@@ -5,8 +5,7 @@
 <p>2. 预警处理</p>
 <p>3. 集中，规模化管理</p>
 <p>4. 可视化显示方式</p>
-<p>nagios的实现方式：nagios采用分布-集中的管理模式。在nagios服务器上安装nagios主程序，在被监控主机上安装nagios代理程序。通过nagios主程序和nagios代理程序之间的通讯，监视主机状态。主程序和代理程序之间有两种工作方式，一种是主程序—&gt;Active—&gt;代理程序；另一种是主程序—&gt;passive—&gt;代理程序；顾名思义，是以一方向另一方主动提出通讯需求来划分的。</p>
-<p>&nbsp;&nbsp;&nbsp; </p>
+<p>nagios的实现方式：nagios采用分布-集中的管理模式。在nagios服务器上安装nagios主程序，在被监控主机上安装nagios代理程序。通过nagios主程序和nagios代理程序之间的通讯，监视主机状态。主程序和代理程序之间有两种工作方式，一种是主程序—Active—代理程序；另一种是主程序—passive—代理程序；顾名思义，是以一方向另一方主动提出通讯需求来划分的。</p>
 <p>nagios服务器上需要安装以下包，nagios主程序，nagios的plugin程序，check_nrpe程序，imagepak包；</p>
 <p>没有插件，nagios将什么作用也没有，插件也是nagios扩展功能的强大武器，除了下载常用的插件外，我们还可以根据实际要求编写自己的插件。插件与nagios之间的版本关联不大。在配置过程指定的安装路径是/usr/local/nagios，而不是/usr/local/nagios-plugin,安装完成后，将在目录/usr/local/nagios生成目录libexec（里面有很多文件），这正是nagios所需要的。</p>
 <p>安装web服务器apache</p>
@@ -23,32 +22,39 @@
 <p>tar zxf nagios-3.0.6.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-3.0.6/</p>
 <p>./configure -prefix=/usr/local/nagios</p>
-<h1 id="&ndash;with-gd-lib=/usr/local/lib_&ndash;with-gd-inc=/usr/local/include">&ndash;with-gd-lib=/usr/local/lib &ndash;with-gd-inc=/usr/local/include</h1><p>make -j6 all &amp;&amp; make install </p>
-<p>make install-init &amp;&amp; make install-commandmode &amp;&amp;make install-config</p>
-<p>cp&nbsp; daemon-init.in&nbsp; /etc/init.d/nagios</p>
-<p>&nbsp; make install</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the main program, CGIs, and HTML files</p>
-<p>&nbsp; make install-init</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the init script in /etc/rc.d/init.d</p>
-<p>&nbsp; make install-commandmode</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs and configures permissions on the</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory for holding the external command file</p>
-<p>&nbsp; make install-config</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs <em>SAMPLE</em> config files in /usr/local/nagios/etc</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You’ll have to modify these sample files before you can</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use Nagios.&nbsp; Read the HTML documentation for more info</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on doing this.&nbsp; Pay particular attention to the docs on</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; object configuration files, as they determine what/how</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; things get monitored!</p>
-<p>&nbsp; make install-webconf</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; - This installs the Apache config file for the Nagios</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; web interface</p>
+<h1 id="with-gd-lib=/usr/local/lib_with-gd-inc=/usr/local/include">with-gd-lib=/usr/local/lib with-gd-inc=/usr/local/include</h1><p>make -j6 all  make install </p>
+<p>make install-init  make install-commandmode make install-config</p>
+<p>cp daemon-init.in /etc/init.d/nagios</p>
+<p> make install</p>
+<ul>
+<li><p>This installs the main program, CGIs, and HTML files</p>
+<p>make install-init</p>
+</li>
+<li><p>This installs the init script in /etc/rc.d/init.d</p>
+<p>make install-commandmode</p>
+</li>
+<li><p>This installs and configures permissions on the</p>
+<p>directory for holding the external command file</p>
+<p>make install-config</p>
+</li>
+<li><p>This installs <em>SAMPLE</em> config files in /usr/local/nagios/etc</p>
+<p>You’ll have to modify these sample files before you can</p>
+<p>use Nagios. Read the HTML documentation for more info</p>
+<p>on doing this. Pay particular attention to the docs on</p>
+<p>object configuration files, as they determine what/how</p>
+<p>things get monitored!</p>
+<p>make install-webconf</p>
+</li>
+<li><p>This installs the Apache config file for the Nagios</p>
+<p>web interface</p>
+</li>
+</ul>
 <p>安装nagios-plugin</p>
 <p>wget <a href="http://jaist.dl.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.13.tar.gz" target="_blank" rel="external">http://jaist.dl.sourceforge.net/sourceforge/nagiosplug/nagios-plugins-1.4.13.tar.gz</a></p>
 <p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/nagios-plugins-1.4.13</p>
 <p>./configure -prefix=/usr/local/nagios-plugins</p>
-<h1 id="-enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem&hellip;_错误时使用">-enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem&hellip; 错误时使用</h1><p>make -j6 &amp;&amp; make install</p>
+<h1 id="-enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem_错误时使用">-enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem 错误时使用</h1><p>make -j6  make install</p>
 <p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
 <p>安装imagepak-base.tar.gz</p>
 <p>下载：</p>
@@ -64,7 +70,6 @@
 <p>make all</p>
 <p>cp src/check_nrpe /usr/local/nagios/libexec</p>
 <p>chown -R nagios.nagios /usr/local/nagios</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/linux config nagios-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/24/w/linux config nagios-3/" data-url="http://blog.veryi.com/2009/04/24/w/linux config nagios-3/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -72,4 +77,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e7-9b-91-e6-8e-a7-e8-bd-af-e4-bb-b6-e7-9a-84-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

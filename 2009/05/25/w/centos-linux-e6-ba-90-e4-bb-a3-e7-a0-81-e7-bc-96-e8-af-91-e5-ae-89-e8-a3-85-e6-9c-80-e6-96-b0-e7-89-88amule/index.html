@@ -7,24 +7,23 @@
 <p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon \</p>
 <p>—enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui \</p>
 <p>—enable-cas —enable-wxcas —enable-alc —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>make -j6 &amp;&amp; make install</p>
-<h1 id="—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_compile_aMuleLinkCreator_GUI_version">—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compile aMuleLinkCreator GUI version</h1><p>如果编译报错graphics.c:95: undefined reference to `gdImageJpeg&#39; collect2: ld returned 1 exit status</p>
+<p>make -j6  make install</p>
+<h1 id="—enable-alc_compile_aMuleLinkCreator_GUI_version">—enable-alc compile aMuleLinkCreator GUI version</h1><p>如果编译报错graphics.c:95: undefined reference to `gdImageJpeg&#39; collect2: ld returned 1 exit status</p>
 <p>取消—enable-alc</p>
 <p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon —enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui —enable-cas —enable-wxcas —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>&nbsp;</p>
 <p>附:wxGTK、cryptopp源代码安装方法</p>
 <p>export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/local/pkgconfig:/usr/X11R6/lib/pkgconfig</p>
 <p>wget <a href="http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2" target="_blank" rel="external">http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2</a></p>
 <p>tar xfj wxWidgets-2.8.8.tar.bz2</p>
 <p>cd wxWidgets-2.8.8</p>
 <p>./configure —enable-unicode</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>ldconfig</p>
 <p>wget <a href="http://www.cryptopp.com/cryptopp552.zip" target="_blank" rel="external">http://www.cryptopp.com/cryptopp552.zip</a></p>
 <p>mkdir crypto ; mv cryptopp552.zip ./crypto</p>
 <p>cd crypto ; unzip cryptopp552.zip</p>
-<p>make &amp;&amp; cp libcryptopp.a /usr/lib/</p>
-<p>mkdir /usr/include/cryptopp &amp;&amp; cp *.h /usr/include/cryptopp/</p>
+<p>make  cp libcryptopp.a /usr/lib/</p>
+<p>mkdir /usr/include/cryptopp  cp *.h /usr/include/cryptopp/</p>
 <p>ldconfig</p>
 <p>amule关联firefox，修改about:config只能作用于firefox2.x的:</p>
 <p>新建一个字符串：network.protocol-handler.app.ed2k 值：/usr/bin/ed2k</p>
@@ -34,7 +33,7 @@
 
 对于firefox3.x，只要打开首选项，在应用程序设置里面，指定ed2k到/usr/bin/ed2k就万事大吉。
 </code></pre><p>amule优化:</p>
-<p>勾选启动时自动更新服务器列表，。并且点击&ldquo;列表&rdquo;。添加如下服务器：</p>
+<p>勾选启动时自动更新服务器列表，。并且点击列表。添加如下服务器：</p>
 <pre><code><span class="attribute">ed2k</span>:<span class="comment">//server|no1.eserver.emule.org.cn|8080|</span>
 
 <span class="attribute">ed2k</span>:<span class="comment">//server|no2.eserver.emule.org.cn|8080|</span>
@@ -55,4 +54,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/05/25/w/centos-linux-yum-e4-b8-8d-e8-83-bd-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/05/25/w/centos-linux-yum-e4-b8-8d-e8-83-bd-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

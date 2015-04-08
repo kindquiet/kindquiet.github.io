@@ -1,38 +1,37 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>php5.4 织梦dedecms后台登录空白的解决方法 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="php5.4 织梦dedecms后台登录空白的解决方法"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-09-10T09:14:08.000Z" class="post__time">九月 10, 2013</time><h1 class="post__title"><a href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">php5.4 织梦dedecms后台登录空白的解决方法</a></h1></header><div class="post__main"><p>linux，php5.4， 织梦dedecms后台登录空白，原因：</p>
 <p>include/userlogin.class.php，里面有一个keepuser()函数，是用session_register来注册一个session变量，但是在php5.4中已经移除了这个功能</p>
-<p>把@session_register($this-&gt;keepUserIDTag);&nbsp;&nbsp;&nbsp; 注释掉，然后改为</p>
+<p>把@session_register($this-keepUserIDTag); 注释掉，然后改为</p>
 <pre><code><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="variable">$this</span>-&gt;keepUserIDTag]))
 </code></pre><p>如下：</p>
-<pre><code><span class="keyword">if</span> (!isset(<span class="variable">$_SESSION</span>[<span class="variable">$this</span>-&gt;keepUserIDTag]))
+<pre><code><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="variable">$this</span>-&gt;keepUserIDTag]))
 
-//<span class="variable">@session_register</span>(<span class="variable">$this</span>-&amp;<span class="keyword">gt</span>;keepUserIDTag);
-</code></pre><p>&nbsp;</p>
-<p>附，nginx日志报错：</p>
-<pre><code><span class="title">nginx</span> fastcgi &amp;ldquo;<span class="title">Primary</span> script unknown&amp;rdquo; <span class="title">when</span> configuring userdir
+<span class="comment">//@session_register($this-keepUserIDTag);</span>
+</code></pre><p>附，nginx日志报错：</p>
+<pre><code>nginx fastcgi Primary <span class="keyword">script</span> unknown when configuring userdir
 </code></pre><p>修改：</p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.php$ {
+<pre><code> location ~ \.php$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
+ <span class="keyword">...</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+ fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
+ <span class="keyword">...</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
 为：
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.php$ {
+ location ~ \.php$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
+ <span class="keyword">...</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param SCRIPT_FILENAME $request_filename;
+ fastcgi_param SCRIPT_FILENAME $request_filename;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; fastcgi_param REQUEST_URI $uri?$args;
+ fastcgi_param REQUEST_URI $uri?$args;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">...</span>
+ <span class="keyword">...</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" data-url="http://blog.veryi.com/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -40,4 +39,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

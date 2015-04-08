@@ -59,7 +59,7 @@ sudo vim /etc/iptables.test.rules
 
 # <span class="keyword">log</span> iptables denied calls (access via &amp;#<span class="number">39</span>;</span>dmesg&amp;#39; command)
 
--A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix &amp;quot;iptables denied: &amp;quot; --log-level 7</span>
+-A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix iptables denied:  --log-level 7</span>
 
 # Reject all other inbound - default deny unless explicitly allowed policy:
 
@@ -71,7 +71,7 @@ sudo vim /etc/iptables.test.rules
 
 保存本文件,然后把本规则加载,使之生效,注意,iptables不需要重启,加载一次规则就成了
 
-sudo iptables-<span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.test.rules
+sudo iptables-<span class="keyword">restore</span>  /etc/iptables.test.rules
 
 然后再查看最新的配置,应该所有的设置都生效了.
 
@@ -81,7 +81,7 @@ sudo iptables -L
 
 iptables提供了保存当前运行的规则功能
 
-iptables-save &amp;gt; /etc/iptables.up.rules
+iptables-save  /etc/iptables.up.rules
 
 注意,如果当前用户不是root,即使使用了sudo,也会提示你没有权限,无法保存,所以执行本命令,你必须使用root用户.
 
@@ -89,25 +89,25 @@ iptables-save &amp;gt; /etc/iptables.up.rules
 
 为了重启服务器后,规则自动加载,我们创建如下文件:
 
-sudo vim /etc/network/if-pre-up.d/iptables
+sudo vim /etc/network/<span class="keyword">if</span>-pre-up.d/iptables
 
 内容如下:
 
-#!/bin/bash
+#!/<span class="keyword">bin</span>/bash
 
-/sbin/iptables-<span class="operator"><span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.up.rules
+/sbin/iptables-<span class="keyword">restore</span>  /etc/iptables.up.rules
 
 最后,设置本文章具体可执行仅限
 
-chmod +x /etc/network/if-pre-up.d/iptables
+chmod +x /etc/network/<span class="keyword">if</span>-pre-up.d/iptables
 
 第五:其它
 
 如果你想设置某ip段可以访问所有服务,你需要在iptables.test.rules文件中加入
 
--A INPUT -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
+-A <span class="keyword">INPUT</span> -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
 
-然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试
+然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/" data-url="http://blog.veryi.com/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -115,4 +115,4 @@ chmod +x /etc/network/if-pre-up.d/iptables
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/09/19/w/linux-e5-8f-96-e6-b6-88-e5-b1-8f-e8-94-bdvim-e3-80-81less-e5-92-8cmtr-e7-ad-89-e9-80-80-e5-87-ba-e6-b8-85-e5-b1-8f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/09/19/w/linux-e5-8f-96-e6-b6-88-e5-b1-8f-e8-94-bdvim-e3-80-81less-e5-92-8cmtr-e7-ad-89-e9-80-80-e5-87-ba-e6-b8-85-e5-b1-8f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -7,9 +7,9 @@ wget <span class="attribute">http</span>:<span class="comment">//forums.cacti.ne
 
 gzip -d ws_apachestats.pl.gz
 
-cp apache.apache ws_apachestats.pl &amp;lt;path_cacti&amp;gt;/scripts/
+cp apache.apache ws_apachestats.pl path_cacti/scripts/
 
-chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache.apache ws_apachestats.pl 
+chmod <span class="number">0755</span> path_cacti/scripts/apache.apache ws_apachestats.pl 
 
 下载 xml 文件
 
@@ -19,21 +19,21 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
 
 客户机配置
 
-&amp;lt;IfModule mod_status.c&amp;gt;
+IfModule mod_status.c
 
-&amp;lt;location /server-status&amp;gt;
+location /server-status
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetHandler server-status
+ SetHandler server-status
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Order Deny,Allow
+ Order Deny,Allow
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Deny from all
+ Deny from all
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">127.0</span>.<span class="number">0.1</span>
+ Allow from <span class="number">127.0</span>.<span class="number">0.1</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">192.168</span>.<span class="number">8.8</span>
+ Allow from <span class="number">192.168</span>.<span class="number">8.8</span>
 
-&amp;lt;/location&amp;gt;
+/location
 
 监控服务器(<span class="number">192.168</span>.<span class="number">8.8</span>)测试：
 
@@ -43,11 +43,10 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/cacti-e7-9b-91-e6-8e-a7-apache-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-29T11:32:46.000Z" class="post__time">七月 29, 2010</time><h1 class="post__title"><a href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/">CentOS linux查看主板型号及内存硬件信息</a></h1></header><div class="post__main"><p>操作系统：CentOS release 6</p>
 <p>安装包命令查找：</p>
 <p>yum whatprovides */lspci</p>
-<p>&nbsp;</p>
 <p>查看主板型号：</p>
-<p>dmidecode |grep -A16 &quot;System Information$&quot;</p>
+<p>dmidecode |grep -A16 System Information$</p>
 <p>内存槽及内存条：</p>
-<p>dmidecode |grep -A16 &quot;Memory Device$&quot;</p>
+<p>dmidecode |grep -A16 Memory Device$</p>
 <p>硬盘：</p>
 <p>fdisk -l</p>
 <p>smartctl -a /dev/sda</p>
@@ -57,7 +56,6 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
 <p>mii-tool</p>
 <p>scsi/raid卡：</p>
 <p>lspci</p>
-<p>&nbsp;</p>
 <p>centos相关命令安装：</p>
 <p>yum -y install smartmontools</p>
 <pre><code>yum <span class="keyword">install</span> pciutils -y
@@ -70,7 +68,7 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
 
 http://dealnews.com/developers/cacti/memcached.html
 
-tar xzf python-memcached-&amp;lt;ver&amp;gt;.tar.gz.
+tar xzf python-memcached-ver.tar.gz.
 
 python setup.py install
 
@@ -78,13 +76,13 @@ python setup.py install
 
 下载 cacti-memcached-.tar.gz
 
-tar xzf cacti-memcached-&amp;lt;ver&amp;gt;.tar.gz
+tar xzf cacti-memcached-ver.tar.gz
 
-<span class="type">Copy</span> (<span class="keyword">or</span> upload) the memcached.py script to the &amp;lt;cacti path&amp;gt;/scripts/ directory on the server that cacti <span class="keyword">is</span> installed on.
+<span class="type">Copy</span> (<span class="keyword">or</span> upload) the memcached.py script to the cacti path/scripts/ directory on the server that cacti <span class="keyword">is</span> installed on.
 
-[optional] &amp;ndash; <span class="type">Verify</span> that the memcached.py script properly works by opening a console <span class="keyword">or</span> ssh connection to the server <span class="keyword">and</span> typing:
+[optional]  <span class="type">Verify</span> that the memcached.py script properly works by opening a console <span class="keyword">or</span> ssh connection to the server <span class="keyword">and</span> typing:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; python &amp;lt;cacti path&amp;gt;/scripts/memcached.py &amp;lt;hostname&amp;gt;
+ python cacti path/scripts/memcached.py hostname
 
 导入模板cacti_memcached_host_template.xml：
 
@@ -100,27 +98,27 @@ tar xzf cacti-memcached-&amp;lt;ver&amp;gt;.tar.gz
 
 多模光纤(Multi-<span class="built_in">mode</span> Fiber)：一般光纤跳线用橙色表示，也有的用灰色表示，接头和保护套用米色或者黑色；传输距离较短。
 </code></pre><p>配置：LC-LC光纤跳线、SC-SC光纤跳线、FC-FC光纤跳线、ST-ST光纤跳线</p>
-<pre><code>混合配置：LC-<span class="keyword">SC</span>、<span class="keyword">ST</span>-FC、<span class="keyword">SC</span>- <span class="keyword">ST</span>、FC-<span class="keyword">SC</span>、LC-FC、<span class="keyword">ST</span>-LC等
+<pre><code>混合配置：LC-SC、ST-FC、SC- ST、FC-SC、LC-FC、ST-LC等
 
 光纤分类
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 光纤按光在其中的传输模式可分为单模和多模。多模光纤的纤芯直径为50或62.5&amp;mu;<span class="keyword">m</span>，包层外径125&amp;mu;<span class="keyword">m</span>，表示为50/125&amp;mu;<span class="keyword">m</span>或62.5 /125&amp;mu;<span class="keyword">m</span>。单模光纤的纤芯直径为8.3&amp;mu;<span class="keyword">m</span>，包层外径125&amp;mu;<span class="keyword">m</span>，表示为8.3/125&amp;mu;<span class="keyword">m</span>。 
+ 光纤按光在其中的传输模式可分为单模和多模。多模光纤的纤芯直径为<span class="number">50</span>或<span class="number">62.5</span><span class="keyword">m</span>，包层外径<span class="number">125</span><span class="keyword">m</span>，表示为<span class="number">50</span>/<span class="number">125</span><span class="keyword">m</span>或<span class="number">62.5</span> /<span class="number">125</span><span class="keyword">m</span>。单模光纤的纤芯直径为<span class="number">8.3</span><span class="keyword">m</span>，包层外径<span class="number">125</span><span class="keyword">m</span>，表示为<span class="number">8.3</span>/<span class="number">125</span><span class="keyword">m</span>。 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 光纤的工作波长有短波850nm、长波1310nm和1550nm。光纤损耗一般是随波长增加而减小，850nm的损耗一般为 2.5dB/km,1.31&amp;mu;<span class="keyword">m</span>的损耗一般为0.35dB/km，1.55&amp;mu;<span class="keyword">m</span>的损耗一般为0.20dB/km，这是光纤的最低损耗，波长1.65&amp;mu;<span class="keyword">m</span>以上的损耗趋向加大。由于OHˉ(水峰)的吸收作用，900~1300nm和1340nm~1520nm范围内都有损耗高峰，这两个范围未能充分利用。
+ 光纤的工作波长有短波<span class="number">850</span><span class="keyword">nm</span>、长波<span class="number">1310</span><span class="keyword">nm</span>和<span class="number">1550</span><span class="keyword">nm</span>。光纤损耗一般是随波长增加而减小，<span class="number">850</span><span class="keyword">nm</span>的损耗一般为 <span class="number">2.5</span>dB/km,<span class="number">1.31</span><span class="keyword">m</span>的损耗一般为<span class="number">0.35</span>dB/km，<span class="number">1.55</span><span class="keyword">m</span>的损耗一般为<span class="number">0.20</span>dB/km，这是光纤的最低损耗，波长<span class="number">1.65</span><span class="keyword">m</span>以上的损耗趋向加大。由于OHˉ(水峰)的吸收作用，<span class="number">900</span>~<span class="number">1300</span><span class="keyword">nm</span>和<span class="number">1340</span><span class="keyword">nm</span>~<span class="number">1520</span><span class="keyword">nm</span>范围内都有损耗高峰，这两个范围未能充分利用。
 
 多模光缆
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 多模光纤(MultiModeFiber)-芯较粗(50或62.5&amp;mu;<span class="keyword">m</span>)，可传多种模式的光。但其模间色散较大，这就限制了传输数字信号的频率，而且随距离的增加会更加严重。因此，多模光纤传输的距离就比较近，一般只有几公里。
+ 多模光纤(MultiModeFiber)-芯较粗(<span class="number">50</span>或<span class="number">62.5</span><span class="keyword">m</span>)，可传多种模式的光。但其模间色散较大，这就限制了传输数字信号的频率，而且随距离的增加会更加严重。因此，多模光纤传输的距离就比较近，一般只有几公里。
 
 单模光缆
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 单模光纤(SingleModeFiber)：中心纤芯很细(芯径一般为9或10&amp;mu;<span class="keyword">m</span>)，只能传一种模式的光。因此，其模间色散很小，适用于远程通讯，但还存在着材料色散和波导色散，这样单模光纤对光源的谱宽和稳定性有较高的要求，即谱宽要窄，稳定性要好。
+ 单模光纤(SingleModeFiber)：中心纤芯很细(芯径一般为<span class="number">9</span>或<span class="number">10</span><span class="keyword">m</span>)，只能传一种模式的光。因此，其模间色散很小，适用于远程通讯，但还存在着材料色散和波导色散，这样单模光纤对光源的谱宽和稳定性有较高的要求，即谱宽要窄，稳定性要好。
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 后来发现在1310nm波长处，单模光纤的总色散为零。从光纤的损耗特性来看，1310nm正好是光纤的一个低损耗窗口。这样，1310nm波长区就成了光纤通信的一个很理想的工作窗口，也是现在实用光纤通信系统的主要工作波段。1310nm常规单模光纤的主要参数是由国际电信联盟ITU-T在G652建议中确定的，因此这种光纤又称G652光纤。
+ 后来发现在<span class="number">1310</span><span class="keyword">nm</span>波长处，单模光纤的总色散为零。从光纤的损耗特性来看，<span class="number">1310</span><span class="keyword">nm</span>正好是光纤的一个低损耗窗口。这样，<span class="number">1310</span><span class="keyword">nm</span>波长区就成了光纤通信的一个很理想的工作窗口，也是现在实用光纤通信系统的主要工作波段。<span class="number">1310</span><span class="keyword">nm</span>常规单模光纤的主要参数是由国际电信联盟ITU-T在G652建议中确定的，因此这种光纤又称G652光纤。
 
-&amp;nbsp;&amp;nbsp; 多模光纤的纤芯面积是单模的30倍。多模光纤的大芯径明显的优点是可以保证较低的连接损耗，使光纤对光纤或者光纤对收发器连接时的损耗较低，非常适合企业网与局域网的应用情况。在网络总体成本中光收发器是除交换设备以外最昂贵的部分。交换设备是与光纤类型无关的部分，因此收发器成本成为影响方案总体成本的主要因素。DFB与FP激光器比LED与VCSEL要相对贵很多，但是它们可以提供较高的注入功率及高汇聚度的光束，允许将高功率的光束高效地耦合到细小的单模光纤芯。LED与VCSEL则为短距离应用提供相对便宜的解决方案。其中VCSEL拥有较大的有效区域(15um)可以将束光有效地耦合到多模光纤较大的纤芯中去。而LED则只能提供较低的能量，但因其数值孔径很大，光斑直径也很大，可以覆盖住多模光纤的整个端面，也比较适合多模光纤应用。因此，为了得益于VCSEL与LED的低成本，必须配合使用多模光纤，才能获得最佳的光耦合效率。
+ 多模光纤的纤芯面积是单模的<span class="number">30</span>倍。多模光纤的大芯径明显的优点是可以保证较低的连接损耗，使光纤对光纤或者光纤对收发器连接时的损耗较低，非常适合企业网与局域网的应用情况。在网络总体成本中光收发器是除交换设备以外最昂贵的部分。交换设备是与光纤类型无关的部分，因此收发器成本成为影响方案总体成本的主要因素。DFB与FP激光器比LED与VCSEL要相对贵很多，但是它们可以提供较高的注入功率及高汇聚度的光束，允许将高功率的光束高效地耦合到细小的单模光纤芯。LED与VCSEL则为短距离应用提供相对便宜的解决方案。其中VCSEL拥有较大的有效区域(<span class="number">15</span>um)可以将束光有效地耦合到多模光纤较大的纤芯中去。而LED则只能提供较低的能量，但因其数值孔径很大，光斑直径也很大，可以覆盖住多模光纤的整个端面，也比较适合多模光纤应用。因此，为了得益于VCSEL与LED的低成本，必须配合使用多模光纤，才能获得最佳的光耦合效率。
 
-&amp;nbsp; &amp;nbsp;
+
 
 光纤使用注意事项：
 
@@ -150,25 +148,25 @@ tar xzf cacti-memcached-&amp;lt;ver&amp;gt;.tar.gz
 
 按照速率分：以太网应用的100Base（百兆）、1000Base（千兆）、10GE；SDH应用的155M、622M、2.5G、10G 。
 
-按照封装分：1&amp;times;9、SFF、SFP、GBIC、XENPAK、XFP
+按照封装分：19、SFF、SFP、GBIC、XENPAK、XFP
 
-1&amp;times;9封装&amp;mdash;&amp;mdash;焊接型光模块，一般速度不高于千兆，多采用<span class="keyword">SC</span>接口；
+19封装焊接型光模块，一般速度不高于千兆，多采用<span class="keyword">SC</span>接口；
 
-SFF封装:&amp;mdash;&amp;mdash;焊接小封装光模块，一般速度不高于千兆，多采用LC接口；
+SFF封装:焊接小封装光模块，一般速度不高于千兆，多采用LC接口；
 
-GBIC封装&amp;mdash;&amp;mdash;热插拔千兆接口光模块，采用<span class="keyword">SC</span>接口；
+GBIC封装热插拔千兆接口光模块，采用<span class="keyword">SC</span>接口；
 
-SFP封装&amp;mdash;热插拔小封装模块，目前最高数率可达4G，多采用LC接口；
+SFP封装热插拔小封装模块，目前最高数率可达4G，多采用LC接口；
 
-XENPAK封装&amp;mdash;&amp;mdash;应用在万兆以太网，采用<span class="keyword">SC</span>接口；
+XENPAK封装应用在万兆以太网，采用<span class="keyword">SC</span>接口；
 
-XFP封装&amp;mdash;&amp;mdash;10G光模块，可用在万兆以太网，SONET等多种系统，多采用LC接口；
+XFP封装10G光模块，可用在万兆以太网，SONET等多种系统，多采用LC接口；
 
 按照激光类型分：LED、VCSEL、FP LD、DFB <span class="keyword">L</span> 。
 
 按照发射波长分：850nm、1310nm、1550nm等等。
 
-按照使用方式分：非热插拔（1&amp;times;9、SFF），可热插拔（GBIC、SFP、XENPAK、XFP）。
+按照使用方式分：非热插拔（19、SFF），可热插拔（GBIC、SFP、XENPAK、XFP）。
 
 光纤连接器的分类和主要规格参数
 
@@ -194,11 +192,11 @@ XFP封装&amp;mdash;&amp;mdash;10G光模块，可用在万兆以太网，SONET�
 
 按照光纤连接器的连接头形式分：FC，<span class="keyword">SC</span>，<span class="keyword">ST</span>，LC，MU，MTRJ等等，目前常用的有FC，<span class="keyword">SC</span>，<span class="keyword">ST</span>，LC
 
-FC型&amp;mdash;&amp;mdash;最早由日本NTT研制。外部加强件采用金属套，紧固方式为螺丝扣。测试设备选用该种接头较多。
+FC型最早由日本NTT研制。外部加强件采用金属套，紧固方式为螺丝扣。测试设备选用该种接头较多。
 
-<span class="keyword">SC</span>型&amp;mdash;&amp;mdash;由日本NTT公司开发的模塑插拔耦合式连接器。其外壳采用模塑工艺，用铸模玻璃纤维塑料制成，呈矩形；插针由精密陶瓷制成，耦合套筒为金属开缝套管结构。紧固方式采用插拔销式，不需要旋转。
+<span class="keyword">SC</span>型由日本NTT公司开发的模塑插拔耦合式连接器。其外壳采用模塑工艺，用铸模玻璃纤维塑料制成，呈矩形；插针由精密陶瓷制成，耦合套筒为金属开缝套管结构。紧固方式采用插拔销式，不需要旋转。
 
-LC型&amp;mdash;&amp;mdash;朗讯公司设计的。套管外径为1.25mm，是通常采用的FC-<span class="keyword">SC</span>、<span class="keyword">ST</span>套管外径2.5mm的一半。提高连接器的应用密度。
+LC型朗讯公司设计的。套管外径为1.25mm，是通常采用的FC-<span class="keyword">SC</span>、<span class="keyword">ST</span>套管外径2.5mm的一半。提高连接器的应用密度。
 
 按照光纤连接器连接头内插针端面分：PC，SPC，UPC，APC
 
@@ -227,12 +225,10 @@ A． 光模块光口暴露在环境中，光口有灰尘进入而污染；
 B． 使用的光纤连接器端面已经污染，光模块光口二次污染；
 
 C． 带尾纤的光接头端面使用不当，端面划伤等；
-</code></pre><p>&nbsp;&nbsp;&nbsp; GBIC是Giga Bitrate Interface Converter的缩写，是将千兆位电信号转换为光信号的接口器件。GBIC设计上可以为热插拔使用。GBIC是一种符合国际标准的可互换产品。采用 GBIC接口设计的千兆位交换机由于互换灵活，在市场上占有较大的市场分额。</p>
-<p>&nbsp;&nbsp;&nbsp; SFP是Small Form-Factor Pluggable的缩写，可以简单的理解为GBIC的升级版本。SFP模块体积比GBIC模块减少一半，可以在相同的面板上配置多出一倍以上的端口数 量。SFP模块的其他功能基本和GBIC一致。</p>
-<pre><code><span class="keyword">&amp;</span><span class="tag">nbsp</span>;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/23/w/e5-8d-95-e6-a8-a1-e5-85-89-e7-ba-a4-e5-a4-9a-e6-a8-a1-e5-85-89-e7-ba-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-21T01:15:29.000Z" class="post__time">七月 21, 2010</time><h1 class="post__title"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/">何时系统的访问者最少</a></h1></header><div class="post__main"><p>是半夜子时12点吗？看下图就清楚了。同理，这也是电信系统维护割接通常不是在半夜进行，而是在凌晨4点，因为这个时刻，熬夜的睡了，早睡的在准备起。以下分别是日访问几千、几万、几十万独立ip的统计。</p>
+</code></pre><p> GBIC是Giga Bitrate Interface Converter的缩写，是将千兆位电信号转换为光信号的接口器件。GBIC设计上可以为热插拔使用。GBIC是一种符合国际标准的可互换产品。采用 GBIC接口设计的千兆位交换机由于互换灵活，在市场上占有较大的市场分额。</p>
+<p> SFP是Small Form-Factor Pluggable的缩写，可以简单的理解为GBIC的升级版本。SFP模块体积比GBIC模块减少一半，可以在相同的面板上配置多出一倍以上的端口数 量。SFP模块的其他功能基本和GBIC一致。</p>
+</div><footer class="post__foot u-cf"><a href="/2010/07/23/w/e5-8d-95-e6-a8-a1-e5-85-89-e7-ba-a4-e5-a4-9a-e6-a8-a1-e5-85-89-e7-ba-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-21T01:15:29.000Z" class="post__time">七月 21, 2010</time><h1 class="post__title"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/">何时系统的访问者最少</a></h1></header><div class="post__main"><p>是半夜子时12点吗？看下图就清楚了。同理，这也是电信系统维护割接通常不是在半夜进行，而是在凌晨4点，因为这个时刻，熬夜的睡了，早睡的在准备起。以下分别是日访问几千、几万、几十万独立ip的统计。</p>
 <p><img src="http://veryi.com/w/wp-content/uploads/www_veryi_com(1" alt="">.png)</p>
-<p>&nbsp;</p>
 <p><img src="http://veryi.com/w/wp-content/uploads/auto_veryi_com.png" alt=""></p>
 <p><img src="http://veryi.com/w/wp-content/uploads/veryi_com.png" alt=""></p>
-</div><footer class="post__foot u-cf"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/19/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/21/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2010/07/21/w/e4-bd-95-e6-97-b6-e7-b3-bb-e7-bb-9f-e7-9a-84-e8-ae-bf-e9-97-ae-e8-80-85-e6-9c-80-e5-b0-91/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/19/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/21/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

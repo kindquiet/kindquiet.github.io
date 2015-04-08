@@ -1,15 +1,15 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>用DenyHosts防止SSH暴力破解 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="用DenyHosts防止SSH暴力破解"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
-<p>DenyHosts官方网站为：&nbsp;</p>
+<p>DenyHosts官方网站为：</p>
 <p><a href="http://denyhosts.sourceforge.net" target="_blank" rel="external">http://denyhosts.sourceforge.net</a></p>
 <p>如果没有python运行环境，需要先安装python</p>
 <p>wget <a href="http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2" target="_blank" rel="external">http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2</a></p>
-<pre><code>tar zxf Python-<span class="number">2.5</span>.<span class="number">2</span>.tar.gz
+<pre><code>tar zxf Python-<span class="number">2.5</span>.<span class="number">2</span><span class="class">.tar</span><span class="class">.gz</span>
 
-<span class="keyword">cd</span> Python-<span class="number">2.5</span>.<span class="number">2</span>
+cd Python-<span class="number">2.5</span>.<span class="number">2</span>
 
 ./configure --prefix=/usr/local
 
-<span class="keyword">make</span> -j6 &amp;amp;&amp;amp; <span class="keyword">make</span> install
+make -j6  make install
 </code></pre><p>cd /usr/local/src</p>
 <pre><code>wget <span class="string">http:</span><span class="comment">//mesh.dl.sourceforge.net/sourceforge/denyhosts/DenyHosts-2.6.tar.gz</span>
 
@@ -53,7 +53,7 @@ chkconfig --<span class="keyword">list</span> denyhosts
 <pre><code><span class="preprocessor">#控制用户登陆的文件</span>
 </code></pre><p>PURGE_DENY = 7w</p>
 <pre><code><span class="preprocessor">#过多久后清除已经禁止的</span>
-</code></pre><p>BLOCK_SERVICE&nbsp; = sshd</p>
+</code></pre><p>BLOCK_SERVICE = sshd</p>
 <pre><code><span class="preprocessor">#禁止的服务名</span>
 </code></pre><p>DENY_THRESHOLD_INVALID = 1</p>
 <pre><code><span class="preprocessor">#允许无效用户失败的次数</span>
@@ -71,10 +71,10 @@ chkconfig --<span class="keyword">list</span> denyhosts
 <pre><code><span class="regexp">/usr/</span>share<span class="regexp">/denyhosts/</span>daemon-control start
 </code></pre><p>参考: <a href="http://www.cublog.cn/u/12859/showart_247895.html" target="_blank" rel="external">http://www.cublog.cn/u/12859/showart_247895.html</a></p>
 <p>对于centos系统：</p>
-<h1 id="centos_6_x86_64">centos 6 x86_64</h1><pre><code>rpm -Uhv&amp;nbsp; <span class="string">http:</span><span class="comment">//pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</span>
+<h1 id="centos_6_x86_64">centos 6 x86_64</h1><pre><code>rpm -Uhv <span class="string">http:</span><span class="comment">//pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</span>
 </code></pre><h1 id="centos_6_i386">centos 6 i386</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.i686.rpm
 
-<span class="comment">#&amp;nbsp; Red Hat Enterprise Linux 5 / i386:</span>
+<span class="comment"># Red Hat Enterprise Linux 5 / i386:</span>
 
 rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el5.rf.i386.rpm
 </code></pre><h1 id="Red_Hat_Enterprise_Linux_5_/_x86_64:">Red Hat Enterprise Linux 5 / x86_64:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span><span class="regexp">/rpmforge-release-0.5.3-1.el5.rf.x86_64.rpm</span>
@@ -82,11 +82,10 @@ rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span c
 </code></pre><p>yum install denyhosts -y</p>
 <pre><code>vim <span class="regexp">/etc/</span>denyhosts/denyhosts.cfg
 
-&amp;nbsp;<span class="regexp">/etc/</span>init.d/denyhosts restart
+<span class="regexp">/etc/</span>init.d/denyhosts restart
 </code></pre><p>chkconfig —level 345 denyhosts on</p>
 <pre><code>chkconfig <span class="comment">--list denyhosts</span>
 </code></pre><p>即可。</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/" data-url="http://blog.veryi.com/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -94,4 +93,4 @@ rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span c
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/03/w/e5-b9-b8-e7-a6-8f-e4-ba-ba-e7-94-9f-e8-ae-b2-e5-ba-a7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/03/w/e5-b9-b8-e7-a6-8f-e4-ba-ba-e7-94-9f-e8-ae-b2-e5-ba-a7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

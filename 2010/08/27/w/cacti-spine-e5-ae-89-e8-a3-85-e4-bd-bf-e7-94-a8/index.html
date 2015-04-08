@@ -1,34 +1,33 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>cacti和spine的安装使用 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="cacti和spine的安装使用"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php&nbsp; 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
-<pre><code>yum install cacti<span class="attribute">-spine</span> <span class="attribute">-y</span>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>cacti和spine的安装使用 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="cacti和spine的安装使用"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
+<pre><code>yum install cacti-spine -y
 
 配置
 
-chmod <span class="subst">+</span>r /etc/spine<span class="built_in">.</span>conf 
+chmod +r /etc/spine<span class="class">.conf</span> 
 
-vim /etc/spine<span class="built_in">.</span>conf
+vim /etc/spine<span class="class">.conf</span>
 
 创建一个软链接文件(因为spine默认会去读取该sock文件)
 
-ln <span class="attribute">-s</span> /tmp/mysql<span class="built_in">.</span>sock /<span class="built_in">var</span>/lib/mysql/mysql<span class="built_in">.</span>sock
+ln -s /tmp/mysql<span class="class">.sock</span> /var/lib/mysql/mysql<span class="class">.sock</span>
 
 验证spine是否正常
 
 /bin/spine 
 
-用管理员帐号登陆Cacti<span class="built_in">.</span>在系统参数中制定Spine/Cactid的物理路径<span class="built_in">.
+用管理员帐号登陆Cacti.在系统参数中制定Spine/Cactid的物理路径.
 
-</span>Console <span class="subst">-&amp;</span><span class="literal">gt</span>; Configuration <span class="subst">-&amp;</span><span class="literal">gt</span>; Settings <span class="subst">-&amp;</span><span class="literal">gt</span>; Paths <span class="subst">-&amp;</span><span class="literal">gt</span>; Alternate Poller Path <span class="subst">-&amp;</span><span class="literal">gt</span>; Spine Poller File Path
+Console - Configuration - Settings - Paths - Alternate Poller Path - Spine Poller File Path
 
 /usr/bin/spine
 
-Cacti Settings (Poller)<span class="subst">-&amp;</span><span class="literal">gt</span>; Poller <span class="keyword">Type</span>
+Cacti Settings (Poller)- Poller Type
 
 spine
-</code></pre><p>&nbsp;</p>
-<p>Cacti在centos上的安装：</p>
+</code></pre><p>Cacti在centos上的安装：</p>
 <p>yum -y install http php rrdtool rrdtool-devel net-snmp net-snmp-devel net-snmp-utils php-snmp mysql mysql-server perl-DBI perl-DBD-MySQL</p>
 <p>需要安装yum扩展源：</p>
-<p>&nbsp;<br>Red Hat Enterprise Linux 5 / <strong>i386</strong>:</p>
+<p>Red Hat Enterprise Linux 5 / <strong>i386</strong>:</p>
 <p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm</a></p>
 <p>Red Hat Enterprise Linux 5 / <strong>x86_64</strong>:</p>
 <p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a></p>
@@ -43,4 +42,4 @@ spine
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

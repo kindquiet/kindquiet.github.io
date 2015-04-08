@@ -23,7 +23,7 @@ vim ss_get_mysql_stats<span class="built_in">.</span>php
 
 创建监控Mysql需要的账户以及权限
 
-配置MySQL服务器，让cacti所在机器能够访问MySQL服务器的状态信息，必须拥有<span class="subst">&amp;</span>rdquo;process<span class="subst">&amp;</span>rdquo;权限。如果要监控InnoDB状态，还必须有<span class="subst">&amp;</span>rdquo;SUPER<span class="subst">&amp;</span>rdquo;权限。
+配置MySQL服务器，让cacti所在机器能够访问MySQL服务器的状态信息，必须拥有process权限。如果要监控InnoDB状态，还必须有SUPER权限。
 
 grant process,super <span class="keyword">on</span> <span class="subst">*</span><span class="built_in">.</span><span class="subst">*</span> <span class="keyword">to</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;@<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="subst">%&amp;</span><span class="variable">#39</span>; identified <span class="keyword">by</span> <span class="subst">&amp;</span><span class="variable">#39</span>;cacti<span class="subst">&amp;</span><span class="variable">#39</span>;;
 
@@ -39,7 +39,7 @@ php <span class="attribute">-q</span> <span class="built_in">.</span>/ss_get_mys
 
 在cacti管理界面导入模板cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span>。
 
-Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates<span class="subst">&amp;</span>nbsp; <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
+Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
 
 </span><span class="built_in">Data</span> Input Method
 
@@ -67,91 +67,91 @@ Host Template
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/15/w/cacti-e7-9b-91-e6-8e-a7monitormysql-innodb-e6-95-b0-e6-8d-ae-e5-ba-93/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-13T06:13:48.000Z" class="post__time">七月 13, 2010</time><h1 class="post__title"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/">iptables 匹配多个ip地址</a></h1></header><div class="post__main"><p>如果有一组目的ip不走squid透明代理，端口为3128，比如测试服务器、本地地址等，不需要cache，如何实现？</p>
 <pre><code>/etc/sysconfig/iptables
 
-<span class="comment">*nat</span>
+*nat
 
-:PREROUTING ACCEPT [0:0]
+:PREROUTING ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:POSTROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:OUTPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
--A PREROUTING -i eth0 -p tcp -<span class="keyword">m</span> <span class="keyword">mark</span> --<span class="keyword">mark</span> 0x3 -<span class="keyword">m</span> tcp --dport 80 -j REDIRECT --to-ports 3128
+-A PREROUTING -<span class="tag">i</span> eth0 -<span class="tag">p</span> tcp -m <span class="tag">mark</span> --<span class="tag">mark</span> <span class="number">0</span>x3 -m tcp --dport <span class="number">80</span> -j REDIRECT --to-ports <span class="number">3128</span>
 
--A POSTROUTING -s 172.16.8.0/255.255.254.0 -o eth1 -j SNAT --to-source 123.127.42.168
+-A POSTROUTING -s <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">255.255</span>.<span class="number">254.0</span> -o eth1 -j SNAT --to-source <span class="number">123.127</span>.<span class="number">42.168</span>
 
-COMMIT&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+COMMIT 
 
-<span class="comment">*mangle</span>
+*mangle
 
-:PREROUTING ACCEPT [0:0]
+:PREROUTING ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:<span class="keyword">INPUT</span> ACCEPT [0:0]
+:INPUT ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:FORWARD ACCEPT [0:0]
+:FORWARD ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:OUTPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
-:POSTROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [<span class="number">0</span>:<span class="number">0</span>]
 
--A PREROUTING -<span class="keyword">d</span> a.b.c.0/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+-A PREROUTING -d <span class="tag">a</span><span class="class">.b</span><span class="class">.c</span>.<span class="number">0</span>/<span class="number">255.255</span>.<span class="number">255.192</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
--A PREROUTING -<span class="keyword">d</span> a.b.c.0/255.255.255.192 -j <span class="literal">RETURN</span>
+-A PREROUTING -d <span class="tag">a</span><span class="class">.b</span><span class="class">.c</span>.<span class="number">0</span>/<span class="number">255.255</span>.<span class="number">255.192</span> -j RETURN
 
--A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+-A PREROUTING -d e<span class="class">.f</span><span class="class">.g</span>.<span class="number">128</span>/<span class="number">255.255</span>.<span class="number">255.192</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
--A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/255.255.255.192 -j <span class="literal">RETURN</span>
+-A PREROUTING -d e<span class="class">.f</span><span class="class">.g</span>.<span class="number">128</span>/<span class="number">255.255</span>.<span class="number">255.192</span> -j RETURN
 
--A PREROUTING -<span class="keyword">d</span> 172.16.8.0/255.255.254.0 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+-A PREROUTING -d <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">255.255</span>.<span class="number">254.0</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
--A PREROUTING -<span class="keyword">d</span> 172.16.8.0/255.255.254.0 -j <span class="literal">RETURN</span>
+-A PREROUTING -d <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">255.255</span>.<span class="number">254.0</span> -j RETURN
 
--A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+-A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">80</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x3
 
--A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
+-A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">80</span> -j RETURN
 
--A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+-A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">443</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x3
 
--A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="literal">RETURN</span>
+-A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">443</span> -j RETURN
 
 COMMIT
 
 脚本：
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp --dport 53 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x1
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> udp -m udp --dport <span class="number">53</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x1
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp --dport 53 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> udp -m udp --dport <span class="number">53</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> a.b.c.0/26 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d <span class="tag">a</span><span class="class">.b</span><span class="class">.c</span>.<span class="number">0</span>/<span class="number">26</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> a.b.c.0/26 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d <span class="tag">a</span><span class="class">.b</span><span class="class">.c</span>.<span class="number">0</span>/<span class="number">26</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/26 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d e<span class="class">.f</span><span class="class">.g</span>.<span class="number">128</span>/<span class="number">26</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> <span class="keyword">e</span>.f.<span class="keyword">g</span>.128/26 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d e<span class="class">.f</span><span class="class">.g</span>.<span class="number">128</span>/<span class="number">26</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> 172.16.8.0/23 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">23</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x2
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -<span class="keyword">d</span> 172.16.8.0/23 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -d <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">23</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">80</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x3
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">80</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x3
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">443</span> -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x3
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 443 -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> tcp -m tcp --dport <span class="number">443</span> -j RETURN
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x6
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> udp -m udp -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x6
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -p udp -<span class="keyword">m</span> udp -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -<span class="tag">p</span> udp -m udp -j RETURN
 
-<span class="label">$IPTABLES</span>&amp;nbsp; -t mangle -A PREROUTING -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x7
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -j MARK --set-<span class="tag">mark</span> <span class="number">0</span>x7
 
-<span class="label">$IPTABLES</span> -t mangle -A PREROUTING -j <span class="literal">RETURN</span>
+<span class="variable">$IPTABLES</span> -t mangle -A PREROUTING -j RETURN
 
-<span class="label">$IPTABLES</span> -t nat -A POSTROUTING -s 172.16.8.0/23 -o <span class="label">$INET_LINK</span> -j SNAT --to <span class="label">$INET_IP</span>
+<span class="variable">$IPTABLES</span> -t nat -A POSTROUTING -s <span class="number">172.16</span>.<span class="number">8.0</span>/<span class="number">23</span> -o <span class="variable">$INET_LINK</span> -j SNAT --to <span class="variable">$INET_IP</span>
 
-<span class="label">$IPTABLES</span> -t nat -A PREROUTING -i <span class="label">$LAN_LINK</span> -p tcp -<span class="keyword">m</span> <span class="keyword">mark</span> --<span class="keyword">mark</span> 0x3 -<span class="keyword">m</span> tcp --dport 80 -j REDIRECT --to-ports 3128
+<span class="variable">$IPTABLES</span> -t nat -A PREROUTING -<span class="tag">i</span> <span class="variable">$LAN_LINK</span> -<span class="tag">p</span> tcp -m <span class="tag">mark</span> --<span class="tag">mark</span> <span class="number">0</span>x3 -m tcp --dport <span class="number">80</span> -j REDIRECT --to-ports <span class="number">3128</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/07/13/w/iptables-e5-8c-b9-e9-85-8d-e5-a4-9a-e4-b8-aa-e6-ba-90ip-e5-9c-b0-e5-9d-80/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-07-06T06:23:15.000Z" class="post__time">七月 6, 2010</time><h1 class="post__title"><a href="/2010/07/06/w/e8-80-81-e6-97-a7-e7-b3-bb-e7-bb-9f-e8-af-b7-e8-b0-a8-e6-85-8e-e5-8d-87-e7-ba-a7gcc/">老旧系统请谨慎升级gcc</a></h1></header><div class="post__main"><p>一台centos 4.2系统，yum升级gcc时中途停止。发现postfix出错：</p>
 <pre><code>maildrop -v
 
@@ -167,7 +167,7 @@ See `config.<span class="command">log</span>&amp;<span class="comment">#39; for 
 
 configure:<span class="number">3188</span>: checking whether <span class="keyword">the</span> C compiler works
 
-configure:<span class="number">3210</span>: gcc&amp;nbsp;&amp;nbsp;&amp;nbsp; conftest.c&amp;nbsp; &amp;gt;&amp;amp;<span class="number">5</span>
+configure:<span class="number">3210</span>: gcc conftest.c <span class="number">5</span>
 
 /usr/lib/gcc/i386-redhat-linux/<span class="number">3.4</span><span class="number">.6</span>/libgcc_s.so: undefined <span class="keyword">reference</span> <span class="keyword">to</span> `__stack_chk_fail@GLIBC_2<span class="number">.4</span>&amp;<span class="comment">#39;</span>
 
@@ -191,12 +191,12 @@ yum update libgcc*
 
 <span class="constant">Jun </span><span class="number">24</span> <span class="number">10</span><span class="symbol">:</span><span class="number">13</span><span class="symbol">:</span><span class="number">17</span> svr162 mountd[<span class="number">15431</span>]<span class="symbol">:</span> authenticated mount request from <span class="number">10.168</span>.<span class="number">1.176</span><span class="symbol">:</span><span class="number">1020</span> <span class="keyword">for</span> /data/iscsi/webapp (<span class="regexp">/data/iscsi</span><span class="regexp">/webapp)</span>
 </code></pre><p>升级nfs server:</p>
-<p>yum update nfs-utils&nbsp; portmap</p>
+<p>yum update nfs-utils portmap</p>
 <pre><code>排除iptables防火墙、hosts.deny限制等原因，子网内所有服务器都有权限mount,
 
 showmount -e <span class="number">10</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">162</span>
 
-/data/iscsi/webapp&amp;nbsp; <span class="number">10</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">0</span>/<span class="number">24</span>
+/data/iscsi/webapp <span class="number">10</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">0</span>/<span class="number">24</span>
 
 考虑是否超出了nfs服务器支持的客户端数量上限。查资料nfs属于无状态服务，没有数量限制。试过多种方法，终于解决，只要mount
 
@@ -220,11 +220,11 @@ mount -a
 yum update yum<span class="keyword">*</span>
 </code></pre><p>yum update kernel*</p>
 <pre><code><span class="title">yum</span> update
-</code></pre><h1 id="centos_6">centos 6</h1><pre><code>rpm -<span class="constant">Uhv&amp;</span>nbsp; <span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.x86_64.rpm
+</code></pre><h1 id="centos_6">centos 6</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.x86_64.rpm
 
 rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.i686.rpm
 
-<span class="comment">#&amp;nbsp; Red Hat Enterprise Linux 5 / i386:</span>
+<span class="comment"># Red Hat Enterprise Linux 5 / i386:</span>
 
 rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el5.rf.i386.rpm
 </code></pre><h1 id="Red_Hat_Enterprise_Linux_5_/_x86_64:">Red Hat Enterprise Linux 5 / x86_64:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span><span class="regexp">/rpmforge-release-0.5.3-1.el5.rf.x86_64.rpm</span>
@@ -240,19 +240,19 @@ rpm -<span class="constant">Uvh </span><span class="symbol">http:</span>/<span c
 </code></pre><p>CentOS 中国科学技术大学 USTC mirror(每小时更新一次)</p>
 <pre><code>http:<span class="comment">//centos.ustc.edu.cn/</span>
 
-<span class="keyword">cd</span> /etc/yum.repos.<span class="literal">d</span>
+cd /etc/yum<span class="class">.repos</span><span class="class">.d</span>
 
-mv CentOS-Base.repo&amp;nbsp; CentOS-Base.repo.<span class="keyword">save</span>-`date +%F`
+mv CentOS-Base<span class="class">.repo</span> CentOS-Base<span class="class">.repo</span><span class="class">.save-</span>`date +%F`
 
 wget http:<span class="comment">//centos.ustc.edu.cn/CentOS-Base.repo.5</span>
 
-mv CentOS-Base.repo.5 CentOS-Base.repo
+mv CentOS-Base<span class="class">.repo</span>.<span class="number">5</span> CentOS-Base<span class="class">.repo</span>
 
-centos 4:
+centos <span class="number">4</span>:
 
-<span class="keyword">cd</span> /etc/yum.repos.<span class="literal">d</span>
+cd /etc/yum<span class="class">.repos</span><span class="class">.d</span>
 
-mv CentOS-Base.repo&amp;nbsp; CentOS-Base.repo.<span class="keyword">save</span>
+mv CentOS-Base<span class="class">.repo</span> CentOS-Base<span class="class">.repo</span><span class="class">.save</span>
 
 wget http:<span class="comment">//centos.ustc.edu.cn/CentOS-Base.repo</span>
 </code></pre><p>sohu开源镜像站</p>
@@ -277,7 +277,7 @@ yum makecache
 <p><a href="http://dag.wieers.com/rpm/FAQ.php#B4" target="_blank" rel="external">http://dag.wieers.com/rpm/FAQ.php#B4</a></p>
 <pre><code><span class="symbol">http:</span>/<span class="regexp">/dag.wieers.com/rpm</span><span class="regexp">/packages/rpmforge</span>-release/
 
-<span class="comment">#&amp;nbsp; Red Hat Enterprise Linux 5 / i386:</span>
+<span class="comment"># Red Hat Enterprise Linux 5 / i386:</span>
 </code></pre><p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm</a></p>
 <pre><code><span class="preprocessor"># Red Hat Enterprise Linux 5 / x86_64:</span>
 </code></pre><p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a></p>
@@ -287,5 +287,4 @@ yum makecache
 <p>yum remove *.i\?86</p>
 <p>要防止 32 位元组件在未来更新时被安装，请编辑你的 /etc/yum.conf 并加入以下一行：</p>
 <p>exclude = *.i?86</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2010/06/13/w/e5-9b-bd-e5-86-85-e7-9a-84centos-yum-e6-ba-90-e5-8f-8arpm-e4-bb-93-e5-ba-93/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/17/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/19/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2010/06/13/w/e5-9b-bd-e5-86-85-e7-9a-84centos-yum-e6-ba-90-e5-8f-8arpm-e4-bb-93-e5-ba-93/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/17/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/19/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

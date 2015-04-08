@@ -1,86 +1,85 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-05-24T09:12:01.000Z" class="post__time">五月 24, 2013</time><h1 class="post__title"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/">postfix反垃圾邮件设置</a></h1></header><div class="post__main"><p>增加防止发件人身份伪造的配置：</p>
 <h1 id="smtpd_related_config">smtpd related config</h1><pre><code><span class="constant">smtpd_recipient_restrictions</span> =
 
-&amp;nbsp; permit_mynetworks,
+ permit_mynetworks,
 
-&amp;nbsp; permit_sasl_authenticated,
+ permit_sasl_authenticated,
 
-<span class="comment">#&amp;nbsp; reject_non_fqdn_hostname,</span>
+<span class="comment"># reject_non_fqdn_hostname,</span>
 
-&amp;nbsp; reject_non_fqdn_sender,
+ reject_non_fqdn_sender,
 
-&amp;nbsp; reject_non_fqdn_recipient,
+ reject_non_fqdn_recipient,
 
-&amp;nbsp; reject_unauth_destination,
+ reject_unauth_destination,
 
-&amp;nbsp; reject_unauth_pipelining,
+ reject_unauth_pipelining,
 
-&amp;nbsp; reject_invalid_hostname
-</code></pre><p>&nbsp;</p>
-<p>smtpd_sender_restrictions =</p>
-<pre><code>&amp;nbsp; permit_mynetworks,
+ reject_invalid_hostname
+</code></pre><p>smtpd_sender_restrictions =</p>
+<pre><code>permit_mynetworks,
 
-&amp;nbsp; check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
+check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
 
-&amp;nbsp; permit_sasl_authenticated,
+permit_sasl_authenticated,
 
-&amp;nbsp; reject_sender_login_mismatch,
+reject_sender_login_mismatch,
 
-&amp;nbsp; reject_authenticated_sender_login_mismatch,
+reject_authenticated_sender_login_mismatch,
 
-&amp;nbsp; reject_unauthenticated_sender_login_mismatch,
+reject_unauthenticated_sender_login_mismatch,
 
-&amp;nbsp; reject_unknown_sender_domain
+reject_unknown_sender_domain
 </code></pre><h1 id="SMTP_AUTH_config_here">SMTP AUTH config here</h1><pre><code><span class="setting">broken_sasl_auth_clients = <span class="value"><span class="keyword">yes</span></span></span>
 
 <span class="setting">smtpd_sasl_auth_enable = <span class="value"><span class="keyword">yes</span></span></span>
 
 <span class="setting">smtpd_sasl_security_options = <span class="value">noanonymous</span></span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-03-07T01:41:05.000Z" class="post__time">三月 7, 2013</time><h1 class="post__title"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/">公共dns服务</a></h1></header><div class="post__main"><p>推荐opendns的dns服务器，最好选当地的dns服务。</p>
-<pre><code>openDNS
+<pre><code><span class="title">openDNS</span>
 
-208.67.220.220 
+<span class="number">208.67.220.220</span> 
 
-208.67.222.220
+<span class="number">208.67.222.220</span>
 
 微软DNS
 
-4.2.2.1 
+<span class="number">4.2.2.1</span> 
 
-4.2.2.2
+<span class="number">4.2.2.2</span>
 
 comodoDNS
 
-156.154.70.25&amp;nbsp; 
+<span class="number">156.154.70.25</span> 
 
-156.154.71.25
+<span class="number">156.154.71.25</span>
 
 谷歌DNS
 
-8.8.8.8&amp;nbsp; 
+<span class="number">8.8.8.8</span> 
 
-8.8.4.4
+<span class="number">8.8.4.4</span>
 
 诺顿DNS
 
-198.153.192.40(过滤不安全网页)
+<span class="number">198.153.192.40</span>(过滤不安全网页)
 
-198.153.194.40(同上)
+<span class="number">198.153.194.40</span>(同上)
 
-198.153.192.50(过滤不安全网页+色情)
+<span class="number">198.153.192.50</span>(过滤不安全网页+色情)
 
-198.153.194.50(同上)
+<span class="number">198.153.194.50</span>(同上)
 
-198.153.192.60(过滤不安全网页+色情+非家庭友好)
+<span class="number">198.153.192.60</span>(过滤不安全网页+色情+非家庭友好)
 
-198.153.194.60(同上)
+<span class="number">198.153.194.60</span>(同上)
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
-<pre><code>phpMyAdmin &amp;ndash; Error
+<pre><code>phpMyAdmin  Error
 
 Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
 </code></pre><p>502 bad gateway</p>
 <p>查看nginx error log：</p>
-<p>[error]&nbsp; recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: &quot;GET / HTTP/1.1&quot;, upstream: &quot;fastcgi://127.0.0.1:9000&quot;, host: &quot;mysql.veryi.com&quot;</p>
+<p>[error] recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: GET / HTTP/1.1, upstream: fastcgi://127.0.0.1:9000, host: mysql.veryi.com</p>
 <p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
 <p>其他可能：</p>
 <p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
@@ -108,21 +107,21 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　4.安装参数</p>
 <p>　　—force 即使覆盖属于其它包的文件也强迫安装</p>
 <p>　　—nodeps 如果该RPM包的安装依赖其它包，即使其它包没装，也强迫安装。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.查询一个包是否被安装</p>
-<p>　　# rpm -q &lt; rpm package name&gt;</p>
+<p> 5.查询一个包是否被安装</p>
+<p>　　# rpm -q  rpm package name</p>
 <p>　　6.得到被安装的包的信息</p>
-<p>　　# rpm -qi &lt; rpm package name&gt;</p>
+<p>　　# rpm -qi  rpm package name</p>
 <p>　　7.列出该包中有哪些文件</p>
-<p>　　# rpm -ql &lt; rpm package name&gt;</p>
+<p>　　# rpm -ql  rpm package name</p>
 <p>　　8.列出服务器上的一个文件属于哪一个RPM包</p>
 <p>　　#rpm -qf</p>
 <p>　　9.可综合好几个参数一起用</p>
-<p>　　# rpm -qil &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;</p>
+<p>　　# rpm -qil  rpm package name yum provides  rpm package name</p>
 <p>　　10.列出所有被安装的rpm package</p>
 <p>　　# rpm -qa</p>
 <p>　　11.列出一个未被安装进系统的RPM包文件中包含有哪些文件？</p>
-<p>　　# rpm -qilp &lt; rpm package name&gt;&nbsp; yum provides &lt; rpm package name&gt;&nbsp;</p>
-<p>　　&lt;&gt;</p>
+<p>　　# rpm -qilp  rpm package name yum provides  rpm package name</p>
+<p>　　</p>
 <p>　　一、安装</p>
 <p>　　命令格式：</p>
 <p>　　rpm -i ( or —install) options file1.rpm … fileN.rpm</p>
@@ -147,7 +146,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安</p>
 <p>　　装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
@@ -162,7 +161,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　—nodeps 不检查依赖性</p>
 <p>　　通用选项</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装</p>
 <p>　　程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
@@ -173,7 +172,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　file1.rpm … fileN.rpm 软件包的名字</p>
 <p>　　详细选项</p>
 <p>　　-h (or —hash) 安装时输出hash记号 (``#&#39;&#39;)</p>
-<p>　　—oldpackage 允许&quot;升级&quot;到一个老版本</p>
+<p>　　—oldpackage 允许升级到一个老版本</p>
 <p>　　—test 只进行升级测试</p>
 <p>　　—excludedocs 不安装软件包中的文档文件</p>
 <p>　　—includedocs 安装文档</p>
@@ -191,7 +190,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　四、查询</p>
@@ -221,7 +220,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　五、校验已安装的软件包</p>
@@ -241,7 +240,7 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　通用选项</p>
 <p>　　-v 显示附加信息</p>
 <p>　　-vv 显示调试信息</p>
-<p>　　—root 让RPM将指定的路径做为&quot;根目录&quot;，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
 <p>　　—rcfile 设置rpmrc文件为</p>
 <p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
 <p>　　六、校验软件包中的文件</p>
@@ -261,9 +260,9 @@ php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以�
 <p>　　—quiet 尽可能的减少输出</p>
 <p>　　—help 显示帮助文件</p>
 <p>　　—version 显示RPM的当前版本</p>
-</div><footer class="post__foot u-cf"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-13T10:44:02.000Z" class="post__time">十二月 13, 2012</time><h1 class="post__title"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/">取消sogou为默认浏览器设置</a></h1></header><div class="post__main"><p>&nbsp; 默认浏览器是firefox，装了sogou浏览器，默认浏览器被改成了sougou。试了几种常规方法都没改回来,改IE为默认也无效。查找注册表：</p>
+</div><footer class="post__foot u-cf"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-13T10:44:02.000Z" class="post__time">十二月 13, 2012</time><h1 class="post__title"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/">取消sogou为默认浏览器设置</a></h1></header><div class="post__main"><p> 默认浏览器是firefox，装了sogou浏览器，默认浏览器被改成了sougou。试了几种常规方法都没改回来,改IE为默认也无效。查找注册表：</p>
 <p>HKEY_CLASSES_ROOT\http\shell\se\command</p>
 <p>默认值修改为firefox的安装地址</p>
-<p>&quot;D:\Program Files\Mozilla Firefox\firefox.exe&quot; &quot;%1&quot;</p>
+<p>D:\Program Files\Mozilla Firefox\firefox.exe %1</p>
 <p>修改成功</p>
-</div><footer class="post__foot u-cf"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2012/12/13/w/e5-8f-96-e6-b6-88sogou-e4-b8-ba-e9-bb-98-e8-ae-a4-e6-b5-8f-e8-a7-88-e5-99-a8-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

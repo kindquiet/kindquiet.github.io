@@ -7,9 +7,9 @@ wget <span class="attribute">http</span>:<span class="comment">//forums.cacti.ne
 
 gzip -d ws_apachestats.pl.gz
 
-cp apache.apache ws_apachestats.pl &amp;lt;path_cacti&amp;gt;/scripts/
+cp apache.apache ws_apachestats.pl path_cacti/scripts/
 
-chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache.apache ws_apachestats.pl 
+chmod <span class="number">0755</span> path_cacti/scripts/apache.apache ws_apachestats.pl 
 
 下载 xml 文件
 
@@ -19,21 +19,21 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
 
 客户机配置
 
-&amp;lt;IfModule mod_status.c&amp;gt;
+IfModule mod_status.c
 
-&amp;lt;location /server-status&amp;gt;
+location /server-status
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetHandler server-status
+ SetHandler server-status
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Order Deny,Allow
+ Order Deny,Allow
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Deny from all
+ Deny from all
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">127.0</span>.<span class="number">0.1</span>
+ Allow from <span class="number">127.0</span>.<span class="number">0.1</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">192.168</span>.<span class="number">8.8</span>
+ Allow from <span class="number">192.168</span>.<span class="number">8.8</span>
 
-&amp;lt;/location&amp;gt;
+/location
 
 监控服务器(<span class="number">192.168</span>.<span class="number">8.8</span>)测试：
 
@@ -47,4 +47,4 @@ chmod <span class="number">0755</span> &amp;lt;path_cacti&amp;gt;/scripts/apache
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/07/29/w/linux-e6-9f-a5-e7-9c-8b-e4-b8-bb-e6-9d-bf-e5-9e-8b-e5-8f-b7-e5-8f-8a-e5-86-85-e5-ad-98-e7-a1-ac-e4-bb-b6-e4-bf-a1-e6-81-af/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

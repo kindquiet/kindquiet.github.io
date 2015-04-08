@@ -40,11 +40,11 @@ VSFTPd_<span class="built_in">log</span>_file=/path/to/logfile //指定VSFTPd �
 
 syslog_<span class="built_in">enable</span>=yes/no
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-16T07:46:13.000Z" class="post__time">三月 16, 2011</time><h1 class="post__title"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/">mysql 写入优化</a></h1></header><div class="post__main"><p>查看mysql slow_query_log日志发现有大量写入操作很慢</p>
-<pre><code>mysqldumpslow -s t -t 10 veryi-slow.log
+<pre><code>mysqldumpslow -s t -t <span class="number">10</span> veryi-slow.log
 
-Count: 11459&amp;nbsp; Time=11268628044.73s (129127208764609s)&amp;nbsp; <span class="operator"><span class="keyword">Lock</span>=<span class="number">0.00</span>s (<span class="number">0</span>s)&amp;nbsp;</span> Rows=0.0 (0), root[root]@localhost
+<span class="label">Count:</span> <span class="number">11459</span> Time=<span class="number">11268628044.73</span>s (<span class="number">129127208764609</span>s) Lock=<span class="number">0.00</span>s (<span class="number">0</span>s) Rows=<span class="number">0.0</span> (<span class="number">0</span>), root[root]@localhost
 
-&amp;nbsp; <span class="operator"><span class="keyword">UPDATE</span> <span class="string">`veryi`</span>.<span class="string">`article`</span> <span class="keyword">SET</span> <span class="string">`view_count`</span>=<span class="string">`view_count`</span>+N <span class="keyword">WHERE</span> <span class="string">`article_id`</span>=N
+ UPDATE <span class="escape">`v</span>eryi<span class="escape">`.</span><span class="escape">`a</span>rticle<span class="escape">` </span>SET <span class="escape">`v</span>iew_count<span class="escape">`=</span><span class="escape">`v</span>iew_count<span class="escape">`+</span>N WHERE <span class="escape">`a</span>rticle_id<span class="escape">`=</span>N
 
 my.cnf配置为
 
@@ -58,37 +58,37 @@ innodb_flush_method=O_DIRECT
 
 innodb_flush_log_at_trx_commit=<span class="number">0</span>
 
-后速度明显提高，写入操作从slow_query_log里面消失。</span>
+后速度明显提高，写入操作从slow_query_log里面消失。
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-15T08:41:53.000Z" class="post__time">三月 15, 2011</time><h1 class="post__title"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/">wordpress在nginx上固定链接</a></h1></header><div class="post__main"><p>Nginx服务器下如何设置才能使永久链接生效而不致报404页面找不到的错误。由于Nginx不支持Apache的.htaccess文件，要实现持久连接静态化，我们必须手工配置Nginx的文件,伪静态化配置的重写规则，假设wordpress放在w目录：</p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location /w/ {
+<pre><code> location /w/ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># enable search for precompressed files ending in .gz</span>
+ <span class="comment"># enable search for precompressed files ending in .gz</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># nginx needs to be complied using &amp;uml;C-with-http_gzip_static_module</span>
+ <span class="comment"># nginx needs to be complied using C-with-http_gzip_static_module</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
+ <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; gzip_static on;
+ gzip_static on;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># if the requested file exists, return it immediately</span>
+ <span class="comment"># if the requested file exists, return it immediately</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>) {
+ <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">break</span>;
+ <span class="keyword">break</span>;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment"># all other requests go to Wordpress</span>
+ <span class="comment"># all other requests go to Wordpress</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) {
+ <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite . /w/<span class="keyword">index</span>.php <span class="keyword">last</span>;
+ rewrite . /w/<span class="keyword">index</span>.php <span class="keyword">last</span>;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; include php.conf;
+ include php.conf;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
 后台管理的固定链接的设置：
 
@@ -96,41 +96,39 @@ innodb_flush_log_at_trx_commit=<span class="number">0</span>
 
 网上提供的以下配置不成功
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.html){
+ <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.html){
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.html <span class="keyword">break</span>;
+ rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.html <span class="keyword">break</span>;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.php){
+ <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.php){
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.php;
+ rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.php;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> (!-f <span class="variable">$request_filename</span>){
+ <span class="keyword">if</span> (!-f <span class="variable">$request_filename</span>){
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; rewrite (.*) /<span class="keyword">index</span>.php;
+ rewrite (.*) /<span class="keyword">index</span>.php;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; }
-
-&amp;nbsp;
+ }
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-24T07:47:14.000Z" class="post__time">一月 24, 2011</time><h1 class="post__title"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/">千兆网络必须使用六类线</a></h1></header><div class="post__main"><p>cisc3750 10/100/1000BaseTX自适应交换机，25号端口灯是绿色的</p>
 <pre><code>show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
 
 GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
 
-&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+ Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
 
-&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">100000</span> Kbit, DLY <span class="number">100</span> usec, 
+ MTU <span class="number">1500</span> bytes, BW <span class="number">100000</span> Kbit, DLY <span class="number">100</span> usec, 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">2</span>/<span class="number">255</span>, rxload <span class="number">100</span>/<span class="number">255</span>
+ reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">2</span>/<span class="number">255</span>, rxload <span class="number">100</span>/<span class="number">255</span>
 
-&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+ Encapsulation ARPA, loopback not <span class="keyword">set</span>
 
-&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+ Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
 
-&amp;nbsp; Full-duplex, <span class="number">100</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+ Full-duplex, <span class="number">100</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
 
 端口设置：
 
@@ -148,17 +146,17 @@ show <span class="keyword">int</span> g1/<span class="number">0</span>/<span cla
 
 GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
 
-&amp;nbsp; Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
+ Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
 
-&amp;nbsp; MTU <span class="number">1500</span> bytes, BW <span class="number">1000000</span> Kbit, DLY <span class="number">10</span> usec, 
+ MTU <span class="number">1500</span> bytes, BW <span class="number">1000000</span> Kbit, DLY <span class="number">10</span> usec, 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">1</span>/<span class="number">255</span>, rxload <span class="number">23</span>/<span class="number">255</span>
+ reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">1</span>/<span class="number">255</span>, rxload <span class="number">23</span>/<span class="number">255</span>
 
-&amp;nbsp; Encapsulation ARPA, loopback not <span class="keyword">set</span>
+ Encapsulation ARPA, loopback not <span class="keyword">set</span>
 
-&amp;nbsp; Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
+ Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
 
-&amp;nbsp; Full-duplex, <span class="number">1000</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
+ Full-duplex, <span class="number">1000</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
 
 已经变成千兆了。
 </code></pre><p>附：</p>
@@ -174,37 +172,37 @@ CAT-<span class="number">7</span> <span class="keyword">is</span> supposedly rat
 
 mls qos
 
-access-list <span class="number">2</span> permit <span class="keyword">any</span>
+access-list <span class="number">2</span> permit any
 
-#access-list <span class="number">2</span> permit <span class="number">0.0</span>.<span class="number">0.0</span> <span class="number">0.0</span>.<span class="number">0.0</span> <span class="comment">//限速不起作用</span>
+<span class="hexcolor">#acc</span>ess-list <span class="number">2</span> permit <span class="number">0.0</span>.<span class="number">0.0</span> <span class="number">0.0</span>.<span class="number">0.0</span> <span class="comment">//限速不起作用</span>
 
-<span class="keyword">class</span>-map match-all <span class="number">2</span>M-rate 
+class-map match-all <span class="number">2</span>M-rate 
 
-&amp;nbsp; match access-<span class="keyword">group</span> <span class="number">2</span> <span class="comment">//绑定访问列表2,将符合列表2的流归为2M-rate这个类里</span>
+ match access-group <span class="number">2</span> <span class="comment">//绑定访问列表2,将符合列表2的流归为2M-rate这个类里</span>
 
 ! 
 
-policy-map <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+policy-map <span class="number">2</span>M-rate 
 
-&amp;nbsp; <span class="keyword">class</span> <span class="number">2</span>M-rate&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+ class <span class="number">2</span>M-rate 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; police <span class="number">2000000</span> <span class="number">200000</span> exceed-action drop&amp;nbsp;&amp;nbsp; <span class="comment">//限速2M</span>
+ police <span class="number">2000000</span> <span class="number">200000</span> exceed-action drop <span class="comment">//限速2M</span>
 
-<span class="keyword">interface</span> GigabitEthernet1<span class="regexp">/0/</span><span class="number">9</span>&amp;nbsp; 
+interface GigabitEthernet1/<span class="number">0</span>/<span class="number">9</span> 
 
-<span class="keyword">description</span> &amp;quot;<span class="number">2</span>M-<span class="number">201100104</span>&amp;quot;&amp;nbsp; 
+description <span class="number">2</span>M-<span class="number">201100104</span> 
 
-service-policy input <span class="number">2</span>M-rate
+service-policy <span class="tag">input</span> <span class="number">2</span>M-rate
 
 查看：
 
 show policy-map 
 
-show <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+show int g1/<span class="number">0</span>/<span class="number">9</span>
 
-show run <span class="keyword">int</span> g1<span class="regexp">/0/</span><span class="number">9</span>
+show run int g1/<span class="number">0</span>/<span class="number">9</span>
 
 show run
 
 show conf
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

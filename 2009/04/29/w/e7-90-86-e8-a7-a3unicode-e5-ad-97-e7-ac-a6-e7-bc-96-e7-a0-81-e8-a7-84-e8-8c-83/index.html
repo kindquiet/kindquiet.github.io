@@ -2,28 +2,28 @@
 <p>　　先从ASCII说起。ASCII是用来表示英文字符的一种编码规范，每个ASCII字符占用1个字节（8bits）</p>
 <p>　　因此，ASCII编码可以表示的最大字符数是256，其实英文字符并没有那么多，一般只用前128个（最高位为0），其中包括了控制字符、数字、大小写字母和其他一些符号 </p>
 <p>。</p>
-<p>　　而最高位为1的另128个字符被成为&ldquo;扩展ASCII&rdquo;，一般用来存放英文的制表符、部分音标字符等等的一些其他符号，这种字符编码规范显然用 来处理英文没有什么问题。（实际上也可以用来处理法文、德文等一些其他的西欧字符，但是不能和英文通用），但是面对中文、阿拉伯文之类复杂的文字，255 个字符显然不够用</p>
-<p>　　于是，各个国家纷纷制定了自己的文字编码规范，其中中文的文字编码规范叫做&ldquo;GB2312-80&rdquo;，它是和ASCII兼容的一种编码规范，其实就是利用扩展ASCII没有真正标准化这一点，把一个中文字符用两个扩展ASCII字符来表示。</p>
-<p>　　但是这个方法有问题，最大的问题就是，中文文字没有真正属于自己的编码，因为扩展ASCII码虽然没有真正的标准化，但是PC里的ASCII码 还是有一个事实标准的（存放着英文制表符），所以很多软件利用这些符号来画表格。这样的软件用到中文系统中，这些表格符就会被误认作中文字，破坏版面。而 且，统计中英文混合字符串中的字数，也是比较复杂的，我们必须判断一个ASCII码是否扩展，以及它的下一个ASCII是否扩展，然后才&ldquo;猜&rdquo;那可能是一 个中文字 </p>
+<p>　　而最高位为1的另128个字符被成为扩展ASCII，一般用来存放英文的制表符、部分音标字符等等的一些其他符号，这种字符编码规范显然用 来处理英文没有什么问题。（实际上也可以用来处理法文、德文等一些其他的西欧字符，但是不能和英文通用），但是面对中文、阿拉伯文之类复杂的文字，255 个字符显然不够用</p>
+<p>　　于是，各个国家纷纷制定了自己的文字编码规范，其中中文的文字编码规范叫做GB2312-80，它是和ASCII兼容的一种编码规范，其实就是利用扩展ASCII没有真正标准化这一点，把一个中文字符用两个扩展ASCII字符来表示。</p>
+<p>　　但是这个方法有问题，最大的问题就是，中文文字没有真正属于自己的编码，因为扩展ASCII码虽然没有真正的标准化，但是PC里的ASCII码 还是有一个事实标准的（存放着英文制表符），所以很多软件利用这些符号来画表格。这样的软件用到中文系统中，这些表格符就会被误认作中文字，破坏版面。而 且，统计中英文混合字符串中的字数，也是比较复杂的，我们必须判断一个ASCII码是否扩展，以及它的下一个ASCII是否扩展，然后才猜那可能是一 个中文字 </p>
 <p>。</p>
-<p>　　总之当时处理中文是很痛苦的。而更痛苦的是GB2312是国家标准，台湾当时有一个Big5编码标准，很多编码和GB是相同的，所以&hellip;&hellip;，嘿嘿。</p>
-<p>　　这时候，我们就知道，要真正解决中文问题，不能从扩展ASCII的角度入手，也不能仅靠中国一家来解决。而必须有一个全新的编码系统，这个系统 要可以将中文、英文、法文、德文&hellip;&hellip;等等所有的文字统一起来考虑，为每个文字都分配一个单独的编码，这样才不会有上面那种现象出现。</p>
+<p>　　总之当时处理中文是很痛苦的。而更痛苦的是GB2312是国家标准，台湾当时有一个Big5编码标准，很多编码和GB是相同的，所以，嘿嘿。</p>
+<p>　　这时候，我们就知道，要真正解决中文问题，不能从扩展ASCII的角度入手，也不能仅靠中国一家来解决。而必须有一个全新的编码系统，这个系统 要可以将中文、英文、法文、德文等等所有的文字统一起来考虑，为每个文字都分配一个单独的编码，这样才不会有上面那种现象出现。</p>
 <p>　　于是，Unicode诞生了。</p>
 <p>　　Unicode有两套标准，一套叫UCS-2(Unicode-16)，用2个字节为字符编码，另一套叫UCS-4(Unicode-32)，用4个字节为字符编码。</p>
 <p>　　以目前常用的UCS-2为例，它可以表示的字符数为2^16=65535，基本上可以容纳所有的欧美字符和绝大部分的亚洲字符 </p>
 <p>。</p>
 <p>　　UTF-8的问题后面会提到 。</p>
-<p>　　在Unicode里，所有的字符被一视同仁。汉字不再使用&ldquo;两个扩展ASCII&rdquo;，而是使用&ldquo;1个Unicode&rdquo;，注意，现在的汉字是&ldquo;一个字符&rdquo;了，于是，拆字、统计字数这些问题也就自然而然的解决了 </p>
+<p>　　在Unicode里，所有的字符被一视同仁。汉字不再使用两个扩展ASCII，而是使用1个Unicode，注意，现在的汉字是一个字符了，于是，拆字、统计字数这些问题也就自然而然的解决了 </p>
 <p>。</p>
 <p>　　但是，这个世界不是理想的，不可能在一夜之间所有的系统都使用Unicode来处理字符，所以Unicode在诞生之日，就必须考虑一个严峻的问题：和ASCII字符集之间的不兼容问题。</p>
-<p>　　我们知道，ASCII字符是单个字节的，比如&ldquo;A&rdquo;的ASCII是65。而Unicode是双字节的，比如&ldquo;A&rdquo;的Unicode是0065，这就造成了一个非常大的问题：以前处理ASCII的那套机制不能被用来处理Unicode了 </p>
+<p>　　我们知道，ASCII字符是单个字节的，比如A的ASCII是65。而Unicode是双字节的，比如A的Unicode是0065，这就造成了一个非常大的问题：以前处理ASCII的那套机制不能被用来处理Unicode了 </p>
 <p>。</p>
 <p>　　另一个更加严重的问题是，C语言使用’\0’作为字符串结尾，而Unicode里恰恰有很多字符都有一个字节为0，这样一来，C语言的字符串函数将无法正常处理Unicode，除非把世界上所有用C写的程序以及他们所用的函数库全部换掉 </p>
 <p>。</p>
 <p>　　于是，比Unicode更伟大的东东诞生了，之所以说它更伟大是因为它让Unicode不再存在于纸上，而是真实的存在于我们大家的电脑中。那就是：UTF。</p>
 <p>　　UTF= UCS Transformation Format UCS转换格式，它是将Unicode编码规则和计算机的实际编码对应起来的一个规则。现在流行的UTF有2种：UTF-8和UTF-16 </p>
 <p>。</p>
-<p>　　其中UTF-16和上面提到的Unicode本身的编码规范是一致的，这里不多说了。而UTF-8不同，它定义了一种&ldquo;区间规则&rdquo;，这种规则可以和ASCII编码保持最大程度的兼容 </p>
+<p>　　其中UTF-16和上面提到的Unicode本身的编码规范是一致的，这里不多说了。而UTF-8不同，它定义了一种区间规则，这种规则可以和ASCII编码保持最大程度的兼容 </p>
 <p>。</p>
 <p>　　UTF-8有点类似于Haffman编码，它将Unicode编码为00000000-0000007F的字符，用单个字节来表示；</p>
 <p>　　　　00000080-000007FF的字符用两个字节表示</p>
@@ -42,7 +42,7 @@
 <p>　　谈谈Unicode编码，简要解释UCS、UTF、BMP、BOM等名词</p>
 <p>这是一篇程序员写给程序员的趣味读物。所谓趣味是指可以比较轻松地了解一些原来不清楚的概念，增进知识，类似于打RPG游戏的升级。整理这篇文章的动机是两个问题：</p>
 <p>　　问题一：</p>
-<p>使用Windows记事本的&ldquo;另存为&rdquo;，可以在GBK、Unicode、Unicode big </p>
+<p>使用Windows记事本的另存为，可以在GBK、Unicode、Unicode big </p>
 <p>endian和UTF-8这几种编码方式间相互转换。同样是txt文件，Windows是怎样识别编码方式的呢？</p>
 <p>　　我很早前就发现Unicode、Unicode big endian和UTF-8编码的txt文件的开头会多出几个字节，分别是FF、FE（Unicode）,FE、FF（Unicode big endian）,EF、BB、BF（UTF-8）。但这些标记是基于什么标准呢？</p>
 <p>　　问题二：</p>
@@ -50,9 +50,9 @@
 <p>查了查相关资料，总算将这些问题弄清楚了，顺带也了解了一些Unicode的细节。写成一篇文章，送给有过类似疑问的朋友。本文在写作时尽量做到通俗易懂，但要求读者知道什么是字节，什么是十六进制。</p>
 <p>　　0、big endian和little endian</p>
 <p>big endian和little </p>
-<p>endian是CPU处理多字节数的不同方式。例如&ldquo;汉&rdquo;字的Unicode编码是6C49。那么写到文件里时，究竟是将6C写在前面，还是将49写在前面？如果将6C写在前面，就是big endian。还是将49写在前面，就是little endian。</p>
-<p>　　&ldquo;endian&rdquo;这个词出自《格列佛游记》。小人国的内战就源于吃鸡蛋时是究竟从大头(Big-Endian)敲开还是从小头(Little-Endian)敲开，由此曾发生过六次叛乱，其中一个皇帝送了命，另一个丢了王位。</p>
-<p>　　我们一般将endian翻译成&ldquo;字节序&rdquo;，将big endian和little endian称作&ldquo;大尾&rdquo;和&ldquo;小尾&rdquo;。</p>
+<p>endian是CPU处理多字节数的不同方式。例如汉字的Unicode编码是6C49。那么写到文件里时，究竟是将6C写在前面，还是将49写在前面？如果将6C写在前面，就是big endian。还是将49写在前面，就是little endian。</p>
+<p>　　endian这个词出自《格列佛游记》。小人国的内战就源于吃鸡蛋时是究竟从大头(Big-Endian)敲开还是从小头(Little-Endian)敲开，由此曾发生过六次叛乱，其中一个皇帝送了命，另一个丢了王位。</p>
+<p>　　我们一般将endian翻译成字节序，将big endian和little endian称作大尾和小尾。</p>
 <p>　　1、字符编码、内码，顺带介绍汉字编码</p>
 <p>字符必须编码后才能被计算机处理。计算机使用的缺省编码方式就是计算机的内码。早期的计算机使用7位的ASCII编码，为了处理汉字，程序员设计了用于简体中文的GB2312和用于繁体中文的big5。</p>
 <p>　　GB2312(1980年)一共收录了7445个字符，包括6763个汉字和682个其它符号。汉字区的内码范围高字节从B0-F7，低字节从A1-FE，占用的码位是72*94=6768。其中有5个空位是D7FA-D7FE。</p>
@@ -65,9 +65,9 @@
 <p>　　在DBCS中，GB内码的存储格式始终是big endian，即高位在前。</p>
 <p>　　GB2312的两个字节的最高位都是1。但符合这个条件的码位只有128*128=16384个。所以GBK和GB18030的低字节最高位都 可能不是1。不过这不影响DBCS字符流的解析：在读取DBCS字符流时，只要遇到高位为1的字节，就可以将下两个字节作为一个双字节编码，而不用管低字 节的高位是什么。</p>
 <p>　　2、Unicode、UCS和UTF</p>
-<p>前面提到从ASCII、GB2312、GBK到GB18030的编码方法是向下兼容的。而Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如&ldquo;汉&rdquo;字的Unicode编码是6C49，而GB码是BABA。</p>
-<p>　　Unicode也是一种字符编码方法，不过它是由国际组织设计，可以容纳全世界所有语言文字的编码方案。Unicode的学名&quot;Universal </p>
-<p>Multiple-Octet Coded Character Set&quot;，简称为UCS。UCS可以看作是&quot;Unicode Character Set&quot;的缩写。</p>
+<p>前面提到从ASCII、GB2312、GBK到GB18030的编码方法是向下兼容的。而Unicode只与ASCII兼容（更准确地说，是与ISO-8859-1兼容），与GB码不兼容。例如汉字的Unicode编码是6C49，而GB码是BABA。</p>
+<p>　　Unicode也是一种字符编码方法，不过它是由国际组织设计，可以容纳全世界所有语言文字的编码方案。Unicode的学名Universal </p>
+<p>Multiple-Octet Coded Character Set，简称为UCS。UCS可以看作是Unicode Character Set的缩写。</p>
 <p>　　根据维基百科全书(<a href="http://zh.wikipedia.org/wiki/" target="_blank" rel="external">http://zh.wikipedia.org/wiki/</a>)的记载：历史上存在两个试图独立设计Unicode的组织，即国际标准化组织（ISO）和一个软件制造商的协会（unicode.org）。ISO开发了ISO </p>
 <p>10646项目，Unicode协会开发了Unicode项目。</p>
 <p>　　在1991年前后，双方都认识到世界不需要两个不兼容的字符集。于是它们开始合并双方的工作成果，并为创立一个单一编码表而协同工作。从Unicode2.0开始，Unicode项目采用了与ISO </p>
@@ -88,23 +88,22 @@
 <p>0000 - 007F 0xxxxxxx</p>
 <p>0080 - 07FF 110xxxxx 10xxxxxx</p>
 <p>0800 - FFFF 1110xxxx 10xxxxxx 10xxxxxx</p>
-<p>　　例如&ldquo;汉&rdquo;字的Unicode编码是6C49。6C49在0800-FFFF之间，所以肯定要用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将6C49写成二进制是：0110 110001 001001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。</p>
+<p>　　例如汉字的Unicode编码是6C49。6C49在0800-FFFF之间，所以肯定要用3字节模板了：1110xxxx 10xxxxxx 10xxxxxx。将6C49写成二进制是：0110 110001 001001， 用这个比特流依次代替模板中的x，得到：11100110 10110001 10001001，即E6 B1 89。</p>
 <p>　　读者可以用记事本测试一下我们的编码是否正确。</p>
 <p>　　UTF-16以16位为单元对UCS进行编码。对于小于0x10000的UCS码，UTF-16编码就等于UCS码对应的16位无符号整数。对 于不小于0x10000的UCS码，定义了一个算法。不过由于实际使用的UCS2，或者UCS4的BMP必然小于0x10000，所以就目前而言，可以认 为UTF-16和UCS-2基本相同。但UCS-2只是一个编码方案，UTF-16却要用于实际的传输，所以就不得不考虑字节序的问题。</p>
 <p>　　5、UTF的字节序和BOM</p>
-<p>UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，在解释一个 UTF-16文本前，首先要弄清楚每个编码单元的字节序。例如收到一个&ldquo;奎&rdquo;的Unicode编码是594E，&ldquo;乙&rdquo;的Unicode编码是4E59。如 果我们收到UTF-16字节流&ldquo;594E&rdquo;，那么这是&ldquo;奎&rdquo;还是&ldquo;乙&rdquo;？</p>
-<p>　　Unicode规范中推荐的标记字节顺序的方法是BOM。BOM不是&ldquo;Bill Of Material&rdquo;的BOM表，而是Byte Order Mark。BOM是一个有点小聪明的想法：</p>
-<p>　　在UCS编码中有一个叫做&quot;ZERO WIDTH NO-BREAK </p>
-<p>SPACE&quot;的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。UCS规范建议我们在传输字节流前，先传输字符&quot;ZERO </p>
-<p>WIDTH NO-BREAK SPACE&quot;。</p>
-<p>　　这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。因此字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;又被称作BOM。</p>
-<p>　　UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符&quot;ZERO WIDTH NO-BREAK SPACE&quot;的UTF-8编码是EF BB BF（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB </p>
+<p>UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，在解释一个 UTF-16文本前，首先要弄清楚每个编码单元的字节序。例如收到一个奎的Unicode编码是594E，乙的Unicode编码是4E59。如 果我们收到UTF-16字节流594E，那么这是奎还是乙？</p>
+<p>　　Unicode规范中推荐的标记字节顺序的方法是BOM。BOM不是Bill Of Material的BOM表，而是Byte Order Mark。BOM是一个有点小聪明的想法：</p>
+<p>　　在UCS编码中有一个叫做ZERO WIDTH NO-BREAK </p>
+<p>SPACE的字符，它的编码是FEFF。而FFFE在UCS中是不存在的字符，所以不应该出现在实际传输中。UCS规范建议我们在传输字节流前，先传输字符ZERO </p>
+<p>WIDTH NO-BREAK SPACE。</p>
+<p>　　这样如果接收者收到FEFF，就表明这个字节流是Big-Endian的；如果收到FFFE，就表明这个字节流是Little-Endian的。因此字符ZERO WIDTH NO-BREAK SPACE又被称作BOM。</p>
+<p>　　UTF-8不需要BOM来表明字节顺序，但可以用BOM来表明编码方式。字符ZERO WIDTH NO-BREAK SPACE的UTF-8编码是EF BB BF（读者可以用我们前面介绍的编码方法验证一下）。所以如果接收者收到以EF BB </p>
 <p>BF开头的字节流，就知道这是UTF-8编码了。</p>
 <p>　　Windows就是使用BOM来标记文本文件的编码方式的。</p>
 <p>　　6、进一步的参考资料</p>
-<p>本文主要参考的资料是 &quot;Short overview of ISO-IEC 10646 and Unicode&quot; </p>
+<p>本文主要参考的资料是 Short overview of ISO-IEC 10646 and Unicode </p>
 <p>(<a href="http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html" target="_blank" rel="external">http://www.nada.kth.se/i18n/ucs/unicode-iso10646-oview.html</a>)。</p>
-<p>&nbsp;</p>
 <p>原文出处：<a href="http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html" target="_blank" rel="external">http://hi.baidu.com/bluewater163/blog/item/1bee0cade73d8b0b4b36d68b.html</a></p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/" data-url="http://blog.veryi.com/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
@@ -113,4 +112,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e5-9c-a8-e5-ae-b6-e4-ba-ba-e8-83-bd-e8-ae-ba-e5-83-a7-e4-ba-8b-e5-90-97-ef-bc-9f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e5-9c-a8-e5-ae-b6-e4-ba-ba-e8-83-bd-e8-ae-ba-e5-83-a7-e4-ba-8b-e5-90-97-ef-bc-9f/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

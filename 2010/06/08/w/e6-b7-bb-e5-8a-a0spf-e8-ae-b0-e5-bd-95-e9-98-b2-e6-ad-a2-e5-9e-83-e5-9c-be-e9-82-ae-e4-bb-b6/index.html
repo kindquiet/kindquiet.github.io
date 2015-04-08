@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>添加spf记录防止垃圾邮件 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="添加spf记录防止垃圾邮件"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-06-08T01:39:54.000Z" class="post__time">六月 8, 2010</time><h1 class="post__title"><a href="/2010/06/08/w/e6-b7-bb-e5-8a-a0spf-e8-ae-b0-e5-bd-95-e9-98-b2-e6-ad-a2-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6/">添加spf记录防止垃圾邮件</a></h1></header><div class="post__main"><p>SPF的完整意思为 &quot;Sender Policy Framework&quot;。翻译过来就是发送方策略框架，是一项跟 DNS 相关的技术，它的内容写在 DNS 的 txt 类型记录里面，关于更详细的信息请参考 RFC4408: <a href="http://www.ietf.org/rfc/rfc4408.txt" target="_blank" rel="external">http://www.ietf.org/rfc/rfc4408.txt</a></p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>添加spf记录防止垃圾邮件 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="添加spf记录防止垃圾邮件"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-06-08T01:39:54.000Z" class="post__time">六月 8, 2010</time><h1 class="post__title"><a href="/2010/06/08/w/e6-b7-bb-e5-8a-a0spf-e8-ae-b0-e5-bd-95-e9-98-b2-e6-ad-a2-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6/">添加spf记录防止垃圾邮件</a></h1></header><div class="post__main"><p>SPF的完整意思为 Sender Policy Framework。翻译过来就是发送方策略框架，是一项跟 DNS 相关的技术，它的内容写在 DNS 的 txt 类型记录里面，关于更详细的信息请参考 RFC4408: <a href="http://www.ietf.org/rfc/rfc4408.txt" target="_blank" rel="external">http://www.ietf.org/rfc/rfc4408.txt</a></p>
 <pre><code>SPF 的原理是使用电子邮件的头部信息中的 &amp;#<span class="number">39</span>;Return Path&amp;#<span class="number">39</span>; 或 &amp;#<span class="number">39</span>;Mail From&amp;#<span class="number">39</span>; 这两个邮件头里的域名来结合真正提供这个邮件的服务商 DNS 里面的记录去验证发送邮件服务器是否是冒充行为。
 
 SPF 的官方网站是： <span class="string">http:</span><span class="comment">//www.openspf.org/</span>
@@ -11,33 +11,33 @@ SPF可以防止别人伪造你来发邮件，是一个反伪造性邮件的解�
 
 举例：dig -t txt veryi.com.
 
-&amp;quot;v=spf1 mx <span class="string">ip4:</span><span class="number">114.113</span><span class="number">.144</span><span class="number">.252</span> ~all&amp;quot;
+v=spf1 mx <span class="string">ip4:</span><span class="number">114.113</span><span class="number">.144</span><span class="number">.252</span> ~all
 
-v=spf1 &amp;nbsp;&amp;nbsp;&amp;nbsp; SPF 的版本。如果使用 Sender ID 的话，这个字段就应该是 v=spf2
+v=spf1  SPF 的版本。如果使用 Sender ID 的话，这个字段就应该是 v=spf2
 
-返回值 &amp;nbsp;&amp;nbsp;&amp;nbsp; 描述
+返回值  描述
 
-+ &amp;nbsp;&amp;nbsp;&amp;nbsp; 缺省值。在测试完成的时候表示通过。
++  缺省值。在测试完成的时候表示通过。
 
-- &amp;nbsp;&amp;nbsp;&amp;nbsp; 表示测试失败。这个值通常是 -all，表示没有其他任何匹配发生。
+-  表示测试失败。这个值通常是 -all，表示没有其他任何匹配发生。
 
-~ &amp;nbsp;&amp;nbsp;&amp;nbsp; 表示软失败，通常表示测试没有完成。
+~  表示软失败，通常表示测试没有完成。
 
-? &amp;nbsp;&amp;nbsp;&amp;nbsp; 表示不置可否。这个值也通常在测试没有完成的时候使用。
+?  表示不置可否。这个值也通常在测试没有完成的时候使用。
 
-include &amp;nbsp;&amp;nbsp;&amp;nbsp; 包含一个给定的域名的测试
+include  包含一个给定的域名的测试
 
 以 include:domain 的形式书写。
 
-all &amp;nbsp;&amp;nbsp;&amp;nbsp; 终止测试序列。
+all  终止测试序列。
 
-比如，如果选项是 -all，那么到达这条记录也就意味着测试失败了。但是如果无法确定，可以使用&amp;quot;?all&amp;quot;来表示，这样，测试将被接受。
+比如，如果选项是 -all，那么到达这条记录也就意味着测试失败了。但是如果无法确定，可以使用?all来表示，这样，测试将被接受。
 
-ip4 &amp;nbsp;&amp;nbsp;&amp;nbsp; 使用 IPv4 进行验证。
+ip4  使用 IPv4 进行验证。
 
 这个可以以 ip4:ipv4 或 <span class="string">ip4:</span>ipv4/cidr 的形式使用。建议使用这个参数，以减少域名服务器的负荷。
 
-mx &amp;nbsp;&amp;nbsp;&amp;nbsp; 使用 DNS MX RR 进行验证。
+mx  使用 DNS MX RR 进行验证。
 
 MX RR 定义了收信的 MTA，这可能和发信的 MTA 是不同的，这种情况基于 mx 的测试将会失败。
 
@@ -73,4 +73,4 @@ all 代表结束
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/05/19/w/centos-5-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8p2p-bittorrentbt-e4-b8-8b-e8-bd-bd-e5-b7-a5-e5-85-b7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/05/19/w/centos-5-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8p2p-bittorrentbt-e4-b8-8b-e8-bd-bd-e5-b7-a5-e5-85-b7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

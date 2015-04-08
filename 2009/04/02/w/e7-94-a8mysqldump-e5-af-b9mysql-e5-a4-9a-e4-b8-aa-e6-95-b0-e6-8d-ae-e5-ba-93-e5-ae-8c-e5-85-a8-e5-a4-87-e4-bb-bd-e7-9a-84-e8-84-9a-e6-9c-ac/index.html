@@ -1,45 +1,43 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>用mysqldump对mysql多个数据库完全备份的脚本 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="用mysqldump对mysql多个数据库完全备份的脚本"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。mysql文档中说明:除了二进制备份，你也应该周期性地用<strong>mysqldump</strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</p>
-<p>&nbsp;可以一周执行一次。</p>
-<p>&nbsp;crontab -e</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>用mysqldump对mysql多个数据库完全备份的脚本 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="用mysqldump对mysql多个数据库完全备份的脚本"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p> mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。mysql文档中说明:除了二进制备份，你也应该周期性地用<strong>mysqldump</strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</p>
+<p>可以一周执行一次。</p>
+<p>crontab -e</p>
 <p>0 2 <em> </em> 5 /home/work/mysqlflbk.sh</p>
-<p>&nbsp;</p>
-<p>&nbsp;#!/bin/sh</p>
-<h1 id="writed_by_dayu@veryi-com">writed by dayu@veryi.com</h1><p>#</p>
-<p>&nbsp;export PATH=/bin:/usr/bin</p>
+<h1 id="!/bin/sh">!/bin/sh</h1><h1 id="writed_by_dayu@veryi-com">writed by dayu@veryi.com</h1><p>#</p>
+<p>export PATH=/bin:/usr/bin</p>
 <p>Dbamail=dayu@veryi.com</p>
 <p>Dbhostname=<code>hostname</code></p>
 <p>Interval=14</p>
-<p>website=&quot;newblog.cersp.com&quot;</p>
+<p>website=newblog.cersp.com</p>
 <p>DATE=<code>date +%Y%m%d</code></p>
 <p>DbUser=root</p>
 <p>DbPasswd=pass</p>
 <p>BackupPath=/opt/backup</p>
 <p>LogFile=/var/log/mysql/mysqld.log</p>
 <p>DbPath=/usr/local/mysql/data</p>
-<p>DbName=<code>mysql -uroot -pnew_pass -e &amp;quot;show databases;&amp;quot; |grep -v \+|grep -v Database</code></p>
+<p>DbName=<code>mysql -uroot -pnew_pass -e show databases; |grep -v \+|grep -v Database</code></p>
 <p>[ -d /var/log/mysql ] || ( mkdir -p /var/log/mysql ;chmod 777 /tmp/logs )</p>
 <p>[ -d /opt/backup ] || mkdir -p /opt/backup</p>
-<p>echo &quot;—————————————————————-&quot; &gt; $LogFile</p>
-<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
-<p>echo &quot;—————————————&quot; &gt;&gt; $LogFile</p>
+<p>echo —————————————————————-  $LogFile</p>
+<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
+<p>echo —————————————  $LogFile</p>
 <p>cd /opt/backup</p>
 <p>for a in $DbName</p>
 <p>do</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /usr/local/mysql/bin/mysqldump -u$DbUser -p$DbPasswd \</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; —default-character-set=utf8 —opt \</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $a &gt; $a.$DATE.sql \</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&amp; echo &quot;$a successful backup&quot; &gt;&gt; $LogFile \</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || echo &quot;$a bakup failed&quot; | mail -s &quot;$Dbhostname db bakup failed.&quot; $Dbamail</p>
+<p> /usr/local/mysql/bin/mysqldump -u$DbUser -p$DbPasswd \</p>
+<p> —default-character-set=utf8 —opt \</p>
+<p> $a  $a.$DATE.sql \</p>
+<p>  echo $a successful backup  $LogFile \</p>
+<p> || echo $a bakup failed | mail -s $Dbhostname db bakup failed. $Dbamail</p>
 <p>done</p>
-<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
+<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
 <p>for a in $DbName</p>
 <p>do</p>
-<p>&nbsp;&nbsp;&nbsp; bzip2 $a.$DATE.sql</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; find . -name &quot;$a.*.bz2&quot; -type f -mtime +$Interval -exec rm -f {} \;</p>
+<p> bzip2 $a.$DATE.sql</p>
+<p> find . -name $a.*.bz2 -type f -mtime +$Interval -exec rm -f {} \;</p>
 <p>done</p>
-<p>echo $(date +&quot;%y-%m-%d %H:%M:%S&quot;) &gt;&gt; $LogFile</p>
+<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
 <p>mysqldump 的一些主要参数说明：</p>
-<p>&nbsp;—compatible=name</p>
+<p>—compatible=name</p>
 <p>导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号隔开。</p>
 <p>—complete-insert，-c</p>
 <p>导出的数据采用包含字段名的完整 INSERT 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数。</p>
@@ -57,7 +55,7 @@
 <p>它和 —lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 —single-transaction 选项。</p>
 <p>—no-create-info，-t</p>
 <p>只导出数据，而不添加 CREATE TABLE 语句。</p>
-<p>&nbsp;—no-data，-d</p>
+<p>—no-data，-d</p>
 <p>不导出任何数据，只导出数据库表结构。</p>
 <p>—opt</p>
 <p>这只是一个快捷选项，等同于同时添加 —add-drop-tables —add-locking —create-option —disable-keys —extended-insert —lock-tables —quick —set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 —skip-opt 禁用。注意，如果运行 mysqldump 没有指定 —quick 或 —opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</p>
@@ -78,4 +76,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/01/w/e4-b8-8d-e5-8f-af-e5-bd-93-e9-9d-a2-e5-a4-b8-e5-a6-bb-e5-ad-90-e5-a4-b8-e4-bc-9a-e5-ae-a0-e8-b5-b7-e5-a8-87-e6-b0-94/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/01/w/e4-b8-8d-e5-8f-af-e5-bd-93-e9-9d-a2-e5-a4-b8-e5-a6-bb-e5-ad-90-e5-a4-b8-e4-bc-9a-e5-ae-a0-e8-b5-b7-e5-a8-87-e6-b0-94/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

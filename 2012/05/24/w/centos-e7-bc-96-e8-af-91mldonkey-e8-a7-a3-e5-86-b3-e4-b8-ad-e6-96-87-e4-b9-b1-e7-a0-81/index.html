@@ -1,15 +1,15 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos编译mldonkey解决中文乱码 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos编译mldonkey解决中文乱码"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-05-24T10:53:18.000Z" class="post__time">五月 24, 2012</time><h1 class="post__title"><a href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/">centos编译mldonkey解决中文乱码</a></h1></header><div class="post__main"><p>mldonkey可能是最好最稳定的p2p下载软件了，除了支持eD2k和Overnet两种网络外还可以支持BT,DC,Gnutella,Fasttrack,Kad等多种流行的P2P应用网络。编译好的mldonkey-3.1.0.static.i386-Linux_glibc-2.7.tar.bz2汉字文件名乱码。下载mldonkey-3.1.2.tar.bz2源代码编译解决：</p>
-<pre><code>tar xfj mldonkey-<span class="number">3.1</span>.<span class="number">2</span>.tar.bz2 -C /usr/<span class="built_in">local</span>/src/
+<pre><code>tar xfj mldonkey-<span class="number">3.1</span>.<span class="number">2</span><span class="class">.tar</span><span class="class">.bz2</span> -C /usr/local/src/
 
-<span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src/mldonkey-<span class="number">3.1</span>.<span class="number">2</span>/
+cd /usr/local/src/mldonkey-<span class="number">3.1</span>.<span class="number">2</span>/
 
-<span class="built_in">export</span> LANG=zh_CN.UTF-<span class="number">8</span>
+export LANG=zh_CN<span class="class">.UTF-8</span>
 
-<span class="built_in">export</span> LC_ALL=zh_CN.UTF-<span class="number">8</span>
+export LC_ALL=zh_CN<span class="class">.UTF-8</span>
 
 ./configure
 
-gmake &amp;amp;&amp;amp; make install
+gmake  make install
 </code></pre><p>启动脚本</p>
 <pre><code>cat mldonkey.sh 
 
@@ -27,27 +27,27 @@ export <span class="constant">LC_ALL</span>=zh_CN.<span class="constant">UTF</sp
 
 <span class="constant">KILL_OPT</span>=-<span class="number">9</span>
 
-command=&amp;quot;<span class="regexp">/usr/local</span><span class="regexp">/bin/mlnet</span>&amp;quot;
+command=<span class="regexp">/usr/local</span><span class="regexp">/bin/mlnet</span>
 
 stop_service()
 
 {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; pid_of_mlnet=<span class="string">`pidof mlnet`</span>
+ pid_of_mlnet=<span class="string">`pidof mlnet`</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="variable">$KILL</span> <span class="variable">$KILL_OPT</span>&amp;nbsp; <span class="variable">$pid_of_mlnet</span>
+ <span class="variable">$KILL</span> <span class="variable">$KILL_OPT</span> <span class="variable">$pid_of_mlnet</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; pid_of_mlnet=<span class="string">`pidof mlnet`</span>
+ pid_of_mlnet=<span class="string">`pidof mlnet`</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">if</span> [ <span class="variable">$pid_of_mlnet</span> ]; <span class="keyword">then</span>
+ <span class="keyword">if</span> [ <span class="variable">$pid_of_mlnet</span> ]; <span class="keyword">then</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo &amp;quot;unable to stop mlnet.try <span class="keyword">do</span> it mannually.&amp;quot;
+ echo unable to stop mlnet.try <span class="keyword">do</span> it mannually.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">else</span>
+ <span class="keyword">else</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo <span class="constant">DONE</span>
+ echo <span class="constant">DONE</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; fi
+ fi
 
 }
 
@@ -55,7 +55,7 @@ start_service()
 
 {
 
-&amp;nbsp; <span class="variable">${</span>command} &amp;amp;
+ <span class="variable">${</span>command} 
 
 }
 
@@ -63,33 +63,31 @@ start_service()
 
 &amp;<span class="comment">#39;start&amp;#39;)</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; start_service
+ start_service
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ ;;
 
 &amp;<span class="comment">#39;stop&amp;#39;)</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; stop_service
+ stop_service
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ ;;
 
 &amp;<span class="comment">#39;restart&amp;#39;)</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; stop_service
+ stop_service
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; start_service
+ start_service
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ ;;
 
 *)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; echo &amp;quot;<span class="variable">$0</span><span class="symbol">:&amp;nbsp</span>; <span class="symbol">usage:</span>&amp;nbsp; <span class="variable">$0</span> {start|stop|restart}&amp;quot;
+ echo <span class="variable">$0</span><span class="symbol">:</span> <span class="symbol">usage:</span> <span class="variable">$0</span> {start|stop|restart}
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ ;;
 
 esac
-
-&amp;nbsp;
 </code></pre><p>以上在centos linux中测试通过。</p>
 </div><footer class="post__foot u-cf"><a href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/" data-url="http://blog.veryi.com/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
@@ -98,4 +96,4 @@ esac
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2012/05/24/w/postfix-e4-bd-bf-e7-94-a8dnsbl-e5-92-8c-e9-bb-91-e5-90-8d-e5-8d-95-e7-99-bd-e5-90-8d-e5-8d-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

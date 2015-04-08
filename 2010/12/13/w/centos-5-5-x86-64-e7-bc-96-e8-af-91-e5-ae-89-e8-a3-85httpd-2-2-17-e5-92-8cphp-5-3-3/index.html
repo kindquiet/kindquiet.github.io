@@ -15,17 +15,17 @@ cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-
 
 make clean
 
-CHOST=&amp;quot;x86_64-pc-linux-gnu&amp;quot;
+CHOST=x86_64-pc-linux-gnu
 
-CFLAGS=&amp;quot;-march=native -O2 -pipe -fomit-frame-pointer&amp;quot;
+CFLAGS=-march=native -O2 -pipe -fomit-frame-pointer
 
-CXXFLAGS=&amp;quot;${CFLAGS}&amp;quot;
+CXXFLAGS=${CFLAGS}
 
 .<span class="regexp">/configure --prefix=/</span>usr<span class="regexp">/local/</span>httpd \
 
 --with-mpm=worker \
 
---enable-expires --enable-headers --enable-rewrite&amp;nbsp; --enable-deflate --enable-vhost-alias \
+--enable-expires --enable-headers --enable-rewrite --enable-deflate --enable-vhost-alias \
 
 --enable-so \
 
@@ -37,7 +37,7 @@ CXXFLAGS=&amp;quot;${CFLAGS}&amp;quot;
 
 对于<span class="number">32</span>位系统：
 
-CHOST=&amp;quot;i686-pc-linux-gnu&amp;quot; 
+CHOST=i686-pc-linux-gnu 
 
 相对来说，prefork方式速度要稍高于worker，然而它需要的cpu和memory资源也稍多于woker。
 
@@ -113,17 +113,17 @@ chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/ht
 
 chkconfig --level <span class="number">345</span> httpd on 
 
-sed -i &amp;#<span class="number">39</span>;<span class="regexp">/&amp;lt;IfModule mime_module&amp;gt;/</span>a\&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php .php\
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/IfModule mime_module/</span>a\ AddType application/x-httpd-php .php\
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; AddType application/x-httpd-php-source .phps&amp;#<span class="number">39</span>; \
+ AddType application/x-httpd-php-source .phps&amp;#<span class="number">39</span>; \
 
 <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; 
 
-sed -i -e &amp;#<span class="number">39</span>;s<span class="regexp">/User daemon/</span>User vuser<span class="regexp">/&amp;#39; -e &amp;#39;s/</span>Group daemon<span class="regexp">/Group vgroup/</span>&amp;#<span class="number">39</span>;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
 
-vim&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+sed -i -e &amp;#<span class="number">39</span>;s<span class="regexp">/User daemon/</span>User vuser<span class="regexp">/&amp;#39; -e &amp;#39;s/</span>Group daemon<span class="regexp">/Group vgroup/</span>&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+vim <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
 
 <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl graceful
 
@@ -145,7 +145,7 @@ yum install gmp-devel -y
 
 yum install libmcrypt-devel -y
 
-yum install&amp;nbsp; libtool-ltdl-devel -y
+yum install libtool-ltdl-devel -y
 
 yum install libevent-devel -y
 
@@ -177,7 +177,7 @@ export PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>l
 
 make clean
 
-.<span class="regexp">/configure --with-apxs2=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf --prefix=<span class="regexp">/usr/</span>local<span class="regexp">/php --with-mysqli=/</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_config --with-mysql=<span class="regexp">/usr/</span>local/mysql&amp;nbsp; --with-curl --with-zlib --enable-ftp&amp;nbsp; --with-mcrypt --enable-inline-optimization --disable-debug \
+.<span class="regexp">/configure --with-apxs2=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf --prefix=<span class="regexp">/usr/</span>local<span class="regexp">/php --with-mysqli=/</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_config --with-mysql=<span class="regexp">/usr/</span>local/mysql --with-curl --with-zlib --enable-ftp --with-mcrypt --enable-inline-optimization --disable-debug \
 
 --with-gd --enable-gd-native-ttf --enable-gd-jis-conv --with-iconv-dir= --with-freetype-dir --with-jpeg-dir --with-png-dir \
 
@@ -187,7 +187,7 @@ make clean
 
 --enable-sqlite-utf8 
 
-make -j6 &amp;amp;&amp;amp; make install
+make -j6  make install
 
 Wrote PEAR system config file <span class="string">at:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>etc/pear.conf
 
@@ -207,9 +207,9 @@ cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcac
 
 .<span class="regexp">/configure --with-php-config=/</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php-config --with-apxs=<span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apxs --enable-memcache
 
-make &amp;amp;&amp;amp; make install
+make  make install
 
-提示：Installing shared <span class="string">extensions:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>
+提示：Installing shared <span class="string">extensions:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>
 
 sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
 
@@ -219,11 +219,11 @@ extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span
 
 把
 
-extension_dir = &amp;quot;./&amp;quot;
+extension_dir = ./
 
 修改为
 
-extension_dir = &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/php/</span><span class="regexp">/lib/</span>php<span class="regexp">/extensions/</span>no-debug-non-zts-<span class="number">20060613</span>&amp;quot;
+extension_dir = <span class="regexp">/usr/</span>local<span class="regexp">/php/</span><span class="regexp">/lib/</span>php<span class="regexp">/extensions/</span>no-debug-non-zts-<span class="number">20060613</span>
 
 并添加一行
 
@@ -232,8 +232,6 @@ extension=memcache.so
 sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
 
 extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20060613/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
-
-&amp;nbsp;
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/" data-url="http://blog.veryi.com/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -241,4 +239,4 @@ extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/01/05/w/cisco-catalyst-3750-series-e4-ba-a4-e6-8d-a2-e6-9c-ba-e7-ab-af-e5-8f-a3-e9-99-90-e9-80-9f/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

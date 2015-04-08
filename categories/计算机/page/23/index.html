@@ -1,25 +1,25 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-07-10T07:14:08.000Z" class="post__time">七月 10, 2009</time><h1 class="post__title"><a href="/2009/07/10/w/e7-a6-81-e6-ad-a2wordpress-e8-87-aa-e5-8a-a8-e6-9b-bf-e6-8d-a2-e5-8d-8a-e8-a7-92-e6-a0-87-e7-82-b9-e7-ac-a6-e5-8f-b7/">禁止WordPress自动替换半角标点符号</a></h1></header><div class="post__main"><p>WordPress会将半角标点符号自动转换成全角的，但并没有替换数据库里的信息，这样会导致一些技术文章的代码粘贴后出错，防盗版？解决方法:</p>
 <p>1、 编辑 wp-includes/formatting.php 文件，找到以下代码：</p>
-<p>&nbsp;&nbsp;&nbsp; // static strings</p>
-<p>&nbsp;&nbsp;&nbsp; $curl = str_replace($static_characters, $static_replacements, $curl);</p>
-<p>&nbsp;&nbsp;&nbsp; // regular expressions</p>
-<p>&nbsp;&nbsp;&nbsp; $curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
+<p> // static strings</p>
+<p> $curl = str_replace($static_characters, $static_replacements, $curl);</p>
+<p> // regular expressions</p>
+<p> $curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
 <p>正是 str_replace() 和 preg_replace() 两个函数在作怪。</p>
 <p>2、 将相应语句注释，禁用自动替换功能：</p>
-<p>&nbsp;&nbsp;&nbsp; // static strings</p>
-<p>&nbsp;&nbsp;&nbsp; //$curl = str_replace($static_characters, $static_replacements, $curl);</p>
-<p>&nbsp;&nbsp;&nbsp; // regular expressions</p>
-<p>&nbsp;&nbsp;&nbsp; //$curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
+<p> // static strings</p>
+<p> //$curl = str_replace($static_characters, $static_replacements, $curl);</p>
+<p> // regular expressions</p>
+<p> //$curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
 <p>OK，以后Wordpress在也不会自作聪明的将半角标点符号转换成全角标点符号了。</p>
 <p>来源:</p>
 <p><a href="http://buyu.name/074.html" target="_blank" rel="external">http://buyu.name/074.html</a></p>
 </div><footer class="post__foot u-cf"><a href="/2009/07/10/w/e7-a6-81-e6-ad-a2wordpress-e8-87-aa-e5-8a-a8-e6-9b-bf-e6-8d-a2-e5-8d-8a-e8-a7-92-e6-a0-87-e7-82-b9-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-06-30T08:39:01.000Z" class="post__time">六月 30, 2009</time><h1 class="post__title"><a href="/2009/06/30/w/mysql-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e4-b8-8d-e6-88-90-e5-8a-9f-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">mysql 主从复制不成功的可能原因</a></h1></header><div class="post__main"><p>环境:centos 5</p>
 <p>mysql 5主从复制报错:</p>
-<p>[ERROR] Slave SQL: Error ‘Duplicate entry ‘…’ for key ‘PRIMARY’’ on query. Default database: ‘blog’. Query: ‘insert into tb_article_peak(…)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; values(…’)’, Error_code: 1062</p>
+<p>[ERROR] Slave SQL: Error ‘Duplicate entry ‘…’ for key ‘PRIMARY’’ on query. Default database: ‘blog’. Query: ‘insert into tb_article_peak(…) values(…’)’, Error_code: 1062</p>
 <p>stop slave;</p>
 <p>desc tb_article_peak;</p>
-<p>select * from tb_article_peak where peak_id&gt;=’…’;</p>
-<p>delete tb_article_peak where peak_id&gt;=’…’;</p>
+<p>select * from tb_article_peak where peak_id=’…’;</p>
+<p>delete tb_article_peak where peak_id=’…’;</p>
 <p>start slave;</p>
 <p>复制恢复正常。</p>
 <p>过一段时间又报错，间隔从几小时到几天不等。</p>
@@ -33,58 +33,56 @@
 
 <span class="http"><span class="attribute">Server</span>: <span class="string">squid/3.0.STABLE15</span>
 
-<span class="elixir"><span class="constant">HTTP I/O</span>
+<span class="erlang"><span class="variable">HTTP</span> <span class="variable">I</span>/<span class="variable">O</span>
 
-number of <span class="symbol">reads:</span> <span class="number">18985956</span>
+number <span class="keyword">of</span> reads: <span class="number">18985956</span>
 
-<span class="constant">Read Histogram:</span>
+<span class="variable">Read</span> <span class="variable">Histogram</span>:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">1</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">766</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">1</span>- <span class="number">1</span>: <span class="number">766</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">38574</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">2</span>- <span class="number">2</span>: <span class="number">38574</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">3</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9769</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">3</span>- <span class="number">4</span>: <span class="number">9769</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">5</span>-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">8</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">30168</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">5</span>- <span class="number">8</span>: <span class="number">30168</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">9</span>-&amp;nbsp;&amp;nbsp; <span class="number">16</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">10200</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">9</span>- <span class="number">16</span>: <span class="number">10200</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp; <span class="number">17</span>-&amp;nbsp;&amp;nbsp; <span class="number">32</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">31835</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">17</span>- <span class="number">32</span>: <span class="number">31835</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp; <span class="number">33</span>-&amp;nbsp;&amp;nbsp; <span class="number">64</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">32801</span>&amp;nbsp; <span class="number">0</span>%
+ <span class="number">33</span>- <span class="number">64</span>: <span class="number">32801</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;&amp;nbsp; <span class="number">65</span>-&amp;nbsp; <span class="number">128</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">113799</span>&amp;nbsp; <span class="number">1</span>%
+ <span class="number">65</span>- <span class="number">128</span>: <span class="number">113799</span> <span class="number">1</span><span class="comment">%</span>
 
-&amp;nbsp; <span class="number">129</span>-&amp;nbsp; <span class="number">256</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp; <span class="number">457726</span>&amp;nbsp; <span class="number">2</span>%
+ <span class="number">129</span>- <span class="number">256</span>: <span class="number">457726</span> <span class="number">2</span><span class="comment">%</span>
 
-&amp;nbsp; <span class="number">257</span>-&amp;nbsp; <span class="number">512</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">1161065</span>&amp;nbsp; <span class="number">6</span>%
+ <span class="number">257</span>- <span class="number">512</span>: <span class="number">1161065</span> <span class="number">6</span><span class="comment">%</span>
 
-&amp;nbsp; <span class="number">513</span>- <span class="number">1024</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">2114155</span> <span class="number">11</span>%
+ <span class="number">513</span>- <span class="number">1024</span>: <span class="number">2114155</span> <span class="number">11</span><span class="comment">%</span>
 
-&amp;nbsp;<span class="number">1025</span>- <span class="number">2048</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp; <span class="number">4009525</span> <span class="number">21</span>%
+<span class="number">1025</span>- <span class="number">2048</span>: <span class="number">4009525</span> <span class="number">21</span><span class="comment">%</span>
 
-&amp;nbsp;<span class="number">2049</span>- <span class="number">4096</span><span class="symbol">:&amp;nbsp</span>; <span class="number">10975545</span> <span class="number">58</span>%
+<span class="number">2049</span>- <span class="number">4096</span>: <span class="number">10975545</span> <span class="number">58</span><span class="comment">%</span>
 
-&amp;nbsp;<span class="number">4097</span>- <span class="number">8192</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">26</span>&amp;nbsp; <span class="number">0</span>%
+<span class="number">4097</span>- <span class="number">8192</span>: <span class="number">26</span> <span class="number">0</span><span class="comment">%</span>
 
-&amp;nbsp;<span class="number">8193</span>-<span class="number">16384</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">2</span>&amp;nbsp; <span class="number">0</span>%
+<span class="number">8193</span>-<span class="number">16384</span>: <span class="number">2</span> <span class="number">0</span><span class="comment">%</span>
 
-<span class="number">16385</span>-<span class="number">32768</span><span class="symbol">:&amp;nbsp</span>;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>&amp;nbsp; <span class="number">0</span>%
+<span class="number">16385</span>-<span class="number">32768</span>: <span class="number">0</span> <span class="number">0</span><span class="comment">%</span>
 
 vim squid.conf
 
-minimum_object_size <span class="number">64</span> <span class="constant">KB</span>
+minimum_object_size <span class="number">64</span> <span class="variable">KB</span>
 
-maximum_object_size <span class="number">8192</span> <span class="constant">KB</span>
+maximum_object_size <span class="number">8192</span> <span class="variable">KB</span>
 
-maximum_object_size_in_memory <span class="number">4096</span> <span class="constant">KB</span></span></span>
-</code></pre><p>&nbsp;</p>
-<p>/usr/local/squid/sbin/squid -k reconfigure</p>
+maximum_object_size_in_memory <span class="number">4096</span> <span class="variable">KB</span></span></span>
+</code></pre><p>/usr/local/squid/sbin/squid -k reconfigure</p>
 </div><footer class="post__foot u-cf"><a href="/2009/06/25/w/squid-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-06-16T06:02:57.000Z" class="post__time">六月 16, 2009</time><h1 class="post__title"><a href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">squid iptables 透明代理 QQ、msn不能登录解决办法</a></h1></header><div class="post__main"><p>linux服务器:centos</p>
-<p>&nbsp;</p>
 <p>squid3</p>
 <p>squid日志:</p>
-<p>&nbsp;&quot;NONE error:unsupported-request-method HTTP/0.0&quot; 400 1817 NONE:NONE，</p>
+<p>NONE error:unsupported-request-method HTTP/0.0 400 1817 NONE:NONE，</p>
 <p>原来qq使用了80端口但使用的非http标准协议。</p>
 <p>公司允许使用qq、msn，</p>
 <p>只好打开udp 8000端口:</p>
@@ -92,27 +90,27 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>squid透明代理https以后，msn(live messager)不能登录，报错:</p>
 <p>MSN登录报错80048820 </p>
 <p>只好取消REDIRECT，打开443端口:</p>
-<p>&nbsp;-A FORWARD -m state —state NEW -m tcp -p tcp -s 192.168.6.0/23 —dport 443 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A FORWARD -m state —state NEW -m tcp -p tcp -s 192.168.6.0/23 —dport 443 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
 <p>附:squid日志状态说明</p>
 <p>TCP_HIT</p>
 <p>A valid copy of the requested object was in the cache.</p>
 <p>TCP_MISS</p>
 <p>The requested object was not in the cache.</p>
 <p>TCP_REFRESH_HIT</p>
-<p>The requested object was cached but STALE. The IMS query for the object resulted in &ldquo;304 not modified&rdquo;.</p>
+<p>The requested object was cached but STALE. The IMS query for the object resulted in 304 not modified.</p>
 <p>TCP_REF_FAIL_HIT</p>
 <p>The requested object was cached but STALE. The IMS query failed and the stale object was delivered.</p>
 <p>TCP_REFRESH_MISS</p>
 <p>The requested object was cached but STALE. The IMS query returned the new content.</p>
 <p>TCP_CLIENT_REFRESH_MISS</p>
-<p>The client issued a &ldquo;no-cache&rdquo; pragma, or some analogous cache control command along with the request. Thus, the cache</p>
+<p>The client issued a no-cache pragma, or some analogous cache control command along with the request. Thus, the cache</p>
 <p>has to refetch the object.</p>
 <p>TCP_IMS_HIT</p>
 <p>The client issued an IMS request for an object which was in the cache and fresh.</p>
 <p>TCP_SWAPFAIL_MISS</p>
 <p>The object was believed to be in the cache, but could not be accessed.</p>
 <p>TCP_NEGATIVE_HIT</p>
-<p>Request for a negatively cached object, e.g. &ldquo;404 not found&rdquo;, for which the cache believes to know that it is</p>
+<p>Request for a negatively cached object, e.g. 404 not found, for which the cache believes to know that it is</p>
 <p>inaccessible. Also refer to the explainations for negative_ttl in your squid.conf file.</p>
 <p>TCP_MEM_HIT</p>
 <p>A valid copy of the requested object was in the cache and it was in memory, thus avoiding disk accesses.</p>
@@ -130,7 +128,7 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>UDP_INVALID</p>
 <p>An invalid request was received.</p>
 <p>UDP_MISS_NOFETCH</p>
-<p>During &ldquo;-Y&rdquo; startup, or during frequent failures, a cache in hit only mode will return either UDP_HIT or this code.</p>
+<p>During -Y startup, or during frequent failures, a cache in hit only mode will return either UDP_HIT or this code.</p>
 <p>Neighbours will thus only fetch hits.</p>
 <p>NONE</p>
 <p>Seen with errors and cachemgr requests.</p>
@@ -192,56 +190,56 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>附:HTTP响应状态码</p>
 <p>Table 13-1列出了数字HTTP响应CODE和理由短句。注意Squid和其他HTTP客户端仅仅关注这些数字值。理由短句是纯解释性的，不会影响响应的意义。对每个状态码，也提供了一个到RFC 2616的具体节的索引。注意状态码0和600是squid使用的非标准的值，不会在RFC里提到。</p>
 <p>Table 13-1. HTTP response status codes</p>
-<p>Code &nbsp;&nbsp;&nbsp; Reason phrase &nbsp;&nbsp;&nbsp; RFC 2616 section</p>
-<p>0 &nbsp;&nbsp;&nbsp; No Response Received (Squid-specific) &nbsp;&nbsp;&nbsp; N/A</p>
-<p>1xx &nbsp;&nbsp;&nbsp; Informational &nbsp;&nbsp;&nbsp; 10.1</p>
-<p>100 &nbsp;&nbsp;&nbsp; Continue &nbsp;&nbsp;&nbsp; 10.1.1</p>
-<p>101 &nbsp;&nbsp;&nbsp; Switching Protocols &nbsp;&nbsp;&nbsp; 10.1.2</p>
-<p>2xx &nbsp;&nbsp;&nbsp; Successful &nbsp;&nbsp;&nbsp; 10.2</p>
-<p>200 &nbsp;&nbsp;&nbsp; OK &nbsp;&nbsp;&nbsp; 10.2.1</p>
-<p>201 &nbsp;&nbsp;&nbsp; Created &nbsp;&nbsp;&nbsp; 10.2.2</p>
-<p>202 &nbsp;&nbsp;&nbsp; Accepted &nbsp;&nbsp;&nbsp; 10.2.3</p>
-<p>203 &nbsp;&nbsp;&nbsp; Non-Authoritative Information &nbsp;&nbsp;&nbsp; 10.2.4</p>
-<p>204 &nbsp;&nbsp;&nbsp; No Content &nbsp;&nbsp;&nbsp; 10.2.5</p>
-<p>205 &nbsp;&nbsp;&nbsp; Reset Content &nbsp;&nbsp;&nbsp; 10.2.6</p>
-<p>206 &nbsp;&nbsp;&nbsp; Partial Content &nbsp;&nbsp;&nbsp; 10.2.7</p>
-<p>3xx &nbsp;&nbsp;&nbsp; Redirection &nbsp;&nbsp;&nbsp; 10.3</p>
-<p>300 &nbsp;&nbsp;&nbsp; Multiple Choices &nbsp;&nbsp;&nbsp; 10.3.1</p>
-<p>301 &nbsp;&nbsp;&nbsp; Moved Permanently &nbsp;&nbsp;&nbsp; 10.3.2</p>
-<p>302 &nbsp;&nbsp;&nbsp; Found &nbsp;&nbsp;&nbsp; 10.3.3</p>
-<p>303 &nbsp;&nbsp;&nbsp; See Other &nbsp;&nbsp;&nbsp; 10.3.4</p>
-<p>304 &nbsp;&nbsp;&nbsp; Not Modified &nbsp;&nbsp;&nbsp; 10.3.5</p>
-<p>305 &nbsp;&nbsp;&nbsp; Use Proxy &nbsp;&nbsp;&nbsp; 10.3.6</p>
-<p>306 &nbsp;&nbsp;&nbsp; (Unused) &nbsp;&nbsp;&nbsp; 10.3.7</p>
-<p>307 &nbsp;&nbsp;&nbsp; Temporary Redirect &nbsp;&nbsp;&nbsp; 10.3.8</p>
-<p>4xx &nbsp;&nbsp;&nbsp; Client Error &nbsp;&nbsp;&nbsp; 10.4</p>
-<p>400 &nbsp;&nbsp;&nbsp; Bad Request &nbsp;&nbsp;&nbsp; 10.4.1</p>
-<p>401 &nbsp;&nbsp;&nbsp; Unauthorized &nbsp;&nbsp;&nbsp; 10.4.2</p>
-<p>402 &nbsp;&nbsp;&nbsp; Payment Required &nbsp;&nbsp;&nbsp; 10.4.3</p>
-<p>403 &nbsp;&nbsp;&nbsp; Forbidden &nbsp;&nbsp;&nbsp; 10.4.4</p>
-<p>404 &nbsp;&nbsp;&nbsp; Not Found &nbsp;&nbsp;&nbsp; 10.4.5</p>
-<p>405 &nbsp;&nbsp;&nbsp; Method Not Allowed &nbsp;&nbsp;&nbsp; 10.4.6</p>
-<p>406 &nbsp;&nbsp;&nbsp; Not Acceptable &nbsp;&nbsp;&nbsp; 10.4.7</p>
-<p>407 &nbsp;&nbsp;&nbsp; Proxy Authentication Required &nbsp;&nbsp;&nbsp; 10.4.8</p>
-<p>408 &nbsp;&nbsp;&nbsp; Request Timeout &nbsp;&nbsp;&nbsp; 10.4.9</p>
-<p>409 &nbsp;&nbsp;&nbsp; Conflict &nbsp;&nbsp;&nbsp; 10.4.10</p>
-<p>410 &nbsp;&nbsp;&nbsp; Gone &nbsp;&nbsp;&nbsp; 10.4.11</p>
-<p>411 &nbsp;&nbsp;&nbsp; Length Required &nbsp;&nbsp;&nbsp; 10.4.12</p>
-<p>412 &nbsp;&nbsp;&nbsp; Precondition Failed &nbsp;&nbsp;&nbsp; 10.4.13</p>
-<p>413 &nbsp;&nbsp;&nbsp; Request Entity Too Large &nbsp;&nbsp;&nbsp; 10.4.14</p>
-<p>414 &nbsp;&nbsp;&nbsp; Request-URI Too Long &nbsp;&nbsp;&nbsp; 10.4.15</p>
-<p>415 &nbsp;&nbsp;&nbsp; Unsupported Media Type &nbsp;&nbsp;&nbsp; 10.4.16</p>
-<p>416 &nbsp;&nbsp;&nbsp; Requested Range Not Satisfiable &nbsp;&nbsp;&nbsp; 10.4.17</p>
-<p>417 &nbsp;&nbsp;&nbsp; Expectation Failed &nbsp;&nbsp;&nbsp; 10.4.18</p>
-<p>5xx &nbsp;&nbsp;&nbsp; Server Error &nbsp;&nbsp;&nbsp; 10.5</p>
-<p>500 &nbsp;&nbsp;&nbsp; Internal Server Error &nbsp;&nbsp;&nbsp; 10.5.1</p>
-<p>501 &nbsp;&nbsp;&nbsp; Not Implemented &nbsp;&nbsp;&nbsp; 10.5.2</p>
-<p>502 &nbsp;&nbsp;&nbsp; Bad Gateway &nbsp;&nbsp;&nbsp; 10.5.3</p>
-<p>503 &nbsp;&nbsp;&nbsp; Service Unavailable &nbsp;&nbsp;&nbsp; 10.5.4</p>
-<p>504 &nbsp;&nbsp;&nbsp; Gateway Timeout &nbsp;&nbsp;&nbsp; 10.5.5</p>
-<p>505 &nbsp;&nbsp;&nbsp; HTTP Version Not Supported &nbsp;&nbsp;&nbsp; 10.5.6</p>
-<p>6xx &nbsp;&nbsp;&nbsp; Proxy Error &nbsp;&nbsp;&nbsp; N/A</p>
-<p>600 &nbsp;&nbsp;&nbsp; Unparseable Response Headers (Squid-specific) &nbsp;&nbsp;&nbsp; N/A</p>
+<p>Code  Reason phrase  RFC 2616 section</p>
+<p>0  No Response Received (Squid-specific)  N/A</p>
+<p>1xx  Informational  10.1</p>
+<p>100  Continue  10.1.1</p>
+<p>101  Switching Protocols  10.1.2</p>
+<p>2xx  Successful  10.2</p>
+<p>200  OK  10.2.1</p>
+<p>201  Created  10.2.2</p>
+<p>202  Accepted  10.2.3</p>
+<p>203  Non-Authoritative Information  10.2.4</p>
+<p>204  No Content  10.2.5</p>
+<p>205  Reset Content  10.2.6</p>
+<p>206  Partial Content  10.2.7</p>
+<p>3xx  Redirection  10.3</p>
+<p>300  Multiple Choices  10.3.1</p>
+<p>301  Moved Permanently  10.3.2</p>
+<p>302  Found  10.3.3</p>
+<p>303  See Other  10.3.4</p>
+<p>304  Not Modified  10.3.5</p>
+<p>305  Use Proxy  10.3.6</p>
+<p>306  (Unused)  10.3.7</p>
+<p>307  Temporary Redirect  10.3.8</p>
+<p>4xx  Client Error  10.4</p>
+<p>400  Bad Request  10.4.1</p>
+<p>401  Unauthorized  10.4.2</p>
+<p>402  Payment Required  10.4.3</p>
+<p>403  Forbidden  10.4.4</p>
+<p>404  Not Found  10.4.5</p>
+<p>405  Method Not Allowed  10.4.6</p>
+<p>406  Not Acceptable  10.4.7</p>
+<p>407  Proxy Authentication Required  10.4.8</p>
+<p>408  Request Timeout  10.4.9</p>
+<p>409  Conflict  10.4.10</p>
+<p>410  Gone  10.4.11</p>
+<p>411  Length Required  10.4.12</p>
+<p>412  Precondition Failed  10.4.13</p>
+<p>413  Request Entity Too Large  10.4.14</p>
+<p>414  Request-URI Too Long  10.4.15</p>
+<p>415  Unsupported Media Type  10.4.16</p>
+<p>416  Requested Range Not Satisfiable  10.4.17</p>
+<p>417  Expectation Failed  10.4.18</p>
+<p>5xx  Server Error  10.5</p>
+<p>500  Internal Server Error  10.5.1</p>
+<p>501  Not Implemented  10.5.2</p>
+<p>502  Bad Gateway  10.5.3</p>
+<p>503  Service Unavailable  10.5.4</p>
+<p>504  Gateway Timeout  10.5.5</p>
+<p>505  HTTP Version Not Supported  10.5.6</p>
+<p>6xx  Proxy Error  N/A</p>
+<p>600  Unparseable Response Headers (Squid-specific)  N/A</p>
 <p>假如Squid从原始服务器没有接受到任何响应，你可在access.log里看到状态码0。假如Squid接受到的响应没有包含HTTP头部，就会出现状态码600。在少数情况下，某些原始服务器仅发送响应body，而忽略了任何头部。</p>
 <p>13.2.3 access.log对端编码</p>
 <p>下列编码可能出现在access.log的第9域。请参考10.10节关于Squid如何对cache丢失情况，选择有效的下一跳。</p>
@@ -265,9 +263,14 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>这点类似CLOSEST_PARENT_MISS，除了RTT计算不是来自ICP/HTCP响应消息外。代替的，它们来自Squid保留的更老的计算方式，例如netdb交换功能。</p>
 <p>CLOSEST_DIRECT</p>
 <p>Squid基于netdb算法，转发请求到原始服务器。这点在满足下述任何条件时发生：</p>
-<p>&nbsp;&nbsp;&nbsp; * 1）在Squid和原始服务器之间的RTT小于配置的minimum_direct_rtt值。</p>
-<p>&nbsp;&nbsp;&nbsp; * 2）在Squid和原始服务器之间的标准路由跳数少于配置的minimum_direct_hops值。</p>
-<p>&nbsp;&nbsp;&nbsp; * 3）在ICP/HTCP响应里返回的RTT值，指示Squid离原始服务器近于任何其他邻居。</p>
+<ul>
+<li><p>1）在Squid和原始服务器之间的RTT小于配置的minimum_direct_rtt值。</p>
+</li>
+<li><p>2）在Squid和原始服务器之间的标准路由跳数少于配置的minimum_direct_hops值。</p>
+</li>
+<li><p>3）在ICP/HTCP响应里返回的RTT值，指示Squid离原始服务器近于任何其他邻居。</p>
+</li>
+</ul>
 <p>ROUNDROBIN_PARENT</p>
 <p>Squid转发请求到该父cache，因为设置了round-robin选项，并且它有最低的使用计数器。</p>
 <p>CD_PARENT_HIT</p>
@@ -280,7 +283,6 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>作为最后的手段，Squid选择该父cache，因为没有其他方法能选择可行的下一跳。</p>
 <p>注意大部分上述编码可能以TIMEOUT_开头，这表明在等待ICP/HTCP响应时发生超时。例如：</p>
 <p>可使用icp_query_timeout指令来调整超时。</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/06/16/w/squid-iptables-e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-qq-e3-80-81msn-e4-b8-8d-e8-83-bd-e7-99-bb-e5-bd-95-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-05-25T07:04:08.000Z" class="post__time">五月 25, 2009</time><h1 class="post__title"><a href="/2009/05/25/w/centos-linux-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85-e6-9c-80-e6-96-b0-e7-89-88amule/">centos linux 源代码编译安装最新版amule</a></h1></header><div class="post__main"><p>aMule是Linux下最佳的P2P软件之一，可应用eDonkey网络协议，也支持KAD网络，支持模糊协议（obfuscation）。</p>
 <p>yum install wxGTK*</p>
 <p>yum install cryptopp</p>
@@ -290,24 +292,23 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon \</p>
 <p>—enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui \</p>
 <p>—enable-cas —enable-wxcas —enable-alc —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>make -j6 &amp;&amp; make install</p>
-<h1 id="—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_compile_aMuleLinkCreator_GUI_version">—enable-alc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compile aMuleLinkCreator GUI version</h1><p>如果编译报错graphics.c:95: undefined reference to `gdImageJpeg&#39; collect2: ld returned 1 exit status</p>
+<p>make -j6  make install</p>
+<h1 id="—enable-alc_compile_aMuleLinkCreator_GUI_version">—enable-alc compile aMuleLinkCreator GUI version</h1><p>如果编译报错graphics.c:95: undefined reference to `gdImageJpeg&#39; collect2: ld returned 1 exit status</p>
 <p>取消—enable-alc</p>
 <p>./configure —disable-debug —enable-optimize —enable-webserver —enable-amule-daemon —enable-utf8-systray —enable-geoip —enable-unicode —enable-amulecmd —enable-amule-gui —enable-cas —enable-wxcas —enable-alcc —enable-amule-utils —disable-upnp</p>
-<p>&nbsp;</p>
 <p>附:wxGTK、cryptopp源代码安装方法</p>
 <p>export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/local/pkgconfig:/usr/X11R6/lib/pkgconfig</p>
 <p>wget <a href="http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2" target="_blank" rel="external">http://heanet.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.8.8.tar.bz2</a></p>
 <p>tar xfj wxWidgets-2.8.8.tar.bz2</p>
 <p>cd wxWidgets-2.8.8</p>
 <p>./configure —enable-unicode</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>ldconfig</p>
 <p>wget <a href="http://www.cryptopp.com/cryptopp552.zip" target="_blank" rel="external">http://www.cryptopp.com/cryptopp552.zip</a></p>
 <p>mkdir crypto ; mv cryptopp552.zip ./crypto</p>
 <p>cd crypto ; unzip cryptopp552.zip</p>
-<p>make &amp;&amp; cp libcryptopp.a /usr/lib/</p>
-<p>mkdir /usr/include/cryptopp &amp;&amp; cp *.h /usr/include/cryptopp/</p>
+<p>make  cp libcryptopp.a /usr/lib/</p>
+<p>mkdir /usr/include/cryptopp  cp *.h /usr/include/cryptopp/</p>
 <p>ldconfig</p>
 <p>amule关联firefox，修改about:config只能作用于firefox2.x的:</p>
 <p>新建一个字符串：network.protocol-handler.app.ed2k 值：/usr/bin/ed2k</p>
@@ -317,7 +318,7 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 
 对于firefox3.x，只要打开首选项，在应用程序设置里面，指定ed2k到/usr/bin/ed2k就万事大吉。
 </code></pre><p>amule优化:</p>
-<p>勾选启动时自动更新服务器列表，。并且点击&ldquo;列表&rdquo;。添加如下服务器：</p>
+<p>勾选启动时自动更新服务器列表，。并且点击列表。添加如下服务器：</p>
 <pre><code><span class="attribute">ed2k</span>:<span class="comment">//server|no1.eserver.emule.org.cn|8080|</span>
 
 <span class="attribute">ed2k</span>:<span class="comment">//server|no2.eserver.emule.org.cn|8080|</span>
@@ -331,4 +332,4 @@ maximum_object_size_in_memory <span class="number">4096</span> <span class="cons
 <span class="attribute">http</span>:<span class="comment">//www.edk-files.com/x1/server.met</span>
 
 <span class="attribute">http</span>:<span class="comment">//corpo.free.fr/server.met</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/05/25/w/centos-linux-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85-e6-9c-80-e6-96-b0-e7-89-88amule/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/22/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/24/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/05/25/w/centos-linux-e6-ba-90-e4-bb-a3-e7-a0-81-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85-e6-9c-80-e6-96-b0-e7-89-88amule/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/22/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/24/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

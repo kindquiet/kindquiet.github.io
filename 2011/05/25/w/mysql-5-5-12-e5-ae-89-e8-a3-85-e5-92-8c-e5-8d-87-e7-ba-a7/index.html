@@ -9,7 +9,7 @@ pureftp
 
 wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
 
-tar -C <span class="regexp">/usr/</span>local -xzf&amp;nbsp; mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
 
 cd <span class="regexp">/usr/</span>local
 
@@ -31,7 +31,7 @@ sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_quer
 
 cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
 
-vim&amp;nbsp; my.cnf
+vim my.cnf
 
 #max_allowed_packet = <span class="number">1</span>M
 
@@ -143,7 +143,7 @@ chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</spa
 
 <span class="regexp">/sbin/</span>chkconfig --list mysqld
 
-echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
 
 cat <span class="regexp">/etc/</span>ld.so.conf
 
@@ -153,7 +153,7 @@ mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
 
 ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
 
-#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe &amp;amp;
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe 
 
 mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
 
@@ -161,7 +161,7 @@ chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</s
 
 #加入mysql到路径
 
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
 
 #执行一下，保证mysql在路径环境变量中
 
@@ -190,8 +190,6 @@ mysql_upgrade包含一下三个命令：
 sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
-
-&amp;nbsp;
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/" data-url="http://blog.veryi.com/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -199,4 +197,4 @@ sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</s
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

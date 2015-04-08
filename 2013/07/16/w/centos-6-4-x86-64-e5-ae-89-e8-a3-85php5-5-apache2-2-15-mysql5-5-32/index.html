@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p>&nbsp; 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p> 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
 <p>升级一下：</p>
 <pre><code># yum <span class="keyword">update</span> -<span class="literal">y</span>
 </code></pre><h1 id="cat_/etc/issue-net">cat /etc/issue.net</h1><pre><code>CentOS release <span class="number">6.4</span> (Final)
@@ -39,14 +39,13 @@ COMMIT
 </code></pre><p>重启</p>
 <pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/iptables restart</span>
 </code></pre><p>vi /etc/selinux/config</p>
-<p>&nbsp;</p>
 <pre><code>安装mysql
 
 yum install wget <span class="attribute">-y</span>
 
 wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
 
-tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span><span class="subst">&amp;</span>nbsp; mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
 
 cd /usr/<span class="built_in">local</span>
 
@@ -105,7 +104,7 @@ log-error=mysqld.log \
 long_query_time = 2 \
 
 &amp;#39; my.cnf</span>
-</code></pre><p>vim&nbsp; my.cnf</p>
+</code></pre><p>vim my.cnf</p>
 <p>/usr/sbin/groupadd -g 200 mysql</p>
 <pre><code><span class="regexp">/usr/</span>sbin/useradd -u <span class="number">200</span> -g mysql mysql
 
@@ -139,7 +138,7 @@ chmod +x <span class="regexp">/etc/</span>init.d/mysqld
 
 <span class="regexp">/sbin/</span>chkconfig --list mysqld
 
-echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
 
 cat <span class="regexp">/etc/</span>ld.so.conf
 
@@ -155,22 +154,21 @@ mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span
 
 chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
 
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
 
 . <span class="regexp">/etc/</span>profile
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql -u root -veryi.com
-</code></pre><p>Welcome to the MySQL monitor.&nbsp; Commands end with ; or \g.</p>
+</code></pre><p>Welcome to the MySQL monitor. Commands end with ; or \g.</p>
 <pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
 
 Server <span class="property">version</span>: <span class="number">5.5</span><span class="number">.32</span>-<span class="command">log</span> MySQL Community Server (GPL)
-</code></pre><p>mysql&gt; \s</p>
+</code></pre><p>mysql \s</p>
 <hr>
-<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql&amp;nbsp; Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
-</code></pre><p>&nbsp;</p>
-<p>安装php5.5 httpd2.2.15，添加yum源：</p>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
+</code></pre><p>安装php5.5 httpd2.2.15，添加yum源：</p>
 <pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
 
 rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
@@ -200,10 +198,10 @@ chkconfig <span class="comment">--list mysqld</span>
 yum --noplugins --enablerepo=remi,remi-<span class="keyword">test</span> install php-pecl-apc php-<span class="keyword">cli</span> php-pear php-pdo php-mysql php-pgsql php-pecl-mongo php-sqlite php-pecl-memcache php-pecl-memcached php-gd php-mbstring php-mcrypt php-xml -<span class="literal">y</span>
 
 /etc/init.<span class="keyword">d</span>/httpd restart
-</code></pre><p>Q&amp;A：</p>
+</code></pre><p>QA：</p>
 <pre><code>yum通过代理升级：
 
-export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>&amp;quot;
+export http_proxy=http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>
 </code></pre><p>装了epel的扩展后，执行yum报错：</p>
 <pre><code><span class="string">Error:</span> Cannot retrieve metalink <span class="keyword">for</span> <span class="string">repository:</span> epel. Please verify its path and <span class="keyword">try</span> again
 
@@ -211,7 +209,7 @@ export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span c
 
 baseurl=<span class="string">http:</span><span class="comment">//download.fedoraproject.org/pub/epel/6/$basearch</span>
 
-#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6&amp;amp;arch=$basearch</span>
+#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6arch=$basearch</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/" data-url="http://blog.veryi.com/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -219,4 +217,4 @@ baseurl=<span class="string">http:</span><span class="comment">//download.fedora
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

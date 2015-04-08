@@ -1,51 +1,51 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-20T03:58:13.000Z" class="post__time">九月 20, 2010</time><h1 class="post__title"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/">web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法</a></h1></header><div class="post__main"><p>&nbsp; cpu速度越来越快也更便宜，IDC机房带宽很昂贵，所以用cpu来换取带宽。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-20T03:58:13.000Z" class="post__time">九月 20, 2010</time><h1 class="post__title"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/">web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法</a></h1></header><div class="post__main"><p> cpu速度越来越快也更便宜，IDC机房带宽很昂贵，所以用cpu来换取带宽。</p>
 <pre><code>apche启用mod_deflate压缩：
 
-&amp;lt;ifmodule mod_deflate.c&amp;gt;
+ifmodule mod_deflate.c
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; DeflateCompressionLevel <span class="number">9</span>
+ DeflateCompressionLevel <span class="number">9</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetOutputFilter DEFLATE
+ SetOutputFilter DEFLATE
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:gif|jpe?g|png)$</span> <span class="literal">no</span>-gzip dont-vary
+ SetEnvIfNoCase Request_URI <span class="string">\.(?:gif|jpe?g|png)$</span> <span class="literal">no</span>-gzip dont-vary
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.(?:exe|t?gz|zip|bz2|sit|rar)$</span> <span class="literal">no</span>-gzip dont-vary
+ SetEnvIfNoCase Request_URI <span class="string">\.(?:exe|t?gz|zip|bz2|sit|rar)$</span> <span class="literal">no</span>-gzip dont-vary
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SetEnvIfNoCase Request_URI <span class="string">\.pdf$</span> <span class="literal">no</span>-gzip dont-vary
+ SetEnvIfNoCase Request_URI <span class="string">\.pdf$</span> <span class="literal">no</span>-gzip dont-vary
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span> gzip-only-text/html
+ BrowserMatch ^Mozilla/<span class="number">4</span> gzip-only-text/html
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch ^Mozilla/<span class="number">4</span><span class="string">\.0[678]</span> <span class="literal">no</span>-gzip
+ BrowserMatch ^Mozilla/<span class="number">4</span><span class="string">\.0[678]</span> <span class="literal">no</span>-gzip
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; BrowserMatch <span class="string">\bMSIE</span> !<span class="literal">no</span>-gzip !gzip-only-text/html
+ BrowserMatch <span class="string">\bMSIE</span> !<span class="literal">no</span>-gzip !gzip-only-text/html
 
-&amp;lt;/ifmodule&amp;gt;
+/ifmodule
 
 nginx 启用gzip压缩：
 
 http {
 
-&amp;nbsp;&amp;nbsp; gzip&amp;nbsp; <span class="literal">on</span>;
+ gzip <span class="literal">on</span>;
 
-&amp;nbsp;&amp;nbsp; gzip_min_length&amp;nbsp; <span class="number">1000</span>;
+ gzip_min_length <span class="number">1000</span>;
 
-&amp;nbsp;&amp;nbsp; gzip_buffers&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">4</span> <span class="number">8k</span>;
+ gzip_buffers <span class="number">4</span> <span class="number">8k</span>;
 
-&amp;nbsp;&amp;nbsp; gzip_types&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; text/plain application/x-javascript text/css text/html application/xml;
+ gzip_types text/plain application/x-javascript text/css text/html application/xml;
 
-&amp;nbsp;&amp;nbsp; }
+ }
 
 压缩效果测试
 
 不使用压缩:
 
-curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --write-out size_download=%{size_download}\n --output /dev/null
 
 size_download=64031
 
 使用 Accept-Encoding 头：
 
-curl http://</span>veryi.com/w/<span class="number">1.html</span> --silent -H &amp;quot;<span class="attribute">Accept-Encoding</span>: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}<span class="string">\n&amp;quot;</span> --output /dev/<span class="literal">null</span>
+curl http://</span>veryi.com/w/<span class="number">1.html</span> --silent -H <span class="attribute">Accept-Encoding</span>: gzip,deflate --write-out size_download=%{size_download}<span class="string">\n</span> --output /dev/<span class="literal">null</span>
 
 size_download=<span class="number">20012</span>
 
@@ -53,13 +53,11 @@ size_download=<span class="number">20012</span>
 
 使用 HTTP <span class="number">1.0</span> 测试：
 
-curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --http1.0 -H &amp;quot;Accept-Encoding: gzip,deflate&amp;quot; --write-out &amp;quot;size_download=%{size_download}\n&amp;quot; --output /dev/null
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --http1.0 -H Accept-Encoding: gzip,deflate --write-out size_download=%{size_download}\n --output /dev/null
 
 size_download=64031
 
-[参考](http://</span>dev.nuclearrooster.com<span class="pi">/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>)：<span class="attribute">http</span>:<span class="pi">//dev.nuclearrooster.com/2009/11/08/checking-gzipdeflate-server-responses-with-curl/
-
-&amp;nbsp;</span>
+[参考](http://</span>dev.nuclearrooster.com<span class="pi">/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>)：<span class="attribute">http</span>:<span class="pi">//dev.nuclearrooster.com/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/" data-url="http://blog.veryi.com/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -67,4 +65,4 @@ size_download=64031
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/10/09/w/centos-e4-b8-ad-e6-96-87/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

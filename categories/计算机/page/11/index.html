@@ -1,11 +1,11 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-08-05T08:51:59.000Z" class="post__time">八月 5, 2011</time><h1 class="post__title"><a href="/2011/08/05/w/centos-4-e5-8d-87-e7-ba-a7-e5-88-b04-9/">centos 4升级到4.9</a></h1></header><div class="post__main"><p>centos 4升级yum后yum不能使用解决办法。</p>
-<pre><code>Yum fails &amp;quot;<span class="built_in">GLib</span>-CRITICAL&amp;quot;
+<pre><code><span class="title">Yum</span> fails GLib-CRITICAL
 </code></pre><p>yum check-update</p>
 <pre><code>(<span class="built_in">process</span>:<span class="number">25406</span>): GLib-CRITICAL **: <span class="built_in">file</span> gtimer.c: <span class="built_in">line</span> <span class="number">106</span> (g_timer_stop): assertion `timer != <span class="constant">NULL</span>&amp;<span class="comment">#39; failed</span>
 
 (<span class="built_in">process</span>:<span class="number">25406</span>): GLib-CRITICAL **: <span class="built_in">file</span> gtimer.c: <span class="built_in">line</span> <span class="number">88</span> (g_timer_destroy): assertion `timer != <span class="constant">NULL</span>&amp;<span class="comment">#39; failed</span>
 
-TypeError: Can <span class="operator">not</span> <span class="built_in">create</span> index <span class="command"><span class="keyword">on</span> <span class="title">requires</span> <span class="title">table</span>: <span class="title">near</span> &amp;<span class="title">quot</span>;<span class="title">NOT</span>&amp;<span class="title">quot</span>;: <span class="title">syntax</span> <span class="title">error</span></span>
+TypeError: Can <span class="operator">not</span> <span class="built_in">create</span> index <span class="command"><span class="keyword">on</span> <span class="title">requires</span> <span class="title">table</span>: <span class="title">near</span> <span class="title">NOT</span>: <span class="title">syntax</span> <span class="title">error</span></span>
 
 方法：
 
@@ -29,9 +29,7 @@ yum <span class="keyword">update</span> selinux\* -<span class="literal">y</span
 yum <span class="keyword">update</span> -<span class="literal">y</span>
 
 shutdown -rf now
-
-&amp;nbsp;
-</code></pre><p>参考：Yum &quot;GLib-CRITICAL&quot; How To Fix</p>
+</code></pre><p>参考：Yum GLib-CRITICAL How To Fix</p>
 <pre><code><span class="string">http:</span><span class="comment">//sysadmingear.blogspot.com/2008/07/yum-glib-critical-how-to-fix.html</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/08/05/w/centos-4-e5-8d-87-e7-ba-a7-e5-88-b04-9/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-26T09:44:47.000Z" class="post__time">七月 26, 2011</time><h1 class="post__title"><a href="/2011/07/26/w/e6-9f-a5-e7-9c-8blinux-e5-8f-91-e8-a1-8c-e7-89-88-e4-bf-a1-e6-81-af-lsb-release/">查看Linux发行版信息-lsb_release</a></h1></header><div class="post__main"><p>LSB是Linux Standard Base的缩写，lsb_release命令用来显示LSB和特定版本的相关信息，centos可通过</p>
 <pre><code>yum -y install redhat-lsb
@@ -46,43 +44,43 @@ lsb_release -<span class="tag">a</span>
 
 yum whatprovides */lsb_release
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/26/w/e6-9f-a5-e7-9c-8blinux-e5-8f-91-e8-a1-8c-e7-89-88-e4-bf-a1-e6-81-af-lsb-release/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-13T02:41:47.000Z" class="post__time">七月 13, 2011</time><h1 class="post__title"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/">系统日志syslog不记录snmpd日志</a></h1></header><div class="post__main"><p>系统为centos linux 5.6。启动snmpd做流量统计，系统日志充斥大量snmpd日志</p>
-<pre><code>Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Connection from <span class="string">UDP:</span> [<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>]:<span class="number">34179</span>
+<pre><code>Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Connection from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
 
-Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Received SNMP packet(s) from <span class="string">UDP:</span> [<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>]:<span class="number">34179</span>
+Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Received SNMP <span class="function"><span class="title">packet</span><span class="params">(s)</span></span> from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
 
 修改：
 
-vim <span class="regexp">/etc/</span>sysconfig/snmpd.options
+vim /etc/sysconfig/snmpd<span class="class">.options</span>
 
 #加入如下参数
 
-OPTIONS=&amp;quot;-LS3d -Lf <span class="regexp">/dev/</span><span class="literal">null</span> -p <span class="regexp">/var/</span>run/snmpd.pid -a&amp;quot;
+OPTIONS=-LS3d -Lf /dev/null -<span class="tag">p</span> /var/run/snmpd<span class="class">.pid</span> -<span class="tag">a</span>
 
-chmod +x <span class="regexp">/etc/</span>sysconfig/snmpd.options
+chmod +x /etc/sysconfig/snmpd<span class="class">.options</span>
 
 重启：
 
-<span class="regexp">/etc/</span>init.d/snmpd restart
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-11T02:04:24.000Z" class="post__time">七月 11, 2011</time><h1 class="post__title"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/">awstats分析统计squid日志</a></h1></header><div class="post__main"><p>关键：squid自定义日志格式中combined %&gt;a和之间只可有一个空格分隔，如果多于一个，squid日志中每行行首会有前置空格，分析时会报错： Found 6 corrupted records。</p>
+/etc/init.d/snmpd restart
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-11T02:04:24.000Z" class="post__time">七月 11, 2011</time><h1 class="post__title"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/">awstats分析统计squid日志</a></h1></header><div class="post__main"><p>关键：squid自定义日志格式中combined %a和之间只可有一个空格分隔，如果多于一个，squid日志中每行行首会有前置空格，分析时会报错： Found 6 corrupted records。</p>
 <p>以下测试在centos linux中通过。</p>
 <pre><code>squid配置：
 
-#logformat combined&amp;nbsp; <span class="variable">%&amp;</span>gt;a <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] &amp;quot;<span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span>&amp;quot; <span class="variable">%&amp;</span>gt;Hs <span class="variable">%&amp;</span>lt;st &amp;quot;<span class="variable">%{Referer}</span>&amp;gt;h&amp;quot; &amp;quot;%{User-Agent}&amp;gt;h&amp;quot; <span class="variable">%Ss</span>:<span class="variable">%Sh</span>
+#logformat combined <span class="variable">%a</span> <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] <span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span> <span class="variable">%Hs</span> <span class="variable">%st</span> <span class="variable">%{Referer}</span>h %{User-Agent}h <span class="variable">%Ss</span>:<span class="variable">%Sh</span>
 
-logformat combined <span class="variable">%&amp;</span>gt;a <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] &amp;quot;<span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span>&amp;quot; <span class="variable">%&amp;</span>gt;Hs <span class="variable">%&amp;</span>lt;st &amp;quot;<span class="variable">%{Referer}</span>&amp;gt;h&amp;quot; &amp;quot;%{User-Agent}&amp;gt;h&amp;quot; <span class="variable">%Ss</span>:<span class="variable">%Sh</span> <span class="variable">%{host}</span>&amp;gt;h
+logformat combined <span class="variable">%a</span> <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] <span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span> <span class="variable">%Hs</span> <span class="variable">%st</span> <span class="variable">%{Referer}</span>h %{User-Agent}h <span class="variable">%Ss</span>:<span class="variable">%Sh</span> <span class="variable">%{host}</span>h
 
 access_log /var/squid/logs/access.<span class="keyword">log</span> combined
 
 logfile_rotate <span class="number">10</span>
-</code></pre><p>日志类似：10.168.6.166 - - [11/Jul/2011:10:16:42 +0800] &quot;POST <a href="http://veryi.com/getconf.php" target="_blank" rel="external">http://veryi.com/getconf.php</a> HTTP/1.1&quot; 200 960 &quot;-&quot; &quot;Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727)&quot; TCP_MISS:DIRECT veryi.com</p>
+</code></pre><p>日志类似：10.168.6.166 - - [11/Jul/2011:10:16:42 +0800] POST <a href="http://veryi.com/getconf.php" target="_blank" rel="external">http://veryi.com/getconf.php</a> HTTP/1.1 200 960 - Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727) TCP_MISS:DIRECT veryi.com</p>
 <pre><code>或者配置为：
 </code></pre><p>emulate_httpd_log on</p>
-<p>日志类似：10.168.6.54 - - [11/Jul/2011:09:21:02 +0800] &quot;GET <a href="http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg" target="_blank" rel="external">http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg</a> HTTP/1.1&quot; 200 22328 TCP_MISS:DIRECT</p>
+<p>日志类似：10.168.6.54 - - [11/Jul/2011:09:21:02 +0800] GET <a href="http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg" target="_blank" rel="external">http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg</a> HTTP/1.1 200 22328 TCP_MISS:DIRECT</p>
 <pre><code>awstats配置：
 
 LogFormat=<span class="number">4</span>
 
-#LogFormat = &amp;quot;<span class="variable">%host</span> <span class="variable">%other</span> <span class="variable">%logname</span> <span class="variable">%time1</span> <span class="variable">%methodurl</span> <span class="variable">%code</span> <span class="variable">%bytesd</span> <span class="variable">%refererquot</span> <span class="variable">%uaquot</span> <span class="variable">%other</span> <span class="variable">%virtualname</span>&amp;quot;
+#LogFormat = <span class="variable">%host</span> <span class="variable">%other</span> <span class="variable">%logname</span> <span class="variable">%time1</span> <span class="variable">%methodurl</span> <span class="variable">%code</span> <span class="variable">%bytesd</span> <span class="variable">%refererquot</span> <span class="variable">%uaquot</span> <span class="variable">%other</span> <span class="variable">%virtualname</span>
 </code></pre><p>使用预定义格式即可，自定义报corrupted records错。</p>
 <pre><code>squid日志分隔脚本：squid_log.sh
 
@@ -110,357 +108,357 @@ find . -name &amp;<span class="string">#39</span>;*log*&amp;<span class="string"
 
 awstats自定义字段说明：
 
-#&amp;nbsp;&amp;nbsp; %host&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Client hostname <span class="keyword">or</span> IP address (<span class="keyword">or</span> Sender host <span class="keyword">for</span> mail log)
+# %host Client hostname <span class="keyword">or</span> IP address (<span class="keyword">or</span> Sender host <span class="keyword">for</span> mail log)
 
-#&amp;nbsp;&amp;nbsp; %host_r&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Receiver hostname <span class="keyword">or</span> IP address (<span class="keyword">for</span> mail log)
+# %host_r Receiver hostname <span class="keyword">or</span> IP address (<span class="keyword">for</span> mail log)
 
-#&amp;nbsp;&amp;nbsp; %lognamequot&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Authenticated login/user <span class="keyword">with</span> format: &amp;quot;john&amp;quot;
+# %lognamequot Authenticated login/user <span class="keyword">with</span> format: john
 
-#&amp;nbsp;&amp;nbsp; %logname&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Authenticated login/user <span class="keyword">with</span> format: john
+# %logname Authenticated login/user <span class="keyword">with</span> format: john
 
-#&amp;nbsp;&amp;nbsp; %time1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Date <span class="keyword">and</span> time <span class="keyword">with</span> format: [dd/mon/yyyy:hh:mm:ss +<span class="number">0000</span>] <span class="keyword">or</span> [dd/mon/yyyy:hh:mm:ss]
+# %time1 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: [dd/mon/yyyy:hh:mm:ss +<span class="number">0000</span>] <span class="keyword">or</span> [dd/mon/yyyy:hh:mm:ss]
 
-#&amp;nbsp;&amp;nbsp; %time2&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Date <span class="keyword">and</span> time <span class="keyword">with</span> format: yyyy-mm-dd hh:mm:ss
+# %time2 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: yyyy-mm-dd hh:mm:ss
 
-#&amp;nbsp;&amp;nbsp; %time3&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Date <span class="keyword">and</span> time <span class="keyword">with</span> format: Mon dd hh:mm:ss <span class="keyword">or</span> Mon dd hh:mm:ss yyyy
+# %time3 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: Mon dd hh:mm:ss <span class="keyword">or</span> Mon dd hh:mm:ss yyyy
 
-#&amp;nbsp;&amp;nbsp; %time4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Date <span class="keyword">and</span> time <span class="keyword">with</span> unix timestamp format: dddddddddd
+# %time4 Date <span class="keyword">and</span> time <span class="keyword">with</span> unix timestamp format: dddddddddd
 
-#&amp;nbsp;&amp;nbsp; %methodurl&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> &amp;quot;GET /<span class="keyword">index</span>.html HTTP/x.x&amp;quot;
+# %methodurl <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> GET /<span class="keyword">index</span>.html HTTP/x.x
 
-#&amp;nbsp;&amp;nbsp; %methodurlnoprot&amp;nbsp; <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> &amp;quot;GET /<span class="keyword">index</span>.html&amp;quot;
+# %methodurlnoprot <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> GET /<span class="keyword">index</span>.html
 
-#&amp;nbsp;&amp;nbsp; %<span class="function"><span class="keyword">method</span>&amp;<span class="title">nbsp</span>;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="function"><span class="keyword">Method</span> <span class="title">with</span> <span class="title">format</span>:</span> GET
+# %<span class="function"><span class="keyword">method</span> <span class="title">Method</span> <span class="title">with</span> <span class="title">format</span>:</span> GET
 
-#&amp;nbsp;&amp;nbsp; %url&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; URL only <span class="keyword">with</span> format: /<span class="keyword">index</span>.html
+# %url URL only <span class="keyword">with</span> format: /<span class="keyword">index</span>.html
 
-#&amp;nbsp;&amp;nbsp; %query&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Query string (used <span class="keyword">by</span> URLWithQuery option)
+# %query Query string (used <span class="keyword">by</span> URLWithQuery option)
 
-#&amp;nbsp;&amp;nbsp; %code&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Return code status (<span class="keyword">with</span> format <span class="keyword">for</span> web log: <span class="number">999</span>)
+# %code Return code status (<span class="keyword">with</span> format <span class="keyword">for</span> web log: <span class="number">999</span>)
 
-#&amp;nbsp;&amp;nbsp; %bytesd&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Size <span class="keyword">of</span> document <span class="keyword">in</span> bytes
+# %bytesd Size <span class="keyword">of</span> document <span class="keyword">in</span> bytes
 
-#&amp;nbsp;&amp;nbsp; %refererquot&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Referer page <span class="keyword">with</span> format: &amp;quot;http:<span class="comment">//from.com/from.htm&amp;quot;</span>
+# %refererquot Referer page <span class="keyword">with</span> format: http:<span class="comment">//from.com/from.htm</span>
 
-#&amp;nbsp;&amp;nbsp; %referer&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Referer page <span class="keyword">with</span> format: http:<span class="comment">//from.com/from.htm</span>
+# %referer Referer page <span class="keyword">with</span> format: http:<span class="comment">//from.com/from.htm</span>
 
-#&amp;nbsp;&amp;nbsp; %uabracket&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; User agent <span class="keyword">with</span> format: [Mozilla/<span class="number">4.0</span> (compatible, ...)]
+# %uabracket User agent <span class="keyword">with</span> format: [Mozilla/<span class="number">4.0</span> (compatible, ...)]
 
-#&amp;nbsp;&amp;nbsp; %uaquot&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; User agent <span class="keyword">with</span> format: &amp;quot;Mozilla/<span class="number">4.0</span> (compatible, ...)&amp;quot;
+# %uaquot User agent <span class="keyword">with</span> format: Mozilla/<span class="number">4.0</span> (compatible, ...)
 
-#&amp;nbsp;&amp;nbsp; %ua&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; User agent <span class="keyword">with</span> format: Mozilla/<span class="number">4.0</span>_(compatible...)
+# %ua User agent <span class="keyword">with</span> format: Mozilla/<span class="number">4.0</span>_(compatible...)
 
-#&amp;nbsp;&amp;nbsp; %gzipin&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mod_gzip compression input bytes: <span class="keyword">In</span>:XXX
+# %gzipin mod_gzip compression input bytes: <span class="keyword">In</span>:XXX
 
-#&amp;nbsp;&amp;nbsp; %gzipout&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mod_gzip compression output bytes &amp;amp; ratio: <span class="keyword">Out</span>:YYY:ZZpct.
+# %gzipout mod_gzip compression output bytes  ratio: <span class="keyword">Out</span>:YYY:ZZpct.
 
-#&amp;nbsp;&amp;nbsp; %gzipratio&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mod_gzip compression ratio: ZZpct.
+# %gzipratio mod_gzip compression ratio: ZZpct.
 
-#&amp;nbsp;&amp;nbsp; %deflateratio&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; mod_deflate compression ratio <span class="keyword">with</span> format: (ZZ)
+# %deflateratio mod_deflate compression ratio <span class="keyword">with</span> format: (ZZ)
 
-#&amp;nbsp;&amp;nbsp; %email&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; EMail sender (<span class="keyword">for</span> mail log)
+# %email EMail sender (<span class="keyword">for</span> mail log)
 
-#&amp;nbsp;&amp;nbsp; %email_r&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; EMail receiver (<span class="keyword">for</span> mail log)
+# %email_r EMail receiver (<span class="keyword">for</span> mail log)
 
-#&amp;nbsp;&amp;nbsp; %virtualname&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Web sever <span class="keyword">virtual</span> hostname. Use this tag when same log
+# %virtualname Web sever <span class="keyword">virtual</span> hostname. Use this tag when same log
 
-#&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; contains data <span class="keyword">of</span> several <span class="keyword">virtual</span> web servers. AWStats
+# contains data <span class="keyword">of</span> several <span class="keyword">virtual</span> web servers. AWStats
 
-#&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; will discard records <span class="keyword">not</span> <span class="keyword">in</span> SiteDomain nor HostAliases
+# will discard records <span class="keyword">not</span> <span class="keyword">in</span> SiteDomain nor HostAliases
 
-#&amp;nbsp;&amp;nbsp; %cluster&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">If</span> log file <span class="keyword">is</span> provided <span class="keyword">from</span> several computers (merged <span class="keyword">by</span>
+# %cluster <span class="keyword">If</span> log file <span class="keyword">is</span> provided <span class="keyword">from</span> several computers (merged <span class="keyword">by</span>
 
-#&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; logresolvemerge.pl), use this <span class="keyword">to</span> define cluster id field.
+# logresolvemerge.pl), use this <span class="keyword">to</span> define cluster id field.
 
-#&amp;nbsp;&amp;nbsp; %extraX&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Another field that you plan <span class="keyword">to</span> use <span class="keyword">for</span> building a
+# %extraX Another field that you plan <span class="keyword">to</span> use <span class="keyword">for</span> building a
 
-#&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; personalized report <span class="keyword">with</span> ExtraSection feature (See later).
+# personalized report <span class="keyword">with</span> ExtraSection feature (See later).
 
-#&amp;nbsp;&amp;nbsp; <span class="keyword">If</span> your log format <span class="keyword">has</span> some fields <span class="keyword">not</span> included <span class="keyword">in</span> this list, use:
+# <span class="keyword">If</span> your log format <span class="keyword">has</span> some fields <span class="keyword">not</span> included <span class="keyword">in</span> this list, use:
 
-#&amp;nbsp;&amp;nbsp; %other&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Means another <span class="keyword">not</span> used field
+# %other Means another <span class="keyword">not</span> used field
 
-#&amp;nbsp;&amp;nbsp; %otherquot&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Means another <span class="keyword">not</span> used double quoted field
+# %otherquot Means another <span class="keyword">not</span> used double quoted field
 </code></pre><p>squid自定义字段说明：</p>
-<pre><code>logformat &amp;lt;<span class="property">name</span>&amp;gt; &amp;lt;format specification&amp;gt;
+<pre><code>logformat name <span class="built_in">format</span> specification
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Defines an access <span class="command">log</span> format.
+ Defines <span class="operator">an</span> access <span class="built_in">log</span> <span class="built_in">format</span>.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; The &amp;lt;format specification&amp;gt; <span class="keyword">is</span> a <span class="type">string</span> <span class="keyword">with</span> embedded % format codes
+ The <span class="built_in">format</span> specification is <span class="operator">a</span> <span class="keyword">string</span> <span class="operator">with</span> embedded % <span class="built_in">format</span> codes
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; % format codes all follow <span class="keyword">the</span> same basic structure <span class="keyword">where</span> all <span class="keyword">but</span>
+ % <span class="built_in">format</span> codes all follow <span class="operator">the</span> same basic structure where all but
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">the</span> formatcode <span class="keyword">is</span> optional. Output strings are automatically escaped
+ <span class="operator">the</span> formatcode is optional. Output strings are automatically escaped
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">as</span> required according <span class="keyword">to</span> their context <span class="keyword">and</span> <span class="keyword">the</span> output format
+ <span class="keyword">as</span> required according <span class="built_in">to</span> their context <span class="operator">and</span> <span class="operator">the</span> output <span class="built_in">format</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; modifiers are usually <span class="keyword">not</span> needed, <span class="keyword">but</span> can be specified <span class="keyword">if</span> an explicit
+ modifiers are usually <span class="operator">not</span> needed, but can be specified <span class="keyword">if</span> <span class="operator">an</span> explicit
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; output format <span class="keyword">is</span> desired.
+ output <span class="built_in">format</span> is desired.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; % [&amp;quot;|[|&amp;<span class="comment">#39;|#] [-] [[0]width] [{argument}] formatcode</span>
+  % [|[|&amp;<span class="comment">#39;|#] [-] [[0]width] [{argument}] formatcode</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;quot;&amp;nbsp;&amp;nbsp;&amp;nbsp; output <span class="keyword">in</span> quoted <span class="type">string</span> format
+   output <span class="operator">in</span> quoted <span class="keyword">string</span> <span class="built_in">format</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [&amp;nbsp;&amp;nbsp;&amp;nbsp; output <span class="keyword">in</span> squid <span class="type">text</span> <span class="command">log</span> format <span class="keyword">as</span> used <span class="keyword">by</span> log_mime_hdrs
+  [ output <span class="operator">in</span> squid <span class="keyword">text</span> <span class="built_in">log</span> <span class="built_in">format</span> <span class="keyword">as</span> used <span class="keyword">by</span> log_mime_hdrs
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="comment">#&amp;nbsp;&amp;nbsp;&amp;nbsp; output in URL quoted format</span>
+  <span class="comment"># output in URL quoted format</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;<span class="comment">#39;&amp;nbsp;&amp;nbsp;&amp;nbsp; output as-is</span>
+  &amp;<span class="comment">#39; output as-is</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; -&amp;nbsp;&amp;nbsp;&amp;nbsp; left aligned
+  - left aligned
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; width&amp;nbsp;&amp;nbsp;&amp;nbsp; field width. If starting <span class="keyword">with</span> <span class="number">0</span> <span class="keyword">the</span>
+  width field width. If starting <span class="operator">with</span> <span class="number">0</span> <span class="operator">the</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; output <span class="keyword">is</span> zero padded
+   output is <span class="constant">zero</span> padded
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; {arg}&amp;nbsp;&amp;nbsp;&amp;nbsp; argument such <span class="keyword">as</span> header <span class="property">name</span> etc
+  {arg} argument such <span class="keyword">as</span> header name etc
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Format codes:
+ Format codes:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; %&amp;nbsp;&amp;nbsp;&amp;nbsp; a literal % <span class="property">character</span>
+  % <span class="operator">a</span> literal % <span class="keyword">character</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; sn&amp;nbsp;&amp;nbsp;&amp;nbsp; Unique sequence <span class="type">number</span> per <span class="command">log</span> line entry
+  sn Unique sequence <span class="built_in">number</span> per <span class="built_in">log</span> <span class="built_in">line</span> entry
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; err_code&amp;nbsp;&amp;nbsp;&amp;nbsp; The ID <span class="keyword">of</span> an <span class="keyword">error</span> response served <span class="keyword">by</span> Squid <span class="keyword">or</span>
+  err_code The ID <span class="operator">of</span> <span class="operator">an</span> error response served <span class="keyword">by</span> Squid <span class="operator">or</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; a similar internal <span class="keyword">error</span> identifier.
+    <span class="operator">a</span> similar internal error identifier.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; err_detail&amp;nbsp; Additional err_code-dependent <span class="keyword">error</span> information.
+  err_detail Additional err_code-dependent error information.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Connection related format codes:
+ Connection related <span class="built_in">format</span> codes:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;gt;a&amp;nbsp;&amp;nbsp;&amp;nbsp; Client source IP address
+  <span class="operator">a</span> Client source IP address
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;gt;A&amp;nbsp;&amp;nbsp;&amp;nbsp; Client FQDN
+  A Client FQDN
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;gt;p&amp;nbsp;&amp;nbsp;&amp;nbsp; Client source port
+  p Client source port
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;gt;eui&amp;nbsp;&amp;nbsp;&amp;nbsp; Client EUI (MAC address, EUI-<span class="number">48</span> <span class="keyword">or</span> EUI-<span class="number">64</span> identifier)
+  eui Client EUI (MAC address, EUI-<span class="number">48</span> <span class="operator">or</span> EUI-<span class="number">64</span> identifier)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;A&amp;nbsp;&amp;nbsp;&amp;nbsp; Server IP address <span class="keyword">or</span> peer <span class="property">name</span>
+  A Server IP address <span class="operator">or</span> peer name
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; la&amp;nbsp;&amp;nbsp;&amp;nbsp; Local IP address (http_port)
+  la Local IP address (http_port)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; lp&amp;nbsp;&amp;nbsp;&amp;nbsp; Local port <span class="type">number</span> (http_port)
+  lp Local port <span class="built_in">number</span> (http_port)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;la&amp;nbsp;&amp;nbsp;&amp;nbsp; Local IP address <span class="keyword">of</span> <span class="keyword">the</span> <span class="keyword">last</span> server <span class="keyword">or</span> peer connection
+  la Local IP address <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> server <span class="operator">or</span> peer connection
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;lp&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Local port <span class="type">number</span> <span class="keyword">of</span> <span class="keyword">the</span> <span class="keyword">last</span> server <span class="keyword">or</span> peer connection
+  lp Local port <span class="built_in">number</span> <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> server <span class="operator">or</span> peer connection
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Time related format codes:
+ Time related <span class="built_in">format</span> codes:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; ts&amp;nbsp;&amp;nbsp;&amp;nbsp; Seconds <span class="keyword">since</span> epoch
+  ts Seconds since epoch
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; tu&amp;nbsp;&amp;nbsp;&amp;nbsp; subsecond <span class="property">time</span> (milliseconds)
+  tu subsecond <span class="built_in">time</span> (<span class="built_in">milliseconds</span>)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; tl&amp;nbsp;&amp;nbsp;&amp;nbsp; Local <span class="property">time</span>. Optional strftime format argument
+  tl Local <span class="built_in">time</span>. Optional strftime <span class="built_in">format</span> argument
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; default %d/%b/%Y:%H:%M:%S %z
+    default %d/%b/%Y:%H:%M:%S %z
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; tg&amp;nbsp;&amp;nbsp;&amp;nbsp; GMT <span class="property">time</span>. Optional strftime format argument
+  tg GMT <span class="built_in">time</span>. Optional strftime <span class="built_in">format</span> argument
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; default %d/%b/%Y:%H:%M:%S %z
+    default %d/%b/%Y:%H:%M:%S %z
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; tr&amp;nbsp;&amp;nbsp;&amp;nbsp; Response <span class="property">time</span> (milliseconds)
+  tr Response <span class="built_in">time</span> (<span class="built_in">milliseconds</span>)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; dt&amp;nbsp;&amp;nbsp;&amp;nbsp; Total <span class="property">time</span> spent making DNS lookups (milliseconds)
+  dt Total <span class="built_in">time</span> spent making DNS lookups (<span class="built_in">milliseconds</span>)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; HTTP cache related format codes:
+ HTTP cache related <span class="built_in">format</span> codes:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;h&amp;nbsp;&amp;nbsp;&amp;nbsp; Original request header. Optional header <span class="property">name</span> argument
+  [<span class="keyword">http</span>::]h Original request header. Optional header name argument
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="function_start"><span class="keyword">on</span></span> <span class="keyword">the</span> format header[:[separator]element]
+    <span class="command"><span class="keyword">on</span> <span class="title">the</span> <span class="title">format</span> <span class="title">header</span>[:[<span class="title">separator</span>]<span class="title">element</span>]</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;ha&amp;nbsp;&amp;nbsp;&amp;nbsp; The HTTP request headers <span class="keyword">after</span> adaptation <span class="keyword">and</span> redirection. 
+  [<span class="keyword">http</span>::]ha The HTTP request headers <span class="keyword">after</span> adaptation <span class="operator">and</span> redirection. 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; Optional header <span class="property">name</span> argument <span class="keyword">as</span> <span class="keyword">for</span> &amp;gt;h
+    Optional header name argument <span class="keyword">as</span> <span class="keyword">for</span> h
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;h&amp;nbsp;&amp;nbsp;&amp;nbsp; Reply header. Optional header <span class="property">name</span> argument
+  [<span class="keyword">http</span>::]h Reply header. Optional header name argument
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">as</span> <span class="keyword">for</span> &amp;gt;h
+    <span class="keyword">as</span> <span class="keyword">for</span> h
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]un&amp;nbsp;&amp;nbsp;&amp;nbsp; User <span class="property">name</span>
+  [<span class="keyword">http</span>::]un User name
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]ul&amp;nbsp;&amp;nbsp;&amp;nbsp; User <span class="property">name</span> <span class="keyword">from</span> authentication
+  [<span class="keyword">http</span>::]ul User name <span class="built_in">from</span> authentication
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]ui&amp;nbsp;&amp;nbsp;&amp;nbsp; User <span class="property">name</span> <span class="keyword">from</span> ident
+  [<span class="keyword">http</span>::]ui User name <span class="built_in">from</span> ident
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]us&amp;nbsp;&amp;nbsp;&amp;nbsp; User <span class="property">name</span> <span class="keyword">from</span> SSL
+  [<span class="keyword">http</span>::]us User name <span class="built_in">from</span> SSL
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]ue&amp;nbsp;&amp;nbsp;&amp;nbsp; User <span class="property">name</span> <span class="keyword">from</span> external acl helper
+  [<span class="keyword">http</span>::]ue User name <span class="built_in">from</span> external acl helper
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;Hs&amp;nbsp;&amp;nbsp;&amp;nbsp; HTTP status code sent <span class="keyword">to</span> <span class="keyword">the</span> client
+  [<span class="keyword">http</span>::]Hs HTTP status code sent <span class="built_in">to</span> <span class="operator">the</span> client
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;Hs&amp;nbsp;&amp;nbsp;&amp;nbsp; HTTP status code received <span class="keyword">from</span> <span class="keyword">the</span> next hop
+  [<span class="keyword">http</span>::]Hs HTTP status code received <span class="built_in">from</span> <span class="operator">the</span> next hop
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;bs&amp;nbsp;&amp;nbsp;&amp;nbsp; Number <span class="keyword">of</span> HTTP-equivalent message body bytes 
+  [<span class="keyword">http</span>::]bs Number <span class="operator">of</span> HTTP-equivalent message body <span class="keyword">bytes</span> 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; received <span class="keyword">from</span> <span class="keyword">the</span> next hop, excluding chunked
+    received <span class="built_in">from</span> <span class="operator">the</span> next hop, excluding chunked
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; transfer encoding <span class="keyword">and</span> control messages.
+    transfer encoding <span class="operator">and</span> control messages.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; Generated FTP/Gopher listings are treated <span class="keyword">as</span>
+    Generated FTP/Gopher listings are treated <span class="keyword">as</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; received bodies.
+    received bodies.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]Ss&amp;nbsp;&amp;nbsp;&amp;nbsp; Squid request status (TCP_MISS etc)
+  [<span class="keyword">http</span>::]Ss Squid request status (TCP_MISS etc)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]Sh&amp;nbsp;&amp;nbsp;&amp;nbsp; Squid hierarchy status (DEFAULT_PARENT etc)
+  [<span class="keyword">http</span>::]Sh Squid hierarchy status (DEFAULT_PARENT etc)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]mt&amp;nbsp;&amp;nbsp;&amp;nbsp; MIME content type
+  [<span class="keyword">http</span>::]mt MIME content type
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]rm&amp;nbsp;&amp;nbsp;&amp;nbsp; Request method (GET/POST etc)
+  [<span class="keyword">http</span>::]rm Request method (GET/POST etc)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;rm&amp;nbsp;&amp;nbsp;&amp;nbsp; Request method <span class="keyword">from</span> client
+  [<span class="keyword">http</span>::]rm Request method <span class="built_in">from</span> client
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;rm&amp;nbsp;&amp;nbsp;&amp;nbsp; Request method sent <span class="keyword">to</span> server <span class="keyword">or</span> peer
+  [<span class="keyword">http</span>::]rm Request method sent <span class="built_in">to</span> server <span class="operator">or</span> peer
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]ru&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL <span class="keyword">from</span> client (historic, filtered <span class="keyword">for</span> logging)
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> <span class="built_in">from</span> client (historic, filtered <span class="keyword">for</span> logging)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;ru&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL <span class="keyword">from</span> client
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> <span class="built_in">from</span> client
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;ru&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL sent <span class="keyword">to</span> server <span class="keyword">or</span> peer
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> sent <span class="built_in">to</span> server <span class="operator">or</span> peer
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]rp&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL-Path excluding hostname
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;rp&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL-Path excluding hostname <span class="keyword">from</span> client
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname <span class="built_in">from</span> client
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;rp&amp;nbsp;&amp;nbsp;&amp;nbsp; Request URL-Path excluding hostname sento <span class="keyword">to</span> server <span class="keyword">or</span> peer
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname sento <span class="built_in">to</span> server <span class="operator">or</span> peer
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]rv&amp;nbsp;&amp;nbsp;&amp;nbsp; Request protocol <span class="property">version</span>
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;rv&amp;nbsp;&amp;nbsp;&amp;nbsp; Request protocol <span class="property">version</span> <span class="keyword">from</span> client
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span> <span class="built_in">from</span> client
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;rv&amp;nbsp;&amp;nbsp;&amp;nbsp; Request protocol <span class="property">version</span> sent <span class="keyword">to</span> server <span class="keyword">or</span> peer
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span> sent <span class="built_in">to</span> server <span class="operator">or</span> peer
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]et&amp;nbsp;&amp;nbsp;&amp;nbsp; Tag returned <span class="keyword">by</span> external acl
+  [<span class="keyword">http</span>::]et Tag returned <span class="keyword">by</span> external acl
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]ea&amp;nbsp;&amp;nbsp;&amp;nbsp; Log <span class="type">string</span> returned <span class="keyword">by</span> external acl
+  [<span class="keyword">http</span>::]ea Log <span class="keyword">string</span> returned <span class="keyword">by</span> external acl
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;st&amp;nbsp;&amp;nbsp;&amp;nbsp; Sent reply size including HTTP headers
+  [<span class="keyword">http</span>::]st Sent reply size including HTTP headers
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;st&amp;nbsp;&amp;nbsp;&amp;nbsp; Received request size including HTTP headers. In <span class="keyword">the</span>
+  [<span class="keyword">http</span>::]st Received request size including HTTP headers. In <span class="operator">the</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; case <span class="keyword">of</span> chunked requests <span class="keyword">the</span> chunked encoding metadata
+    <span class="keyword">case</span> <span class="operator">of</span> chunked requests <span class="operator">the</span> chunked encoding metadata
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; are <span class="keyword">not</span> included
+    are <span class="operator">not</span> included
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;gt;sh&amp;nbsp;&amp;nbsp;&amp;nbsp; Received HTTP request headers size
+  [<span class="keyword">http</span>::]sh Received HTTP request headers size
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;sh&amp;nbsp;&amp;nbsp;&amp;nbsp; Sent HTTP reply headers size
+  [<span class="keyword">http</span>::]sh Sent HTTP reply headers size
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]st&amp;nbsp;&amp;nbsp;&amp;nbsp; Request+Reply size including HTTP headers
+  [<span class="keyword">http</span>::]st Request+Reply size including HTTP headers
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;sH&amp;nbsp;&amp;nbsp;&amp;nbsp; Reply high <span class="command">offset</span> sent
+  [<span class="keyword">http</span>::]<span class="variable">sH</span> Reply high <span class="built_in">offset</span> sent
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;sS&amp;nbsp;&amp;nbsp;&amp;nbsp; Upstream object size
+  [<span class="keyword">http</span>::]<span class="variable">sS</span> Upstream object size
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;pt&amp;nbsp;&amp;nbsp;&amp;nbsp; Peer response <span class="property">time</span> <span class="keyword">in</span> milliseconds. The timer starts
+  [<span class="keyword">http</span>::]pt Peer response <span class="built_in">time</span> <span class="operator">in</span> <span class="built_in">milliseconds</span>. The timer starts
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; when <span class="keyword">the</span> <span class="keyword">last</span> request byte <span class="keyword">is</span> sent <span class="keyword">to</span> <span class="keyword">the</span> next hop
+    when <span class="operator">the</span> <span class="keyword">last</span> request <span class="keyword">byte</span> is sent <span class="built_in">to</span> <span class="operator">the</span> next hop
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">and</span> stops when <span class="keyword">the</span> <span class="keyword">last</span> response byte <span class="keyword">is</span> received.
+    <span class="operator">and</span> stops when <span class="operator">the</span> <span class="keyword">last</span> response <span class="keyword">byte</span> is received.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; [http::]&amp;lt;tt&amp;nbsp;&amp;nbsp;&amp;nbsp; Total server-side <span class="property">time</span> <span class="keyword">in</span> milliseconds. The timer 
+  [<span class="keyword">http</span>::]tt Total server-side <span class="built_in">time</span> <span class="operator">in</span> <span class="built_in">milliseconds</span>. The timer 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">starts with</span> <span class="keyword">the</span> <span class="keyword">first</span> connect request (<span class="keyword">or</span> <span class="command">write</span> I/O)
+    starts <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">first</span> connect request (<span class="operator">or</span> <span class="built_in">write</span> I/O)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; sent <span class="keyword">to</span> <span class="keyword">the</span> <span class="keyword">first</span> selected peer. The timer stops
+    sent <span class="built_in">to</span> <span class="operator">the</span> <span class="keyword">first</span> selected peer. The timer stops
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">with</span> <span class="keyword">the</span> <span class="keyword">last</span> I/O <span class="keyword">with</span> <span class="keyword">the</span> <span class="keyword">last</span> peer.
+    <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">last</span> I/O <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">last</span> peer.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; If ICAP <span class="keyword">is</span> enabled, <span class="keyword">the</span> following code becomes available (<span class="keyword">as</span>
+ If ICAP is enabled, <span class="operator">the</span> following code becomes available (<span class="keyword">as</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; well <span class="keyword">as</span> ICAP <span class="command">log</span> codes documented <span class="keyword">with</span> <span class="keyword">the</span> icap_log option):
+ well <span class="keyword">as</span> ICAP <span class="built_in">log</span> codes documented <span class="operator">with</span> <span class="operator">the</span> icap_log option):
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; icap::tt&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Total ICAP processing <span class="property">time</span> <span class="keyword">for</span> <span class="keyword">the</span> HTTP
+  icap::tt Total ICAP processing <span class="built_in">time</span> <span class="keyword">for</span> <span class="operator">the</span> HTTP
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">transaction</span>. The timer ticks when ICAP
+    transaction. The timer <span class="built_in">ticks</span> when ICAP
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; ACLs are checked <span class="keyword">and</span> when ICAP
+    ACLs are checked <span class="operator">and</span> when ICAP
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">transaction</span> <span class="keyword">is</span> <span class="keyword">in</span> progress.
+    transaction is <span class="operator">in</span> progress.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; If adaptation <span class="keyword">is</span> enabled <span class="keyword">the</span> following three codes become available:
+ If adaptation is enabled <span class="operator">the</span> following <span class="constant">three</span> codes become available:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; adapt::&amp;lt;last_h&amp;nbsp;&amp;nbsp;&amp;nbsp; The header <span class="keyword">of</span> <span class="keyword">the</span> <span class="keyword">last</span> ICAP response <span class="keyword">or</span>
+  adapt::last_h The header <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> ICAP response <span class="operator">or</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; meta-information <span class="keyword">from</span> <span class="keyword">the</span> <span class="keyword">last</span> eCAP
+    meta-information <span class="built_in">from</span> <span class="operator">the</span> <span class="keyword">last</span> eCAP
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">transaction</span> related <span class="keyword">to</span> <span class="keyword">the</span> HTTP <span class="keyword">transaction</span>.
+    transaction related <span class="built_in">to</span> <span class="operator">the</span> HTTP transaction.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; Like &amp;lt;h, accepts an optional header <span class="property">name</span>
+    Like h, accepts <span class="operator">an</span> optional header name
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; argument.
+    argument.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; adapt::sum_trs Summed adaptation <span class="keyword">transaction</span> response
+  adapt::sum_trs Summed adaptation transaction response
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">times</span> recorded <span class="keyword">as</span> a comma-separated <span class="type">list</span> <span class="keyword">in</span>
+    times recorded <span class="keyword">as</span> <span class="operator">a</span> <span class="constant">comma</span>-separated list <span class="operator">in</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">the</span> order <span class="keyword">of</span> <span class="keyword">transaction</span> start <span class="property">time</span>. Each <span class="property">time</span>
+    <span class="operator">the</span> order <span class="operator">of</span> transaction start <span class="built_in">time</span>. Each <span class="built_in">time</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; value <span class="keyword">is</span> recorded <span class="keyword">as</span> an <span class="type">integer</span> <span class="type">number</span>,
+    <span class="built_in">value</span> is recorded <span class="keyword">as</span> <span class="operator">an</span> <span class="keyword">integer</span> <span class="built_in">number</span>,
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; representing response <span class="property">time</span> <span class="keyword">of</span> one <span class="keyword">or</span> more
+    representing response <span class="built_in">time</span> <span class="operator">of</span> <span class="constant">one</span> <span class="operator">or</span> more
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; adaptation (ICAP <span class="keyword">or</span> eCAP) <span class="keyword">transaction</span> <span class="keyword">in</span>
+    adaptation (ICAP <span class="operator">or</span> eCAP) transaction <span class="operator">in</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; milliseconds.&amp;nbsp; When a failed <span class="keyword">transaction</span> <span class="keyword">is</span>
+    <span class="built_in">milliseconds</span>. When <span class="operator">a</span> failed transaction is
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; being retried <span class="keyword">or</span> repeated, <span class="keyword">its</span> <span class="property">time</span> <span class="keyword">is</span> <span class="keyword">not</span>
+    being retried <span class="operator">or</span> repeated, its <span class="built_in">time</span> is <span class="operator">not</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; logged individually <span class="keyword">but</span> added <span class="keyword">to</span> <span class="keyword">the</span>
+    logged individually but added <span class="built_in">to</span> <span class="operator">the</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; replacement (next) <span class="keyword">transaction</span>. See also:
+    replacement (next) transaction. See also:
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; adapt::all_trs.
+    adapt::all_trs.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; adapt::all_trs All adaptation <span class="keyword">transaction</span> response <span class="keyword">times</span>.
+  adapt::all_trs All adaptation transaction response times.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; Same <span class="keyword">as</span> adaptation_strs <span class="keyword">but</span> response <span class="keyword">times</span> <span class="keyword">of</span>
+    Same <span class="keyword">as</span> adaptation_strs but response times <span class="operator">of</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; individual transactions are never added
+    individual transactions are never added
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; together. Instead, all <span class="keyword">transaction</span> response
+    together. Instead, all transaction response
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">times</span> are recorded individually.
+    times are recorded individually.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; You can prefix adapt::*_trs format codes <span class="keyword">with</span> adaptation
+ You can prefix adapt::*<span class="title">_trs</span> <span class="built_in">format</span> codes <span class="operator">with</span> adaptation
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; service <span class="property">name</span> <span class="keyword">in</span> curly braces <span class="keyword">to</span> <span class="type">record</span> response <span class="property">time</span>(s) specific
+ service name <span class="operator">in</span> curly braces <span class="built_in">to</span> record response <span class="built_in">time</span>(s) specific
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">to</span> <span class="keyword">that</span> service. For example: %{my_service}adapt::sum_trs
+ <span class="built_in">to</span> that service. For example: %{my_service}adapt::sum_trs
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; The default formats available (which do <span class="keyword">not</span> need re-defining) are:
+ The default formats available (which <span class="built_in">do</span> <span class="operator">not</span> need re-defining) are:
 
-logformat squid&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; %ts.%<span class="number">03</span>tu %<span class="number">6</span>tr %&amp;gt;a %Ss/%<span class="number">03</span>&amp;gt;Hs %&amp;lt;st %rm %ru %un %Sh/%&amp;lt;A %mt
+logformat squid %ts.%<span class="number">03</span>tu %<span class="number">6</span>tr %<span class="operator">a</span> %Ss/%<span class="number">03</span>Hs %st %rm %ru %un %Sh/%A %mt
 
-logformat common&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; %&amp;gt;a %ui %un [%tl] &amp;quot;%rm %ru HTTP/%rv&amp;quot; %&amp;gt;Hs %&amp;lt;st %Ss:%Sh
+logformat common %<span class="operator">a</span> %ui %un [%tl] %rm %ru HTTP/%rv %Hs %st %Ss:%Sh
 
-logformat combined&amp;nbsp;&amp;nbsp; %&amp;gt;a %ui %un [%tl] &amp;quot;%rm %ru HTTP/%rv&amp;quot; %&amp;gt;Hs %&amp;lt;st &amp;quot;%{Referer}&amp;gt;h&amp;quot; &amp;quot;%{User-Agent}&amp;gt;h&amp;quot; %Ss:%Sh
+logformat combined %<span class="operator">a</span> %ui %un [%tl] %rm %ru HTTP/%rv %Hs %st %{Referer}h %{User-Agent}h %Ss:%Sh
 
-logformat referrer&amp;nbsp;&amp;nbsp; %ts.%<span class="number">03</span>tu %&amp;gt;a %{Referer}&amp;gt;h %ru
+logformat referrer %ts.%<span class="number">03</span>tu %<span class="operator">a</span> %{Referer}h %ru
 
-logformat useragent&amp;nbsp; %&amp;gt;a [%tl] &amp;quot;%{User-Agent}&amp;gt;h&amp;quot;
+logformat useragent %<span class="operator">a</span> [%tl] %{User-Agent}h
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; When <span class="keyword">the</span> log_mime_hdrs directive <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">to</span> ON. The squid, common <span class="keyword">and</span> combined
+ When <span class="operator">the</span> log_mime_hdrs directive is <span class="built_in">set</span> <span class="built_in">to</span> ON. The squid, common <span class="operator">and</span> combined
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; formats have a safely encoded <span class="keyword">copy</span> <span class="keyword">of</span> <span class="keyword">the</span> mime headers appended <span class="keyword">to</span> each line
+ formats have <span class="operator">a</span> safely encoded copy <span class="operator">of</span> <span class="operator">the</span> mime headers appended <span class="built_in">to</span> <span class="keyword">each</span> <span class="built_in">line</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; within a pair <span class="keyword">of</span> brackets.
+ <span class="operator">within</span> <span class="operator">a</span> pair <span class="operator">of</span> brackets.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; The common <span class="keyword">and</span> combined formats are <span class="keyword">not</span> quite <span class="constant">true</span> <span class="keyword">to</span> <span class="keyword">the</span> Apache definition.
+ The common <span class="operator">and</span> combined formats are <span class="operator">not</span> quite <span class="constant">true</span> <span class="built_in">to</span> <span class="operator">the</span> Apache definition.
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; The logs <span class="keyword">from</span> Squid <span class="keyword">contain</span> an extra status <span class="keyword">and</span> hierarchy code appended.
+ The logs <span class="built_in">from</span> Squid contain <span class="operator">an</span> extra status <span class="operator">and</span> hierarchy code appended.
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-24T02:51:04.000Z" class="post__time">六月 24, 2011</time><h1 class="post__title"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/">邮件系统维护的常用命令</a></h1></header><div class="post__main"><p>查找发信最多的用户，如果账户被盗用，通常一天会发送成千上万封邮件</p>
-<p>gzip -cd maillog.1.gz |grep &quot;from=&quot;|cut -f 7 -d &quot; &quot;|cut -f 2 -d &quot;&lt;&quot;|sed &#39;s/&gt;,//g&#39;|sed &#39;/^$/d&#39;|grep &quot;@&quot;|awk -F&quot;:&quot; &#39;{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
+<p>gzip -cd maillog.1.gz |grep from=|cut -f 7 -d  |cut -f 2 -d |sed &#39;s/,//g&#39;|sed &#39;/^$/d&#39;|grep @|awk -F: &#39;{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
 <p>查找发现最多的ip：</p>
-<p>cat maillog.1|grep &quot; connect from&quot;|cut -f 8 -d &quot; &quot;|cut -f 2 -d &quot;[“|sed ‘s/]//g’|awk -F”:” ‘{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
+<p>cat maillog.1|grep  connect from|cut -f 8 -d  |cut -f 2 -d [“|sed ‘s/]//g’|awk -F”:” ‘{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
 <p>监控实时日志</p>
-<p>tail -f /var/log/mail/maillog|grep -v pop3|grep -v &quot;User unknown&quot;|grep -v &quot;Connection timed out&quot;|grep -v &quot;Host not found&quot;</p>
+<p>tail -f /var/log/mail/maillog|grep -v pop3|grep -v User unknown|grep -v Connection timed out|grep -v Host not found</p>
 <p>清空邮件队列（慎用）：</p>
 <p>postsuper -d ALL</p>
 <p>删除队列中某个用户的邮件：</p>
-<p>mailq | awk &#39;BEGIN { RS = &quot;&quot; } /nathalie.gervais@foo.com/ { print $1 }&#39; | tr -d &#39;*!&#39;| postsuper -d</p>
-</div><footer class="post__foot u-cf"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+<p>mailq | awk &#39;BEGIN { RS =  } /nathalie.gervais@foo.com/ { print $1 }&#39; | tr -d &#39;*!&#39;| postsuper -d</p>
+</div><footer class="post__foot u-cf"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

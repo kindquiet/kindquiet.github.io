@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>dd_rescue、ddrescue与dd的磁盘复制速度比较 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="dd_rescue、ddrescue与dd的磁盘复制速度比较"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-06-12T08:50:04.000Z" class="post__time">六月 12, 2010</time><h1 class="post__title"><a href="/2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/">dd_rescue、ddrescue与dd的磁盘复制速度比较</a></h1></header><div class="post__main"><p>dd_rescue的速度是最快的。</p>
 <p>下载：<a href="http://www.garloff.de/kurt/linux/ddrescue/" target="_blank" rel="external">http://www.garloff.de/kurt/linux/ddrescue/</a></p>
 <p><a href="http://www.garloff.de/kurt/linux/ddrescue/dd_rescue-1.14.tar.gz" target="_blank" rel="external">http://www.garloff.de/kurt/linux/ddrescue/dd_rescue-1.14.tar.gz</a></p>
-<p>解压make &amp;&amp; make install即可安装。</p>
+<p>解压make  make install即可安装。</p>
 <p>ddrescue 下载：<a href="http://www.gnu.org/software/ddrescue/ddrescue.html" target="_blank" rel="external">http://www.gnu.org/software/ddrescue/ddrescue.html</a></p>
 <p>以下为在sata硬盘上的速度比较：</p>
 <p>dd_rescue -v /dev/sda /dev/sdb</p>
@@ -13,33 +13,32 @@
 
 <span class="http"><span class="attribute">dd_rescue</span>: <span class="string">(info): Logfile: (none), Maxerr: 0</span>
 
-<span class="groovy"><span class="string">dd_rescue:</span> (info): <span class="string">Reverse:</span> no , <span class="string">Trunc:</span> no , <span class="string">interactive:</span> no
-<span class="label">
-dd_rescue:</span> (info): abort on Write <span class="string">errs:</span> no , spArse <span class="string">write:</span> <span class="keyword">if</span> err
-<span class="label">
-dd_rescue:</span> (info): <span class="string">ipos:</span>&amp;nbsp; <span class="number">10870784.0</span>k, <span class="string">opos:</span>&amp;nbsp; <span class="number">10870784.0</span>k, <span class="string">xferd:</span>&amp;nbsp; <span class="number">10870784.0</span>k
+<span class="http"><span class="attribute">dd_rescue</span>: <span class="string">(info): Reverse: no , Trunc: no , interactive: no</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="string">errs:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>, <span class="string">errxfer:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0.0</span>k, <span class="string">succxfer:</span>&amp;nbsp; <span class="number">10870784.0</span>k
+<span class="http"><span class="attribute">dd_rescue</span>: <span class="string">(info): abort on Write errs: no , spArse write: if err</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; +curr.<span class="string">rate:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">70586</span>kB<span class="regexp">/s, avg.rate:&amp;nbsp;&amp;nbsp;&amp;nbsp; 37040kB/</span>s, avg.<span class="string">load:</span> <span class="number">16.7</span>%</span></span></span></span>
-</code></pre><p>&nbsp;</p>
-<p>ddrescue -v —max-retries=-1 /dev/sda /dev/sdb</p>
+<span class="http"><span class="attribute">dd_rescue</span>: <span class="string">(info): ipos: 10870784.0k, opos: 10870784.0k, xferd: 10870784.0k</span>
+
+<span class="http"> <span class="attribute">errs</span>: <span class="string">0, errxfer: 0.0k, succxfer: 10870784.0k</span>
+
+<span class="stylus"> +curr<span class="class">.rate</span>: <span class="number">70586</span>kB/s, avg<span class="class">.rate</span>: <span class="number">37040</span>kB/s, avg<span class="class">.load</span>: <span class="number">16.7%</span></span></span></span></span></span></span></span></span>
+</code></pre><p>ddrescue -v —max-retries=-1 /dev/sda /dev/sdb</p>
 <p>About to copy 81964 MBytes from /dev/sda to /dev/sdb</p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; Starting <span class="string">positions:</span> infile = <span class="number">0</span> B,&amp;nbsp; outfile = <span class="number">0</span> B
+<pre><code> Starting <span class="string">positions:</span> infile = <span class="number">0</span> B, outfile = <span class="number">0</span> B
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Copy block <span class="string">size:</span> <span class="number">128</span> hard blocks
+ Copy block <span class="string">size:</span> <span class="number">128</span> hard blocks
 
 Hard block <span class="string">size:</span> <span class="number">512</span> bytes
 <span class="label">
-Direct:</span> no&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="string">Sparse:</span> no&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="string">Split:</span> yes&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="string">Truncate:</span> no
+Direct:</span> no <span class="string">Sparse:</span> no <span class="string">Split:</span> yes <span class="string">Truncate:</span> no
 
 Press Ctrl-C to interrupt
 <span class="label">
-rescued:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">16834</span> MB,&amp;nbsp; <span class="string">errsize:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span> B,&amp;nbsp; current <span class="string">rate:</span>&amp;nbsp;&amp;nbsp; <span class="number">27983</span> kB/s
-
-&amp;nbsp;&amp;nbsp; <span class="string">ipos:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">16834</span> MB,&amp;nbsp;&amp;nbsp; <span class="string">errors:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0</span>,&amp;nbsp;&amp;nbsp;&amp;nbsp; average <span class="string">rate:</span>&amp;nbsp;&amp;nbsp; <span class="number">29795</span> kB/s
-
-&amp;nbsp;&amp;nbsp; <span class="string">opos:</span>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">16834</span> MB
+rescued:</span> <span class="number">16834</span> MB, <span class="string">errsize:</span> <span class="number">0</span> B, current <span class="string">rate:</span> <span class="number">27983</span> kB/s
+<span class="label">
+ ipos:</span> <span class="number">16834</span> MB, <span class="string">errors:</span> <span class="number">0</span>, average <span class="string">rate:</span> <span class="number">29795</span> kB/s
+<span class="label">
+ opos:</span> <span class="number">16834</span> MB
 
 Copying data...
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/" data-url="http://blog.veryi.com/2010/06/12/w/dd-rescue-e3-80-81ddrescue-e4-b8-8edd-e7-9a-84-e7-a3-81-e7-9b-98-e5-a4-8d-e5-88-b6-e9-80-9f-e5-ba-a6-e6-af-94-e8-be-83/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
@@ -49,4 +48,4 @@ Copying data...
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/06/13/w/e5-9b-bd-e5-86-85-e7-9a-84centos-yum-e6-ba-90-e5-8f-8arpm-e4-bb-93-e5-ba-93/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/06/08/w/e6-b7-bb-e5-8a-a0spf-e8-ae-b0-e5-bd-95-e9-98-b2-e6-ad-a2-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2010/06/13/w/e5-9b-bd-e5-86-85-e7-9a-84centos-yum-e6-ba-90-e5-8f-8arpm-e4-bb-93-e5-ba-93/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2010/06/08/w/e6-b7-bb-e5-8a-a0spf-e8-ae-b0-e5-bd-95-e9-98-b2-e6-ad-a2-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,19 +1,19 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-25T03:30:32.000Z" class="post__time">七月 25, 2013</time><h1 class="post__title"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/">在线文档web浏览-pdf转换为swf</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp; 在线文档协同浏览，在WEB应用中实现百度文库那样可以在线浏览文档的功能。用户上传一个office文档，如doc、ppt、pdf之类的，然后在浏览器里显示出来。doc,ppt,xls,txt需转换为pdf ，分割pdf ，pdf转换为swf 。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-25T03:30:32.000Z" class="post__time">七月 25, 2013</time><h1 class="post__title"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/">在线文档web浏览-pdf转换为swf</a></h1></header><div class="post__main"><p> 在线文档协同浏览，在WEB应用中实现百度文库那样可以在线浏览文档的功能。用户上传一个office文档，如doc、ppt、pdf之类的，然后在浏览器里显示出来。doc,ppt,xls,txt需转换为pdf ，分割pdf ，pdf转换为swf 。</p>
 <p>安装openoffice：</p>
-<p>yum groupinstall &quot;Office Suite and Productivity&quot; -y</p>
+<p>yum groupinstall Office Suite and Productivity -y</p>
 <p>yum list openoffice*</p>
 <p>安装中文语言包</p>
 <p>yum install libreoffice-langpack-zh*</p>
 <p>centos 5 用</p>
-<p>yum groupinstall &quot;Office/Productivity&quot;</p>
+<p>yum groupinstall Office/Productivity</p>
 <p>yum -y install openoffice.org-langpack-zh_CN</p>
 <p>安装x11字体：</p>
 <p>yum install xorg-x11-fonts*</p>
 <p>yum install libXfont</p>
 <p>安装Xvfb：</p>
-<p>yum install&nbsp; xorg-x11-server-Xvfb</p>
+<p>yum install xorg-x11-server-Xvfb</p>
 <p>把pdf转换为swf，对于centos，安装swftools，需要添加rpmforge源，参见<a href="http://veryi.com/w/327.html" title="Link to 中国国内的Centos yum源及rpm仓库" target="_blank" rel="external">中国国内的Centos yum源及rpm仓库</a>：</p>
-<p>rpm -Uhv&nbsp; <a href="http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm" target="_blank" rel="external">http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</a></p>
+<p>rpm -Uhv <a href="http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm" target="_blank" rel="external">http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</a></p>
 <p>centos5: rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a></p>
 <p>yum install swftools -y</p>
 <p>安装xpdf语言包。下载xpdf-chinese-simplified.tar.gz文件，解压到/usr/share/xpdf下。下载字库文件gbsn00lp.ttf 、gkai00mp.ttf 等。</p>
@@ -23,29 +23,29 @@
 
 cd <span class="regexp">/usr/</span>local/src
 
-mv xpdf-chinese-simplified&amp;nbsp; <span class="regexp">/usr/</span>share/xpdf
+mv xpdf-chinese-simplified <span class="regexp">/usr/</span>share/xpdf
 </code></pre><p>cd -</p>
 <p>cp gbsn00lp.ttf gkai00mp.ttf /usr/share/xpdf/xpdf-chinese-simplified/CMap/</p>
 <pre><code>cd <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified
 </code></pre><p>vim add-to-xpdfrc</p>
-<pre><code>cidToUnicode&amp;nbsp;&amp;nbsp; Adobe-GB1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/Adobe-GB1.cidToUnicode
+<pre><code>cidToUnicode Adobe-GB1 <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/Adobe-GB1.cidToUnicode
 
-unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ISO-<span class="number">2022</span>-CN&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/ISO-<span class="number">2022</span>-CN.unicodeMap
+unicodeMap ISO-<span class="number">2022</span>-CN <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/ISO-<span class="number">2022</span>-CN.unicodeMap
 
-unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; EUC-CN&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/EUC-CN.unicodeMap
+unicodeMap EUC-CN <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/EUC-CN.unicodeMap
 
-unicodeMap&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; GBK&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/GBK.unicodeMap
+unicodeMap GBK <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/GBK.unicodeMap
 
-cMapDir&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Adobe-GB1&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
+cMapDir Adobe-GB1 <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
 
-toUnicodeDir&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
+toUnicodeDir <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified/CMap
 
 #----- end Chinese Simplified support <span class="keyword">package</span>
 
 displayCIDFontTT Adobe-GB1 <span class="regexp">/usr/</span>share<span class="regexp">/xpdf/</span>xpdf-chinese-simplified<span class="regexp">/CMap/</span>gkai00mp.ttf
 </code></pre><p>命令行启动测试：</p>
-<p>Xvfb :1 -screen 0 800x600x24 &amp;</p>
-<pre><code>soffice -headless <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot; -nofirstartwizard -display :<span class="number">1</span> &amp;amp;
+<p>Xvfb :1 -screen 0 800x600x24 </p>
+<pre><code>soffice -headless <span class="variable">-accept=</span>socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp; -nofirstartwizard -display :<span class="number">1</span> 
 </code></pre><p>运行和自启动：</p>
 <pre><code>vim <span class="regexp">/etc/i</span>nit.d<span class="regexp">/soffice</span>
 </code></pre><p>以下脚本在centos5 centos6通过</p>
@@ -62,25 +62,25 @@ displayCIDFontTT Adobe-GB1 <span class="regexp">/usr/</span>share<span class="re
 <pre><code>#SOFFICE_PATH=&amp;<span class="string">#39</span>;/usr/lib/libreoffice/<span class="keyword">program</span>/&amp;<span class="string">#39</span>;
 
 SOFFICE_PATH=&amp;<span class="string">#39</span>;/usr/lib64/openoffice.org3/<span class="keyword">program</span>&amp;<span class="string">#39</span>;
-</code></pre><h1 id="SOFFICE_PATH=&#39;/usr/lib/openoffice-org3/program&#39;">SOFFICE_PATH=&#39;/usr/lib/openoffice.org3/program&#39;</h1><pre><code>SOFFICE_ARGS1<span class="subst">=&amp;</span>quot;<span class="attribute">-nofirststartwizard</span> <span class="attribute">-nologo</span> <span class="attribute">-headless</span> <span class="attribute">-display</span> :<span class="variable">$VDISPLAY</span> <span class="subst">&amp;</span>quot;
+</code></pre><h1 id="SOFFICE_PATH=&#39;/usr/lib/openoffice-org3/program&#39;">SOFFICE_PATH=&#39;/usr/lib/openoffice.org3/program&#39;</h1><pre><code>SOFFICE_ARGS1<span class="subst">=-</span>nofirststartwizard <span class="attribute">-nologo</span> <span class="attribute">-headless</span> <span class="attribute">-display</span> :<span class="variable">$VDISPLAY</span> 
 
 SOFFICE_ARGS2<span class="subst">=&amp;</span><span class="variable">#39</span>;<span class="attribute">-accept</span><span class="subst">=</span>socket,host<span class="subst">=</span>localhost,port<span class="subst">=</span><span class="number">8100</span>;urp;StarOffice<span class="built_in">.</span>ServiceManager<span class="subst">&amp;</span><span class="variable">#39</span>;
 
 SOFFICE_PIDFILE<span class="subst">=</span>/<span class="built_in">var</span>/run/soffice<span class="built_in">.</span>bin<span class="built_in">.</span>pid
 </code></pre><p>XVFB=/usr/bin/Xvfb</p>
-<pre><code>XVFB_ARGS=&amp;quot;:<span class="variable">$VDISPLAY</span> -screen <span class="number">0</span> <span class="number">800</span>x600x8 -fbdir /var/run&amp;quot;
+<pre><code>XVFB_ARGS=:<span class="variable">$VDISPLAY</span> -screen <span class="number">0</span> <span class="number">800</span>x600x8 -fbdir /var/run
 
 XVFB_PIDFILE=/var/run/xvfb.pid
 
 <span class="function"><span class="title">start_soffice</span></span>() {
 
-<span class="built_in">echo</span> -n $&amp;quot;Starting OpenOffice&amp;quot;
+<span class="built_in">echo</span> -n <span class="variable">$Starting</span> OpenOffice
 
-<span class="variable">$SOFFICE_PATH</span>/soffice.bin <span class="variable">$SOFFICE_ARGS1</span> <span class="variable">$SOFFICE_ARGS2</span>&amp;nbsp; <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span> &amp;amp;
+<span class="variable">$SOFFICE_PATH</span>/soffice.bin <span class="variable">$SOFFICE_ARGS1</span> <span class="variable">$SOFFICE_ARGS2</span> <span class="number">21</span> 
 
-[ $? <span class="operator">-eq</span> <span class="number">0</span> ] &amp;amp;&amp;amp; <span class="built_in">echo</span>_success || <span class="built_in">echo</span>_failure
+[ $? <span class="operator">-eq</span> <span class="number">0</span> ]  <span class="built_in">echo</span>_success || <span class="built_in">echo</span>_failure
 
-pidof soffice.bin &amp;gt; <span class="variable">$SOFFICE_PIDFILE</span>
+pidof soffice.bin  <span class="variable">$SOFFICE_PIDFILE</span>
 
 <span class="built_in">echo</span>
 
@@ -88,13 +88,13 @@ pidof soffice.bin &amp;gt; <span class="variable">$SOFFICE_PIDFILE</span>
 
 <span class="function"><span class="title">start_xvfb</span></span>() {
 
-<span class="built_in">echo</span> -n $&amp;quot;Starting Xvfb&amp;quot;
+<span class="built_in">echo</span> -n <span class="variable">$Starting</span> Xvfb
 
-<span class="variable">$XVFB</span> <span class="variable">$XVFB_ARGS</span> &amp;gt;/dev/null <span class="number">2</span>&amp;gt;&amp;amp;<span class="number">1</span> &amp;amp;
+<span class="variable">$XVFB</span> <span class="variable">$XVFB_ARGS</span> /dev/null <span class="number">21</span> 
 
-[ $? <span class="operator">-eq</span> <span class="number">0</span> ] &amp;amp;&amp;amp; success || failure
+[ $? <span class="operator">-eq</span> <span class="number">0</span> ]  success || failure
 
-pidofproc Xvfb &amp;gt; <span class="variable">$XVFB_PIDFILE</span>
+pidofproc Xvfb  <span class="variable">$XVFB_PIDFILE</span>
 
 <span class="built_in">echo</span>
 
@@ -112,13 +112,13 @@ start_soffice
 
 <span class="function"><span class="title">stop</span></span>() {
 
-<span class="built_in">echo</span> -n $&amp;quot;Stopping OpenOffice&amp;quot;
+<span class="built_in">echo</span> -n <span class="variable">$Stopping</span> OpenOffice
 
 killproc soffice.bin
 
 <span class="built_in">echo</span>
 
-<span class="built_in">echo</span> -n $&amp;quot;Stopping Xvfb&amp;quot;
+<span class="built_in">echo</span> -n <span class="variable">$Stopping</span> Xvfb
 
 killproc Xvfb
 
@@ -126,7 +126,7 @@ killproc Xvfb
 
 }
 
-<span class="keyword">case</span> &amp;quot;<span class="variable">$1</span>&amp;quot; <span class="keyword">in</span>
+<span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span>
 
 start)
 
@@ -150,11 +150,10 @@ start
 
 *)
 
-<span class="built_in">echo</span> $&amp;quot;Usage: <span class="variable">$0</span> {start|stop|restart}&amp;quot;
+<span class="built_in">echo</span> <span class="variable">$Usage</span>: <span class="variable">$0</span> {start|stop|restart}
 
 <span class="keyword">esac</span>
-</code></pre><p>&nbsp;</p>
-<h1 id="以下centos6_64位可用">以下centos6 64位可用</h1><h1 id="!/bin/bash-1">!/bin/bash</h1><pre><code><span class="preprocessor"># chkconfig: 345 20 80</span>
+</code></pre><h1 id="以下centos6_64位可用">以下centos6 64位可用</h1><h1 id="!/bin/bash-1">!/bin/bash</h1><pre><code><span class="preprocessor"># chkconfig: 345 20 80</span>
 
 <span class="preprocessor"># description: init.d script for headless openoffice.org (2.3+ for RHEL5 64bit)</span>
 
@@ -174,61 +173,61 @@ SOFFICE_ARGS=&amp;<span class="string">#39</span>;-accept=socket,host=localhost,
 
 SOFFICE_PIDFILE=/<span class="keyword">var</span>/run/soffice.bin.pid
 </code></pre><p>start_soffice() {</p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo -n $&amp;quot;Starting OpenOffice.org&amp;quot;
+<pre><code> <span class="built_in">echo</span> -n <span class="variable">$Starting</span> OpenOffice.org
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; $SOFFICE_PATH/soffice.bin $SOFFICE_ARGS &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;
+ <span class="variable">$SOFFICE_PATH</span>/soffice.bin <span class="variable">$SOFFICE_ARGS</span> /dev/null <span class="number">21</span> 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; [ $? -eq 0 ] &amp;amp;&amp;amp; echo_success || echo_failure
+ [ $? <span class="operator">-eq</span> <span class="number">0</span> ]  <span class="built_in">echo</span>_success || <span class="built_in">echo</span>_failure
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; pidof soffice.bin &amp;gt; $SOFFICE_PIDFILE
+ pidof soffice.bin  <span class="variable">$SOFFICE_PIDFILE</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo
-
-}
-
-<span class="operator"><span class="keyword">start</span>() {
-
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; start_soffice
+ <span class="built_in">echo</span>
 
 }
 
-<span class="operator"><span class="keyword">stop</span>() {
+<span class="function"><span class="title">start</span></span>() {
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo -n $&amp;quot;Stopping OpenOffice&amp;quot;
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; killproc soffice
-
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo
+ start_soffice
 
 }
 
-case &amp;quot;$1&amp;quot; in
+<span class="function"><span class="title">stop</span></span>() {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>)
+ <span class="built_in">echo</span> -n <span class="variable">$Stopping</span> OpenOffice
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>
+ killproc soffice
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ <span class="built_in">echo</span>
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>)
+}
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>
+<span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span>
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ start)
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; restart)
+ start
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">stop</span>
+ ;;
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="operator"><span class="keyword">start</span>
+ stop)
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ;;
+ stop
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; *)
+ ;;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; echo $&amp;quot;Usage: $0 {<span class="operator"><span class="keyword">start</span>|<span class="keyword">stop</span>|restart}&amp;quot;</span>
+ restart)
 
-esac
+ stop
+
+ start
+
+ ;;
+
+ *)
+
+ <span class="built_in">echo</span> <span class="variable">$Usage</span>: <span class="variable">$0</span> {start|stop|restart}
+
+<span class="keyword">esac</span>
 </code></pre><p>chmod +x /etc/init.d/soffice</p>
 <pre><code>chkconfig <span class="comment">--add soffice</span>
 
@@ -243,7 +242,7 @@ chkconfig <span class="comment">--list soffice</span>
 <p>pdf2swf -o （swf路径例如 /opt/a/a.swf） -T -z -t -f (pdf路径，例如/opt/a/a.pdf) -s languagedir=/usr/share/xpdf/xpdf-chinese-simplified -s flashversion=9</p>
 <p>如果生成了，那么就说明安装成功了。</p>
 <p>5、最后使用如下转换命令测试：</p>
-<pre><code>pdf2swf <span class="operator">-s</span> languagedir=/usr/share/xpdf/xpdf-chinese-simplified -T <span class="number">9</span> <span class="operator">-s</span> poly2bitmap <span class="operator">-s</span> zoom=<span class="number">150</span> <span class="operator">-s</span> flashversion=<span class="number">9</span> &amp;quot;/opt/<span class="number">123</span>.pdf&amp;quot; -o &amp;quot;/opt/<span class="built_in">test</span>/%.swf&amp;quot;
+<pre><code>pdf2swf <span class="operator">-s</span> languagedir=/usr/share/xpdf/xpdf-chinese-simplified -T <span class="number">9</span> <span class="operator">-s</span> poly2bitmap <span class="operator">-s</span> zoom=<span class="number">150</span> <span class="operator">-s</span> flashversion=<span class="number">9</span> /opt/<span class="number">123</span>.pdf -o /opt/<span class="built_in">test</span>/%.swf
 </code></pre><p>附：</p>
 <pre><code>编译的时候需要一些开发库 libgif-dev jpeglib-dev freetype-dev 等。编译安装swftools：
 
@@ -253,7 +252,7 @@ tar xfz swftools-<span class="number">0</span>.<span class="number">9.1</span>.t
 
 sh ./configure
 
-make &amp;amp;&amp;amp; make install
+make  make install
 
 设置swftools环境变量，使pdf2swf成为一个可执行命令
 
@@ -269,15 +268,15 @@ or check permissions of your X-Server
 
 x桌面导入环境变量 export <span class="keyword">DISPLAY</span>=localhost:1 ，这样就能成功转换。但是，作为服务器是不开 x 的，解决方法是虚拟一个x 桌面 ，
 
-Xvfb :1 -screen 0 800x600x24&amp;amp;
+Xvfb :1 -screen 0 800x600x24
 </code></pre><p>openoffice的服务启动</p>
-<pre><code>soffice -headless <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot; -nofirstartwizard
+<pre><code>soffice -headless <span class="variable">-accept=</span>socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp; -nofirstartwizard
 
 从windows上传txt格式的文档，openoffice都报错说不能识别。把windows的换行符替换为 \n 。
 
 Linux环境配置文件如下：
 
-<span class="variable">openOfficeStartCommand =</span> /usr/lib/openoffice.org3/program/soffice.bin/ -headless\ <span class="variable">-accept=</span>&amp;quot;socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;&amp;quot;\ -nofirststartwizard
+<span class="variable">openOfficeStartCommand =</span> /usr/lib/openoffice.org3/program/soffice.bin/ -headless\ <span class="variable">-accept=</span>socket,<span class="variable">host=</span><span class="number">127.0</span>.<span class="number">0.1</span>,<span class="variable">port=</span><span class="number">8100</span>;urp;\ -nofirststartwizard
 
 <span class="variable">pdfToSwfCommand =</span> /usr/local/swftools/bin/pdf2swf
 
@@ -288,25 +287,24 @@ Linux环境配置文件如下：
 <span class="variable">langc=</span>-s <span class="variable">languagedir=</span>/usr/local/xpdf-chinese-simplified
 
 <span class="variable">port =</span> <span class="number">8100</span>
-</code></pre><p>排错：soffice -headless -accept=&quot;socket,host=127.0.0.1,port=8100;urp;&quot; -nofirstartwizard</p>
-<pre><code><span class="attribute">FreeFontPath</span>: <span class="string">FPE &amp;quot;unix/:7100&amp;quot; refcount is 2, should be 1; fixing.</span>
+</code></pre><p>排错：soffice -headless -accept=socket,host=127.0.0.1,port=8100;urp; -nofirstartwizard</p>
+<pre><code><span class="attribute">FreeFontPath</span>: <span class="string">FPE unix/:7100 refcount is 2, should be 1; fixing.</span>
 
 <span class="delphi">The XKEYBOARD keymap compiler (xkbcomp) reports:
 
-&amp;gt; Error:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Can&amp;<span class="string">#39</span>;t find <span class="keyword">file</span> &amp;quot;unknown&amp;quot; <span class="keyword">for</span> geometry include
+ Error: Can&amp;<span class="string">#39</span>;t find <span class="keyword">file</span> unknown <span class="keyword">for</span> geometry include
 
-&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Exiting
+ Exiting
 
-&amp;gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Abandoning geometry <span class="keyword">file</span> &amp;quot;<span class="keyword">default</span>&amp;quot;
+ Abandoning geometry <span class="keyword">file</span> <span class="keyword">default</span>
 
 Errors from xkbcomp are <span class="keyword">not</span> fatal <span class="keyword">to</span> the X server</span>
 </code></pre><p>解决方法，安装字体：yum install xorg-x11-fonts*</p>
-<p>&nbsp;</p>
-</div><footer class="post__foot u-cf"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-24T08:09:17.000Z" class="post__time">七月 24, 2013</time><h1 class="post__title"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/">禁止WordPress半角符号自动变成全角符号</a></h1></header><div class="post__main"><p>&nbsp;&nbsp;&nbsp; WordPress默认情况下会将代码的半角符号自动转成全角符号，防止外部源代码在网页上执行。例如会把—装换为－。在没有使用代码高亮插件时，直接粘贴在网页上的代码，就不能直接使用，必须将符号改为半角才行。对于经常需要在文章中使用代码的朋友来说，可以禁用WordPress的默认转换功能。</p>
+</div><footer class="post__foot u-cf"><a href="/2013/07/25/w/e5-9c-a8-e7-ba-bf-e6-96-87-e6-a1-a3web-e6-b5-8f-e8-a7-88-pdf-e8-bd-ac-e6-8d-a2-e4-b8-baswf/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-24T08:09:17.000Z" class="post__time">七月 24, 2013</time><h1 class="post__title"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/">禁止WordPress半角符号自动变成全角符号</a></h1></header><div class="post__main"><p> WordPress默认情况下会将代码的半角符号自动转成全角符号，防止外部源代码在网页上执行。例如会把—装换为－。在没有使用代码高亮插件时，直接粘贴在网页上的代码，就不能直接使用，必须将符号改为半角才行。对于经常需要在文章中使用代码的朋友来说，可以禁用WordPress的默认转换功能。</p>
 <p>方法一</p>
-<pre><code>修改当前主题的functions<span class="built_in">.</span>php文件，例如：wp<span class="attribute">-content</span>/themes/amazinggrace/functions<span class="built_in">.</span>php，在<span class="subst">&amp;</span><span class="literal">lt</span>;<span class="subst">?</span>php 和 <span class="subst">?&amp;</span><span class="literal">gt</span>; 之间加入下面的代码即可：
+<pre><code>修改当前主题的functions.php文件，例如：wp-content/themes/amazinggrace/functions.php，在?php 和 ? 之间加入下面的代码即可：
 
-remove_filter(<span class="subst">&amp;</span><span class="variable">#39</span>;the_content<span class="subst">&amp;</span><span class="variable">#39</span>;, <span class="subst">&amp;</span><span class="variable">#39</span>;wptexturize<span class="subst">&amp;</span><span class="variable">#39</span>;);
+remove_filter(&amp;<span class="string">#39</span>;the_content&amp;<span class="string">#39</span>;, &amp;<span class="string">#39</span>;wptexturize&amp;<span class="string">#39</span>;);
 
 这种方法的好处就是直接修改的是主题包中的文件，因此我们在不更换主题的情况下，wordpress可以自由升级；同样的，其缺点就是，当我们更换了主题之后，就要重新进行添加代码。
 </code></pre><p>方法二</p>
@@ -320,7 +318,7 @@ remove_filter(<span class="subst">&amp;</span><span class="variable">#39</span>;
 <pre><code>这样，别人复制下来的函数代码标点就不会是全角，无法使用了！
 
 方法二是直接修改WordPress程序文件的，只要更新WordPress，就得重新修改，所以推荐使用方法一。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p>&nbsp; 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p> 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
 <p>升级一下：</p>
 <pre><code># yum <span class="keyword">update</span> -<span class="literal">y</span>
 </code></pre><h1 id="cat_/etc/issue-net">cat /etc/issue.net</h1><pre><code>CentOS release <span class="number">6.4</span> (Final)
@@ -361,14 +359,13 @@ COMMIT
 </code></pre><p>重启</p>
 <pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/iptables restart</span>
 </code></pre><p>vi /etc/selinux/config</p>
-<p>&nbsp;</p>
 <pre><code>安装mysql
 
 yum install wget <span class="attribute">-y</span>
 
 wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
 
-tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span><span class="subst">&amp;</span>nbsp; mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
 
 cd /usr/<span class="built_in">local</span>
 
@@ -427,7 +424,7 @@ log-error=mysqld.log \
 long_query_time = 2 \
 
 &amp;#39; my.cnf</span>
-</code></pre><p>vim&nbsp; my.cnf</p>
+</code></pre><p>vim my.cnf</p>
 <p>/usr/sbin/groupadd -g 200 mysql</p>
 <pre><code><span class="regexp">/usr/</span>sbin/useradd -u <span class="number">200</span> -g mysql mysql
 
@@ -461,7 +458,7 @@ chmod +x <span class="regexp">/etc/</span>init.d/mysqld
 
 <span class="regexp">/sbin/</span>chkconfig --list mysqld
 
-echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
 
 cat <span class="regexp">/etc/</span>ld.so.conf
 
@@ -477,22 +474,21 @@ mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span
 
 chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
 
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
 
 . <span class="regexp">/etc/</span>profile
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql -u root -veryi.com
-</code></pre><p>Welcome to the MySQL monitor.&nbsp; Commands end with ; or \g.</p>
+</code></pre><p>Welcome to the MySQL monitor. Commands end with ; or \g.</p>
 <pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
 
 Server <span class="property">version</span>: <span class="number">5.5</span><span class="number">.32</span>-<span class="command">log</span> MySQL Community Server (GPL)
-</code></pre><p>mysql&gt; \s</p>
+</code></pre><p>mysql \s</p>
 <hr>
-<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql&amp;nbsp; Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
-</code></pre><p>&nbsp;</p>
-<p>安装php5.5 httpd2.2.15，添加yum源：</p>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
+</code></pre><p>安装php5.5 httpd2.2.15，添加yum源：</p>
 <pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
 
 rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
@@ -522,10 +518,10 @@ chkconfig <span class="comment">--list mysqld</span>
 yum --noplugins --enablerepo=remi,remi-<span class="keyword">test</span> install php-pecl-apc php-<span class="keyword">cli</span> php-pear php-pdo php-mysql php-pgsql php-pecl-mongo php-sqlite php-pecl-memcache php-pecl-memcached php-gd php-mbstring php-mcrypt php-xml -<span class="literal">y</span>
 
 /etc/init.<span class="keyword">d</span>/httpd restart
-</code></pre><p>Q&amp;A：</p>
+</code></pre><p>QA：</p>
 <pre><code>yum通过代理升级：
 
-export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>&amp;quot;
+export http_proxy=http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>
 </code></pre><p>装了epel的扩展后，执行yum报错：</p>
 <pre><code><span class="string">Error:</span> Cannot retrieve metalink <span class="keyword">for</span> <span class="string">repository:</span> epel. Please verify its path and <span class="keyword">try</span> again
 
@@ -533,8 +529,8 @@ export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span c
 
 baseurl=<span class="string">http:</span><span class="comment">//download.fedoraproject.org/pub/epel/6/$basearch</span>
 
-#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6&amp;amp;arch=$basearch</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php&nbsp; （这两个如果没有下面代码可以不用修改）</p>
+#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6arch=$basearch</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p> 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php （这两个如果没有下面代码可以不用修改）</p>
 <p>vim uc_server/data/config.inc.php</p>
 <pre><code>vim config/config_global<span class="built_in">.</span>php
 
@@ -550,21 +546,21 @@ vim config/config_ucenter<span class="built_in">.</span>php
 
 <span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERSALT<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">311254</span><span class="subst">&amp;</span><span class="variable">#39</span>;);
 
-修改完后，Ucenter创始人的密码就变为:<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="number">123456789</span> ，这时可以<span class="subst">&amp;</span>ldquo;网址/uc_server/admin<span class="built_in">.</span>php<span class="subst">&amp;</span>quot;登录到Ucenter里再把密码改为自己想要的就可以了。
+修改完后，Ucenter创始人的密码就变为: <span class="number">123456789</span> ，这时可以网址/uc_server/admin<span class="built_in">.</span>php登录到Ucenter里再把密码改为自己想要的就可以了。
 </code></pre><p>安全提问config/config_global.php</p>
-<pre><code>&amp;nbsp;$admincp = <span class="keyword">array</span>();
+<pre><code>$admincp = <span class="keyword">array</span>();
 
-&amp;nbsp;$admincp[<span class="string">'forcesecques'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 管理人员必须设置安全提问才能进入系统设置, 0=否, 1=是[安全]</span>
+$admincp[<span class="string">'forcesecques'</span>] = <span class="number">0</span>; <span class="comment">// 管理人员必须设置安全提问才能进入系统设置, 0=否, 1=是[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'checkip'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 后台管理操作是否验证管理员的 IP, 1=是[安全], 0=否。仅在管理员无法登陆后台时设置 0。</span>
+$admincp[<span class="string">'checkip'</span>] = <span class="number">1</span>; <span class="comment">// 后台管理操作是否验证管理员的 IP, 1=是[安全], 0=否。仅在管理员无法登陆后台时设置 0。</span>
 
-&amp;nbsp;$admincp[<span class="string">'tpledit'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 是否允许在线编辑论坛模板 1=是 0=否[安全]</span>
+$admincp[<span class="string">'tpledit'</span>] = <span class="number">0</span>; <span class="comment">// 是否允许在线编辑论坛模板 1=是 0=否[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'runquery'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台运行 SQL 语句 1=是 0=否[安全]</span>
+$admincp[<span class="string">'runquery'</span>] = <span class="number">1</span>; <span class="comment">// 是否允许后台运行 SQL 语句 1=是 0=否[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'dbimport'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台恢复论坛数据&amp;nbsp; 1=是 0=否[安全]</span>
+$admincp[<span class="string">'dbimport'</span>] = <span class="number">1</span>; <span class="comment">// 是否允许后台恢复论坛数据 1=是 0=否[安全]</span>
 
-&amp;nbsp;
+
 
 以下测试无效：
 
@@ -575,4 +571,4 @@ update bbs_ucenter_members <span class="keyword">set</span> password=md5(&amp;<s
 <pre><code>答案是 点击右下角桃心留言图标，就可以展开，看到所有的文字了。
 </code></pre><p>Q:如何在朋友圈里发纯文字？</p>
 <pre><code><span class="label">A:</span>在朋友圈页面顶部的相机图标上长按，就可以只发文字不发图像了。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/06/06/w/e5-be-ae-e4-bf-a1-e5-b8-b8-e7-94-a8-e6-8a-80-e5-b7-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/06/06/w/e5-be-ae-e4-bf-a1-e5-b8-b8-e7-94-a8-e6-8a-80-e5-b7-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

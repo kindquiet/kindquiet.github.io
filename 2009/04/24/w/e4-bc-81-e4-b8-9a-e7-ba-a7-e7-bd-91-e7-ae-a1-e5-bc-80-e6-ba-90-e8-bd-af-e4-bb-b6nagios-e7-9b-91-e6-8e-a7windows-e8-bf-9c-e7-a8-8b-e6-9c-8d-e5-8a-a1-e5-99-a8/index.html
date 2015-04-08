@@ -1,14 +1,12 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>企业级网管开源软件nagios 监控Windows远程服务器 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="企业级网管开源软件nagios 监控Windows远程服务器"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-24T07:08:35.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/">企业级网管开源软件nagios 监控Windows远程服务器</a></h1></header><div class="post__main"><p>在nagios的libexec下有check_nt这个插件,它就是用来检查windows机器的服务的,其功能类似于上一章讲的check_nrpe.不过还需要搭配另外一个软件NSClient,它则类似于NRPE</p>
-<p>&nbsp;,NSClient与nrpe最大的区别就是:</p>
+<p>,NSClient与nrpe最大的区别就是:</p>
 <p>—被监控机上安装有nrpe,并且还有插件,最终的监控是由这些插件来进行的.当监控主机将监控请求发给nrpe后,nrpe调用插件来完成监控.—NSClient则不同,被监控机上只安装NSClient,没有任何的插件.当监控主机将监控请求发给NSClient后,NSClient直接完成监控,所有的监控是由NSClient完成的.</p>
-<p>&nbsp;</p>
 <p>安装NSClient</p>
 <p>从</p>
 <p><a href="http://sourceforge.net/projects/nscplus" target="_blank" rel="external">http://sourceforge.net/projects/nscplus</a></p>
 <p>下载NSClient++-Win32-0.3.5.msi(或者NSClient++-x64-0.3.5.msi，64位机)，双击安装。</p>
-<p>在开始-运行里面输入services.msc打开&rdquo;服务&rdquo;，启动服务:</p>
+<p>在开始-运行里面输入services.msc打开服务，启动服务:</p>
 <p>NSClientpp</p>
-<p>&nbsp;</p>
 <p>编辑NSC.ini文件，</p>
 <p>C:\Program Files\NSClient++</p>
 <p>将 [modules]部分的所有模块前面的注释都去掉,除了CheckWMI.dll， RemoteConfiguration.dll，SysTray.dll。</p>
@@ -18,29 +16,26 @@
 <p>以逗号相隔.这个地方是支持子网的,如果写成192.168.0.0/24则表示该子网内的所有机器都可以访问.如果这个地方是空白则表示所有的主机都可以连接上来.</p>
 <p>[NSClient]的’port’选项取消注释,,这是NSClient的默认监听端口</p>
 <p>port=12489</p>
-<p>查看服务，在cmd里面执行netstat &ndash;an可以看到已经开始监听tcp的12489端口了。</p>
+<p>查看服务，在cmd里面执行netstat an可以看到已经开始监听tcp的12489端口了。</p>
 <p>防火墙也要打开tcp的12489端口,否则nagios检查此服务的时候会报socket 超时错误.</p>
-<p>&nbsp;</p>
 <p>监控主机的配置</p>
 <p>在监控主机上做的就是:</p>
 <p>1.安装监控windows的插件(已经默认安装了,check_nt)</p>
 <p>2.定义命令</p>
 <p>3.定义要监控的项目</p>
-<p>&nbsp;</p>
 <p>cd /usr/local/nagios/etc/servers</p>
 <p>vi services.cfg</p>
 <p>//这里只举一个例子</p>
 <p>define service {</p>
-<p>&nbsp;&nbsp;&nbsp; use remote-service</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eblog</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; service_description&nbsp;&nbsp; CPULOAD</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check_nt!CPULOAD! -l 5,80,95</p>
+<p> use remote-service</p>
+<p> host_name eblog</p>
+<p> service_description CPULOAD</p>
+<p> check_command check_nt!CPULOAD! -l 5,80,95</p>
 <p>}</p>
 <p>如果NSClient设置了连接需要密码,则应写成如下格式</p>
-<p>check_nt!CPULOAD!&nbsp; -s PASSWORD -l 5,80,95</p>
+<p>check_nt!CPULOAD! -s PASSWORD -l 5,80,95</p>
 <p>可以通过以下指令测试设备响应是否正常</p>
 <p>/usr/local/nagios/libexec/check_nt -H 主机IP -p 12489 -s 密码 -v UPTIME </p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/" data-url="http://blog.veryi.com/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -48,4 +43,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e5-b0-91-e7-9d-a1-e7-9a-84-e5-a5-bd-e5-a4-84/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/e5-b0-91-e7-9d-a1-e7-9a-84-e5-a5-bd-e5-a4-84/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

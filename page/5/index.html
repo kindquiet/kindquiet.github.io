@@ -1,15 +1,15 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-18T03:12:53.000Z" class="post__time">七月 18, 2013</time><h1 class="post__title"><a href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/">centos Linux 禁止和开启ping</a></h1></header><div class="post__main"><p>禁止ping：</p>
-<pre><code>echo <span class="number">1</span> &amp;gt; /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
+<pre><code>echo <span class="number">1</span>  /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
 </code></pre><p>允许ping：</p>
-<pre><code>echo <span class="number">0</span> &amp;gt; /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
+<pre><code>echo <span class="number">0</span>  /<span class="keyword">proc</span>/sys/net/ipv4/icmp_echo_ignore_all
 
 防火墙/etc/sysconfig/iptables添加
 
 -A <span class="type">INPUT</span> -p icmp -m icmp --icmp-<span class="keyword">type</span> echo-request -m state --state <span class="type">NEW</span> -j <span class="type">ACCEPT</span>
 </code></pre><p>/etc/init.d/iptables restart</p>
 <p>iptables -L -nv</p>
-<pre><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">7</span>&amp;nbsp;&amp;nbsp; <span class="number">588</span> ACCEPT&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; icmp --&amp;nbsp; *&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; *&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; state NEW icmp <span class="class"><span class="keyword">type</span> 8</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p>&nbsp; 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
+<pre><code><span class="number">7</span> <span class="number">588</span> ACCEPT icmp -- * * <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> state NEW icmp <span class="class"><span class="keyword">type</span> 8</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/18/w/centos-linux-e7-a6-81-e6-ad-a2-e5-92-8c-e5-bc-80-e5-90-afping/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p> 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
 <p>升级一下：</p>
 <pre><code># yum <span class="keyword">update</span> -<span class="literal">y</span>
 </code></pre><h1 id="cat_/etc/issue-net">cat /etc/issue.net</h1><pre><code>CentOS release <span class="number">6.4</span> (Final)
@@ -50,14 +50,13 @@ COMMIT
 </code></pre><p>重启</p>
 <pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/iptables restart</span>
 </code></pre><p>vi /etc/selinux/config</p>
-<p>&nbsp;</p>
 <pre><code>安装mysql
 
 yum install wget <span class="attribute">-y</span>
 
 wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
 
-tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span><span class="subst">&amp;</span>nbsp; mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
 
 cd /usr/<span class="built_in">local</span>
 
@@ -116,7 +115,7 @@ log-error=mysqld.log \
 long_query_time = 2 \
 
 &amp;#39; my.cnf</span>
-</code></pre><p>vim&nbsp; my.cnf</p>
+</code></pre><p>vim my.cnf</p>
 <p>/usr/sbin/groupadd -g 200 mysql</p>
 <pre><code><span class="regexp">/usr/</span>sbin/useradd -u <span class="number">200</span> -g mysql mysql
 
@@ -150,7 +149,7 @@ chmod +x <span class="regexp">/etc/</span>init.d/mysqld
 
 <span class="regexp">/sbin/</span>chkconfig --list mysqld
 
-echo &amp;quot;<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib&amp;quot; &amp;gt;&amp;gt; <span class="regexp">/etc/</span>ld.so.conf
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
 
 cat <span class="regexp">/etc/</span>ld.so.conf
 
@@ -166,22 +165,21 @@ mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span
 
 chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
 
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after &amp;gt; <span class="regexp">/etc/</span>profile.d/mysql.sh
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
 
 . <span class="regexp">/etc/</span>profile
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
 
 <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql -u root -veryi.com
-</code></pre><p>Welcome to the MySQL monitor.&nbsp; Commands end with ; or \g.</p>
+</code></pre><p>Welcome to the MySQL monitor. Commands end with ; or \g.</p>
 <pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
 
 Server <span class="property">version</span>: <span class="number">5.5</span><span class="number">.32</span>-<span class="command">log</span> MySQL Community Server (GPL)
-</code></pre><p>mysql&gt; \s</p>
+</code></pre><p>mysql \s</p>
 <hr>
-<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql&amp;nbsp; Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
-</code></pre><p>&nbsp;</p>
-<p>安装php5.5 httpd2.2.15，添加yum源：</p>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
+</code></pre><p>安装php5.5 httpd2.2.15，添加yum源：</p>
 <pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
 
 rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
@@ -211,10 +209,10 @@ chkconfig <span class="comment">--list mysqld</span>
 yum --noplugins --enablerepo=remi,remi-<span class="keyword">test</span> install php-pecl-apc php-<span class="keyword">cli</span> php-pear php-pdo php-mysql php-pgsql php-pecl-mongo php-sqlite php-pecl-memcache php-pecl-memcached php-gd php-mbstring php-mcrypt php-xml -<span class="literal">y</span>
 
 /etc/init.<span class="keyword">d</span>/httpd restart
-</code></pre><p>Q&amp;A：</p>
+</code></pre><p>QA：</p>
 <pre><code>yum通过代理升级：
 
-export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>&amp;quot;
+export http_proxy=http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>
 </code></pre><p>装了epel的扩展后，执行yum报错：</p>
 <pre><code><span class="string">Error:</span> Cannot retrieve metalink <span class="keyword">for</span> <span class="string">repository:</span> epel. Please verify its path and <span class="keyword">try</span> again
 
@@ -222,8 +220,8 @@ export http_proxy=&amp;quot;http://yum-<span class="keyword">user</span>:<span c
 
 baseurl=<span class="string">http:</span><span class="comment">//download.fedoraproject.org/pub/epel/6/$basearch</span>
 
-#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6&amp;amp;arch=$basearch</span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p>&nbsp; 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php&nbsp; （这两个如果没有下面代码可以不用修改）</p>
+#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6arch=$basearch</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p> 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php （这两个如果没有下面代码可以不用修改）</p>
 <p>vim uc_server/data/config.inc.php</p>
 <pre><code>vim config/config_global<span class="built_in">.</span>php
 
@@ -239,21 +237,21 @@ vim config/config_ucenter<span class="built_in">.</span>php
 
 <span class="class"><span class="keyword">define</span></span>(<span class="subst">&amp;</span><span class="variable">#39</span>;UC_FOUNDERSALT<span class="subst">&amp;</span><span class="variable">#39</span>;,<span class="subst">&amp;</span><span class="variable">#39</span>;<span class="number">311254</span><span class="subst">&amp;</span><span class="variable">#39</span>;);
 
-修改完后，Ucenter创始人的密码就变为:<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; <span class="number">123456789</span> ，这时可以<span class="subst">&amp;</span>ldquo;网址/uc_server/admin<span class="built_in">.</span>php<span class="subst">&amp;</span>quot;登录到Ucenter里再把密码改为自己想要的就可以了。
+修改完后，Ucenter创始人的密码就变为: <span class="number">123456789</span> ，这时可以网址/uc_server/admin<span class="built_in">.</span>php登录到Ucenter里再把密码改为自己想要的就可以了。
 </code></pre><p>安全提问config/config_global.php</p>
-<pre><code>&amp;nbsp;$admincp = <span class="keyword">array</span>();
+<pre><code>$admincp = <span class="keyword">array</span>();
 
-&amp;nbsp;$admincp[<span class="string">'forcesecques'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 管理人员必须设置安全提问才能进入系统设置, 0=否, 1=是[安全]</span>
+$admincp[<span class="string">'forcesecques'</span>] = <span class="number">0</span>; <span class="comment">// 管理人员必须设置安全提问才能进入系统设置, 0=否, 1=是[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'checkip'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 后台管理操作是否验证管理员的 IP, 1=是[安全], 0=否。仅在管理员无法登陆后台时设置 0。</span>
+$admincp[<span class="string">'checkip'</span>] = <span class="number">1</span>; <span class="comment">// 后台管理操作是否验证管理员的 IP, 1=是[安全], 0=否。仅在管理员无法登陆后台时设置 0。</span>
 
-&amp;nbsp;$admincp[<span class="string">'tpledit'</span>] = <span class="number">0</span>;&amp;nbsp; <span class="comment">// 是否允许在线编辑论坛模板 1=是 0=否[安全]</span>
+$admincp[<span class="string">'tpledit'</span>] = <span class="number">0</span>; <span class="comment">// 是否允许在线编辑论坛模板 1=是 0=否[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'runquery'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台运行 SQL 语句 1=是 0=否[安全]</span>
+$admincp[<span class="string">'runquery'</span>] = <span class="number">1</span>; <span class="comment">// 是否允许后台运行 SQL 语句 1=是 0=否[安全]</span>
 
-&amp;nbsp;$admincp[<span class="string">'dbimport'</span>] = <span class="number">1</span>;&amp;nbsp; <span class="comment">// 是否允许后台恢复论坛数据&amp;nbsp; 1=是 0=否[安全]</span>
+$admincp[<span class="string">'dbimport'</span>] = <span class="number">1</span>; <span class="comment">// 是否允许后台恢复论坛数据 1=是 0=否[安全]</span>
 
-&amp;nbsp;
+
 
 以下测试无效：
 
@@ -267,39 +265,38 @@ update bbs_ucenter_members <span class="keyword">set</span> password=md5(&amp;<s
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/06/06/w/e5-be-ae-e4-bf-a1-e5-b8-b8-e7-94-a8-e6-8a-80-e5-b7-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-05-24T09:12:01.000Z" class="post__time">五月 24, 2013</time><h1 class="post__title"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/">postfix反垃圾邮件设置</a></h1></header><div class="post__main"><p>增加防止发件人身份伪造的配置：</p>
 <h1 id="smtpd_related_config">smtpd related config</h1><pre><code><span class="constant">smtpd_recipient_restrictions</span> =
 
-&amp;nbsp; permit_mynetworks,
+ permit_mynetworks,
 
-&amp;nbsp; permit_sasl_authenticated,
+ permit_sasl_authenticated,
 
-<span class="comment">#&amp;nbsp; reject_non_fqdn_hostname,</span>
+<span class="comment"># reject_non_fqdn_hostname,</span>
 
-&amp;nbsp; reject_non_fqdn_sender,
+ reject_non_fqdn_sender,
 
-&amp;nbsp; reject_non_fqdn_recipient,
+ reject_non_fqdn_recipient,
 
-&amp;nbsp; reject_unauth_destination,
+ reject_unauth_destination,
 
-&amp;nbsp; reject_unauth_pipelining,
+ reject_unauth_pipelining,
 
-&amp;nbsp; reject_invalid_hostname
-</code></pre><p>&nbsp;</p>
-<p>smtpd_sender_restrictions =</p>
-<pre><code>&amp;nbsp; permit_mynetworks,
+ reject_invalid_hostname
+</code></pre><p>smtpd_sender_restrictions =</p>
+<pre><code>permit_mynetworks,
 
-&amp;nbsp; check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
+check_recipient_access <span class="built_in">hash</span>:/etc/postfix/<span class="built_in">local</span>_recipient,
 
-&amp;nbsp; permit_sasl_authenticated,
+permit_sasl_authenticated,
 
-&amp;nbsp; reject_sender_login_mismatch,
+reject_sender_login_mismatch,
 
-&amp;nbsp; reject_authenticated_sender_login_mismatch,
+reject_authenticated_sender_login_mismatch,
 
-&amp;nbsp; reject_unauthenticated_sender_login_mismatch,
+reject_unauthenticated_sender_login_mismatch,
 
-&amp;nbsp; reject_unknown_sender_domain
+reject_unknown_sender_domain
 </code></pre><h1 id="SMTP_AUTH_config_here">SMTP AUTH config here</h1><pre><code><span class="setting">broken_sasl_auth_clients = <span class="value"><span class="keyword">yes</span></span></span>
 
 <span class="setting">smtpd_sasl_auth_enable = <span class="value"><span class="keyword">yes</span></span></span>
 
 <span class="setting">smtpd_sasl_security_options = <span class="value">noanonymous</span></span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/05/24/w/postfix-e5-8f-8d-e5-9e-83-e5-9c-be-e9-82-ae-e4-bb-b6-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

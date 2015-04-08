@@ -1,13 +1,13 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-12-12T09:30:26.000Z" class="post__time">十二月 12, 2012</time><h1 class="post__title"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/">wordpress手工升级到3.5</a></h1></header><div class="post__main"><p>&nbsp; 自动升级失败，改用手工升级。升级前先备份网站和数据库。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-12-12T09:30:26.000Z" class="post__time">十二月 12, 2012</time><h1 class="post__title"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/">wordpress手工升级到3.5</a></h1></header><div class="post__main"><p> 自动升级失败，改用手工升级。升级前先备份网站和数据库。</p>
 <p>下载：</p>
 <p>wget <a href="http://cn.wordpress.org/wordpress-3.5-zh_CN.zip" target="_blank" rel="external">http://cn.wordpress.org/wordpress-3.5-zh_CN.zip</a></p>
 <pre><code><span class="title">unzip</span> wordpress-<span class="number">3</span>.<span class="number">5</span>-zh_CN.zip
 </code></pre><p>lls -F</p>
-<pre><code><span class="built_in">index</span>.php&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-activate.php&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-comments-post.php&amp;nbsp; <span class="keyword">wp</span>-cron.php&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-load.php&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-settings.php&amp;nbsp;&amp;nbsp; xmlrpc.php
+<pre><code>index<span class="class">.php</span> wp-activate<span class="class">.php</span> wp-comments-post<span class="class">.php</span> wp-cron<span class="class">.php</span> wp-load<span class="class">.php</span> wp-settings<span class="class">.php</span> xmlrpc<span class="class">.php</span>
 
-license.txt&amp;nbsp; <span class="keyword">wp</span>-admin/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-config-sample.php&amp;nbsp; <span class="keyword">wp</span>-includes/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-login.php&amp;nbsp; <span class="keyword">wp</span>-signup.php
+license<span class="class">.txt</span> wp-admin/ wp-config-sample<span class="class">.php</span> wp-includes/ wp-login<span class="class">.php</span> wp-signup<span class="class">.php</span>
 
-readme.html&amp;nbsp; <span class="keyword">wp</span>-blog-header.php&amp;nbsp; <span class="keyword">wp</span>-content/&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-links-opml.php&amp;nbsp; <span class="keyword">wp</span>-mail.php&amp;nbsp;&amp;nbsp; <span class="keyword">wp</span>-trackback.php
+readme<span class="class">.html</span> wp-blog-<span class="tag">header</span><span class="class">.php</span> wp-<span class="attribute">content</span>/ wp-links-opml<span class="class">.php</span> wp-mail<span class="class">.php</span> wp-trackback.php
 </code></pre><p>开始升级：</p>
 <p>进入网站wordpress根目录</p>
 <p>mkdir ../old</p>
@@ -35,15 +35,15 @@ cp ..<span class="regexp">/old/</span>wp-content<span class="regexp">/plugins/</
 svn: REPORT <span class="keyword">of</span> &amp;<span class="string">#39</span>;/svn/.../!svn/vcc/<span class="keyword">default</span>&amp;<span class="string">#39</span>;: <span class="number">200</span> OK
 
 一直认为是svn服务的问题，用多种方案不能解决问题，用了大量时间排错debug，甚至计划重建版本库。查看nginx日志是发现：
-</code></pre><p>[crit] 17496#0: *31428 open() &quot;/usr/local/nginx/proxy_temp/1/00/0000001001&quot; failed (13: Permission denied) while reading upstream, client: …, server: …, request: &quot;GET … HTTP/1.1&quot;, upstream: &quot;<a href="http://127.0.0.1:8080/...&amp;quot" target="_blank" rel="external">http://127.0.0.1:8080/...&amp;quot</a>;, host: &quot;…&quot;, referrer: &quot;<a href="http://...&amp;quot" target="_blank" rel="external">http://...&amp;quot</a>;</p>
+</code></pre><p>[crit] 17496#0: *31428 open() /usr/local/nginx/proxy_temp/1/00/0000001001 failed (13: Permission denied) while reading upstream, client: …, server: …, request: GET … HTTP/1.1, upstream: <a href="http://127.0.0.1:8080/" target="_blank" rel="external">http://127.0.0.1:8080/</a>…, host: …, referrer: http://…</p>
 <p>修改/usr/local/nginx/proxy_temp目录权限为nginx运行用户权限，问题解决。</p>
 <p>chown vuser /usr/local/nginx/proxy_temp -R</p>
-</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-10-10T08:18:43.000Z" class="post__time">十月 10, 2012</time><h1 class="post__title"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">apache停止响应故障排除</a></h1></header><div class="post__main"><p>&nbsp; apache停止响应，httpd进程存在，80端口有监听。查看apache error log：</p>
+</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-10-10T08:18:43.000Z" class="post__time">十月 10, 2012</time><h1 class="post__title"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">apache停止响应故障排除</a></h1></header><div class="post__main"><p> apache停止响应，httpd进程存在，80端口有监听。查看apache error log：</p>
 <p>[Sat Sep 29 11:16:01 2012] [error] server is within MinSpareThreads of MaxClients, consider raising the MaxClients setting</p>
 <pre><code><span class="attr_selector">[Sat Sep 29 11:18:07 2012]</span> <span class="attr_selector">[error]</span> <span class="tag">server</span> <span class="tag">reached</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>, <span class="tag">consider</span> <span class="tag">raising</span> <span class="tag">the</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>
 </code></pre><p>修改apache配置文件：</p>
-<p>ServerLimit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 300</p>
-<pre><code>MaxClients&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 6000
+<p>ServerLimit 300</p>
+<pre><code><span class="title">MaxClients</span> <span class="number">6000</span>
 </code></pre><p>问题解决。</p>
 <p>其中最重要的参数是 ThreadsPerChild和 MaxClients：</p>
 <pre><code><span class="preprocessor"># worker MPM</span>
@@ -108,24 +108,22 @@ ExtendedStatus On
 
 <span class="number">2.</span>修改以下部分
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; SetHandler server-status
+ SetHandler server-status
 
-&amp;nbsp; # order deny,allow
+ # order deny,allow
 
-&amp;nbsp; # Deny from all
+ # Deny from all
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; Allow from <span class="number">192.168</span><span class="number">.8</span>
-
-&amp;nbsp;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-09-27T08:47:40.000Z" class="post__time">九月 27, 2012</time><h1 class="post__title"><a href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/">修改pam.d/login导致centos 6 64位不能本地登录</a></h1></header><div class="post__main"><p>&nbsp; centos 6慎用旧版本centos 5文档。</p>
-<p>echo &#39;session required /lib/security/pam_limits.so&#39; &gt;&gt;/etc/pam.d/login</p>
+ Allow from <span class="number">192.168</span><span class="number">.8</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-09-27T08:47:40.000Z" class="post__time">九月 27, 2012</time><h1 class="post__title"><a href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/">修改pam.d/login导致centos 6 64位不能本地登录</a></h1></header><div class="post__main"><p> centos 6慎用旧版本centos 5文档。</p>
+<p>echo &#39;session required /lib/security/pam_limits.so&#39; /etc/pam.d/login</p>
 <pre><code>在64位系统上导致本地不能登录 ！！！
 
 以下在centos 6 x86_64通过测试：
-</code></pre><p>echo &#39;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; soft&nbsp;&nbsp;&nbsp; nofile&nbsp; 16384</p>
-<pre><code><span class="subst">*&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; hard<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp;<span class="subst">&amp;</span>nbsp; nofile<span class="subst">&amp;</span>nbsp; <span class="number">65535</span><span class="subst">&amp;</span><span class="variable">#39</span>; <span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span><span class="literal">gt</span>; /etc/security/limits<span class="built_in">.</span>conf
+</code></pre><p>echo &#39;* soft nofile 16384</p>
+<pre><code>* hard nofile <span class="number">65535</span>&amp;<span class="comment">#39;  /etc/security/limits.conf</span>
 
-echo <span class="subst">&amp;</span><span class="variable">#39</span>;session<span class="subst">&amp;</span>nbsp; required<span class="subst">&amp;</span>nbsp; pam_limits<span class="built_in">.</span>so<span class="subst">&amp;</span><span class="variable">#39</span>; <span class="subst">&amp;</span><span class="literal">gt</span>;<span class="subst">&amp;</span><span class="literal">gt</span>;/etc/pam<span class="built_in">.</span>d/login
+<span class="built_in">echo</span> &amp;<span class="comment">#39;session required pam_limits.so&amp;#39; /etc/pam.d/login</span>
 </code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/27/w/e4-bf-ae-e6-94-b9pam-dlogin-e5-af-bc-e8-87-b4centos-6-64-e4-bd-8d-e4-b8-8d-e8-83-bd-e6-9c-ac-e5-9c-b0-e7-99-bb-e5-bd-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-09-26T03:34:00.000Z" class="post__time">九月 26, 2012</time><h1 class="post__title"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/">Debian安装配置Iptables防火墙</a></h1></header><div class="post__main"><p>debian默认安装没有开启防火墙。</p>
 <pre><code>第一步:使用如下命令安装:
 
@@ -187,7 +185,7 @@ sudo vim /etc/iptables.test.rules
 
 # <span class="keyword">log</span> iptables denied calls (access via &amp;#<span class="number">39</span>;</span>dmesg&amp;#39; command)
 
--A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix &amp;quot;iptables denied: &amp;quot; --log-level 7</span>
+-A INPUT -m limit <span class="comment">--limit 5/min -j LOG --log-prefix iptables denied:  --log-level 7</span>
 
 # Reject all other inbound - default deny unless explicitly allowed policy:
 
@@ -199,7 +197,7 @@ sudo vim /etc/iptables.test.rules
 
 保存本文件,然后把本规则加载,使之生效,注意,iptables不需要重启,加载一次规则就成了
 
-sudo iptables-<span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.test.rules
+sudo iptables-<span class="keyword">restore</span>  /etc/iptables.test.rules
 
 然后再查看最新的配置,应该所有的设置都生效了.
 
@@ -209,7 +207,7 @@ sudo iptables -L
 
 iptables提供了保存当前运行的规则功能
 
-iptables-save &amp;gt; /etc/iptables.up.rules
+iptables-save  /etc/iptables.up.rules
 
 注意,如果当前用户不是root,即使使用了sudo,也会提示你没有权限,无法保存,所以执行本命令,你必须使用root用户.
 
@@ -217,23 +215,23 @@ iptables-save &amp;gt; /etc/iptables.up.rules
 
 为了重启服务器后,规则自动加载,我们创建如下文件:
 
-sudo vim /etc/network/if-pre-up.d/iptables
+sudo vim /etc/network/<span class="keyword">if</span>-pre-up.d/iptables
 
 内容如下:
 
-#!/bin/bash
+#!/<span class="keyword">bin</span>/bash
 
-/sbin/iptables-<span class="operator"><span class="keyword">restore</span> &amp;lt;</span> /etc/iptables.up.rules
+/sbin/iptables-<span class="keyword">restore</span>  /etc/iptables.up.rules
 
 最后,设置本文章具体可执行仅限
 
-chmod +x /etc/network/if-pre-up.d/iptables
+chmod +x /etc/network/<span class="keyword">if</span>-pre-up.d/iptables
 
 第五:其它
 
 如果你想设置某ip段可以访问所有服务,你需要在iptables.test.rules文件中加入
 
--A INPUT -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
+-A <span class="keyword">INPUT</span> -m iprange <span class="comment">--src-range 192.168.1.1-192.168.1.199 -j ACCEPT</span>
 
-然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+然后从第三步再设置一次.注意iptables.test.rules不是必须的,它只是让你的修改时,能更好的测试</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/26/w/debian-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-aeiptables-e9-98-b2-e7-81-ab-e5-a2-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

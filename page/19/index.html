@@ -1,12 +1,12 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-10T03:59:05.000Z" class="post__time">九月 10, 2010</time><h1 class="post__title"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/">centos4 升级内核linux-2.6.34.1及iptables升级到v1.4.9.1</a></h1></header><div class="post__main"><p>centos4.2 升级到内核linux-2.6.34后iptables无法使用，升级iptables:</p>
-<p>wget&nbsp; <a href="http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2" target="_blank" rel="external">http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2</a></p>
+<p>wget <a href="http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2" target="_blank" rel="external">http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2</a></p>
 <pre><code>tar xjf iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
 
 cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>
 
 .<span class="regexp">/configure --prefix=/</span>usr --with-ksource=<span class="regexp">/usr/</span>src/linux-<span class="number">2.6</span><span class="number">.34</span><span class="number">.1</span>
 
-make &amp;amp;&amp;amp; make install
+make  make install
 </code></pre><p>/usr/sbin/iptables -V</p>
 <p>给系统的/sbin/iptables做个符号链接即可。</p>
 <p>升级内核过程：</p>
@@ -25,10 +25,8 @@ make &amp;amp;&amp;amp; make install
 
 <span class="keyword">make</span> menuconfig
 
-<span class="keyword">make</span> -j6 &amp;amp;&amp;amp; <span class="keyword">make</span> modules &amp;amp;&amp;amp; <span class="keyword">make</span> modules_install &amp;amp;&amp;amp; <span class="keyword">make</span> install
-
-&amp;nbsp;
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T02:56:10.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/">MySQL快速安全升级(upgrade)到最新版</a></h1></header><div class="post__main"><p>&nbsp; &nbsp;&nbsp; &nbsp; 减少停机时间，以最快的速度升级(upgrade)mysql，升级前建议对新版进行测试。旧版的数据库安装在目录/usr/local/mysql，mysql是一个符号链接。</p>
+<span class="keyword">make</span> -j6  <span class="keyword">make</span> modules  <span class="keyword">make</span> modules_install  <span class="keyword">make</span> install
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T02:56:10.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/">MySQL快速安全升级(upgrade)到最新版</a></h1></header><div class="post__main"><p>   减少停机时间，以最快的速度升级(upgrade)mysql，升级前建议对新版进行测试。旧版的数据库安装在目录/usr/local/mysql，mysql是一个符号链接。</p>
 <pre><code>tar xfz mysql-5.1.50-linux-x86_64-glibc23.tar.gz -C /usr/local/
 
 cd /usr/local/mysql-5.1.50-linux-x86_64-glibc23 
@@ -61,44 +59,43 @@ chgrp -R mysql .
 
 Note:mysql_upgrade包含一下三个命令：
 
-# mysqlcheck &amp;ndash;</span><span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>all-databases &amp;ndash;auto-<span class="operator"><span class="keyword">repair</span>
+# mysqlcheck <span class="keyword">check</span>-<span class="keyword">upgrade</span> <span class="keyword">all</span>-<span class="keyword">databases</span> auto-<span class="keyword">repair</span>
 
 # mysql_fix_privilege_tables
 
-# mysqlcheck &amp;ndash;</span>all-databases &amp;ndash;<span class="operator"><span class="keyword">check</span>-<span class="keyword">upgrade</span> &amp;ndash;</span>fix-db-names &amp;ndash;fix-table-names
+# mysqlcheck <span class="keyword">all</span>-<span class="keyword">databases</span> <span class="keyword">check</span>-<span class="keyword">upgrade</span> fix-db-<span class="keyword">names</span> fix-<span class="keyword">table</span>-<span class="keyword">names</span>
 
-在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php&nbsp; 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
-<pre><code>yum install cacti<span class="attribute">-spine</span> <span class="attribute">-y</span>
+在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/27/w/mysql-e5-bf-ab-e9-80-9f-e5-ae-89-e5-85-a8-e5-8d-87-e7-ba-a7upgrade-e5-88-b0-e6-9c-80-e6-96-b0-e7-89-88/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-27T01:19:06.000Z" class="post__time">八月 27, 2010</time><h1 class="post__title"><a href="/2010/08/27/w/cacti-spine-e5-ae-89-e8-a3-85-e4-bd-bf-e7-94-a8/">cacti和spine的安装使用</a></h1></header><div class="post__main"><p>spine是一个基于C语言的，非常快速的轮询引擎。使用 spine 比 使用 cmd.php 效率高，特别是在当 cmd.php 执行接近或超过 300 秒的时候。cmd.php采集存在大的延迟，从添加设备到up，spine通常不到一分钟，而cmd.php等的时间较长，超过10分钟。当设备down后 2分钟之内spine可以发出alert，而cmd.php可能需要10分钟以上。 </p>
+<pre><code>yum install cacti-spine -y
 
 配置
 
-chmod <span class="subst">+</span>r /etc/spine<span class="built_in">.</span>conf 
+chmod +r /etc/spine<span class="class">.conf</span> 
 
-vim /etc/spine<span class="built_in">.</span>conf
+vim /etc/spine<span class="class">.conf</span>
 
 创建一个软链接文件(因为spine默认会去读取该sock文件)
 
-ln <span class="attribute">-s</span> /tmp/mysql<span class="built_in">.</span>sock /<span class="built_in">var</span>/lib/mysql/mysql<span class="built_in">.</span>sock
+ln -s /tmp/mysql<span class="class">.sock</span> /var/lib/mysql/mysql<span class="class">.sock</span>
 
 验证spine是否正常
 
 /bin/spine 
 
-用管理员帐号登陆Cacti<span class="built_in">.</span>在系统参数中制定Spine/Cactid的物理路径<span class="built_in">.
+用管理员帐号登陆Cacti.在系统参数中制定Spine/Cactid的物理路径.
 
-</span>Console <span class="subst">-&amp;</span><span class="literal">gt</span>; Configuration <span class="subst">-&amp;</span><span class="literal">gt</span>; Settings <span class="subst">-&amp;</span><span class="literal">gt</span>; Paths <span class="subst">-&amp;</span><span class="literal">gt</span>; Alternate Poller Path <span class="subst">-&amp;</span><span class="literal">gt</span>; Spine Poller File Path
+Console - Configuration - Settings - Paths - Alternate Poller Path - Spine Poller File Path
 
 /usr/bin/spine
 
-Cacti Settings (Poller)<span class="subst">-&amp;</span><span class="literal">gt</span>; Poller <span class="keyword">Type</span>
+Cacti Settings (Poller)- Poller Type
 
 spine
-</code></pre><p>&nbsp;</p>
-<p>Cacti在centos上的安装：</p>
+</code></pre><p>Cacti在centos上的安装：</p>
 <p>yum -y install http php rrdtool rrdtool-devel net-snmp net-snmp-devel net-snmp-utils php-snmp mysql mysql-server perl-DBI perl-DBD-MySQL</p>
 <p>需要安装yum扩展源：</p>
-<p>&nbsp;<br>Red Hat Enterprise Linux 5 / <strong>i386</strong>:</p>
+<p>Red Hat Enterprise Linux 5 / <strong>i386</strong>:</p>
 <p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm</a></p>
 <p>Red Hat Enterprise Linux 5 / <strong>x86_64</strong>:</p>
 <p>rpm -Uhv <a href="http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm" target="_blank" rel="external">http://apt.sw.be/redhat/el5/en/x86_64/rpmforge/RPMS//rpmforge-release-0.3.6-1.el5.rf.x86_64.rpm</a></p>
@@ -111,24 +108,24 @@ spine
 <p>modprobe fuse</p>
 <p>mkdir /mnt/ntfs/</p>
 <p>mount -t ntfs -o noatime /dev/sdb2 /mnt/ntfs/</p>
-</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T03:28:10.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/">mysql导入数据提示没有SUPER Privilege权限处理</a></h1></header><div class="post__main"><p>ERROR 1419 (HY000): You do not have the SUPER Privilege&nbsp; and Binary&nbsp; Logging is&nbsp; Enabled</p>
-<pre><code>导入function 、 trigger 到 MySQL database,报错: &amp;ldquo;You <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> have the SUPER privilege <span class="keyword">and</span> <span class="built_in">binary</span> logging <span class="keyword">is</span> enabled (you *might* want <span class="keyword">to</span> <span class="keyword">use</span> the less safe log_bin_trust_function_creators variable)&amp;rdquo;</span>.
+</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T03:28:10.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/">mysql导入数据提示没有SUPER Privilege权限处理</a></h1></header><div class="post__main"><p>ERROR 1419 (HY000): You do not have the SUPER Privilege and Binary Logging is Enabled</p>
+<pre><code>导入function 、 trigger 到 MySQL database,报错: You <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> have the SUPER privilege <span class="keyword">and</span> <span class="built_in">binary</span> logging <span class="keyword">is</span> enabled (you *might* want <span class="keyword">to</span> <span class="keyword">use</span> the less safe log_bin_trust_function_creators variable).
 
 原因：
 
-function / trigger 中有dangerous statements修改数据库，错误只在启用binary logging选项进行主从复制的服务器上出现。
+<span class="keyword">function</span> / <span class="keyword">trigger</span> 中有dangerous statements修改数据库，错误只在启用<span class="built_in">binary</span> logging选项进行主从复制的服务器上出现。
 
 解决：
 
-1）导入数据的用户不仅需要<span class="operator"><span class="keyword">CREATE</span> ROUTINE, <span class="keyword">ALTER</span> ROUTINE, <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span>, <span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span>, <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 和 <span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 权限，还需要SUPER <span class="keyword">privileges</span> 权限，使用超级用户导入数据。
+<span class="number">1</span>）导入数据的用户不仅需要<span class="keyword">CREATE</span> ROUTINE, <span class="keyword">ALTER</span> ROUTINE, <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span>, <span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span>, <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 和 <span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 权限，还需要SUPER <span class="keyword">privileges</span> 权限，使用超级用户导入数据。
 
 <span class="number">2</span>）让所有用户具有执行类似functions的权限，危险，不推荐，
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by specifying it on the server <span class="operator"><span class="keyword">start</span>, <span class="keyword">like</span>: <span class="comment">--log-bin-trust-function-creators=1</span>
+ o <span class="keyword">by</span> specifying it <span class="keyword">on</span> the <span class="keyword">server</span> <span class="keyword">start</span>, <span class="keyword">like</span>: <span class="comment">--log-bin-trust-function-creators=1</span>
 
-&amp;nbsp;</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; o by setting it to 1 through the <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> statement, <span class="keyword">like</span>:
+ o <span class="keyword">by</span> setting it <span class="keyword">to</span> <span class="number">1</span> through the <span class="keyword">SET</span> <span class="keyword">GLOBAL</span> statement, <span class="keyword">like</span>:
 
-&amp;nbsp;</span>mysql&amp;gt; <span class="operator"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators = <span class="number">1</span>;</span>
+mysql <span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators = <span class="number">1</span>;</span>
 
 3）如果不需要复制，或者是从库，关闭binlog，
 
@@ -140,5 +137,5 @@ function / trigger 中有dangerous statements修改数据库，错误只在启�
 
 #binlog_format=mixed
 
-原文：http://www.ispirer.com/wiki/sqlways/troubleshooting-guide/mysql/import/binary-logging&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/18/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/20/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+原文：http://www.ispirer.com/wiki/sqlways/troubleshooting-guide/mysql/import/binary-logging 
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/18/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/20/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

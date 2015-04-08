@@ -9,23 +9,22 @@
 <p>tar xfj zlib-1.2.3.tar.bz2 -C /usr/local/src</p>
 <p>cd /usr/local/src/zlib-1.2.3</p>
 <p>./configure</p>
-<p>make -j6 &amp;&amp; make install </p>
-<p>echo &quot;/usr/local/lib&quot; &gt;&gt; /etc/ld.so.conf</p>
+<p>make -j6  make install </p>
+<p>echo /usr/local/lib  /etc/ld.so.conf</p>
 <p>ldconfig</p>
-<p>&nbsp;</p>
 <p>安装openssl</p>
 <p><a href="http://www.openssl.org/source/" target="_blank" rel="external">http://www.openssl.org/source/</a></p>
-<p>tar zxf openssl-0.9.8k.tar.gz&nbsp; -C /usr/local/src</p>
-<p>cd&nbsp; /usr/local/src/openssl-0.9.8k</p>
+<p>tar zxf openssl-0.9.8k.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/openssl-0.9.8k</p>
 <p>./config —prefix=/usr/local/openssl —openssldir=/usr/local/openssl shared zlib</p>
-<p>make &amp;&amp; make test &amp;&amp; make install</p>
+<p>make  make test  make install</p>
 <p>/usr/local/openssl/lib/</p>
-<p>echo &quot;/usr/local/openssl/lib/&quot; &gt;&gt; /etc/ld.so.conf</p>
+<p>echo /usr/local/openssl/lib/  /etc/ld.so.conf</p>
 <p>ldconfig</p>
 <p>tar xfz bind-9.6.0-P1.tar.gz -C /usr/local/src</p>
 <p>cd /usr/local/src/bind-9.6.0-P1</p>
 <p>./configure —prefix=/usr/local/named —enable-threads —enable-ipv6 —with-openssl=/usr/local/openssl —with-dlz-mysql</p>
-<p>make -j6 &amp;&amp; make install</p>
+<p>make -j6  make install</p>
 <p>建立BIND用户：</p>
 <p>groupadd bind</p>
 <p>useradd -g bind -d /usr/local/named -s /sbin/nologin bind</p>
@@ -44,264 +43,262 @@
 <p>建立启动脚本：</p>
 <p>vi /etc/init.d/named</p>
 <h1 id="!/bin/bash">!/bin/bash</h1><p>#</p>
-<h1 id="named&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_This_shell_script_takes_care_of_starting_and_stopping">named&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This shell script takes care of starting and stopping</h1><h1 id="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_named_(BIND_DNS_server)-">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; named (BIND DNS server).</h1><p>#</p>
+<h1 id="named_This_shell_script_takes_care_of_starting_and_stopping">named This shell script takes care of starting and stopping</h1><h1 id="named_(BIND_DNS_server)-">named (BIND DNS server).</h1><p>#</p>
 <h1 id="chkconfig:_-_55_45">chkconfig: - 55 45</h1><h1 id="description:_named_(BIND)_is_a_Domain_Name_Server_(DNS)_\">description: named (BIND) is a Domain Name Server (DNS) \</h1><h1 id="that_is_used_to_resolve_host_names_to_IP_addresses-">that is used to resolve host names to IP addresses.</h1><h1 id="probe:_true">probe: true</h1><h1 id="Source_function_library-">Source function library.</h1><p>. /etc/rc.d/init.d/functions</p>
-<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ] &amp;&amp; . /etc/sysconfig/network</p>
-<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = &quot;no&quot; ] &amp;&amp; exit 0</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ]  . /etc/sysconfig/network</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = no ]  exit 0</p>
 <p>[ -x /usr/local/named/sbin/named ] || exit 0</p>
 <p>RETVAL=0</p>
-<p>prog=&quot;named&quot;</p>
+<p>prog=named</p>
 <p>if [ <code>id -u</code> -ne 0 ]</p>
 <p>then</p>
-<p>echo &quot;ERROR:For bind to port 53,must run as root.&quot;</p>
+<p>echo ERROR:For bind to port 53,must run as root.</p>
 <p>exit 1</p>
 <p>fi</p>
-<p>case &quot;$1&quot; in</p>
+<p>case $1 in</p>
 <p>start)</p>
 <p>if [ -x /usr/local/named/sbin/named ]; then</p>
-<p>&nbsp; /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server started.’</p>
+<p> /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf  echo .  echo ‘BIND9 server started.’</p>
 <p>fi</p>
 <p>;;</p>
 <p>stop)</p>
-<p>&nbsp; #kill <code>cat /var/run/named/pid</code> &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server stopped.’</p>
-<p>&nbsp; killproc $prog &amp;&amp; echo . &amp;&amp; echo ‘BIND9 server stopped.’</p>
+<h1 id="kill_cat_/var/run/named/pid_echo_-_echo_‘BIND9_server_stopped-’">kill <code>cat /var/run/named/pid</code>  echo .  echo ‘BIND9 server stopped.’</h1><p> killproc $prog  echo .  echo ‘BIND9 server stopped.’</p>
 <p>;;</p>
 <p>restart)</p>
 <p>echo .</p>
-<p>echo &quot;Restart BIND9 server&quot;</p>
+<p>echo Restart BIND9 server</p>
 <p>$0 stop</p>
 <h1 id="sleep_10">sleep 10</h1><p>$0 start</p>
 <p>;;</p>
 <p>*)</p>
-<p>echo &quot;$0 start | stop | restart&quot;</p>
+<p>echo $0 start | stop | restart</p>
 <p>;;</p>
 <p>esac</p>
 <p>chmod 755 /etc/init.d/named</p>
 <p>chown root:root /etc/init.d/named</p>
 <p>chkconfig —add named</p>
-<p>chkconfig —level 345&nbsp; named on</p>
+<p>chkconfig —level 345 named on</p>
 <p>chkconfig —list named</p>
 <p>到这里bind已经安装完毕 .下面是解析部分.创建主要的配置文件：</p>
 <p>cd /usr/local/named/etc/</p>
 <p>vi /usr/local/named/etc/named.conf</p>
-<p>acl &quot;reserv-lan&quot; { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
-<p>acl &quot;query-lan&quot; { 0/0; };</p>
-<p>acl &quot;trusted-lan&quot; { 192.168.6.0/23; a.b.c.168/32; };</p>
+<p>acl reserv-lan { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
+<p>acl query-lan { 0/0; };</p>
+<p>acl trusted-lan { 192.168.6.0/23; a.b.c.168/32; };</p>
 <p>options {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory &quot;/usr/local/named/etc&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; listen-on {127.0.0.1; a.b.c.168;};</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pid-file &quot;/var/log/named/named.pid&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; memstatistics-file &quot;/var/log/named/data/named_mem_stats.txt&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dump-file &quot;/var/log/named/data/cache_dump.db&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; max-cache-size 64M;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //最大的缓存大小为64MB</p>
-<p>&nbsp;&nbsp;&nbsp; tcp-clients 256;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //最大的客户端为256个</p>
-<p>&nbsp;&nbsp;&nbsp; recursive-clients 4000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
-<p>&nbsp;&nbsp;&nbsp; interface-interval 0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //启动named时才检查监听的网络接口</p>
-<p>&nbsp;&nbsp;&nbsp; cleaning-interval 480;&nbsp; //每隔480分钟将统计日志写入文件</p>
-<p>&nbsp;&nbsp;&nbsp; lame-ttl 1800;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //设定缓存有问题服务器指示的秒数为30分钟</p>
-<p>&nbsp;&nbsp;&nbsp; max-ncache-ttl 168000;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //为降低网络流量和提升服务器存储否定回答的性能</p>
-<p>&nbsp;&nbsp;&nbsp; max-cache-ttl 86400;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //设定了服务器储存普通(肯定)答案的最大时间</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version &quot;www.veryi.com&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; datasize 512M;</p>
-<p>&nbsp;&nbsp;&nbsp; auth-nxdomain yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; recursion yes;</p>
-<p>&nbsp;&nbsp;&nbsp; zone-statistics yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; statistics-file &quot;/var/log/named/data/named.stats&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-transfer { none; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-query { &quot;any&quot;; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-recursion {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;query-lan&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow-notify {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;trusted-lan&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> directory /usr/local/named/etc;</p>
+<p> listen-on {127.0.0.1; a.b.c.168;};</p>
+<p> pid-file /var/log/named/named.pid;</p>
+<p> memstatistics-file /var/log/named/data/named_mem_stats.txt;</p>
+<p> dump-file /var/log/named/data/cache_dump.db;</p>
+<p> max-cache-size 64M; //最大的缓存大小为64MB</p>
+<p> tcp-clients 256; //最大的客户端为256个</p>
+<p> recursive-clients 4000; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
+<p> interface-interval 0; //启动named时才检查监听的网络接口</p>
+<p> cleaning-interval 480; //每隔480分钟将统计日志写入文件</p>
+<p> lame-ttl 1800; //设定缓存有问题服务器指示的秒数为30分钟</p>
+<p> max-ncache-ttl 168000; //为降低网络流量和提升服务器存储否定回答的性能</p>
+<p> max-cache-ttl 86400; //设定了服务器储存普通(肯定)答案的最大时间</p>
+<p> version www.veryi.com;</p>
+<p> datasize 512M;</p>
+<p> auth-nxdomain yes;</p>
+<p> recursion yes;</p>
+<p> zone-statistics yes;</p>
+<p> statistics-file /var/log/named/data/named.stats;</p>
+<p> allow-transfer { none; };</p>
+<p> allow-query { any; };</p>
+<p> allow-recursion {</p>
+<p> query-lan;</p>
+<p> };</p>
+<p> allow-notify {</p>
+<p> trusted-lan;</p>
+<p> };</p>
 <p>/<strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; forward first;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; forwarders {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 208.67.220.220;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 208.67.222.222;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 202.106.0.20;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 202.106.196.115;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> forward first;</p>
+<p> forwarders {</p>
+<p> 208.67.220.220;</p>
+<p> 208.67.222.222;</p>
+<p> 202.106.0.20;</p>
+<p> 202.106.196.115;</p>
+<p> };</p>
 <p><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong>/</p>
 <p>};</p>
-<p>include &quot;rndc.key&quot;;</p>
-<p>include &quot;named_log.conf&quot;;</p>
-<p>zone &quot;.&quot; {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type hint;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;named.root&quot;;</p>
+<p>include rndc.key;</p>
+<p>include named_log.conf;</p>
+<p>zone . {</p>
+<p> type hint;</p>
+<p> file named.root;</p>
 <p>};</p>
-<p>include &quot;named.rfc1912.zones&quot;;</p>
-<p>zone &quot;6.168.192.in-addr.arpa&quot; {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;primary/192.168.6.in-addr.arpa.zone&quot;;</p>
+<p>include named.rfc1912.zones;</p>
+<p>zone 6.168.192.in-addr.arpa {</p>
+<p> type master;</p>
+<p> file primary/192.168.6.in-addr.arpa.zone;</p>
 <p>};</p>
-<p>&nbsp;&nbsp;&nbsp; </p>
 <p>生成rndc-key:</p>
 <p>cd /usr/local/named/etc/</p>
-<p>../sbin/rndc-confgen | head -5&nbsp; &gt; rndc.key</p>
+<p>../sbin/rndc-confgen | head -5  rndc.key</p>
 <p>添加完成后，保存。</p>
 <p>更新根区文件：</p>
 <p>cd /usr/local/named/etc/</p>
 <p>wget ftp://ftp.internic.org/domain/named.root</p>
 <p>或者:</p>
 <p>dig</p>
-<p>dig&nbsp; @192.58.128.30 &gt;named.root</p>
+<p>dig @192.58.128.30 named.root</p>
 <p>vi named_log.conf</p>
 <p>logging {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel default_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/default_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category default {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel queries_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/queries_log&quot; versions 8 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category queries {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; queries_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel general_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/general_log&quot; versions 8 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category general { general_log; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel client_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/client_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category client { client_log; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel config_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/config_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category config {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; config_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel database_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/database_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category database {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; database_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel dnssec_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/dnssec_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category dnssec {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dnssec_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel lame-servers_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/lame-servers_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category lame-servers {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lame-servers_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel network_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/network_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category network {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; network_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel notify_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/notify_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category notify {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; notify_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel resolver_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/resolver_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category resolver {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resolver_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel security_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/security_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity warning;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category security {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; security_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel update_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/update_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category update {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; update_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel xfer-in_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/xfer-in_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category xfer-in {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xfer-in_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel xfer-out_log</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { file &quot;/var/log/named/xfer-out_log&quot; versions 3 size 8192k;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity info;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-category yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-severity yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print-time yes;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; category xfer-out {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xfer-out_log;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; channel default_debug {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file &quot;/var/log/named/named.run_log&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; severity dynamic;</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };</p>
+<p> channel default_log</p>
+<p> { file /var/log/named/default_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category default {</p>
+<p> default_log;</p>
+<p> };</p>
+<p> channel queries_log</p>
+<p> { file /var/log/named/queries_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category queries {</p>
+<p> queries_log;</p>
+<p> };</p>
+<p> channel general_log</p>
+<p> { file /var/log/named/general_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category general { general_log; };</p>
+<p> channel client_log</p>
+<p> { file /var/log/named/client_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category client { client_log; };</p>
+<p> channel config_log</p>
+<p> { file /var/log/named/config_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category config {</p>
+<p> config_log;</p>
+<p> };</p>
+<p> channel database_log</p>
+<p> { file /var/log/named/database_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category database {</p>
+<p> database_log;</p>
+<p> };</p>
+<p> channel dnssec_log</p>
+<p> { file /var/log/named/dnssec_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category dnssec {</p>
+<p> dnssec_log;</p>
+<p> };</p>
+<p> channel lame-servers_log</p>
+<p> { file /var/log/named/lame-servers_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category lame-servers {</p>
+<p> lame-servers_log;</p>
+<p> };</p>
+<p> channel network_log</p>
+<p> { file /var/log/named/network_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category network {</p>
+<p> network_log;</p>
+<p> };</p>
+<p> channel notify_log</p>
+<p> { file /var/log/named/notify_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category notify {</p>
+<p> notify_log;</p>
+<p> };</p>
+<p> channel resolver_log</p>
+<p> { file /var/log/named/resolver_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category resolver {</p>
+<p> resolver_log;</p>
+<p> };</p>
+<p> channel security_log</p>
+<p> { file /var/log/named/security_log versions 3 size 8192k;</p>
+<p> //severity info;</p>
+<p> severity warning;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category security {</p>
+<p> security_log;</p>
+<p> };</p>
+<p> channel update_log</p>
+<p> { file /var/log/named/update_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category update {</p>
+<p> update_log;</p>
+<p> };</p>
+<p> channel xfer-in_log</p>
+<p> { file /var/log/named/xfer-in_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-in {</p>
+<p> xfer-in_log;</p>
+<p> };</p>
+<p> channel xfer-out_log</p>
+<p> { file /var/log/named/xfer-out_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-out {</p>
+<p> xfer-out_log;</p>
+<p> };</p>
+<p> channel default_debug {</p>
+<p> file /var/log/named/named.run_log;</p>
+<p> severity dynamic;</p>
+<p> };</p>
 <p>};</p>
 <p>vi named.rfc1912.zones</p>
 <p>// named.rfc1912.zones:</p>
@@ -309,128 +306,139 @@
 <p>// ISC BIND named zone configuration for zones recommended by</p>
 <p>// RFC 1912 section 4.1 : localhost TLDs and address zones</p>
 <p>// </p>
-<p>zone &quot;localdomain&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;localdomain.zone&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone localdomain IN {</p>
+<p> type master;</p>
+<p> file localdomain.zone;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;localhost&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;localhost.zone&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone localhost IN {</p>
+<p> type master;</p>
+<p> file localhost.zone;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.0.127.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.local&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.0.127.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.local;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.ip6.local&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa IN {</p>
+<p> type master;</p>
+<p> file named.ip6.local;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;255.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.broadcast&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 255.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.broadcast;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
-<p>zone &quot;0.in-addr.arpa&quot; IN {</p>
-<p>&nbsp;&nbsp;&nbsp; type master;</p>
-<p>&nbsp;&nbsp;&nbsp; file &quot;named.zero&quot;;</p>
-<p>&nbsp;&nbsp;&nbsp; allow-update { none; };</p>
+<p>zone 0.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.zero;</p>
+<p> allow-update { none; };</p>
 <p>};</p>
 <p>vi named.local</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SOA&nbsp;&nbsp;&nbsp;&nbsp; localhost. root.localhost.&nbsp; (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1997022700 ; Serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 28800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; Expire</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 86400 )&nbsp;&nbsp;&nbsp; ; Minimum</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
-<p>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
 <p>vi local.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; @&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN AAAA&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ::1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
 <p>vi localhost.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; @&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN AAAA&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ::1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
 <p>vi localdomain.zone</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IN SOA&nbsp;&nbsp;&nbsp; localhost root (</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN NS&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; localhost</p>
-<p>localhost&nbsp;&nbsp;&nbsp; IN A&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 127.0.0.1</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA localhost root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  localhost</p>
+<p>localhost IN A  127.0.0.1</p>
 <p>vi named.zero</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN SOA&nbsp; localhost.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root.localhost. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
 <p>vi named.broadcas</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN SOA&nbsp; localhost.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root.localhost. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial (d. adams)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 15M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1W&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; expiry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1D )&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum</p>
-<p>&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
 <p>vi named.ip6.local</p>
-<p>$TTL&nbsp;&nbsp;&nbsp; 86400</p>
-<p>@&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SOA&nbsp;&nbsp;&nbsp;&nbsp; localhost. root.localhost.&nbsp; (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1997022700 ; Serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 28800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Refresh</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 14400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Retry</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; Expire</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 86400 )&nbsp;&nbsp;&nbsp; ; Minimum</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
-<p>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; localhost.</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
 <p>vi primary/192.168.6.in-addr.arpa.zone</p>
 <p>$ORIGIN .</p>
-<p>$TTL 203616&nbsp;&nbsp;&nbsp;&nbsp; ; 2 days 8 hours 33 minutes 36 seconds</p>
-<p>6.168.192.in-addr.arpa.&nbsp; IN SOA&nbsp; localhost. acy.163.com. (</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2003080900 ; serial</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh (1 hour)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry (5 minutes)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3600000&nbsp;&nbsp;&nbsp; ; expire (5 weeks 6 days 16 hours)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum (0 seconds)</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</p>
-<p>$TTL 20000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 5 hours 33 minutes 20 seconds</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; localhost</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mail.veryi.com.</p>
+<p>$TTL 203616 ; 2 days 8 hours 33 minutes 36 seconds</p>
+<p>6.168.192.in-addr.arpa. IN SOA localhost. acy.163.com. (</p>
+<p> 2003080900 ; serial</p>
+<p> 3600 ; refresh (1 hour)</p>
+<p> 300 ; retry (5 minutes)</p>
+<p> 3600000 ; expire (5 weeks 6 days 16 hours)</p>
+<p> 0 ; minimum (0 seconds)</p>
+<p> )</p>
+<p>$TTL 20000 ; 5 hours 33 minutes 20 seconds</p>
+<p> IN NS localhost</p>
+<p> IN NS mail.veryi.com.</p>
 <p>$ORIGIN 6.168.192.in-addr.arpa.</p>
-<p>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp;&nbsp;&nbsp; mx6.veryi.com.</p>
+<p>2 IN PTR mx6.veryi.com.</p>
 <p>$GENERATE 3-34 $ PTR pc$.veryi.com.</p>
-<p>35&nbsp;&nbsp;&nbsp;&nbsp; IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PTR&nbsp;&nbsp; veryi.veryi.com.</p>
+<p>35 IN PTR veryi.veryi.com.</p>
 <p>运行测试：</p>
-<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf_&amp;">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf &amp;</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
+<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
 <p>状态检查：</p>
 <p>/usr/local/named/sbin/rndc status</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/" data-url="http://blog.veryi.com/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -438,4 +446,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/linux config nagios-3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/24/w/linux config nagios-3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

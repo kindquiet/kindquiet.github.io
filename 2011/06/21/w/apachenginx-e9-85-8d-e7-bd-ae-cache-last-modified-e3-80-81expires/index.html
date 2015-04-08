@@ -1,49 +1,49 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>Apache/Nginx 配置 Cache Last-Modified、Expires - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="Apache/Nginx 配置 Cache Last-Modified、Expires"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-06-21T08:50:41.000Z" class="post__time">六月 21, 2011</time><h1 class="post__title"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/">Apache/Nginx 配置 Cache Last-Modified、Expires</a></h1></header><div class="post__main"><p>正确使用Expires标识处理，可以使得页面更加有效被缓冲，节约带宽资源。</p>
 <pre><code>apache配置：
 
-&amp;lt;IfModule mod_expires.c&amp;gt;
+IfModule mod_expires.c
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive On
+ ExpiresActive On
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/gif A2592000
+ ExpiresByType image/gif A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/jpeg A2592000
+ ExpiresByType image/jpeg A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/png A2592000
+ ExpiresByType image/png A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType image/x-icon A2592000
+ ExpiresByType image/x-icon A2592000
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType application/x-javascript A604800
+ ExpiresByType application/x-javascript A604800
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresByType text/css A604800
+ ExpiresByType text/css A604800
 
-&amp;lt;/IfModule&amp;gt;
+/IfModule
 
 或者
 
-&amp;lt;ifmodule mod_expires.c&amp;gt;
+ifmodule mod_expires.c
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
+ filesmatch \.(jpg|gif|png|css|js)$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresActive on
+ ExpiresActive on
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 600 minutes&amp;quot;
+ ExpiresDefault access plus 600 minutes
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;lt;/filesmatch&amp;gt;
+ /filesmatch
 
-&amp;lt;/ifmodule&amp;gt;
+/ifmodule
 
-可以选用的时间参数有years&amp;nbsp;&amp;nbsp;&amp;nbsp; months&amp;nbsp;&amp;nbsp;&amp;nbsp; weeks&amp;nbsp;&amp;nbsp;&amp;nbsp; days&amp;nbsp;&amp;nbsp;&amp;nbsp; hours&amp;nbsp;&amp;nbsp;&amp;nbsp; minutes&amp;nbsp;&amp;nbsp;&amp;nbsp; seconds
+可以选用的时间参数有years months weeks days hours minutes seconds
 
 也可以加在.htaccess文件：
 
 #Expire Header
 
-&amp;lt;FilesMatch &amp;quot;\.(ico|jpg|jpeg|png|gif|js|css|swf)$&amp;quot;&amp;gt;
+FilesMatch \.(ico|jpg|jpeg|png|gif|js|css|swf)$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; ExpiresDefault &amp;quot;access plus 2 hours&amp;quot;
+ ExpiresDefault access plus 2 hours
 
-&amp;lt;/FilesMatch&amp;gt;
+/FilesMatch
 
 or
 
@@ -71,55 +71,55 @@ ExpiresByType text/javascript A2592000
 
 nginx配置：
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~* ^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js|flv|mp3|wma|wmv|ram|rm)$ {
+  location ~* ^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js|flv|mp3|wma|wmv|ram|rm)$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+   valid_referers none blocked *.veryi.com;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+   if ($invalid_referer) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://veryi.com/cloud.gif;
+    #rewrite ^/ http://veryi.com/cloud.gif;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; #return 412;
+    #return 412;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+    return 403;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; }
+   }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; access_log off;
+   access_log off;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; root /opt/www;
+   root /opt/www;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires 10h;
+   expires 10h;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; break;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+   break; 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-或者&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 
+或者 
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ \.(gif|jpg|png|swf|flv|bmp)$ {
+ location ~ \.(gif|jpg|png|swf|flv|bmp)$ {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; valid_referers none blocked *.veryi.com;
+ valid_referers none blocked *.veryi.com;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if ($invalid_referer) {
+ if ($invalid_referer) {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; #rewrite ^/ http://www.veryi.com/403.JPG;
+ #rewrite ^/ http://www.veryi.com/403.JPG;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; return 403;
+ return 403;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 30d;
+ expires 30d;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; }
+ }
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; location ~ .*\.(js|css)?$
+  location ~ .*\.(js|css)?$
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; {
+  {
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; expires&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 3d;
+  expires 3d;
 
-&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; } 
+  } 
 
 测试：
 
@@ -165,7 +165,7 @@ Content-Length: <span class="number">83185</span>
 
 Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
 
-Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: <span class="number">5</span>d8c72a5edda8d6a:<span class="number">3239</span>&amp;Prime;</span>
 
 客户端第二次请求此URL时，根据 HTTP 协议的规定，浏览器会向服务器传送报头(Http Request Header)，服务器端响应并记录相关记录属性标记文件没有发生改动,服务器端返回304，直接从缓存中读取：
 
@@ -183,7 +183,7 @@ Last-Modified: Tue, 24 Feb 2009 08:01:04 GMT
 
 Expires: Thu, <span class="number">02</span> Apr <span class="number">2009</span> <span class="number">05</span>:<span class="number">14</span>:<span class="number">08</span> GMT
 
-Etag: &amp;ldquo;</span>5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: <span class="number">5</span>d8c72a5edda8d6a:<span class="number">3239</span>&amp;Prime;</span>
 
 其中Last-Modified、Expires和Etag是标记页面缓存标识
 
@@ -205,21 +205,21 @@ If-Modified-Since: Tue, 24 Feb 2009 08:01:04 GMT
 
 2、Etag工作原理
 
-HTTP 协议规格说明定义ETag为&amp;ldquo;被请求变量的实体标记&amp;rdquo; （参见14.19）。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+HTTP 协议规格说明定义ETag为被请求变量的实体标记 （参见14.19）。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
 
-Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+Etag: 5d8c72a5edda8d6a:3239&amp;Prime;
 
 客户端的查询更新格式是这样的：
 
-If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+If-None-Match: 5d8c72a5edda8d6a:3239&amp;Prime;
 
 如果ETag没改变，则返回状态304。
 
-即:在客户端发出请求后，Http Reponse Header中包含 Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;
+即:在客户端发出请求后，Http Reponse Header中包含 Etag: 5d8c72a5edda8d6a:3239&amp;Prime;
 
-标识，等于告诉Client端，你拿到的这个的资源有表示ID：5d8c72a5edda8d6a:3239。当下次需要发Request索要同一个URI的时候，浏览器同时发出一个If-None-Match报头( Http Request Header)此时包头中信息包含上次访问得到的Etag: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;Prime;标识。
+标识，等于告诉Client端，你拿到的这个的资源有表示ID：5d8c72a5edda8d6a:3239。当下次需要发Request索要同一个URI的时候，浏览器同时发出一个If-None-Match报头( Http Request Header)此时包头中信息包含上次访问得到的Etag: 5d8c72a5edda8d6a:3239&amp;Prime;标识。
 
-If-None-Match: &amp;ldquo;5d8c72a5edda8d6a:3239&amp;ldquo;
+If-None-Match: 5d8c72a5edda8d6a:3239
 
 ,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>-None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
 
@@ -291,21 +291,21 @@ HTTP/<span class="number">1.</span>x <span class="number">304</span> <span class
 
 <span class="number">2</span>、Etag工作原理
 
-HTTP 协议规格说明定义ETag为&amp;rdquo;</span>被请求变量的实体标记&amp;rdquo; 。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
+HTTP 协议规格说明定义ETag为被请求变量的实体标记 。简单点即服务器响应时给请求URL标记，并在HTTP响应头中将其传送到客户端，类似服务器端返回的格式：
 
 Etag: 
 
 客户端的查询更新格式是这样的：
 
-If-None-Match: 
+<span class="keyword">If</span>-None-<span class="keyword">Match</span>: 
 
-如果ETag没改变，则返回状态304。
+如果ETag没改变，则返回状态<span class="number">304</span>。
 
-即:在客户端发出请求 后，Http Reponse Header中包含 Etag标识，等于告诉Client端，你拿到的这个的资源有表示 ID。当下次需要发Request索要同一个 URI的时候，浏览器同时发出一个If-None-Match报头( Http RequestHeader)此时包头中信息包含上次访问得到的Etag标识。
+即:在客户端发出请求 后，Http Reponse Header中包含 Etag标识，等于告诉Client端，你拿到的这个的资源有表示 ID。当下次需要发Request索要同一个 URI的时候，浏览器同时发出一个<span class="keyword">If</span>-None-<span class="keyword">Match</span>报头( Http RequestHeader)此时包头中信息包含上次访问得到的Etag标识。
 
-If-None-Match: &amp;quot;xok.la-961AA72-4CEA99B4415628&amp;quot;
+<span class="keyword">If</span>-None-<span class="keyword">Match</span>: xok.la-<span class="number">961</span>AA72-<span class="number">4</span>CEA99B4415628
 
-,这样，Client端等于<span class="operator"><span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>- None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
+,这样，Client端等于<span class="keyword">Cache</span>了两份，服务器端就会比对<span class="number">2</span>者的etag。如果<span class="keyword">If</span>- None-<span class="keyword">Match</span>为<span class="literal">False</span>，不返回<span class="number">200</span>，返回<span class="number">304</span> (<span class="keyword">Not</span> Modified) Response。
 
 <span class="number">3</span>、Expires
 
@@ -357,45 +357,45 @@ A<span class="number">.1</span>、 Apache Etag
 
 ExpiresActive <span class="keyword">On</span>
 
-ExpiresByType image/gif &amp;quot;</span>access plus 1 month&amp;quot;
+ExpiresByType image/gif access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/jpg &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/jpg access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/jpeg &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/jpeg access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/x-icon &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/x-icon access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/bmp &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/bmp access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType image/png &amp;quot;access plus 1 month&amp;quot;
+ExpiresByType image/png access plus <span class="number">1</span> <span class="keyword">month</span>
 
-ExpiresByType text/html &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/html access plus <span class="number">30</span> minutes
 
-ExpiresByType text/css&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/css access plus <span class="number">30</span> minutes
 
-ExpiresByType text/txt&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/txt access plus <span class="number">30</span> minutes
 
-ExpiresByType text/js&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType <span class="built_in">text</span>/js access plus <span class="number">30</span> minutes
 
-ExpiresByType application/x-javascript&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType application/x-javascript access plus <span class="number">30</span> minutes
 
-ExpiresByType application/x-shockwave-flash&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;quot;access plus 30 minutes&amp;quot;
+ExpiresByType application/x-shockwave-flash access plus <span class="number">30</span> minutes
 
 或
 
-&amp;lt;ifmodule mod_expires.c&amp;gt;
+ifmodule mod_expires.c
 
-&amp;lt;filesmatch &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot;&amp;gt;
+filesmatch \.(jpg|gif|png|css|js)$
 
-ExpiresActive on
+ExpiresActive <span class="keyword">on</span>
 
-ExpiresDefault &amp;quot;access plus 1 year&amp;quot;
+ExpiresDefault access plus <span class="number">1</span> <span class="keyword">year</span>
 
-&amp;lt;/filesmatch&amp;gt;
+/filesmatch
 
-&amp;lt;/ifmodule&amp;gt;
+/ifmodule
 
-当设置了expires后，会自动输出<span class="operator"><span class="keyword">Cache</span>-Control 的<span class="keyword">max</span>-age 信息
+当设置了expires后，会自动输出<span class="keyword">Cache</span>-Control 的<span class="keyword">max</span>-age 信息
 
 具体关于 Expires 详细内容可以查看Apache官方文档。
 
@@ -435,39 +435,39 @@ A<span class="number">.2</span>、Lighttpd Expires
 
 下面的设置是让URI中所有images目录下的文件<span class="number">1</span>小时后过期；
 
-expire.url = ( &amp;quot;</span>/images/&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
+expire.url = ( /images/ = access <span class="number">1</span> hours )
 
 下面是让作用于images目录及其子目录的文件；
 
-$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;^/images/&amp;quot; {
+$HTTP[url] =~ ^/images/ {
 
-&amp;nbsp;
 
-expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
 
-&amp;nbsp;
+expire.url = (  = access <span class="number">1</span> hours )
+
+
 
 }
 
 也可以指定文件的类型；
 
-$HTTP[&amp;quot;url&amp;quot;] =~ &amp;quot;\.(jpg|gif|png|css|js)$&amp;quot; {
+$HTTP[url] =~ \.(jpg|gif|png|css|js)$ {
 
-&amp;nbsp;
 
-expire.url = ( &amp;quot;&amp;quot; =&amp;gt; &amp;quot;access 1 hours&amp;quot; )
 
-&amp;nbsp;
+expire.url = (  = access <span class="number">1</span> hours )
+
+
 
 }
 
 具体参考Lighttpd官方Expires解释
 
-A.3、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+A<span class="number">.3</span>、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 
 {
 
-expires 30d;
+expires <span class="number">30</span>d;</span>
 
 }
 
@@ -479,37 +479,37 @@ expires 1h;
 
 }
 
-这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的&amp;rdquo; Expires &amp;ldquo;和&amp;rdquo; <span class="operator"><span class="keyword">Cache</span>-Control &amp;ldquo;</span>的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
+这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的 Expires 和 <span class="operator"><span class="keyword">Cache</span>-Control 的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
 
-B.1、Apache中Etag设置
+B<span class="number">.1</span>、Apache中Etag设置
 
 在Apache中设置Etag的支持比较简单，只用在含有静态文件的目录中建立一个文件.htaccess, 里面加入：
 
-FileETag MTime Size
+FileETag MTime <span class="keyword">Size</span>
 
 这样就行了，详细的可以参考Apache的FileEtag文档页
 
-B.2、 Lighttpd Etag
+B<span class="number">.2</span>、 Lighttpd Etag
 
 在Lighttpd中设置Etag支持：
 
-etag.use-inode: 是否使用inode作为Etag
+etag.<span class="keyword">use</span>-inode: 是否使用inode作为Etag
 
-etag.use-mtime: 是否使用文件修改时间作为Etag
+etag.<span class="keyword">use</span>-mtime: 是否使用文件修改时间作为Etag
 
-etag.use-size: 是否使用文件大小作为Etag
+etag.<span class="keyword">use</span>-<span class="keyword">size</span>: 是否使用文件大小作为Etag
 
 static-file.etags: 是否启用Etag的功能
 
 第四个参数肯定是要enable的， 前面三个就看实际的需要来选吧，推荐使用修改时间
 
-B.3、 Nginx Etag
+B<span class="number">.3</span>、 Nginx Etag
 
-Nginx中默认没有添加对Etag标识.Igor Sysoev的观点&amp;rdquo;在对静态文件处理上看不出如何Etag好于Last-Modified标识。&amp;rdquo;
+Nginx中默认没有添加对Etag标识.Igor Sysoev的观点在对静态文件处理上看不出如何Etag好于<span class="keyword">Last</span>-Modified标识。
 
 Note:
 
-Yes, it&amp;#39;s addition,and it&amp;#39;s easy to add, however, I <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> see howETag <span class="keyword">is</span> better than <span class="keyword">Last</span>-Modified <span class="keyword">for</span> static files. -Igor Sysoev
+Yes, it&amp;#<span class="number">39</span>;</span>s addition,and it&amp;#39;s easy to add, however, I <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> see howETag <span class="keyword">is</span> better than <span class="keyword">Last</span>-Modified <span class="keyword">for</span> static files. -Igor Sysoev
 
 A nice short description <span class="keyword">is</span> here:
 
@@ -531,23 +531,23 @@ https://github.com/mikewest/nginx-static-etags
 
 如expires.php
 
-&amp;lt;</span>?php
+?php
 
-&amp;nbsp;
 
-header(&amp;#39;<span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">86400</span>,must-revalidate&amp;#<span class="number">39</span>;</span>);
 
-&amp;nbsp;
+header(&amp;#<span class="number">39</span>;</span><span class="operator"><span class="keyword">Cache</span>-Control: <span class="keyword">max</span>-age=<span class="number">86400</span>,must-revalidate&amp;#<span class="number">39</span>;</span>);
+
+
 
 header(&amp;#39;Last-Modified: &amp;#39; .gmdate(&amp;#39;D, d M Y H:i:s&amp;#39;) . &amp;#39; GMT&amp;#39; );
 
-&amp;nbsp;
 
-header(&amp;quot;Expires: &amp;quot; .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, time() + &amp;#39;86400&amp;prime; ). &amp;#39; GMT&amp;#39;);
 
-&amp;nbsp;
+header(Expires:  .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, time() + &amp;#39;86400 ). &amp;#39; GMT&amp;#39;);
 
-?&amp;gt;
+
+
+?
 
 以上信息表示该文件自请求后24小时后过期。
 
@@ -559,17 +559,17 @@ header(&amp;quot;Expires: &amp;quot; .gmdate (&amp;#39;D, d M Y H:i:s&amp;#39;, 
 
 如etag.php
 
-&amp;gt;
+
 
 <span class="operator"><span class="keyword">cache</span>();</span>
 
-echo date(&amp;quot;Y-m-d H:i:s&amp;quot;);
+echo date(Y-m-d H:i:s);
 
 function <span class="operator"><span class="keyword">cache</span>()
 
 {
 
-$etag = &amp;quot;</span>http://xok.la&amp;quot;;
+$etag = http://xok.la;</span>
 
 if ($_SERVER[&amp;#39;HTTP_IF_NONE_MATCH&amp;#39;] == $etag)
 
@@ -585,7 +585,7 @@ else header(&amp;#39;Etag:&amp;#39;.$etag);
 
 }
 
-?&amp;gt;
+?
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/" data-url="http://blog.veryi.com/2011/06/21/w/apachenginx-e9-85-8d-e7-bd-ae-cache-last-modified-e3-80-81expires/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -593,4 +593,4 @@ else header(&amp;#39;Etag:&amp;#39;.$etag);
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/23/w/e8-99-9a-e4-ba-91-e8-80-81-e5-92-8c-e5-b0-9a-e8-b0-88-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e4-b9-8b-e8-80-81-e5-ae-9e-e5-bf-b5-e4-bd-9b/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2011/06/23/w/e8-99-9a-e4-ba-91-e8-80-81-e5-92-8c-e5-b0-9a-e8-b0-88-e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e4-b9-8b-e8-80-81-e5-ae-9e-e5-bf-b5-e4-bd-9b/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

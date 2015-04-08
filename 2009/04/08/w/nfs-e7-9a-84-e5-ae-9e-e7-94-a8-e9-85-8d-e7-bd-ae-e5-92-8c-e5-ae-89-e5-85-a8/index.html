@@ -1,47 +1,52 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title> nfs的实用配置和安全 - kindquiet素食勤俭敬老孝慈</title><meta name="description" content=" nfs的实用配置和安全"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-08T05:27:01.000Z" class="post__time">四月 8, 2009</time><h1 class="post__title"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/"> nfs的实用配置和安全</a></h1></header><div class="post__main"><p>网络文件系统是unix支持的文件系统中的一种， 也被称为 NFS。 NFS允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序可以象访问本地文件一样访问远端系统上的文件。以下是NFS的好处：</p>
-<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 本地工作站使用更少的磁盘空间，因为通常的数据可以存放在一台机器上而且可以通过网络访问到。</p>
-<p>&nbsp;</p>
-<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 用户不必在每个网络上机器里头都有一个home目录。Home目录 可以被放在NFS服务器上并且在网络上处处可用。</p>
-<p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 诸如软驱，CDROM，和 ZipU+00AE 之类的存储设备可以在网络上面被别的机器使用。这可以减少整个网络上的可移动介质设备的数量。</p>
+<ul>
+<li>本地工作站使用更少的磁盘空间，因为通常的数据可以存放在一台机器上而且可以通过网络访问到。</li>
+</ul>
+<ul>
+<li><p>用户不必在每个网络上机器里头都有一个home目录。Home目录 可以被放在NFS服务器上并且在网络上处处可用。</p>
+</li>
+<li><p>诸如软驱，CDROM，和 ZipU+00AE 之类的存储设备可以在网络上面被别的机器使用。这可以减少整个网络上的可移动介质设备的数量。</p>
+</li>
+</ul>
 <p>nfs的构成分成两个部份</p>
 <p>1.被分享的目录的机器通常称之为nfs server</p>
 <p>2.连接nfs的通常称之为nfs client</p>
 <p>创建或修改/etc/exports 配置文件</p>
 <p>这个文件的内容非常简单，每一行由提供路径，客户名列表以及每个客户名后紧跟的访问选项构成：</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [共享的目录] [主机名或IP(参数,参数)] </p>
+<p> [共享的目录] [主机名或IP(参数,参数)] </p>
 <p>其中参数是可选的，当不指定参数时，nfs将使用默认选项。默认的共享选项是</p>
 <p>sync,ro,root_squash,no_delay。</p>
 <p>当主机名或IP地址为空时，则代表共享给任意客户机提供服务。</p>
 <p>当将同一目录共享给多个客户机，但对每个客户机提供的权限不同时，可以这样：</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [共享的目录] [主机名1或IP1(参数1,参数2)] [主机名2或IP2(参数3,参数4)]</p>
+<p> [共享的目录] [主机名1或IP1(参数1,参数2)] [主机名2或IP2(参数3,参数4)]</p>
 <p>以下是在centos linux上的配置:</p>
 <p>nfs服务器:</p>
 <p>vi /etc/exports </p>
-<p>/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 172.16.1.0/24(ro,async,all_squash)</p>
-<p>/var/log/httpd&nbsp;&nbsp;&nbsp; 172.16.1.0/24(rw,async,all_squash)</p>
-<h1 id="/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_*(ro,async,all_squash)">/usr/local/nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *(ro,async,all_squash)</h1><h1 id="/khsys/vod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_172-16-1-0/24(ro,async,all_squash，anonuid=99)">/khsys/vod&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 172.16.1.0/24(ro,async,all_squash，anonuid=99)</h1><p>root_squash：在登入 NFS 主机使用分享之目录的使用者如果是 root，那使用者的UID&nbsp; GID 变成 nobody 身份</p>
+<p>/usr/local/nfs 172.16.1.0/24(ro,async,all_squash)</p>
+<p>/var/log/httpd 172.16.1.0/24(rw,async,all_squash)</p>
+<h1 id="/usr/local/nfs_*(ro,async,all_squash)">/usr/local/nfs *(ro,async,all_squash)</h1><h1 id="/khsys/vod_172-16-1-0/24(ro,async,all_squash，anonuid=99)">/khsys/vod 172.16.1.0/24(ro,async,all_squash，anonuid=99)</h1><p>root_squash：在登入 NFS 主机使用分享之目录的使用者如果是 root，那使用者的UID GID 变成 nobody 身份</p>
 <p>All_squash 客户机上的任何用户访问该共享目录时都映射成匿名用户 </p>
 <p>将客户机的用户都映射成服务器上的匿名用户(all_squash),相当于在服务器上用nobody用户访问该目录（若客户机要在该共享目录上保存文件（即写操作），则服务器上的nobody用户对该目录必须有写的权限）</p>
 <p>Async 资料会先暂存于内存中，而非直接写入硬盘 </p>
 <p>下面是一些NFS共享的常用参数：</p>
-<p>&nbsp;&nbsp;&nbsp; ro&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 只读访问 </p>
-<p>&nbsp;&nbsp;&nbsp; rw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 读写访问 </p>
-<p>&nbsp;&nbsp;&nbsp; sync&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 所有数据在请求时写入共享 </p>
-<p>&nbsp;&nbsp;&nbsp; async&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS在写入数据前可以相应请求 </p>
-<p>&nbsp;&nbsp;&nbsp; secure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS通过1024以下的安全TCP/IP端口发送 </p>
-<p>&nbsp;&nbsp;&nbsp; insecure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NFS通过1024以上的端口发送 </p>
-<p>&nbsp;&nbsp;&nbsp; wdelay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果多个用户要写入NFS目录，则归组写入（默认</p>
-<p>&nbsp;&nbsp;&nbsp; no_wdelay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果多个用户要写入NFS目录，则立即写入，当使</p>
-<p>&nbsp;&nbsp;&nbsp; hide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在NFS共享目录中不共享其子目录 </p>
-<p>&nbsp;&nbsp;&nbsp; no_hide&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 共享NFS目录的子目录 </p>
-<p>&nbsp;&nbsp;&nbsp; subtree_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 如果共享/usr/bin之类的子目录时，强制NFS检查</p>
-<p>&nbsp;&nbsp;&nbsp; no_subtree_check&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 和上面相对，不检查父目录权限 </p>
-<p>&nbsp;&nbsp;&nbsp; all_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 共享文件的UID和GID映射匿名用户anonymous，适合</p>
-<p>&nbsp;&nbsp;&nbsp; no_all_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 保留共享文件的UID和GID（默认） </p>
-<p>&nbsp;&nbsp;&nbsp; root_squash&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root用户的所有请求映射成如anonymous用户一样</p>
-<p>&nbsp;&nbsp;&nbsp; no_root_squas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root用户具有根目录的完全管理访问权限 </p>
-<p>&nbsp;&nbsp;&nbsp; anonuid=xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定NFS服务器/etc/passwd文件中匿名用户的UID </p>
-<p>&nbsp;&nbsp;&nbsp; anongid=xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指定NFS服务器/etc/passwd文件中匿名用户的GID</p>
+<p> ro 只读访问 </p>
+<p> rw 读写访问 </p>
+<p> sync 所有数据在请求时写入共享 </p>
+<p> async NFS在写入数据前可以相应请求 </p>
+<p> secure NFS通过1024以下的安全TCP/IP端口发送 </p>
+<p> insecure NFS通过1024以上的端口发送 </p>
+<p> wdelay 如果多个用户要写入NFS目录，则归组写入（默认</p>
+<p> no_wdelay 如果多个用户要写入NFS目录，则立即写入，当使</p>
+<p> hide 在NFS共享目录中不共享其子目录 </p>
+<p> no_hide 共享NFS目录的子目录 </p>
+<p> subtree_check 如果共享/usr/bin之类的子目录时，强制NFS检查</p>
+<p> no_subtree_check 和上面相对，不检查父目录权限 </p>
+<p> all_squash 共享文件的UID和GID映射匿名用户anonymous，适合</p>
+<p> no_all_squash 保留共享文件的UID和GID（默认） </p>
+<p> root_squash root用户的所有请求映射成如anonymous用户一样</p>
+<p> no_root_squas root用户具有根目录的完全管理访问权限 </p>
+<p> anonuid=xxx 指定NFS服务器/etc/passwd文件中匿名用户的UID </p>
+<p> anongid=xxx 指定NFS服务器/etc/passwd文件中匿名用户的GID</p>
 <p>启动服务:</p>
 <p>/etc/init.d/portmap restart</p>
 <p>/etc/init.d/nfs restart</p>
@@ -51,7 +56,6 @@
 <p>vi /etc/hosts.allow </p>
 <p>portmap: 192.168.0.0/255.255.255.0 : allow </p>
 <p>portmap: 172.16.1.8 : allow </p>
-<p>&nbsp;</p>
 <p>vi /etc/hosts.deny </p>
 <p>portmap: ALL : deny </p>
 <p>卸载所有共享目录</p>
@@ -59,26 +63,25 @@
 <p>重新共享所有目录并输出详细信息</p>
 <p>exportfs -rv </p>
 <p>客户端的操作： </p>
-<p>&nbsp;1、showmount命令对于NFS的操作和查错有很大的帮助，所以我们先来看一下showmount的用法 </p>
-<p>&nbsp;showmount </p>
-<p>&nbsp;-a ：这个参数是一般在NFS SERVER上使用，是用来显示已经mount上本机nfs目录的cline机器。 </p>
-<p>&nbsp;-e ：显示指定的NFS SERVER上export出来的目录。</p>
-<p>&nbsp;2、mount nfs目录的方法： </p>
-<p>&nbsp;mount -t nfs hostname(orIP):/directory /mount/point </p>
-<p>&nbsp;具体例子： </p>
-<p>&nbsp;Linux:</p>
-<p>&nbsp;mount -t nfs 172.16.1.178:/tmp /mnt/nfs </p>
-<p>&nbsp;Solaris:mount -F nfs 172.16.1.178:/tmp /mnt/nfs </p>
-<p>&nbsp;BSD: mount 172.16.1.178:/tmp /mnt/nfs </p>
-<p>&nbsp;</p>
-<p>&nbsp;3、mount nfs的其它可选参数： </p>
-<p>&nbsp;HARD mount和SOFT MOUNT： </p>
-<p>&nbsp;HARD: NFS CLIENT会不断的尝试与SERVER的连接（在后台，不会给出任何提示信息,在LINUX下有的版本仍然会给出一些提示），直到MOUNT上。 </p>
-<p>&nbsp;SOFT:会在前台尝试与SERVER的连接，是默认的连接方式。当收到错误信息后终止mount尝试，并给出相关信息。 </p>
+<p>1、showmount命令对于NFS的操作和查错有很大的帮助，所以我们先来看一下showmount的用法 </p>
+<p>showmount </p>
+<p>-a ：这个参数是一般在NFS SERVER上使用，是用来显示已经mount上本机nfs目录的cline机器。 </p>
+<p>-e ：显示指定的NFS SERVER上export出来的目录。</p>
+<p>2、mount nfs目录的方法： </p>
+<p>mount -t nfs hostname(orIP):/directory /mount/point </p>
+<p>具体例子： </p>
+<p>Linux:</p>
+<p>mount -t nfs 172.16.1.178:/tmp /mnt/nfs </p>
+<p>Solaris:mount -F nfs 172.16.1.178:/tmp /mnt/nfs </p>
+<p>BSD: mount 172.16.1.178:/tmp /mnt/nfs </p>
+<p>3、mount nfs的其它可选参数： </p>
+<p>HARD mount和SOFT MOUNT： </p>
+<p>HARD: NFS CLIENT会不断的尝试与SERVER的连接（在后台，不会给出任何提示信息,在LINUX下有的版本仍然会给出一些提示），直到MOUNT上。 </p>
+<p>SOFT:会在前台尝试与SERVER的连接，是默认的连接方式。当收到错误信息后终止mount尝试，并给出相关信息。 </p>
 <p>服务器端防火墙的配置:</p>
 <p>/etc/services</p>
-<p>nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2049/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nfsd</p>
-<p>nfs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2049/udp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nfsd</p>
+<p>nfs 2049/tcp nfsd</p>
+<p>nfs 2049/udp nfsd</p>
 <p>/etc/sysconfig/network</p>
 <p>MOUNTD_PORT=1212</p>
 <p>-A INPUT -p tcp -m state —state NEW -m tcp -s 172.16.1.0/24 —dport 111 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
@@ -95,7 +98,6 @@
 <p>the output of rpcinfo -p servername run on the client</p>
 <p>查看服务器上有关NFS服务器启动了哪些端口：</p>
 <p>lsof -i|grep rpc</p>
-<p>&nbsp;</p>
 </div><footer class="post__foot u-cf"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/" data-url="http://blog.veryi.com/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');
@@ -103,4 +105,4 @@
   ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
   ds.charset = 'UTF-8';
   document.getElementsByTagName('body')[0].appendChild(ds);
-})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(13)</small></li><li><a href="/categories/学习/">学习</a><small>(3)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/佛法传统文化/健康/">健康</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/09/w/e5-91-b3-e4-b9-8b-e7-b4-a0-e5-8f-b0-e6-b9-be-e6-9e-97-e6-b8-85-e7-8e-84/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+})();</script><!-- 多说公共JS代码 end --></div></div></main><aside class="site-aside"><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div id="fixed" class="widget fixed"><div class="catalog"><h2>目录结构  </h2><ul class="catalog-list"></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2009/04/09/w/e5-91-b3-e4-b9-8b-e7-b4-a0-e5-8f-b0-e6-b9-be-e6-9e-97-e6-b8-85-e7-8e-84/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
