@@ -9,27 +9,27 @@
 </code></pre><p>附，nginx日志报错：</p>
 <pre><code>nginx fastcgi Primary <span class="keyword">script</span> unknown when configuring userdir
 </code></pre><p>修改：</p>
-<pre><code> location ~ \.php$ {
+<pre><code> location ~ <span class="subst">\</span><span class="built_in">.</span>php$ {
 
- <span class="keyword">...</span>
+ <span class="attribute">...</span>
 
- fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+ fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;
 
- <span class="keyword">...</span>
+ <span class="attribute">...</span>
 
  }
 
 为：
 
- location ~ \.php$ {
+ location ~ <span class="subst">\</span><span class="built_in">.</span>php$ {
 
- <span class="keyword">...</span>
+ <span class="attribute">...</span>
 
- fastcgi_param SCRIPT_FILENAME $request_filename;
+ fastcgi_param SCRIPT_FILENAME <span class="variable">$request_filename</span>;
 
- fastcgi_param REQUEST_URI $uri?$args;
+ fastcgi_param REQUEST_URI <span class="variable">$uri</span><span class="subst">?</span><span class="variable">$args</span>;
 
- <span class="keyword">...</span>
+ <span class="attribute">...</span>
 
  }
 </code></pre></div><footer class="post__foot u-cf"><a href="/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" data-url="http://blog.veryi.com/2013/09/10/w/php5-4-e7-bb-87-e6-a2-a6dedecms-e5-90-8e-e5-8f-b0-e7-99-bb-e5-bd-95-e7-a9-ba-e7-99-bd-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};

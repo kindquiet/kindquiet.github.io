@@ -23,7 +23,7 @@ sudo vim /etc/iptables.test.rules
 
 -A <span class="keyword">INPUT</span> -i lo -j ACCEPT
 
--A <span class="keyword">INPUT</span> -i ! lo -d <span class="number">127.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">8</span> -j REJECT
+-A <span class="keyword">INPUT</span> -i ! lo -d <span class="number">127.0</span>.0.0/<span class="number">8</span> -j REJECT
 
 # Accepts <span class="keyword">all</span> established inbound connections
 

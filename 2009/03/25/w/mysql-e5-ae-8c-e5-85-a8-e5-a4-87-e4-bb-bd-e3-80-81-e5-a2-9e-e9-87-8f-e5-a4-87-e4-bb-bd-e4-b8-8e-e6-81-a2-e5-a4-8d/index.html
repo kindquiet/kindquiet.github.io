@@ -23,7 +23,7 @@ mysqldump <span class="operator"><span class="keyword">lock</span>-<span class="
 
 用于日后恢复时参考，例如输出的备份<span class="keyword">SQL</span>文件中含有：
 
- <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=mysql-<span class="keyword">bin</span><span class="number">.000002</span>, MASTER_LOG_POS=<span class="number">106</span>;</span>
+ <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=mysql-<span class="keyword">bin</span>.000002, MASTER_LOG_POS=<span class="number">106</span>;</span>
 
 <span class="comment">--master-data[=value]</span>
 
@@ -45,7 +45,7 @@ mysqldump <span class="operator"><span class="keyword">lock</span>-<span class="
 
 每日定时使用 mysqladmin <span class="keyword">flush</span>-<span class="keyword">logs</span>来创建新日志，并结束前一日志写入过程。并
 
-把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span><span class="number">.000002</span> , 
+把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span>.000002 , 
 
 [ 从备份中恢复 ]
 
@@ -55,7 +55,7 @@ mysql -u root -p  backup_sunday_1_PM.<span class="keyword">sql</span>
 
 * 恢复增量备份
 
-mysqlbinlog mysql-<span class="keyword">bin</span><span class="number">.000002</span>  | mysql -u root -p
+mysqlbinlog mysql-<span class="keyword">bin</span>.000002  | mysql -u root -p
 
 注意此次恢复过程亦会写入日志文件，如果数据量很大，建议先关闭日志功能
 

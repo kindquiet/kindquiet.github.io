@@ -433,7 +433,7 @@ Etag:
 
 A、Expires
 
-A<span class="number">.1</span>、 Apache Etag
+A.1、 Apache Etag
 
 使用Apache的mod_expires 模块来设置，这包括控制应答时的Expires头内容和<span class="keyword">Cache</span>-Control头的<span class="keyword">max</span>-age指令
 
@@ -511,7 +511,7 @@ refresh_pattern . <span class="number">10</span> <span class="number">50</span>%
 
 有关Squid中Expires的说明，请参考Squid官方中refresh_pattern介 绍。
 
-A<span class="number">.2</span>、Lighttpd Expires
+A.2、Lighttpd Expires
 
 和Apache一样Lighttpd设置expire也要先查看是否支持了mod_expire模 块，
 
@@ -545,7 +545,7 @@ expire.url = (  = access <span class="number">1</span> hours )
 
 具体参考Lighttpd官方Expires解释
 
-A<span class="number">.3</span>、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+A.3、Nginx中Expireslocation ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
 
 {
 
@@ -563,7 +563,7 @@ expires 1h;
 
 这类文件并不常修改，通过 expires 指令来控制其在浏览器的缓存，以减少不必要的请求。 expires 指令可以控制 HTTP 应答中的 Expires 和 <span class="operator"><span class="keyword">Cache</span>-Control 的头标（起到控制页面缓存的作用）。其他请参考Nginx中Expires
 
-B<span class="number">.1</span>、Apache中Etag设置
+B.1、Apache中Etag设置
 
 在Apache中设置Etag的支持比较简单，只用在含有静态文件的目录中建立一个文件.htaccess, 里面加入：
 
@@ -571,7 +571,7 @@ FileETag MTime <span class="keyword">Size</span>
 
 这样就行了，详细的可以参考Apache的FileEtag文档页
 
-B<span class="number">.2</span>、 Lighttpd Etag
+B.2、 Lighttpd Etag
 
 在Lighttpd中设置Etag支持：
 
@@ -585,7 +585,7 @@ static-file.etags: 是否启用Etag的功能
 
 第四个参数肯定是要enable的， 前面三个就看实际的需要来选吧，推荐使用修改时间
 
-B<span class="number">.3</span>、 Nginx Etag
+B.3、 Nginx Etag
 
 Nginx中默认没有添加对Etag标识.Igor Sysoev的观点在对静态文件处理上看不出如何Etag好于<span class="keyword">Last</span>-Modified标识。
 
@@ -599,7 +599,7 @@ http://www.mnot.net/cache_docs/#<span class="keyword">WORK</span>
 
 It looks <span class="keyword">to</span> me that it makes <span class="keyword">some</span> caches out there <span class="keyword">to</span> <span class="keyword">cache</span> theresponse <span class="keyword">from</span> the origin <span class="keyword">server</span> more reliable <span class="keyword">as</span> <span class="keyword">in</span> rfc2616(ftp://ftp.rfc-editor.org/<span class="keyword">in</span>-notes/rfc2616.txt) <span class="keyword">is</span> written.
 
-<span class="number">3.11</span> Entity Tags <span class="number">13.3</span><span class="number">.2</span> Entity Tag <span class="keyword">Cache</span> Validators <span class="number">14.19</span> ETag
+<span class="number">3.11</span> Entity Tags <span class="number">13.3</span>.2 Entity Tag <span class="keyword">Cache</span> Validators <span class="number">14.19</span> ETag
 
 当然也有第三方nginx- static-etags 模块了，请参考
 
@@ -761,7 +761,7 @@ Web服务器加速（反向代理）是针对Web服务器提供加速功能的�
 
  反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
 </code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
-<pre><code>PHP <span class="number">5.3</span><span class="number">.6</span>
+<pre><code>PHP <span class="number">5.3</span>.6
 
 cacti spine
 
@@ -771,11 +771,11 @@ pureftp
 
 wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
 
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64.tar.gz
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span>.12-linux2.6-x86_64.tar.gz
 
 cd <span class="regexp">/usr/</span>local
 
-ln -s mysql-<span class="number">5.5</span><span class="number">.12</span>-linux2<span class="number">.6</span>-x86_64/ mysql
+ln -s mysql-<span class="number">5.5</span>.12-linux2.6-x86_64/ mysql
 
 cd <span class="regexp">/usr/</span>local/mysql
 
@@ -929,7 +929,7 @@ echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql
 
 . <span class="regexp">/etc/</span>profile
 
-mysql5<span class="number">.1</span>升级到mysql5<span class="number">.5</span>
+mysql5.1升级到mysql5.5
 
 mysql_upgrade包含一下三个命令：
 

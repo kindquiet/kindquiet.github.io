@@ -1,10 +1,10 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-10T03:59:05.000Z" class="post__time">九月 10, 2010</time><h1 class="post__title"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/">centos4 升级内核linux-2.6.34.1及iptables升级到v1.4.9.1</a></h1></header><div class="post__main"><p>centos4.2 升级到内核linux-2.6.34后iptables无法使用，升级iptables:</p>
 <p>wget <a href="http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2" target="_blank" rel="external">http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2</a></p>
-<pre><code>tar xjf iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+<pre><code>tar xjf iptables-<span class="number">1.4</span>.9.1.tar.bz2 -C <span class="regexp">/usr/</span>local/src
 
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>iptables-<span class="number">1.4</span><span class="number">.9</span><span class="number">.1</span>
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>iptables-<span class="number">1.4</span>.9.1
 
-.<span class="regexp">/configure --prefix=/</span>usr --with-ksource=<span class="regexp">/usr/</span>src/linux-<span class="number">2.6</span><span class="number">.34</span><span class="number">.1</span>
+.<span class="regexp">/configure --prefix=/</span>usr --with-ksource=<span class="regexp">/usr/</span>src/linux-<span class="number">2.6</span>.34.1
 
 make  make install
 </code></pre><p>/usr/sbin/iptables -V</p>
@@ -43,7 +43,7 @@ cd ..
 
 rm -f mysql
 
-<span class="keyword">ln</span> -s mysql-<span class="number">5.1</span><span class="number">.50</span>-linux-x86_64-glibc23/ mysql
+<span class="keyword">ln</span> -s mysql-<span class="number">5.1</span>.50-linux-x86_64-glibc23/ mysql
 
 cd /usr/<span class="keyword">local</span>/mysql/
 

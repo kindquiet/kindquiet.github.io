@@ -131,9 +131,9 @@ web_doc <span class="number">1</span> <span class="number">1</span> <span class=
 </code></pre><p>lvs LV VG Attr LSize Origin Snap% Move Log Copy% Convert</p>
 <pre><code><span class="title">www</span> web_doc -wi-ao <span class="number">195</span>.<span class="number">31G</span> 
 </code></pre><p>lvextend -L +100g /dev/mapper/web_doc-www</p>
-<pre><code>Extending logical <span class="shader"><span class="keyword">volume</span> www to 295.31 GB
+<pre><code>Extending logical <span class="built_ins">volume</span> www to 295.31 GB
 
-Logical <span class="keyword">volume</span> www successfully resized</span>
+Logical <span class="built_ins">volume</span> www successfully resized
 </code></pre><p>resize2fs /dev/mapper/web_doc-www</p>
 <pre><code>resize2fs <span class="number">1.39</span> (<span class="number">29</span>-May-<span class="number">2006</span>)
 

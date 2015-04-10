@@ -18,123 +18,123 @@ lv<span class="emphasis">_home VolGroup -wi-ao 409.39g
 
 <span class="http"> <span class="attribute">WARNING</span>: <span class="string">Duplicate VG name VolGroup: Existing m6dC3H-87Od-YFcZ-fsLi-1k41-VNc6-Ijye58 (created here) takes precedence over 03uEIc-B9RB-mHfR-CypE-c626-0qfU-WdKUES</span>
 
-<span class="applescript"> PV VG Fmt Attr PSize PFree
+<span class="fortran"> PV VG <span class="keyword">Fmt</span> Attr PSize PFree
 
- /dev/sda2 VolGroup lvm2 a<span class="comment">-- 931.02g 0 </span>
+ /dev/sda2 VolGroup lvm2 a-- <span class="number">931.</span>2g <span class="number">0</span> 
 
- /dev/sdb2 VolGroup lvm2 a<span class="comment">-- 465.27g 0 </span>
+ /dev/sdb2 VolGroup lvm2 a-- <span class="number">465.</span>7g <span class="number">0</span> 
 
 pvremove /dev/sdb2 -ff
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
-Really WIPE LABELS <span class="keyword">from</span> physical volume /dev/sdb2 <span class="keyword">of</span> volume group VolGroup [y/n]? y
+Really WIPE LABELS from physical volume /dev/sdb2 of volume group VolGroup [y/n]? y
 
- WARNING: Wiping physical volume label <span class="keyword">from</span> /dev/sdb2 <span class="keyword">of</span> volume group VolGroup
+ WARNING: Wiping physical volume label from /dev/sdb2 of volume group VolGroup
 
- Can&amp;<span class="comment">#39;t open /dev/sdb2 exclusively - not removing. Mounted filesystem?</span>
+ Can&amp;#<span class="number">39</span>;t open /dev/sdb2 exclusively - not removing. Mounted filesystem?
 
 vgdisplay 
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
- <span class="comment">--- Volume group ---</span>
+ --- Volume group ---
 
- VG Name VolGroup
+ VG <span class="keyword">Name</span> VolGroup
 
  System ID 
 
- Format lvm2
+ <span class="keyword">Format</span> lvm2
 
  Metadata Areas <span class="number">1</span>
 
- Metadata Sequence No <span class="number">4</span>
+ Metadata <span class="keyword">Sequence</span> No <span class="number">4</span>
 
- VG Access <span class="command">read</span>/<span class="command">write</span>
+ VG <span class="keyword">Access</span> read/<span class="built_in">write</span>
 
- VG Status resizable
+ VG <span class="keyword">Status</span> resizable
 
- MAX LV <span class="number">0</span>
+ <span class="built_in">MAX</span> LV <span class="number">0</span>
 
  Cur LV <span class="number">3</span>
 
  Open LV <span class="number">1</span>
 
- Max PV <span class="number">0</span>
+ <span class="built_in">Max</span> PV <span class="number">0</span>
 
  Cur PV <span class="number">1</span>
 
  Act PV <span class="number">1</span>
 
- VG Size <span class="number">465.27</span> GiB
+ VG <span class="built_in">Size</span> <span class="number">465.27</span> GiB
 
- PE Size <span class="number">4.00</span> MiB
+ PE <span class="built_in">Size</span> <span class="number">4.00</span> MiB
 
  Total PE <span class="number">119109</span>
 
- Alloc PE / Size <span class="number">119109</span> / <span class="number">465.27</span> GiB
+ Alloc PE / <span class="built_in">Size</span> <span class="number">119109</span> / <span class="number">465.27</span> GiB
 
- Free PE / Size <span class="number">0</span> / <span class="number">0</span> 
+ Free PE / <span class="built_in">Size</span> <span class="number">0</span> / <span class="number">0</span> 
 
- VG UUID <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ VG UUID 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- <span class="comment">--- Volume group ---</span>
+ --- Volume group ---
 
- VG Name VolGroup
+ VG <span class="keyword">Name</span> VolGroup
 
  System ID 
 
- Format lvm2
+ <span class="keyword">Format</span> lvm2
 
  Metadata Areas <span class="number">1</span>
 
- Metadata Sequence No <span class="number">4</span>
+ Metadata <span class="keyword">Sequence</span> No <span class="number">4</span>
 
- VG Access <span class="command">read</span>/<span class="command">write</span>
+ VG <span class="keyword">Access</span> read/<span class="built_in">write</span>
 
- VG Status resizable
+ VG <span class="keyword">Status</span> resizable
 
- MAX LV <span class="number">0</span>
+ <span class="built_in">MAX</span> LV <span class="number">0</span>
 
  Cur LV <span class="number">3</span>
 
  Open LV <span class="number">2</span>
 
- Max PV <span class="number">0</span>
+ <span class="built_in">Max</span> PV <span class="number">0</span>
 
  Cur PV <span class="number">1</span>
 
  Act PV <span class="number">1</span>
 
- VG Size <span class="number">931.02</span> GiB
+ VG <span class="built_in">Size</span> <span class="number">931.02</span> GiB
 
- PE Size <span class="number">4.00</span> MiB
+ PE <span class="built_in">Size</span> <span class="number">4.00</span> MiB
 
  Total PE <span class="number">238341</span>
 
- Alloc PE / Size <span class="number">238341</span> / <span class="number">931.02</span> GiB
+ Alloc PE / <span class="built_in">Size</span> <span class="number">238341</span> / <span class="number">931.02</span> GiB
 
- Free PE / Size <span class="number">0</span> / <span class="number">0</span> 
+ Free PE / <span class="built_in">Size</span> <span class="number">0</span> / <span class="number">0</span> 
 
- VG UUID m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ VG UUID m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
 卷组更名：
 
-vgrename <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES vg01
+vgrename 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES vg01
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
- Volume group VolGroup successfully renamed <span class="keyword">to</span> vg01</span></span>
+ Volume group VolGroup successfully renamed to vg01</span></span>
 </code></pre><p>报警消失，恢复正常。</p>
 <p>vgs</p>
 <pre><code> VG <span class="comment">#PV #LV #SN Attr VSize VFree</span>
@@ -157,7 +157,7 @@ mount: special device /dev/VolGroup/lv_home <span class="keyword">does</span> <s
 
 mkfs -t ext4 /dev/VolGroup/lv_home
 
-mke2fs <span class="number">1.41</span><span class="number">.12</span> (<span class="number">17</span>-May-<span class="number">2010</span>)
+mke2fs <span class="number">1.41</span>.12 (<span class="number">17</span>-May-<span class="number">2010</span>)
 
 Could <span class="keyword">not</span> stat /dev/VolGroup/lv_home <span class="comment">--- No such file or directory</span>
 
@@ -335,15 +335,15 @@ logrotate 配置文件/etc/logrotate.conf ，配置日志文件的处理方式�
 </code></pre><p>每天定时执行配置文件/etc/cron.daily/logrotate</p>
 </div><footer class="post__foot u-cf"><a href="/2012/04/19/w/logroate-e5-af-bc-e8-87-b4-e7-b3-bb-e7-bb-9f-e9-ab-98-e8-b4-9f-e8-bd-bd-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-04-10T10:02:12.000Z" class="post__time">四月 10, 2012</time><h1 class="post__title"><a href="/2012/04/10/w/samba-e6-9c-8d-e5-8a-a1-e4-b8-8d-e8-bf-9e-e6-8e-a5-e6-89-93-e5-8d-b0-e6-9c-ba-e9-94-99-e8-af-af-e4-bf-a1-e6-81-af-e5-85-b3-e9-97-ad/">samba服务不连接打印机错误信息关闭</a></h1></header><div class="post__main"><p>centos 6.2没有打印机，系统日志有大量samba信息：</p>
 <p>Apr 8 03:45:56 smbd[14866]: [2012/04/08 03:45:56.734889, 0] printing/print_cups.c:109(cups_connect)</p>
-<pre><code>Apr <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> smbd[<span class="number">14866</span>]: Unable <span class="keyword">to</span> connect <span class="keyword">to</span> CUPS server localhost:<span class="number">631</span> - Connection refused
+<pre><code><span class="name">Apr</span> <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> <span class="atom">smbd</span>[<span class="number">14866</span>]: <span class="name">Unable</span> <span class="atom">to</span> <span class="atom">connect</span> <span class="atom">to</span> <span class="name">CUPS</span> <span class="atom">server</span> <span class="atom">localhost</span>:<span class="number">631</span> - <span class="name">Connection</span> <span class="atom">refused</span>
 
-Apr <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> smbd[<span class="number">1787</span>]: [<span class="number">2012</span>/<span class="number">04</span>/<span class="number">08</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56.735377</span>, <span class="number">0</span>] printing/print_cups.c:<span class="number">468</span>(cups_async_callback)
+<span class="name">Apr</span> <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> <span class="atom">smbd</span>[<span class="number">1787</span>]: [<span class="number">2012</span>/<span class="number">04</span>/<span class="number">08</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56.735377</span>, <span class="number">0</span>] <span class="atom">printing</span>/<span class="atom">print_cups</span>.<span class="atom">c</span>:<span class="number">468</span>(<span class="atom">cups_async_callback</span>)
 
-Apr <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> smbd[<span class="number">1787</span>]: failed <span class="keyword">to</span> retrieve printer <span class="type">list</span>: NT_STATUS_UNSUCCESSFUL
+<span class="name">Apr</span> <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> <span class="atom">smbd</span>[<span class="number">1787</span>]: <span class="atom">failed</span> <span class="atom">to</span> <span class="atom">retrieve</span> <span class="atom">printer</span> <span class="atom">list</span>: <span class="name">NT_STATUS_UNSUCCESSFUL</span>
 
-Apr <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> smbd[<span class="number">1787</span>]: [<span class="number">2012</span>/<span class="number">04</span>/<span class="number">08</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56.736338</span>, <span class="number">0</span>] smbd/server.c:<span class="number">281</span>(remove_child_pid)
+<span class="name">Apr</span> <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> <span class="atom">smbd</span>[<span class="number">1787</span>]: [<span class="number">2012</span>/<span class="number">04</span>/<span class="number">08</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56.736338</span>, <span class="number">0</span>] <span class="atom">smbd</span>/<span class="atom">server</span>.<span class="atom">c</span>:<span class="number">281</span>(<span class="atom">remove_child_pid</span>)
 
-Apr <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> smbd[<span class="number">1787</span>]: Could <span class="keyword">not</span> find child <span class="number">14866</span> <span class="comment">-- ignoring</span>
+<span class="name">Apr</span> <span class="number">8</span> <span class="number">03</span>:<span class="number">45</span>:<span class="number">56</span> <span class="atom">smbd</span>[<span class="number">1787</span>]: <span class="name">Could</span> <span class="atom">not</span> <span class="atom">find</span> <span class="atom">child</span> <span class="number">14866</span> -- <span class="atom">ignoring</span>
 </code></pre><p>关闭方法，修改/etc/samba/smb.conf</p>
 <p>printing = bsd</p>
 <pre><code>printcap <span class="variable">name =</span> /dev/<span class="constant">null</span>
@@ -384,7 +384,7 @@ sudo /etc/init.<span class="keyword">d</span>/sshd restart
 
 ps -aeo cmd,pid,nice |grep sshd
 </code></pre><p>系统中运行的每个进程都有一个优先级(亦称nice 值)，其范围从 -20 (最高优先级)到 19 (最低优先级)。默认情况下，进程的优先级是 0 (基本调度优先级)。优先级比较大的进程(nice 值比较小，最低到 -20)相对优先级比较小的进程(直到 19)将比较频繁地被调度运行，因此就拥有更多的进程周期。一般用户只能降低它们自己进程的优先级别，并限于 0 到 19 之间。超级用户(root)可以将任何进程的优先级设定为任何值 </p>
-<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 renice 命令。其语法为：
+<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 <span class="atom">renice</span> 命令。其语法为：
 
-renice 优先级 [[-p] pid <span class="keyword">...</span>] [[-g] pgrp <span class="keyword">...</span>] [[-u] 用户名 <span class="keyword">...</span>]
+<span class="atom">renice</span> 优先级 [[-<span class="atom">p</span>] <span class="atom">pid</span> ...] [[-<span class="atom">g</span>] <span class="atom">pgrp</span> ...] [[-<span class="atom">u</span>] 用户名 ...]
 </code></pre></div><footer class="post__foot u-cf"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

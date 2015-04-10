@@ -3,9 +3,9 @@
 
 wget http:<span class="comment">//mysql-cacti-templates.googlecode.com/files/better-cacti-templates-1.1.7.tar.gz</span>
 
-tar <span class="attribute">-xzf</span> better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz <span class="attribute">-C</span> /usr/<span class="built_in">local</span>/src
+tar <span class="attribute">-xzf</span> better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="built_in">.7</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz <span class="attribute">-C</span> /usr/<span class="built_in">local</span>/src
 
-cd /usr/<span class="built_in">local</span>/src/better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="number">.7</span>
+cd /usr/<span class="built_in">local</span>/src/better<span class="attribute">-cacti</span><span class="attribute">-templates</span><span class="subst">-</span><span class="number">1.1</span><span class="built_in">.7</span>
 
 cp scripts/ss_get_mysql_stats<span class="built_in">.</span>php /usr/<span class="built_in">local</span>/www/html/cacti/scripts
 
@@ -33,13 +33,13 @@ flush privileges;
 
 cd /usr/<span class="built_in">local</span>/www/html/cacti/scripts
 
-php <span class="attribute">-q</span> <span class="built_in">.</span>/ss_get_mysql_stats<span class="built_in">.</span>php <span class="subst">--</span>host <span class="number">10.88</span><span class="number">.1</span><span class="number">.134</span> <span class="subst">--</span>items cv,cx,cy,cz <span class="subst">--</span>user cacti <span class="subst">--</span>pass cacti <span class="subst">--</span>port <span class="number">3306</span>
+php <span class="attribute">-q</span> <span class="built_in">.</span>/ss_get_mysql_stats<span class="built_in">.</span>php <span class="subst">--</span>host <span class="number">10.88</span><span class="built_in">.1</span><span class="built_in">.134</span> <span class="subst">--</span>items cv,cx,cy,cz <span class="subst">--</span>user cacti <span class="subst">--</span>pass cacti <span class="subst">--</span>port <span class="number">3306</span>
 
 模板导入（<span class="keyword">Import</span> Templates）
 
-在cacti管理界面导入模板cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span>。
+在cacti管理界面导入模板cacti_host_template_x_mysql_server_ht_0<span class="built_in">.8</span><span class="built_in">.6</span>i<span class="attribute">-sver1</span><span class="built_in">.1</span><span class="built_in">.7</span><span class="built_in">.</span><span class="built_in">xml</span>。
 
-Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="number">.8</span><span class="number">.6</span>i<span class="attribute">-sver1</span><span class="number">.1</span><span class="number">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
+Now <span class="keyword">import</span> the template files through your web browser<span class="built_in">. </span><span class="keyword">In</span> the Cacti web interface<span class="subst">&amp;</span><span class="variable">#39</span>;s Console tab, click <span class="keyword">on</span> the <span class="keyword">Import</span> Templates <span class="keyword">link</span> <span class="keyword">in</span> the left sidebar<span class="built_in">. </span>Browse <span class="keyword">to</span> the directory containing the unpacked templates, <span class="keyword">select</span> the <span class="built_in">XML</span> file for the templates you<span class="subst">&amp;</span><span class="variable">#39</span>;re installing, <span class="literal">and</span> submit the form<span class="built_in">. </span><span class="keyword">In</span> our example, the file will be named something like cacti_host_template_x_mysql_server_ht_0<span class="built_in">.8</span><span class="built_in">.6</span>i<span class="attribute">-sver1</span><span class="built_in">.1</span><span class="built_in">.7</span><span class="built_in">.</span><span class="built_in">xml</span><span class="built_in">.
 
 </span><span class="built_in">Data</span> Input Method
 

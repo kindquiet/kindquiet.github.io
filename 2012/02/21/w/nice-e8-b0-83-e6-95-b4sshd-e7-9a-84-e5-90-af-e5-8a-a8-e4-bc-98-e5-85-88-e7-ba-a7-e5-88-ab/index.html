@@ -25,9 +25,9 @@ sudo /etc/init.<span class="keyword">d</span>/sshd restart
 
 ps -aeo cmd,pid,nice |grep sshd
 </code></pre><p>系统中运行的每个进程都有一个优先级(亦称nice 值)，其范围从 -20 (最高优先级)到 19 (最低优先级)。默认情况下，进程的优先级是 0 (基本调度优先级)。优先级比较大的进程(nice 值比较小，最低到 -20)相对优先级比较小的进程(直到 19)将比较频繁地被调度运行，因此就拥有更多的进程周期。一般用户只能降低它们自己进程的优先级别，并限于 0 到 19 之间。超级用户(root)可以将任何进程的优先级设定为任何值 </p>
-<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 renice 命令。其语法为：
+<pre><code>如果某个或某些进程消耗了过多的系统资源，除了终止它们，您还可以更改它们的优先级。为此，请使用 <span class="atom">renice</span> 命令。其语法为：
 
-renice 优先级 [[-p] pid <span class="keyword">...</span>] [[-g] pgrp <span class="keyword">...</span>] [[-u] 用户名 <span class="keyword">...</span>]
+<span class="atom">renice</span> 优先级 [[-<span class="atom">p</span>] <span class="atom">pid</span> ...] [[-<span class="atom">g</span>] <span class="atom">pgrp</span> ...] [[-<span class="atom">u</span>] 用户名 ...]
 </code></pre></div><footer class="post__foot u-cf"><a href="/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/" data-url="http://blog.veryi.com/2012/02/21/w/nice-e8-b0-83-e6-95-b4sshd-e7-9a-84-e5-90-af-e5-8a-a8-e4-bc-98-e5-85-88-e7-ba-a7-e5-88-ab/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};
 (function() {
   var ds = document.createElement('script');

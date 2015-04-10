@@ -16,11 +16,11 @@
 
  find <span class="comment">--set-root /bios/ibm_fw_bios_zue166a_anyos_i386.iso</span>
 
- <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0xff</span>) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
+ <span class="keyword">map</span> /bios/ibm_fw_bios_zue166a_anyos_i386.iso (<span class="number">0</span>xff) || <span class="keyword">map</span> <span class="comment">--mem /bios/ibm_fw_bios_zue166a_anyos_i386.iso (0xff)</span>
 
  <span class="keyword">map</span> <span class="comment">--hook</span>
 
- chainloader (<span class="number">0xff</span>)
+ chainloader (<span class="number">0</span>xff)
 
  savedefault <span class="comment">--wait=2</span>
 
@@ -62,7 +62,7 @@ Dec <span class="number">1</span> <span class="number">13</span>:<span class="nu
 
 Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: you want, please <span class="built_in">write</span> <span class="operator">a</span> subnet declaration
 
-Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: <span class="operator">in</span> your dhcpd.conf <span class="built_in">file</span> <span class="keyword">for</span> <span class="operator">the</span> network segment
+Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: <span class="operator">in</span> your dhcpd.conf <span class="built_in">file</span> <span class="keyword">for</span> <span class="operator">the</span> network <span class="keyword">segment</span>
 
 Dec <span class="number">1</span> <span class="number">13</span>:<span class="number">39</span>:<span class="number">04</span> dhcpd: <span class="built_in">to</span> which interface eth0 is attached. **
 
@@ -96,11 +96,11 @@ chkconfig <span class="comment">--list network</span>
 
 Stop NetworkManager <span class="keyword">first</span>
 
-service NetworkManager stop
+service NetworkManager <span class="built_in">stop</span>
 
-<span class="operator">and</span> <span class="keyword">then</span> start Default Manager
+<span class="operator">and</span> <span class="keyword">then</span> <span class="built_in">start</span> Default Manager
 
-service network start
+service network <span class="built_in">start</span>
 
 <span class="operator">or</span> you can change <span class="keyword">it</span> easy:
 
@@ -110,11 +110,11 @@ uncheck <span class="operator">the</span> box that sets <span class="operator">t
 
 <span class="keyword">system</span>-config-services 
 
-stop <span class="operator">and</span> disable NetworkManager , start <span class="operator">and</span> enable network
+<span class="built_in">stop</span> <span class="operator">and</span> disable NetworkManager , <span class="built_in">start</span> <span class="operator">and</span> enable network
 
 you have problem because both <span class="operator">of</span> NetworkManager <span class="operator">and</span> Network <span class="keyword">using</span> same Network driver <span class="operator">and</span> default network blocking access <span class="keyword">for</span> NetworkManager. <span class="keyword">if</span> you disable NetworkManager your problem will disappeared <span class="keyword">after</span> restart.
 
-squid Version <span class="number">3.2</span><span class="number">.0</span><span class="number">.13</span>: ERROR: No
+squid Version <span class="number">3.2</span>.0.13: ERROR: No
 
 forward-proxy ports configured.
 

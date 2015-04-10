@@ -45,11 +45,11 @@ yum install wget <span class="attribute">-y</span>
 
 wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
 
-tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="built_in">.32</span><span class="attribute">-linux2</span><span class="built_in">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
 
 cd /usr/<span class="built_in">local</span>
 
-ln <span class="attribute">-s</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="number">.32</span><span class="attribute">-linux2</span><span class="number">.6</span><span class="attribute">-x86_64</span><span class="subst">/</span> mysql
+ln <span class="attribute">-s</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="built_in">.32</span><span class="attribute">-linux2</span><span class="built_in">.6</span><span class="attribute">-x86_64</span><span class="subst">/</span> mysql
 
 cd /usr/<span class="built_in">local</span>/mysql
 
@@ -164,10 +164,10 @@ echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql
 </code></pre><p>Welcome to the MySQL monitor. Commands end with ; or \g.</p>
 <pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
 
-Server <span class="property">version</span>: <span class="number">5.5</span><span class="number">.32</span>-<span class="command">log</span> MySQL Community Server (GPL)
+Server <span class="property">version</span>: <span class="number">5.5</span>.32-<span class="command">log</span> MySQL Community Server (GPL)
 </code></pre><p>mysql \s</p>
 <hr>
-<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span><span class="number">.32</span>, <span class="keyword">for</span> linux2<span class="number">.6</span> (x86_64) using readline <span class="number">5.1</span>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span>.32, <span class="keyword">for</span> linux2.6 (x86_64) using readline <span class="number">5.1</span>
 </code></pre><p>安装php5.5 httpd2.2.15，添加yum源：</p>
 <pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
 
@@ -182,7 +182,7 @@ yum repolist
 
 Zend Engine v2.5.0-dev, <span class="keyword">Copyright</span> (c) 1998-2013 Zend Technologies
 </code></pre><p>httpd -v</p>
-<pre><code>Server <span class="property">version</span>: Apache/<span class="number">2.2</span><span class="number">.15</span> (Unix)
+<pre><code>Server <span class="property">version</span>: Apache/<span class="number">2.2</span>.15 (Unix)
 </code></pre><p>设置自启动：</p>
 <p>chkconfig —list httpd</p>
 <pre><code>chkconfig <span class="comment">--level 345 httpd on</span>

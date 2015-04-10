@@ -13,9 +13,9 @@
 <p> 宋朝时期的奸相秦桧，曾以权势，威逼当时的风水大师赖布衣，要替他找一个能令自己及后代子孙也为王为候的龙穴，迁葬祖坟，以求万世之福。而赖布衣在家人生命受威胁下，只好屈于淫威，布下一个必出王候之奇局。事后他和家人远走到南方，浪迹江湖，避开了奸相逼害和利用。</p>
 <p> 临走时，于福地前，他很悲愤地说：「此地不发无地理，此地若发无天理！」(地理是风水地势龙脉的原理，推算出天地山川钟秀的龙气运行所在，而收为己用，以山河大地那么大的灵气来注入一家之运，不可能不发，否则地灵的道理便是虚假骗人的了。)后来秦桧将祖先山坟移葬此福地后，便洋洋得意，以为不久必当有机遇，所以便勾结番邦，妄想将来自己可以封王封候。那知有一夜，天昏地暗，狂风暴雨，雷电交加，竟然山川也都移了位，改了形，差之毫厘，却已是天渊之别，原来的福地，一夜间被改成了灭族抄家之地，这便正如关圣帝君在《明圣经》中说：「直心直受真福，巧计巧来祸殃」。这正是无福消受，天夺其算！也应验了后句「此地若发无天理！」了。所以若真要改运，首要消孽积福！若是孽债荔身，灾病意外必如磁吸铁那样，四方八面汹涌而至！但若是债还了，孽消了，则灾亦自然消，病自然除，祸自然灭！同样的道理，福积多了，也自然可享福，事事如心，好事也如影随形而来！经中说：「孽随心转」，人只要一明白了是因果相报，心意识中的怨恨便会舒缓冰释，心中若更能进而转恶向善，则纵使灾劫已然临头，也绝对会减慢减轻！</p>
 </div><footer class="post__foot u-cf"><a href="/2009/09/03/w/e7-a6-8f-e4-ba-ba-e5-b1-85-e7-a6-8f-e5-9c-b0-e7-a6-8f-e5-9c-b0-e7-a6-8f-e4-ba-ba-e5-b1-85/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-07-24T11:46:03.000Z" class="post__time">七月 24, 2009</time><h1 class="post__title"><a href="/2009/07/24/w/cacti-e7-9b-91-e6-8e-a7-e8-b7-af-e7-94-b1-e5-99-a8-e4-ba-a4-e6-8d-a2-e6-9c-basnmp-error-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">cacti监控路由器交换机snmp error的解决办法</a></h1></header><div class="post__main"><p>手工运行snmpwalk命令正常:</p>
-<pre><code>snmpwalk -v <span class="number">1</span> <span class="number">10.168</span><span class="number">.12</span><span class="number">.90</span> -c <span class="keyword">public</span> system
+<pre><code>snmpwalk -v <span class="number">1</span> <span class="number">10.168</span>.12.90 -c <span class="keyword">public</span> system
 
-SNMPv2-<span class="string">MIB:</span>:sysDescr<span class="number">.0</span> = <span class="string">STRING:</span> DGS-<span class="number">1248</span>T 
+SNMPv2-<span class="string">MIB:</span>:sysDescr.0 = <span class="string">STRING:</span> DGS-<span class="number">1248</span>T 
 </code></pre><p>snmpwalk -v2c -c public 10.168.12.90 if</p>
 <pre><code><span class="keyword">IF</span><span class="attribute">-MIB</span><span class="tag">::ifIndex.1</span> <span class="subst">=</span> <span class="built_in">INTEGER</span>: <span class="number">1</span>
 </code></pre><p>DGS-1248T 支持snmp v2，不支持64位MIB库.如下如果返回的有几行含有Counter64:的话.那么表明是支持的。</p>

@@ -1,11 +1,11 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>老旧系统请谨慎升级gcc - kindquiet素食勤俭敬老孝慈</title><meta name="description" content="老旧系统请谨慎升级gcc"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-07-06T06:23:15.000Z" class="post__time">七月 6, 2010</time><h1 class="post__title"><a href="/2010/07/06/w/e8-80-81-e6-97-a7-e7-b3-bb-e7-bb-9f-e8-af-b7-e8-b0-a8-e6-85-8e-e5-8d-87-e7-ba-a7gcc/">老旧系统请谨慎升级gcc</a></h1></header><div class="post__main"><p>一台centos 4.2系统，yum升级gcc时中途停止。发现postfix出错：</p>
 <pre><code>maildrop -v
 
-maildrop: /lib/tls/libc.so<span class="number">.6</span>: <span class="property">version</span> `GLIBC_2<span class="number">.4</span>&amp;<span class="comment">#39; not found (required by /lib/libgcc_s.so.1)</span>
+maildrop: /lib/tls/libc.so.6: <span class="property">version</span> `GLIBC_2.4&amp;<span class="comment">#39; not found (required by /lib/libgcc_s.so.1)</span>
 
 试图编译maildrop报错：
 
-configure: <span class="keyword">error</span>: <span class="keyword">in</span> `/usr/<span class="keyword">local</span>/src/maildrop-<span class="number">2.5</span><span class="number">.0</span>&amp;<span class="comment">#39;:</span>
+configure: <span class="keyword">error</span>: <span class="keyword">in</span> `/usr/<span class="keyword">local</span>/src/maildrop-<span class="number">2.5</span>.0&amp;<span class="comment">#39;:</span>
 
 configure: <span class="keyword">error</span>: C compiler cannot create executables
 
@@ -15,7 +15,7 @@ configure:<span class="number">3188</span>: checking whether <span class="keywor
 
 configure:<span class="number">3210</span>: gcc conftest.c <span class="number">5</span>
 
-/usr/lib/gcc/i386-redhat-linux/<span class="number">3.4</span><span class="number">.6</span>/libgcc_s.so: undefined <span class="keyword">reference</span> <span class="keyword">to</span> `__stack_chk_fail@GLIBC_2<span class="number">.4</span>&amp;<span class="comment">#39;</span>
+/usr/lib/gcc/i386-redhat-linux/<span class="number">3.4</span>.6/libgcc_s.so: undefined <span class="keyword">reference</span> <span class="keyword">to</span> `__stack_chk_fail@GLIBC_2.4&amp;<span class="comment">#39;</span>
 
 collect2: ld returned <span class="number">1</span> <span class="keyword">exit</span> status
 

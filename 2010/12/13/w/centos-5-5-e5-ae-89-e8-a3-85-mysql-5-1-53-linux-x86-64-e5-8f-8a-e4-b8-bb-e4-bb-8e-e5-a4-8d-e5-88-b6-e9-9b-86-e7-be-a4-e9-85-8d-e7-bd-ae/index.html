@@ -11,17 +11,17 @@
 
 wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.53-linux-x86_64-glibc23.tar.gz/from/http://mysql.mirror.tw/</span>
 
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23.tar.gz
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span>.53-linux-i686-glibc23.tar.gz
 
 cd <span class="regexp">/usr/</span>local
 
-ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23 mysql
+ln -s mysql-<span class="number">5.1</span>.53-linux-i686-glibc23 mysql
 
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23.tar.gz 
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span>.53-linux-x86_64-glibc23.tar.gz 
 
 cd <span class="regexp">/usr/</span>local
 
-ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23 mysql
+ln -s mysql-<span class="number">5.1</span>.53-linux-x86_64-glibc23 mysql
 
 cd <span class="regexp">/usr/</span>local/mysql
 
@@ -215,7 +215,7 @@ flush privileges;
 
 在slave服务器上配置master服务器信息：
 
-CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span><span class="number">.8</span><span class="number">.108</span>&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
+CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span>.8.108&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
 
 start slave;
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><div id="comments" class="comments"><div data-thread-key="2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/" data-url="http://blog.veryi.com/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/" class="ds-thread"><!-- 多说公共JS代码 start (一个网页只需插入一次) --><script>var duoshuoQuery = {short_name:"kindquiet"};

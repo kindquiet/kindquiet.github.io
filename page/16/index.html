@@ -155,9 +155,9 @@ useradd -u <span class="number">1000</span> -g vgroup -d <span class="regexp">/d
 
 wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/httpd/httpd-2.2.17.tar.bz2</span>
 
-tar xfj httpd-<span class="number">2.2</span><span class="number">.17</span>.tar.bz2 -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+tar xfj httpd-<span class="number">2.2</span>.17.tar.bz2 -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
 
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-<span class="number">2.2</span><span class="number">.17</span>
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-<span class="number">2.2</span>.17
 
 make clean
 
@@ -191,7 +191,7 @@ CHOST=i686-pc-linux-gnu
 
 上面的配置，用到了其他一些模块，说不定以后会用到，如支持ssi的include模块
 <span class="label">
-error:</span> APR version <span class="number">1.2</span><span class="number">.0</span> or later is required
+error:</span> APR version <span class="number">1.2</span>.0 or later is required
 
 yum install apr
 
@@ -199,9 +199,9 @@ yum install apr
 <span class="label">
 http:</span><span class="comment">//apr.apache.org/download.cgi</span>
 
-apr-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+apr-<span class="number">1.2</span>.8.tar.bz2
 
-apr-util-<span class="number">1.2</span><span class="number">.8</span>.tar.bz2
+apr-util-<span class="number">1.2</span>.8.tar.bz2
 
 ./configure
 
@@ -309,9 +309,9 @@ wget <span class="string">http:</span><span class="comment">//cn.php.net/get/php
 
 cd <span class="regexp">/mnt/</span>backup<span class="regexp">/soft/</span>
 
-tar xfj php-<span class="number">5.3</span><span class="number">.4</span>.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+tar xfj php-<span class="number">5.3</span>.4.tar.bz2 -C <span class="regexp">/usr/</span>local/src
 
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>php-<span class="number">5.3</span><span class="number">.4</span>
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>php-<span class="number">5.3</span>.4
 
 make clean
 
@@ -345,9 +345,9 @@ You may want to <span class="string">add:</span> <span class="regexp">/usr/</spa
 
 wget <span class="string">http:</span><span class="comment">//pecl.php.net/get/memcache-2.2.6.tgz</span>
 
-tar xzf memcache-<span class="number">2.2</span><span class="number">.6</span>.tgz -C <span class="regexp">/usr/</span>local/src
+tar xzf memcache-<span class="number">2.2</span>.6.tgz -C <span class="regexp">/usr/</span>local/src
 
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcache-<span class="number">2.2</span><span class="number">.6</span>
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcache-<span class="number">2.2</span>.6
 
 <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/phpize
 
@@ -391,17 +391,17 @@ extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span
 
 wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.53-linux-x86_64-glibc23.tar.gz/from/http://mysql.mirror.tw/</span>
 
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23.tar.gz
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span>.53-linux-i686-glibc23.tar.gz
 
 cd <span class="regexp">/usr/</span>local
 
-ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-i686-glibc23 mysql
+ln -s mysql-<span class="number">5.1</span>.53-linux-i686-glibc23 mysql
 
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23.tar.gz 
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.1</span>.53-linux-x86_64-glibc23.tar.gz 
 
 cd <span class="regexp">/usr/</span>local
 
-ln -s mysql-<span class="number">5.1</span><span class="number">.53</span>-linux-x86_64-glibc23 mysql
+ln -s mysql-<span class="number">5.1</span>.53-linux-x86_64-glibc23 mysql
 
 cd <span class="regexp">/usr/</span>local/mysql
 
@@ -595,7 +595,7 @@ flush privileges;
 
 在slave服务器上配置master服务器信息：
 
-CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span><span class="number">.8</span><span class="number">.108</span>&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
+CHANGE MASTER TO MASTER_HOST=&amp;#<span class="number">39</span>;<span class="number">10.8</span>.8.108&amp;#<span class="number">39</span>;, MASTER_USER=&amp;#<span class="number">39</span>;replication&amp;#<span class="number">39</span>;, MASTER_PASSWORD=&amp;#<span class="number">39</span>;slavepass&amp;#<span class="number">39</span>;; 
 
 start slave;
 </code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/15/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/17/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

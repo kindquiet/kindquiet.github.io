@@ -18,123 +18,123 @@ lv<span class="emphasis">_home VolGroup -wi-ao 409.39g
 
 <span class="http"> <span class="attribute">WARNING</span>: <span class="string">Duplicate VG name VolGroup: Existing m6dC3H-87Od-YFcZ-fsLi-1k41-VNc6-Ijye58 (created here) takes precedence over 03uEIc-B9RB-mHfR-CypE-c626-0qfU-WdKUES</span>
 
-<span class="applescript"> PV VG Fmt Attr PSize PFree
+<span class="fortran"> PV VG <span class="keyword">Fmt</span> Attr PSize PFree
 
- /dev/sda2 VolGroup lvm2 a<span class="comment">-- 931.02g 0 </span>
+ /dev/sda2 VolGroup lvm2 a-- <span class="number">931.</span>2g <span class="number">0</span> 
 
- /dev/sdb2 VolGroup lvm2 a<span class="comment">-- 465.27g 0 </span>
+ /dev/sdb2 VolGroup lvm2 a-- <span class="number">465.</span>7g <span class="number">0</span> 
 
 pvremove /dev/sdb2 -ff
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
-Really WIPE LABELS <span class="keyword">from</span> physical volume /dev/sdb2 <span class="keyword">of</span> volume group VolGroup [y/n]? y
+Really WIPE LABELS from physical volume /dev/sdb2 of volume group VolGroup [y/n]? y
 
- WARNING: Wiping physical volume label <span class="keyword">from</span> /dev/sdb2 <span class="keyword">of</span> volume group VolGroup
+ WARNING: Wiping physical volume label from /dev/sdb2 of volume group VolGroup
 
- Can&amp;<span class="comment">#39;t open /dev/sdb2 exclusively - not removing. Mounted filesystem?</span>
+ Can&amp;#<span class="number">39</span>;t open /dev/sdb2 exclusively - not removing. Mounted filesystem?
 
 vgdisplay 
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
- <span class="comment">--- Volume group ---</span>
+ --- Volume group ---
 
- VG Name VolGroup
+ VG <span class="keyword">Name</span> VolGroup
 
  System ID 
 
- Format lvm2
+ <span class="keyword">Format</span> lvm2
 
  Metadata Areas <span class="number">1</span>
 
- Metadata Sequence No <span class="number">4</span>
+ Metadata <span class="keyword">Sequence</span> No <span class="number">4</span>
 
- VG Access <span class="command">read</span>/<span class="command">write</span>
+ VG <span class="keyword">Access</span> read/<span class="built_in">write</span>
 
- VG Status resizable
+ VG <span class="keyword">Status</span> resizable
 
- MAX LV <span class="number">0</span>
+ <span class="built_in">MAX</span> LV <span class="number">0</span>
 
  Cur LV <span class="number">3</span>
 
  Open LV <span class="number">1</span>
 
- Max PV <span class="number">0</span>
+ <span class="built_in">Max</span> PV <span class="number">0</span>
 
  Cur PV <span class="number">1</span>
 
  Act PV <span class="number">1</span>
 
- VG Size <span class="number">465.27</span> GiB
+ VG <span class="built_in">Size</span> <span class="number">465.27</span> GiB
 
- PE Size <span class="number">4.00</span> MiB
+ PE <span class="built_in">Size</span> <span class="number">4.00</span> MiB
 
  Total PE <span class="number">119109</span>
 
- Alloc PE / Size <span class="number">119109</span> / <span class="number">465.27</span> GiB
+ Alloc PE / <span class="built_in">Size</span> <span class="number">119109</span> / <span class="number">465.27</span> GiB
 
- Free PE / Size <span class="number">0</span> / <span class="number">0</span> 
+ Free PE / <span class="built_in">Size</span> <span class="number">0</span> / <span class="number">0</span> 
 
- VG UUID <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ VG UUID 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- <span class="comment">--- Volume group ---</span>
+ --- Volume group ---
 
- VG Name VolGroup
+ VG <span class="keyword">Name</span> VolGroup
 
  System ID 
 
- Format lvm2
+ <span class="keyword">Format</span> lvm2
 
  Metadata Areas <span class="number">1</span>
 
- Metadata Sequence No <span class="number">4</span>
+ Metadata <span class="keyword">Sequence</span> No <span class="number">4</span>
 
- VG Access <span class="command">read</span>/<span class="command">write</span>
+ VG <span class="keyword">Access</span> read/<span class="built_in">write</span>
 
- VG Status resizable
+ VG <span class="keyword">Status</span> resizable
 
- MAX LV <span class="number">0</span>
+ <span class="built_in">MAX</span> LV <span class="number">0</span>
 
  Cur LV <span class="number">3</span>
 
  Open LV <span class="number">2</span>
 
- Max PV <span class="number">0</span>
+ <span class="built_in">Max</span> PV <span class="number">0</span>
 
  Cur PV <span class="number">1</span>
 
  Act PV <span class="number">1</span>
 
- VG Size <span class="number">931.02</span> GiB
+ VG <span class="built_in">Size</span> <span class="number">931.02</span> GiB
 
- PE Size <span class="number">4.00</span> MiB
+ PE <span class="built_in">Size</span> <span class="number">4.00</span> MiB
 
  Total PE <span class="number">238341</span>
 
- Alloc PE / Size <span class="number">238341</span> / <span class="number">931.02</span> GiB
+ Alloc PE / <span class="built_in">Size</span> <span class="number">238341</span> / <span class="number">931.02</span> GiB
 
- Free PE / Size <span class="number">0</span> / <span class="number">0</span> 
+ Free PE / <span class="built_in">Size</span> <span class="number">0</span> / <span class="number">0</span> 
 
- VG UUID m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ VG UUID m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
 卷组更名：
 
-vgrename <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES vg01
+vgrename 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES vg01
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58 (created here) takes precedence <span class="keyword">over</span> <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58 (created here) takes precedence over 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES
 
- WARNING: Duplicate VG <span class="property">name</span> VolGroup: Existing <span class="number">03</span>uEIc-B9RB-mHfR-CypE-c626-<span class="number">0</span>qfU-WdKUES (created here) takes precedence <span class="keyword">over</span> m6dC3H-<span class="number">87</span>Od-YFcZ-fsLi-<span class="number">1</span>k41-VNc6-Ijye58
+ WARNING: Duplicate VG <span class="keyword">name</span> VolGroup: Existing 3uEIc-B9RB-mHfR-CypE-c626-qfU-WdKUES (created here) takes precedence over m6dC3H-7Od-YFcZ-fsLi-k41-VNc6-Ijye58
 
- Volume group VolGroup successfully renamed <span class="keyword">to</span> vg01</span></span>
+ Volume group VolGroup successfully renamed to vg01</span></span>
 </code></pre><p>报警消失，恢复正常。</p>
 <p>vgs</p>
 <pre><code> VG <span class="comment">#PV #LV #SN Attr VSize VFree</span>
@@ -157,7 +157,7 @@ mount: special device /dev/VolGroup/lv_home <span class="keyword">does</span> <s
 
 mkfs -t ext4 /dev/VolGroup/lv_home
 
-mke2fs <span class="number">1.41</span><span class="number">.12</span> (<span class="number">17</span>-May-<span class="number">2010</span>)
+mke2fs <span class="number">1.41</span>.12 (<span class="number">17</span>-May-<span class="number">2010</span>)
 
 Could <span class="keyword">not</span> stat /dev/VolGroup/lv_home <span class="comment">--- No such file or directory</span>
 

@@ -24,19 +24,19 @@ rpm -<span class="constant">Uvh </span><span class="symbol">http:</span>/<span c
 </code></pre><p>CentOS 中国科学技术大学 USTC mirror(每小时更新一次)</p>
 <pre><code>http:<span class="comment">//centos.ustc.edu.cn/</span>
 
-cd /etc/yum<span class="class">.repos</span><span class="class">.d</span>
+<span class="keyword">cd</span> /etc/yum.repos.<span class="literal">d</span>
 
-mv CentOS-Base<span class="class">.repo</span> CentOS-Base<span class="class">.repo</span><span class="class">.save-</span>`date +%F`
+mv CentOS-Base.repo CentOS-Base.repo.<span class="keyword">save</span>-`date +%F`
 
 wget http:<span class="comment">//centos.ustc.edu.cn/CentOS-Base.repo.5</span>
 
-mv CentOS-Base<span class="class">.repo</span>.<span class="number">5</span> CentOS-Base<span class="class">.repo</span>
+mv CentOS-Base.repo.5 CentOS-Base.repo
 
-centos <span class="number">4</span>:
+centos 4:
 
-cd /etc/yum<span class="class">.repos</span><span class="class">.d</span>
+<span class="keyword">cd</span> /etc/yum.repos.<span class="literal">d</span>
 
-mv CentOS-Base<span class="class">.repo</span> CentOS-Base<span class="class">.repo</span><span class="class">.save</span>
+mv CentOS-Base.repo CentOS-Base.repo.<span class="keyword">save</span>
 
 wget http:<span class="comment">//centos.ustc.edu.cn/CentOS-Base.repo</span>
 </code></pre><p>sohu开源镜像站</p>

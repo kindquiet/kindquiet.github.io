@@ -54,7 +54,7 @@ SPF可以防止别人伪造你来发邮件，是一个反伪造性邮件的解�
 
 举例：dig -t txt veryi.com.
 
-v=spf1 mx <span class="string">ip4:</span><span class="number">114.113</span><span class="number">.144</span><span class="number">.252</span> ~all
+v=spf1 mx <span class="string">ip4:</span><span class="number">114.113</span>.144.252 ~all
 
 v=spf1  SPF 的版本。如果使用 Sender ID 的话，这个字段就应该是 v=spf2
 
@@ -232,19 +232,19 @@ yum <span class="keyword">install</span> rtorrent
 </ul>
 <p>nx不能连接错误排除：</p>
 <p>freenx server 一连接上立即失效</p>
-<pre><code>已经通过密码验证，而且windows版的客户端还会出现一个有nomechine的logo的窗口，但是立刻就消失了，提示
+<pre><code>已经通过密码验证，而且<span class="tag">windows</span>版的客户端还会出现一个有<span class="tag">nomechine</span>的<span class="tag">logo</span>的窗口，但是立刻就消失了，提示
 
-Session <span class="keyword">...</span> failed.
+<span class="tag">Session</span> ... <span class="tag">failed</span>.
 
 详细信息：
 
-Error: Connection with remote peer broken.
+<span class="rule"><span class="attribute">Error</span>:<span class="value"> Connection with remote peer broken.
 
 Error: Please check the state of your network and retry.
 
-Session: Terminating session at &amp;<span class="comment">#39;Tue Sep 16 17:24:20 2008&amp;#39;.</span>
+Session: Terminating session at &amp;<span class="hexcolor">#39</span></span></span>;<span class="tag">Tue</span> <span class="tag">Sep</span> 16 17<span class="pseudo">:24</span><span class="pseudo">:20</span> 2008&amp;<span class="id">#39</span>;.
 
-Session: Session terminated at &amp;<span class="comment">#39;Tue Sep 16 17:24:20 2008&amp;#39;.</span>
+<span class="rule"><span class="attribute">Session</span>:<span class="value"> Session terminated at &amp;<span class="hexcolor">#39</span></span></span>;<span class="tag">Tue</span> <span class="tag">Sep</span> 16 17<span class="pseudo">:24</span><span class="pseudo">:20</span> 2008&amp;<span class="id">#39</span>;.
 </code></pre><p>解决：</p>
 <pre><code>检查服务器~user<span class="regexp">/.nx/</span>目录。
 
