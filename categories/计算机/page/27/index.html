@@ -1,4 +1,14 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p> mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。mysql文档中说明:除了二进制备份，你也应该周期性地用<strong>mysqldump</strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-03T05:39:24.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/">“不聪明”的wordpress在线编辑器-Dean's FCKEditor For Wordpress</a></h1></header><div class="post__main"><p>WP后台发表新文章或是编辑文章后，行前面的空格消失了。因为内建的编辑器会聪明地把空格删除。</p>
+<p>这样，在粘贴一些脚本或程序代码就会把缩进删除，不便阅读。</p>
+<p>试了Monsters Editor for WP Super Edit，似乎在wp2.7下不可用。</p>
+<p>TinyMCE Advanced，这个插件增强连WP的原始编辑器，增加了表格，查找与替换，表情，插入媒体等等。</p>
+<p>但依然会把空格去除。</p>
+<p>WP Super Edit 2.1，功能强大，依然很聪明，放弃。</p>
+<p>似乎我不得不手工nbsp了，试用了</p>
+<p>Dean’s FCKEditor For Wordpress</p>
+<p><a href="http://wordpress.org/extend/plugins/fckeditor-for-wordpress-plugin/" target="_blank" rel="external">下载</a></p>
+<p>这个老牌的富文本编辑器，会很辛苦地把空格转换为nbsp，而不是聪明的删除之。感谢，我不用很费时的编辑html源文件了。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p> mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。mysql文档中说明:除了二进制备份，你也应该周期性地用<strong>mysqldump</strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</p>
 <p>可以一周执行一次。</p>
 <p>crontab -e</p>
 <p>0 2 <em> </em> 5 /home/work/mysqlflbk.sh</p>
@@ -401,136 +411,4 @@ information about selectively enabling <span class="keyword">or</span> disabling
  * <span class="comment">--triggers</span>
 
  同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span></span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T07:30:54.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/">设置WordPress固定链接不生效的可能原因</a></h1></header><div class="post__main"><p>apache设置Permalinks以后，除了首页，所有的页面都变成了404错误。</p>
-<p>多方查找原因，发现是.htaccess文件未生效。在apache配置文件中设置WordPress目录权限为AllowOverride All:</p>
-<p>Directory /www/veryi.com/w</p>
-<pre><code> AllowOverride <span class="literal">All</span>
-
- <span class="keyword">Order</span> allow,deny
-
- Allow from <span class="literal">all</span>
-
-/Directory
-
-访问正常。
-</code></pre><p>附固定链接设置方法：</p>
-<p>linux服务器，登陆WordPress，单击设置。然后单击设置的下级分类固定链接在常规设置中选择自定义，然后在自定义结构中填入你想设置的永久链接结构。我用的是:</p>
-<p>/%post_id%.html</p>
-<p>Windows服务器下设置WordPress固定链接伪静态，只要主机支持自定义404页面，无需安装插件，就能让Win主机像Linux 那样，方便使用WordPress的固定链接为静态化地址格式。</p>
-<p>?php</p>
-<pre><code>header(HTTP/1.1 200 OK);
-
-<span class="formula">$ori_qs = $</span>_SERVER<span class="special">[</span><span class="special">&amp;</span><span class="special">#</span>39;QUERY_STRING<span class="special">&amp;</span><span class="special">#</span>39;<span class="special">]</span>;
-
-<span class="formula">$pattern = /<span class="special">[</span>^;<span class="special">]</span>+;<span class="special">[</span>^:<span class="special">]</span>+:<span class="command">\/</span><span class="command">\/</span><span class="special">[</span>^<span class="command">\/</span><span class="special">]</span>+(<span class="command">\/</span><span class="special">[</span>^<span class="command">\?</span><span class="special">]</span>*)(?:<span class="command">\?</span>(.*))?/i;</span>
-</code></pre><p>preg_match($pattern, $ori_qs, $matches);</p>
-<pre><code><span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;PATH_INFO&amp;#39;] = $matches[1] . ? . $matches[2];</span>
-
-<span class="variable">$_SERVER</span>[&amp;<span class="comment">#39;REQUEST_URI&amp;#39;] = $_SERVER[&amp;#39;PATH_INFO&amp;#39;];</span>
-
-<span class="variable">$query_args</span> = explode(, <span class="variable">$matches</span>[<span class="number">2</span>]);
-
-<span class="keyword">unset</span>(<span class="variable">$_GET</span>);
-
-<span class="keyword">foreach</span> (<span class="variable">$query_args</span> <span class="keyword">as</span> <span class="variable">$arg</span>)
-
-{
-
-<span class="variable">$the_arg</span> = explode(=&amp;<span class="comment">#39;, $arg);</span>
-
-<span class="variable">$_GET</span>[<span class="variable">$the_arg</span>[<span class="number">0</span>]] = <span class="variable">$the_arg</span>[<span class="number">1</span>];
-
-}
-
-<span class="keyword">include</span>(index.php);
-
-?
-</code></pre><p>设置固定链接（Permalink）伪静态步骤：</p>
-<pre><code><span class="number">1</span><span class="string">\.</span> 将以上代码保存为 <span class="number">404.php</span>，并上传至主机根目录。
-
-<span class="number">2</span><span class="string">\.</span> 设置 <span class="number">404</span> 自定义错误页为 <span class="number">404.php</span>。
-
-<span class="number">3</span><span class="string">\.</span> 进入 WordPress 控制面板，设置（Options）- 固定链接（Permalinks）,选择固定链接格式。
-</code></pre><p>nginx静态链接还需要设置重写规则：    </p>
-<pre><code>location /w/ {
-
- <span class="comment"># enable search for precompressed files ending in .gz</span>
-
- <span class="comment"># nginx needs to be complied using -with-http_gzip_static_module</span>
-
- <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
-
- gzip_static on;
-
-
-
- <span class="comment"># if the requested file exists, return it immediately</span>
-
- <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$request_filename</span>) {
-
- <span class="built_in">break</span>;
-
- }
-
-
-
- <span class="built_in">set</span> <span class="variable">$supercache_file</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
- <span class="built_in">set</span> <span class="variable">$supercache_uri</span> <span class="variable">$request_uri</span>;
-
-
-
- <span class="keyword">if</span> (<span class="variable">$request_method</span> = POST) {
-
- <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
- }
-
-
-
- <span class="comment"># Using pretty permalinks, so bypass the cache for any query string</span>
-
- <span class="keyword">if</span> (<span class="variable">$query_string</span>) {
-
- <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
- }
-
-
-
- <span class="keyword">if</span> (<span class="variable">$http_cookie</span> ~* comment_author_|wordpress|wp-postpass_ ) {
-
- <span class="built_in">set</span> <span class="variable">$supercache_uri</span> &amp;<span class="comment">#39;&amp;#39;;</span>
-
- }
-
-
-
- <span class="comment"># if we haven&amp;#39;t bypassed the cache, specify our supercache file</span>
-
- <span class="keyword">if</span> (<span class="variable">$supercache_uri</span> ~ ^(.+)$) {
-
- <span class="built_in">set</span> <span class="variable">$supercache_file</span> /w/wp-content/cache/supercache/<span class="variable">$http_host</span>/<span class="variable">$1index</span>.html;
-
- }
-
-
-
- <span class="comment"># only rewrite to the supercache file if it actually exists</span>
-
- <span class="keyword">if</span> (<span class="operator">-f</span> <span class="variable">$document_root</span><span class="variable">$supercache_file</span>) {
-
- rewrite ^(.*)$ <span class="variable">$supercache_file</span> <span class="built_in">break</span>;
-
- }
-
-
-
- <span class="comment"># all other requests go to Wordpress</span>
-
- <span class="keyword">if</span> (!<span class="operator">-e</span> <span class="variable">$request_filename</span>) {
-
- rewrite . /w/index.php last;
-
- }
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/e8-ae-be-e7-bd-aewordpress-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5-e4-b8-8d-e7-94-9f-e6-95-88-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

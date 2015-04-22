@@ -4,7 +4,7 @@
   <subtitle><![CDATA[dayu's blog]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.veryi.com/"/>
-  <updated>2015-04-10T05:21:37.188Z</updated>
+  <updated>2015-04-22T07:04:31.669Z</updated>
   <id>http://blog.veryi.com/</id>
   
   <author>
@@ -15,12 +15,36 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[dedecms 5.7副栏目的使用]]></title>
+    <link href="http://blog.veryi.com/2015/04/22/dedecms-subtitle/"/>
+    <id>http://blog.veryi.com/2015/04/22/dedecms-subtitle/</id>
+    <published>2015-04-22T06:54:17.000Z</published>
+    <updated>2015-04-22T07:04:31.669Z</updated>
+    <content type="html"><![CDATA[<p>dedecms可以把一篇文章发布到多个栏目。<br>系统后台-&gt;系统基本参数-&gt;性能选项 下面有一个“是否启用副栏目”,开启该选项。</p>
+<p>修改代码：</p>
+<p>找到/include/taglib/arclist.lib.php文件，查找下面的代码<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$CrossID</span>==<span class="string">''</span>) <span class="variable">$orwheres</span>[] = <span class="string">' arc.typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">')'</span>; </span><br><span class="line"><span class="keyword">else</span> <span class="variable">$orwheres</span>[] = <span class="string">' arc.typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">','</span>.<span class="variable">$CrossID</span>.<span class="string">')'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>改为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$CrossID</span>==<span class="string">''</span>)</span><br><span class="line">    //<span class="variable">$orwheres</span>[] = <span class="string">' typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">')'</span>;</span><br><span class="line">    <span class="variable">$orwheres</span>[] = <span class="string">' typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">') or typeid2 in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">')'</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    //<span class="variable">$orwheres</span>[] = <span class="string">' typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">','</span>.<span class="variable">$CrossID</span>.<span class="string">')'</span>;</span><br><span class="line">    <span class="variable">$orwheres</span>[] = <span class="string">' typeid in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">','</span>.<span class="variable">$CrossID</span>.<span class="string">') or typeid2 in ('</span>.GetSonIds(<span class="variable">$typeid</span>).<span class="string">','</span>.<span class="variable">$CrossID</span>.<span class="string">')'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>修改完文件，更新栏目缓存，然后再试一下副栏目功能，应该就是可以正常使用的了</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>dedecms可以把一篇文章发布到多个栏目。<br>系统后台-&gt;系统基本参数-&gt;性能选项 下面有一个“是否启用副栏目”,开启该选项。</p>
+<p>修改代码：</p>
+<p>找到/include/taglib/arclist.lib.php文件，查找下面的代码<]]>
+    </summary>
+    
+      <category term="dedecms" scheme="http://blog.veryi.com/tags/dedecms/"/>
+    
+      <category term="计算机" scheme="http://blog.veryi.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[github-hexo-blog]]></title>
     <link href="http://blog.veryi.com/2015/04/07/github-hexo-blog/"/>
     <id>http://blog.veryi.com/2015/04/07/github-hexo-blog/</id>
     <published>2015-04-07T03:45:22.000Z</published>
-    <updated>2015-04-10T05:21:37.188Z</updated>
-    <content type="html"><![CDATA[<p>hexo是一个基于Node.s的静态博客程序。hexo生成的静态网页可以直接放到GitHub Pages，BAE，SAE等平台上。把博客从wordpress迁移到了github，參考：<a href="http://riny.net/2014/move-blog-to-github/" target="_blank" rel="external">http://riny.net/2014/move-blog-to-github/</a><br>现在hexo已经更新到3.0，有部分内容需要修正，包括一些问题的解决办法，补充如下：<br><a id="more"></a></p>
+    <updated>2015-04-10T06:54:46.143Z</updated>
+    <content type="html"><![CDATA[<p>hexo是一个基于Node.s的静态博客程序。hexo生成的静态网页可以直接放到GitHub Pages，BAE，SAE等平台上。把博客从wordpress迁移到了github，參考：<a href="http://riny.net/2014/move-blog-to-github/" target="_blank" rel="external">http://riny.net/2014/move-blog-to-github/</a>,<a href="http://blog.fens.me/hexo-blog-github/" target="_blank" rel="external">http://blog.fens.me/hexo-blog-github/</a><br>现在hexo已经更新到3.0，有部分内容需要修正，包括一些问题的解决办法，补充如下：<br><a id="more"></a></p>
 <h2 id="github">github</h2><h3 id="申请github账号">申请github账号</h3><ul>
 <li>首先注册一个『GitHub』帐号</li>
 <li>建立与你用户名对应的仓库，仓库名为『your_user_name.github.io』<h4 id="配置自动登陆：">配置自动登陆：</h4></li>
@@ -1019,100 +1043,6 @@ remove_filter(&amp;<span class="string">#39</span>;the_content&amp;<span class="
     </summary>
     
       <category term="计算机" scheme="http://blog.veryi.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[糖蜜，什么样的红糖好，糖知识科普，来自互联网]]></title>
-    <link href="http://blog.veryi.com/2013/07/19/w/e7-b3-96-e8-9c-9c-ef-bc-8c-e4-bb-80-e4-b9-88-e6-a0-b7-e7-9a-84-e7-ba-a2-e7-b3-96-e5-a5-bd-ef-bc-8c-e7-b3-96-e7-9f-a5-e8-af-86-e7-a7-91-e6-99-ae-ef-bc-8c-e6-9d-a5-e8-87-aa-e4-ba-92-e8-81-94-e7-bd-91/"/>
-    <id>http://blog.veryi.com/2013/07/19/w/e7-b3-96-e8-9c-9c-ef-bc-8c-e4-bb-80-e4-b9-88-e6-a0-b7-e7-9a-84-e7-ba-a2-e7-b3-96-e5-a5-bd-ef-bc-8c-e7-b3-96-e7-9f-a5-e8-af-86-e7-a7-91-e6-99-ae-ef-bc-8c-e6-9d-a5-e8-87-aa-e4-ba-92-e8-81-94-e7-bd-91/</id>
-    <published>2013-07-19T08:07:16.000Z</published>
-    <updated>2015-04-08T01:09:29.076Z</updated>
-    <content type="html"><![CDATA[<p>现代红糖呈粉末状或者呈晶体状，古方红糖呈块状。</p>
-<pre><code>而古方红糖内部能够看到非常明显的沙纹，与《本草纲目》的描述完全一致，这样的糖中凝结的沙，也是沙糖这个名称的由来。
-
-红糖为什么比白糖贵，广东的红塘一斤3元，白糖一斤2.5元，我知道从甜菜甘蔗压榨出的汁液加工后是红塘，如果再进一步脱色处理后才是白糖，按理说白糖应比红塘贵才对啊？
-</code></pre><p>红糖的生产成本是比白砂糖要低一点的。可是价格和成本没有必然的联系，还要受到供求关系及其它因素的影响。</p>
-<p>白砂糖是最主要的食用糖，其产量占食糖总产量的97%以上，而红糖仅仅是一个副产品，产量不大，因而受供求关系影响也就更大。</p>
-<p>正常年份，在批发市场上，红糖是比白砂糖要便宜的。但由于红糖没有国家储备和地方储备，国外产红糖的国家又极少，因而如果遇到供不应求的年份，国家没有办法像对待白砂糖一样通过向市场抛售储备糖或加大进口量来平抑糖价，这时红糖的批发价格也可能会超过白糖。</p>
-<p>至于零售价格，红糖确实普遍要比白砂糖贵。原因可以从生产企业和超市等终端零售商两个方面来分析。</p>
-<pre><code><span class="number">1</span>，作为生产企业，红糖的销售量远远小于白砂糖的销售量，所以生产红糖的资金流转比较慢、固定成本（例如进入超市要缴纳的费用、生产企业的各类固定成本分摊等）相对较高。这些都被计入了红糖的成本价格之中。
-
-<span class="number">2</span>，作为超市，白砂糖是常用品，价格透明，所以超市要拼价格、拉销量的；红糖是补充产品，销量低，利润率就要提高（因为超市考核的是单位面积的销售额和利润率，白糖和红糖在超市里虽然销售量相差很大，可是却占有相同的面积，因而采用同样的利润率是不划算的）。简单点来说，白砂糖讲的是薄利多销，红糖要更多的考虑利润问题，这样才能达到利润平衡点。另外，红糖的价格波动空间远高于白糖<span class="comment">(白砂糖一般吨价在3000-4200元之间时是正常的，可是红糖的价格常常会成倍数的波动)</span>，而作为超市，价格调整比较困难，因而在实际操作时商家会考虑这些因素，预留出一些利润空间给红糖。
-</code></pre><p>总之，价格是受到成本和供应关系的多重影响的，经济运行是要遵循市场经济规律的。</p>
-<p>红糖在原材料方面只能使用国产甘蔗，而白糖的原材料可以使用进口原糖和甜菜原糖。这就是说红糖的原材料稀缺，原材料就比较贵。</p>
-<pre><code>而且中国甘蔗主要产地在云南地区，生产了红糖运到北方，运费也会比较贵。
-
-而北方的糖厂主要使用甜菜原糖和进口原糖（由于产糖国如古巴等，生产成本极低，所以古巴原糖海运到中国的到岸价可能比国内甘蔗原糖价格还低，许多进口农产品都这样）。所以生产白糖更方便，而且更便宜。
-
-红糖对原材料的要求太高，所以成本就相对高了。再加上供求关系的问题，综合因素导致红糖比白糖价格高。
-</code></pre><p>红糖是未经纯化的粗糖，保留了许多非糖的杂质，其中的维生素和矿物质对人是有益的，但也因此更容易变质。</p>
-<p>在现代化的工业生产和市场营销中，需求量小的东西哪怕生产工艺再简单，也需要更高的成本。另一方面，白糖的生产可以以甜菜为原料。经纯化脱色之后，分别以甜菜和甘蔗生产出来的白糖并没有明显的差别。而传统的红糖生产工艺只能以甘蔗为原料，甜菜的糖蜜会带来让人难以接受的味道。对原料的挑剔也在一定程度上抵消了工艺简单所节省的成本。当然，现在也可以通过往甜菜白糖里加蔗糖蜜而得到红糖。不过这样一来，制取红糖的工艺就比较复杂了。</p>
-<p>最后说说冰糖。冰糖的生产比白糖红糖都要复杂，也最为纯净，价格高也是顺理成章的事情。</p>
-<pre><code>原糖
-
-又称粗糖，系以甘蔗为原料，经压榨取汁、糖汁清净处理，煮炼结晶，离心分蜜，制成的带有一层糖蜜，不供直接食用、作为精炼糖厂再加工用的原料糖；糖度（转光度）不低于<span class="number">97</span><span class="comment">%。</span>
-</code></pre><p>红糖</p>
-<pre><code>系带蜜的甘蔗成品糖，在我国，指甘蔗经榨汁和简易石灰法澄清处理后，经浓缩煮炼制成的带蜜糖。 
-
-根据加工工艺的不同，红糖又可分为赤砂糖（结晶颗粒较大），红糖粉（结晶粒子细小），片糖、砖糖（用模具）、碗糖（用模具）等；赤砂糖、红糖是用经过澄清处理的低纯度糖浆，在真空煮糖罐中煮制而成的覆盖一层棕红色、具有甘蔗风味糖浆的结晶糖，晶粒大的为赤砂糖，晶粒细小的叫红糖，其成分为：蔗糖分<span class="number">88</span>～<span class="number">93</span><span class="preprocessor">%</span>，还原糖<span class="number">1.5</span>～<span class="number">4.5</span><span class="preprocessor">%</span>，水分<span class="number">2.5</span>～<span class="number">3.5</span><span class="preprocessor">%</span>；片糖的生产方法则是将达到一定过饱和度的热糖浆（约<span class="number">92</span>Bx）从煮糖器分配器中流入片糖连续成型带上，在均衡平稳的运送过程中，糖浆被扒平，自然冷却凝固，经机械划线、分离出带，分片成糖，降温包装，其成分为：蔗糖分<span class="number">83</span><span class="preprocessor">%</span>以上，还原糖<span class="number">6.5</span><span class="preprocessor">%</span>以下，水分<span class="number">5</span><span class="preprocessor">%</span>以下；所有红糖，不论是结晶糖或成型糖，其共同的特征是：一、成品红糖中几乎保留了蔗汁中的全部成分；二、保留了甘蔗糖汁的原汁、原味，特别是甘蔗的清香味。消费者喜爱红糖、选择红糖，主要是基于红糖的这些基本特征。 
-
-由于甜菜糖糖蜜带有令人不愉快的气味，因此、世界各国均不生产带糖蜜的甜菜红糖。 
-</code></pre><p>普通白砂糖</p>
-<pre><code>系以甘蔗、甜菜或原糖（粗糖）为原料，经提取糖汁（或再溶），糖汁或糖浆清净处理、煮炼结晶，离心分蜜、筛选干燥等工序加工制成的成品蔗糖结晶，蔗糖分不低于<span class="number">99.5</span><span class="comment">%。 </span>
-</code></pre><p>普通绵白糖</p>
-<pre><code>系以甜菜或原糖（粗糖）为原料，经精炼加工生产的晶粒细小、颜色洁白、质地绵软的成品糖，总糖分（蔗糖分＋还原糖分）不低于<span class="number">97.92</span><span class="comment">%。</span>
-</code></pre><p>精制幼砂糖</p>
-<pre><code>精制幼砂糖即精制小粒砂糖，因其纯净度高，蔗糖份含量达到<span class="number">99.8</span><span class="comment">%以上，水分含量极少，各项卫生指标控制严格，晶粒小、均匀、松散，易溶化，易贮藏，不易受潮结块，特别适合于供作家庭常备食用糖。 </span>
-</code></pre><p>精制绵白糖 </p>
-<pre><code>精制绵白糖在颗粒小、易溶方面与精制幼砂糖相似，两者的主要区别是，绵白糖的晶粒更细小，一般不超过<span class="number">0.3</span>毫米、且要求均匀；此外、在分蜜后，加入<span class="number">1.5</span>～<span class="number">2.5</span><span class="preprocessor">%</span>（按固形物计）的砂糖转化糖浆或精炼淀粉糖浆，保留<span class="number">0.8</span>～<span class="number">1.6</span><span class="preprocessor">%</span>的水分，在螺旋输送槽中边输送、边搅拌使其混合均匀；最后经绵白糖干燥机将水分、温度调控到规定的要求后装袋封口。由于绵白糖中含有一定量的转化糖浆（含果糖成分），味甜、吸湿，因而可保持糖的绵软状态和光泽。但是因绵白糖水分含量较高（相对砂糖而言），所以不宜长期贮藏；在干旱地区与季节，绵白糖容易脱水结块，不利于方便食用。绵白糖一旦脱水结块后，不宜采用机械方法破碎。届时、可将结块绵白糖置于一定温湿度条件下（例如放在碗中，置于蒸锅内，利用热水的蒸汽、不需用明火加热），勿需太长时间，绵白糖就会自行吸湿松散开来，之后、如将糖置于密闭罐中，防止水分散失，可保持松散状态. 
-</code></pre><p>冰糖</p>
-<pre><code>冰糖的生产方法有两种，第一种生产方法是挂线结晶养大法，即将热的精炼饱和蔗糖溶液缓缓倒入挂有细棉线的桶中，在结晶室中经过7天以上缓慢冷却结晶，蔗糖结晶围绕棉线形成并养大成大粒、大块冰糖。第二种生产方法是投放晶种养大法，即在一摇床式结晶槽中，放入热的精炼饱和糖液，投入定量的晶种，在摆动槽中边摆动、边缓慢降温（用水套夹层保温、控温）使结晶养大，形成单晶冰糖。冰糖的理化性质与精炼砂糖相同，在中国被用作中药引子，在不少国家被当作医治伤风感冒的良药，更受到广大农村消费者的喜爱。
-</code></pre><p>方糖与块糖 </p>
-<pre><code>将含水分<span class="number">2</span>～<span class="number">2.5</span><span class="preprocessor">%</span>精制小粒砂糖原料，通过一转鼓式方糖压块成型机压成方块状，然后将成型的方糖，置放到金属托盘上，于干燥箱中将水分烘干至<span class="number">0.5</span><span class="preprocessor">%</span>以下，冷却至室温后用纸盒包装。 
-
-方糖因晶粒间有透气孔隙，因而具有定量、易溶，食用方便的特点，特别适合供作餐桌用糖。 
-
-如适当增加原料含水量，加大成型时的压缩比，烘干后，可得比较硬实的块糖，块糖携带、食用方便，为牧区和流动性大的工作人员所喜爱。 
-
-良质红糖呈晶粒状或粉末状，干燥而松散，不结块，不成团，无杂质，其水溶液清晰，无沉淀，无悬浮物。
-
-次质红糖结块或受潮溶化
-
-劣质红糖溶化流卤，有杂质，糖水溶液中可见沉淀物或悬浮物。
-
-气味鉴别 良质红糖具有甘蔗汁的清香味。
-
-次质红糖气味正常但清香味淡。
-
-劣质红糖有酒味、酸味或其他外来不良气味。
-
-滋味鉴别 检查红糖的滋味时，可取少许红糖放在口中用舌头品尝，然后再配制<span class="number">10</span>％的红糖水溶液进行品尝。
-
-良质红糖口味浓甜带鲜，微有糖蜜味。
-
-次质红糖滋味比较正常。
-
-劣质红糖有焦苦味或其他外来异味。
-
-糖蜜 molasses
-
-工业制糖过程中，蔗糖结晶后，剩余的不能结晶，但仍含有较多糖的液体残留物。糖蜜是制糖工业的副产品，是一种粘稠、黑褐色、呈半流动的物体，组成因制糖原料、加工条件的不同而有差异，其中主要含有大量可发酵糖（主要是蔗糖），因而是很好的发酵原料，可用作酵母、味精、有机酸等发酵制品的底物或基料。糖蜜的矿物质含量较高，约<span class="number">8</span><span class="preprocessor">%</span>~<span class="number">10</span><span class="preprocessor">%</span>，但钙、磷含量不高，甘蔗糖蜜又高于甜菜糖蜜。矿物元素中钾、氯、钠、镁含量高，因此糖蜜具有轻泻性。
-</code></pre><p>排毒水</p>
-<pre><code>做法：新鲜小麦草汁（从30-50毫升开始）或大麦苗粉（1大匙）、糖蜜（Molasses）一大匙、有机柠檬汁（1-2个）或有机水果醋（如苹果、菠萝、柠檬）6-10毫升、水300毫升（冷或温开水）或回春水，均匀混合即完成。
-
-说明：每天2-3次，于空腹时饮用。体质虚寒的人，可加三宝粉（1-2大匙）饮用。
-
-三宝粉指胚芽（如小麦胚芽、糙米胚芽）、大豆卵磷脂以及酵母（如啤酒酵母）。
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p>现代红糖呈粉末状或者呈晶体状，古方红糖呈块状。</p>
-<pre><code>而古方红糖内部能够看到非常明显的沙纹，与《本草纲目》的描述完全一致，这样的糖中凝结的沙，也是沙糖这个名称的由来。
-
-红糖为什么比白糖贵，广东的红塘一斤3元，白糖一斤2.5元，我知道从甜菜甘蔗压榨出]]>
-    </summary>
-    
-      <category term="健康" scheme="http://blog.veryi.com/categories/%E5%81%A5%E5%BA%B7/"/>
     
   </entry>
   

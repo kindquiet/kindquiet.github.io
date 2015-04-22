@@ -1,4 +1,27 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-11-15T10:43:46.000Z" class="post__time">十一月 15, 2013</time><h1 class="post__title"><a href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/">linux系统忘记MySQL密码的恢复方法</a></h1></header><div class="post__main"><p>以下在centos测试通过。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-11-18T10:13:31.000Z" class="post__time">十一月 18, 2013</time><h1 class="post__title"><a href="/2013/11/18/w/e7-94-a8lvm-e5-9c-a8-e7-ba-bf-e6-89-a9-e5-ae-b9-e6-96-87-e4-bb-b6-e7-b3-bb-e7-bb-9f/">用lvm在线扩容文件系统</a></h1></header><div class="post__main"><p>LVM (Logic Volume Management,逻辑卷管理)。以下在centos系统测试通过。</p>
+<p>vgs</p>
+<pre><code>VG <span class="id">#PV</span> <span class="id">#LV</span> <span class="id">#SN</span> Attr VSize VFree 
+
+web_doc <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> wz--n- <span class="number">465.76</span>G <span class="number">270.45</span>G
+</code></pre><p>lvs LV VG Attr LSize Origin Snap% Move Log Copy% Convert</p>
+<pre><code><span class="title">www</span> web_doc -wi-ao <span class="number">195</span>.<span class="number">31G</span> 
+</code></pre><p>lvextend -L +100g /dev/mapper/web_doc-www</p>
+<pre><code>Extending logical <span class="built_ins">volume</span> www to 295.31 GB
+
+Logical <span class="built_ins">volume</span> www successfully resized
+</code></pre><p>resize2fs /dev/mapper/web_doc-www</p>
+<pre><code>resize2fs <span class="number">1.39</span> (<span class="number">29</span>-May-<span class="number">2006</span>)
+
+Filesystem <span class="keyword">at</span> /dev/mapper/web_doc-www <span class="keyword">is</span> mounted <span class="function_start"><span class="keyword">on</span></span> /opt; <span class="function_start"><span class="keyword">on</span></span>-line resizing required
+
+Performing an <span class="function_start"><span class="keyword">on</span></span>-line resize <span class="keyword">of</span> /dev/mapper/web_doc-www <span class="keyword">to</span> <span class="number">77414400</span> (<span class="number">4</span>k) blocks.
+</code></pre><p>df -m</p>
+<pre><code>Filesystem <span class="number">1</span>M-blocks Used Available Use% Mounted <span class="function_start"><span class="keyword">on</span></span>
+
+/dev/mapper/web_doc-www
+
+ <span class="number">297655</span> <span class="number">170871</span> <span class="number">111669</span> <span class="number">61</span>% /opt
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/11/18/w/e7-94-a8lvm-e5-9c-a8-e7-ba-bf-e6-89-a9-e5-ae-b9-e6-96-87-e4-bb-b6-e7-b3-bb-e7-bb-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-11-15T10:43:46.000Z" class="post__time">十一月 15, 2013</time><h1 class="post__title"><a href="/2013/11/15/w/linux-e7-b3-bb-e7-bb-9f-e5-bf-98-e8-ae-b0mysql-e5-af-86-e7-a0-81-e7-9a-84-e6-81-a2-e5-a4-8d-e6-96-b9-e6-b3-95/">linux系统忘记MySQL密码的恢复方法</a></h1></header><div class="post__main"><p>以下在centos测试通过。</p>
 <p>1. 停止mysqld服务；</p>
 <pre><code>/etc/init.d/mysql <span class="keyword">stop</span>
 </code></pre><p>2. 用以下命令启动MySQL，以不检查权限的方式启动；</p>
@@ -375,80 +398,4 @@ remove_filter(&amp;<span class="string">#39</span>;the_content&amp;<span class="
 <pre><code>这样，别人复制下来的函数代码标点就不会是全角，无法使用了！
 
 方法二是直接修改WordPress程序文件的，只要更新WordPress，就得重新修改，所以推荐使用方法一。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-07-19T08:07:16.000Z" class="post__time">七月 19, 2013</time><h1 class="post__title"><a href="/2013/07/19/w/e7-b3-96-e8-9c-9c-ef-bc-8c-e4-bb-80-e4-b9-88-e6-a0-b7-e7-9a-84-e7-ba-a2-e7-b3-96-e5-a5-bd-ef-bc-8c-e7-b3-96-e7-9f-a5-e8-af-86-e7-a7-91-e6-99-ae-ef-bc-8c-e6-9d-a5-e8-87-aa-e4-ba-92-e8-81-94-e7-bd-91/">糖蜜，什么样的红糖好，糖知识科普，来自互联网</a></h1></header><div class="post__main"><p>现代红糖呈粉末状或者呈晶体状，古方红糖呈块状。</p>
-<pre><code>而古方红糖内部能够看到非常明显的沙纹，与《本草纲目》的描述完全一致，这样的糖中凝结的沙，也是沙糖这个名称的由来。
-
-红糖为什么比白糖贵，广东的红塘一斤3元，白糖一斤2.5元，我知道从甜菜甘蔗压榨出的汁液加工后是红塘，如果再进一步脱色处理后才是白糖，按理说白糖应比红塘贵才对啊？
-</code></pre><p>红糖的生产成本是比白砂糖要低一点的。可是价格和成本没有必然的联系，还要受到供求关系及其它因素的影响。</p>
-<p>白砂糖是最主要的食用糖，其产量占食糖总产量的97%以上，而红糖仅仅是一个副产品，产量不大，因而受供求关系影响也就更大。</p>
-<p>正常年份，在批发市场上，红糖是比白砂糖要便宜的。但由于红糖没有国家储备和地方储备，国外产红糖的国家又极少，因而如果遇到供不应求的年份，国家没有办法像对待白砂糖一样通过向市场抛售储备糖或加大进口量来平抑糖价，这时红糖的批发价格也可能会超过白糖。</p>
-<p>至于零售价格，红糖确实普遍要比白砂糖贵。原因可以从生产企业和超市等终端零售商两个方面来分析。</p>
-<pre><code><span class="number">1</span>，作为生产企业，红糖的销售量远远小于白砂糖的销售量，所以生产红糖的资金流转比较慢、固定成本（例如进入超市要缴纳的费用、生产企业的各类固定成本分摊等）相对较高。这些都被计入了红糖的成本价格之中。
-
-<span class="number">2</span>，作为超市，白砂糖是常用品，价格透明，所以超市要拼价格、拉销量的；红糖是补充产品，销量低，利润率就要提高（因为超市考核的是单位面积的销售额和利润率，白糖和红糖在超市里虽然销售量相差很大，可是却占有相同的面积，因而采用同样的利润率是不划算的）。简单点来说，白砂糖讲的是薄利多销，红糖要更多的考虑利润问题，这样才能达到利润平衡点。另外，红糖的价格波动空间远高于白糖<span class="comment">(白砂糖一般吨价在3000-4200元之间时是正常的，可是红糖的价格常常会成倍数的波动)</span>，而作为超市，价格调整比较困难，因而在实际操作时商家会考虑这些因素，预留出一些利润空间给红糖。
-</code></pre><p>总之，价格是受到成本和供应关系的多重影响的，经济运行是要遵循市场经济规律的。</p>
-<p>红糖在原材料方面只能使用国产甘蔗，而白糖的原材料可以使用进口原糖和甜菜原糖。这就是说红糖的原材料稀缺，原材料就比较贵。</p>
-<pre><code>而且中国甘蔗主要产地在云南地区，生产了红糖运到北方，运费也会比较贵。
-
-而北方的糖厂主要使用甜菜原糖和进口原糖（由于产糖国如古巴等，生产成本极低，所以古巴原糖海运到中国的到岸价可能比国内甘蔗原糖价格还低，许多进口农产品都这样）。所以生产白糖更方便，而且更便宜。
-
-红糖对原材料的要求太高，所以成本就相对高了。再加上供求关系的问题，综合因素导致红糖比白糖价格高。
-</code></pre><p>红糖是未经纯化的粗糖，保留了许多非糖的杂质，其中的维生素和矿物质对人是有益的，但也因此更容易变质。</p>
-<p>在现代化的工业生产和市场营销中，需求量小的东西哪怕生产工艺再简单，也需要更高的成本。另一方面，白糖的生产可以以甜菜为原料。经纯化脱色之后，分别以甜菜和甘蔗生产出来的白糖并没有明显的差别。而传统的红糖生产工艺只能以甘蔗为原料，甜菜的糖蜜会带来让人难以接受的味道。对原料的挑剔也在一定程度上抵消了工艺简单所节省的成本。当然，现在也可以通过往甜菜白糖里加蔗糖蜜而得到红糖。不过这样一来，制取红糖的工艺就比较复杂了。</p>
-<p>最后说说冰糖。冰糖的生产比白糖红糖都要复杂，也最为纯净，价格高也是顺理成章的事情。</p>
-<pre><code>原糖
-
-又称粗糖，系以甘蔗为原料，经压榨取汁、糖汁清净处理，煮炼结晶，离心分蜜，制成的带有一层糖蜜，不供直接食用、作为精炼糖厂再加工用的原料糖；糖度（转光度）不低于<span class="number">97</span><span class="comment">%。</span>
-</code></pre><p>红糖</p>
-<pre><code>系带蜜的甘蔗成品糖，在我国，指甘蔗经榨汁和简易石灰法澄清处理后，经浓缩煮炼制成的带蜜糖。 
-
-根据加工工艺的不同，红糖又可分为赤砂糖（结晶颗粒较大），红糖粉（结晶粒子细小），片糖、砖糖（用模具）、碗糖（用模具）等；赤砂糖、红糖是用经过澄清处理的低纯度糖浆，在真空煮糖罐中煮制而成的覆盖一层棕红色、具有甘蔗风味糖浆的结晶糖，晶粒大的为赤砂糖，晶粒细小的叫红糖，其成分为：蔗糖分<span class="number">88</span>～<span class="number">93</span><span class="preprocessor">%</span>，还原糖<span class="number">1.5</span>～<span class="number">4.5</span><span class="preprocessor">%</span>，水分<span class="number">2.5</span>～<span class="number">3.5</span><span class="preprocessor">%</span>；片糖的生产方法则是将达到一定过饱和度的热糖浆（约<span class="number">92</span>Bx）从煮糖器分配器中流入片糖连续成型带上，在均衡平稳的运送过程中，糖浆被扒平，自然冷却凝固，经机械划线、分离出带，分片成糖，降温包装，其成分为：蔗糖分<span class="number">83</span><span class="preprocessor">%</span>以上，还原糖<span class="number">6.5</span><span class="preprocessor">%</span>以下，水分<span class="number">5</span><span class="preprocessor">%</span>以下；所有红糖，不论是结晶糖或成型糖，其共同的特征是：一、成品红糖中几乎保留了蔗汁中的全部成分；二、保留了甘蔗糖汁的原汁、原味，特别是甘蔗的清香味。消费者喜爱红糖、选择红糖，主要是基于红糖的这些基本特征。 
-
-由于甜菜糖糖蜜带有令人不愉快的气味，因此、世界各国均不生产带糖蜜的甜菜红糖。 
-</code></pre><p>普通白砂糖</p>
-<pre><code>系以甘蔗、甜菜或原糖（粗糖）为原料，经提取糖汁（或再溶），糖汁或糖浆清净处理、煮炼结晶，离心分蜜、筛选干燥等工序加工制成的成品蔗糖结晶，蔗糖分不低于<span class="number">99.5</span><span class="comment">%。 </span>
-</code></pre><p>普通绵白糖</p>
-<pre><code>系以甜菜或原糖（粗糖）为原料，经精炼加工生产的晶粒细小、颜色洁白、质地绵软的成品糖，总糖分（蔗糖分＋还原糖分）不低于<span class="number">97.92</span><span class="comment">%。</span>
-</code></pre><p>精制幼砂糖</p>
-<pre><code>精制幼砂糖即精制小粒砂糖，因其纯净度高，蔗糖份含量达到<span class="number">99.8</span><span class="comment">%以上，水分含量极少，各项卫生指标控制严格，晶粒小、均匀、松散，易溶化，易贮藏，不易受潮结块，特别适合于供作家庭常备食用糖。 </span>
-</code></pre><p>精制绵白糖 </p>
-<pre><code>精制绵白糖在颗粒小、易溶方面与精制幼砂糖相似，两者的主要区别是，绵白糖的晶粒更细小，一般不超过<span class="number">0.3</span>毫米、且要求均匀；此外、在分蜜后，加入<span class="number">1.5</span>～<span class="number">2.5</span><span class="preprocessor">%</span>（按固形物计）的砂糖转化糖浆或精炼淀粉糖浆，保留<span class="number">0.8</span>～<span class="number">1.6</span><span class="preprocessor">%</span>的水分，在螺旋输送槽中边输送、边搅拌使其混合均匀；最后经绵白糖干燥机将水分、温度调控到规定的要求后装袋封口。由于绵白糖中含有一定量的转化糖浆（含果糖成分），味甜、吸湿，因而可保持糖的绵软状态和光泽。但是因绵白糖水分含量较高（相对砂糖而言），所以不宜长期贮藏；在干旱地区与季节，绵白糖容易脱水结块，不利于方便食用。绵白糖一旦脱水结块后，不宜采用机械方法破碎。届时、可将结块绵白糖置于一定温湿度条件下（例如放在碗中，置于蒸锅内，利用热水的蒸汽、不需用明火加热），勿需太长时间，绵白糖就会自行吸湿松散开来，之后、如将糖置于密闭罐中，防止水分散失，可保持松散状态. 
-</code></pre><p>冰糖</p>
-<pre><code>冰糖的生产方法有两种，第一种生产方法是挂线结晶养大法，即将热的精炼饱和蔗糖溶液缓缓倒入挂有细棉线的桶中，在结晶室中经过7天以上缓慢冷却结晶，蔗糖结晶围绕棉线形成并养大成大粒、大块冰糖。第二种生产方法是投放晶种养大法，即在一摇床式结晶槽中，放入热的精炼饱和糖液，投入定量的晶种，在摆动槽中边摆动、边缓慢降温（用水套夹层保温、控温）使结晶养大，形成单晶冰糖。冰糖的理化性质与精炼砂糖相同，在中国被用作中药引子，在不少国家被当作医治伤风感冒的良药，更受到广大农村消费者的喜爱。
-</code></pre><p>方糖与块糖 </p>
-<pre><code>将含水分<span class="number">2</span>～<span class="number">2.5</span><span class="preprocessor">%</span>精制小粒砂糖原料，通过一转鼓式方糖压块成型机压成方块状，然后将成型的方糖，置放到金属托盘上，于干燥箱中将水分烘干至<span class="number">0.5</span><span class="preprocessor">%</span>以下，冷却至室温后用纸盒包装。 
-
-方糖因晶粒间有透气孔隙，因而具有定量、易溶，食用方便的特点，特别适合供作餐桌用糖。 
-
-如适当增加原料含水量，加大成型时的压缩比，烘干后，可得比较硬实的块糖，块糖携带、食用方便，为牧区和流动性大的工作人员所喜爱。 
-
-良质红糖呈晶粒状或粉末状，干燥而松散，不结块，不成团，无杂质，其水溶液清晰，无沉淀，无悬浮物。
-
-次质红糖结块或受潮溶化
-
-劣质红糖溶化流卤，有杂质，糖水溶液中可见沉淀物或悬浮物。
-
-气味鉴别 良质红糖具有甘蔗汁的清香味。
-
-次质红糖气味正常但清香味淡。
-
-劣质红糖有酒味、酸味或其他外来不良气味。
-
-滋味鉴别 检查红糖的滋味时，可取少许红糖放在口中用舌头品尝，然后再配制<span class="number">10</span>％的红糖水溶液进行品尝。
-
-良质红糖口味浓甜带鲜，微有糖蜜味。
-
-次质红糖滋味比较正常。
-
-劣质红糖有焦苦味或其他外来异味。
-
-糖蜜 molasses
-
-工业制糖过程中，蔗糖结晶后，剩余的不能结晶，但仍含有较多糖的液体残留物。糖蜜是制糖工业的副产品，是一种粘稠、黑褐色、呈半流动的物体，组成因制糖原料、加工条件的不同而有差异，其中主要含有大量可发酵糖（主要是蔗糖），因而是很好的发酵原料，可用作酵母、味精、有机酸等发酵制品的底物或基料。糖蜜的矿物质含量较高，约<span class="number">8</span><span class="preprocessor">%</span>~<span class="number">10</span><span class="preprocessor">%</span>，但钙、磷含量不高，甘蔗糖蜜又高于甜菜糖蜜。矿物元素中钾、氯、钠、镁含量高，因此糖蜜具有轻泻性。
-</code></pre><p>排毒水</p>
-<pre><code>做法：新鲜小麦草汁（从30-50毫升开始）或大麦苗粉（1大匙）、糖蜜（Molasses）一大匙、有机柠檬汁（1-2个）或有机水果醋（如苹果、菠萝、柠檬）6-10毫升、水300毫升（冷或温开水）或回春水，均匀混合即完成。
-
-说明：每天2-3次，于空腹时饮用。体质虚寒的人，可加三宝粉（1-2大匙）饮用。
-
-三宝粉指胚芽（如小麦胚芽、糙米胚芽）、大豆卵磷脂以及酵母（如啤酒酵母）。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/19/w/e7-b3-96-e8-9c-9c-ef-bc-8c-e4-bb-80-e4-b9-88-e6-a0-b7-e7-9a-84-e7-ba-a2-e7-b3-96-e5-a5-bd-ef-bc-8c-e7-b3-96-e7-9f-a5-e8-af-86-e7-a7-91-e6-99-ae-ef-bc-8c-e6-9d-a5-e8-87-aa-e4-ba-92-e8-81-94-e7-bd-91/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/5/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/3/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/5/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

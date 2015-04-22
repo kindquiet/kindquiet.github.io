@@ -1,4 +1,285 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-01-12T08:06:47.000Z" class="post__time">一月 12, 2010</time><h1 class="post__title"><a href="/2010/01/12/w/e4-bf-ae-e6-94-b9-e9-82-ae-e4-bb-b6smtp-e7-ab-af-e5-8f-a3-e8-a7-a3-e5-86-b3isp-e5-b0-81-e9-94-8125-e7-ab-af-e5-8f-a3-e4-b8-8d-e8-83-bd-e5-8f-91-e4-bf-a1/">修改邮件smtp端口解决ISP封锁25端口不能发信</a></h1></header><div class="post__main"><p> 邮件服务器的默认发送邮件端口是25，一些ISP会封锁25端口防止垃圾邮件的发送，这样就导致不能使用Foxmail、outlook等邮件客户端发送邮件。修改默认smtp端口就可以解决这个问题。下面的方法以CentOS linux上Postfix mail server为例，增加2626邮件发送端口。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-03-02T08:20:14.000Z" class="post__time">三月 2, 2010</time><h1 class="post__title"><a href="/2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/">centos linux 上flv/swf视频服务器架设</a></h1></header><div class="post__main"><p>在互联网上播放视频有两种方式，一种是通过HTTP协议访问视频文件；另外一种就是采用专门的流媒体服务器如red5。以下为在centos 5服务器上支持拖放的视频服务器安装配置。</p>
+<p>web服务器安装：</p>
+<pre><code>wget http:<span class="comment">//sysoev.ru/nginx/nginx-0.7.65.tar.gz</span>
+
+tar zxf nginx-0.7.65.tar.gz -C /usr/<span class="keyword">local</span>/src
+
+<span class="keyword">cd</span> /usr/<span class="keyword">local</span>/src/nginx-0.7.65
+
+groupadd www
+
+useradd -<span class="keyword">d</span> /<span class="keyword">var</span>/www/nginx -<span class="keyword">g</span> www www
+
+./configure --prefix=/usr/<span class="keyword">local</span>/nginx --user=www --group=www --with-http_flv_module --with-http_gzip_static_module --with-http_stub_status_module --with-<span class="keyword">cc</span>=gcc --with-<span class="keyword">cc</span>-opt= -O3
+
+make  make install
+
+<span class="keyword">cd</span> /usr/<span class="keyword">local</span>/nginx/<span class="keyword">conf</span>
+
+<span class="keyword">cat</span> nginx.<span class="keyword">conf</span>
+
+user www;
+
+worker_processes 1;
+
+error_log logs/<span class="keyword">error</span>.<span class="keyword">log</span>;
+
+pid logs/nginx.pid;
+
+events {
+
+ worker_connections 1024;
+
+}
+
+http {
+
+ <span class="keyword">include</span> mime.types;
+
+ default_type application/octet-stream;
+
+ sendfile <span class="keyword">on</span>;
+
+ keepalive_timeout 65;
+
+ server {
+
+ listen 81;
+
+ server_name localhost;
+
+ root /<span class="keyword">var</span>/www/nginx;
+
+ index index.html;
+
+ charset utf-8;
+
+ # important!
+
+ location ~ \.flv {
+
+ flv;
+
+ }
+
+ error_page 500 502 503 504 /50x.html;
+
+ location = /50x.html {
+
+ root html;
+
+ }
+
+ }
+
+}
+
+启动
+
+/usr/<span class="keyword">local</span>/nginx/sbin/nginx 
+
+重启
+
+/usr/<span class="keyword">local</span>/nginx/sbin/nginx -s reload
+
+<span class="keyword">mkdir</span> -p /<span class="keyword">var</span>/www/nginx
+
+<span class="keyword">cd</span> /<span class="keyword">var</span>/www/nginx
+
+其次，需要有一个能够播放Flv视频的播放器，很显然，它还需要能够嵌入到网页中。目前比较流行的，功能上也还比较完善的一个Flv播放器就是 JW FLV Media Player（也称为 jwplayer）。网址是：
+
+ http:<span class="comment">//www.longtailvideo.com/players/jw-flv-player/</span>
+
+下载mediaplayer-viral.<span class="keyword">zip</span>并解压到/<span class="keyword">var</span>/www/nginx
+
+将播放器嵌入到你的视频播放网页中。嵌入的方式有两种：
+
+直接嵌入，使用Object/Embed代码嵌入：
+
+<span class="keyword">cat</span> index.html
+
+html
+
+head
+
+meta http-equiv=content-<span class="keyword">type</span> content=text/html; charset=UTF-8titleveryi.com/title
+
+/head
+
+body
+
+ h3start/h3
+
+ pclick to play /p
+
+ !-- START OF THE PLAYER EMBEDDING TO <span class="keyword">COPY</span>-PASTE --
+
+
+
+ object id=player classid=clsid:D27CDB6E-AE6D-11cf-96B8-444553540000 name=player width=400 height=315
+
+  param name=movie value=player-viral.swf /
+
+  param name=allowfullscreen value=true /
+
+  param name=allowscriptaccess value=always /
+
+  param name=flashvars value=<span class="keyword">file</span>=snatch1.flv /
+
+  embed
+
+   <span class="keyword">type</span>=application/x-shockwave-flash
+
+   id=player2
+
+   name=player2
+
+   src=player-viral.swf 
+
+   width=400 
+
+   height=315
+
+   allowscriptaccess=always 
+
+   allowfullscreen=true
+
+   flashvars=<span class="keyword">file</span>=snatch1.flv 
+
+  /
+
+ /object
+
+
+
+ !-- END OF THE PLAYER EMBEDDING --
+
+/body
+
+/html
+
+使用swfobject来嵌入Flash：
+
+swfobject是一个很小的JavaScript脚本（10k），该脚本引入了一个swfobject对象，用于在网页内嵌入Flash，并避免了上述的安全提示。swfobject已经得到了广泛的使用和好评。
+
+swfobject在jwplayer包中也包含了一个，不过是很旧的1.5版，建议使用最新的版本。本文写作时，最新的版本是2.2。 swfobject可以从此下载（只需要其中的swfobject.js文件）：
+
+ http:<span class="comment">//code.google.com/p/swfobject/</span>
+
+使用swfobject嵌入的代码如下：
+
+html
+
+head
+
+script <span class="keyword">type</span>=text/JavaScript src=swfobject.js/script
+
+script <span class="keyword">type</span>=text/JavaScript
+
+function createPlayer() {
+
+ <span class="keyword">var</span> flashvars = {
+
+ <span class="keyword">file</span>:snatch1.flv,
+
+ <span class="keyword">type</span>:http,
+
+ image:preview.jpg,
+
+ autostart:false,
+
+ streamer:start
+
+ }
+
+ <span class="keyword">var</span> params = {
+
+ allowfullscreen:true, allowscriptaccess:always
+
+ }
+
+ <span class="keyword">var</span> attributes = {
+
+ id:player1, name:player1
+
+ }
+
+ swfobject.embedSWF(player-viral.swf, placeholder1, 320, 196, 9.0.115, false, flashvars, params, attributes);
+
+ }
+
+/script
+
+
+
+/head
+
+body onload=createPlayer();
+
+ div id=placeholder1/div
+
+/body
+
+/html
+
+附，媒体转换：
+
+FFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。它包括了目前领先的音/视频编码库libavcodec,安装，使用http:<span class="comment">//dag.wieers.com/或者http://www.atrpms.net/的源：</span>
+
+yum install ffmpeg -<span class="literal">y</span>
+
+yum install ffmpeg-devel -<span class="literal">y</span>
+
+转换dvd的MPEG-2格式的音频和视频数据VOB格式文件：
+
+ffmpeg -i VTS_01_3.VOB -f flv -ar 22050 -s qvga -r 15 -y snatch1.flv
+
+对ffmpeg无法解析的文件格式(wmv9，<span class="keyword">rm</span>，rmvb等),
+
+可以先用别的工具（mencoder）转换为 avi(ffmpeg能解析的)格式.
+
+./mencoder /<span class="keyword">input</span>/a.rmvb -oac lavc -lavcopts acodec=mp3:abitrate=64 -ovc xvid -xvidencopts bitrate=600 -of avi -o /output/a.avi
+
+然后执行./ffmpeg -i /opt/<span class="keyword">input</span>/a.avi -y -ab 32 -ar 22050 -b 800000 -s 640*480 /opt/output/a.flv就可以了。
+
+如果运行ffmpeg出现错误
+
+lame: output buffer too small (buffer index: 9405, free bytes: 387)
+
+解决方法：
+
+wget http:<span class="comment">//dl.atrpms.net/all/lame-3.97-16.0.el5.i386.rpm</span>
+
+wget http:<span class="comment">//dl.atrpms.net/all/libmp3lame0-3.97-16.0.el5.i386.rpm</span>
+
+rpm -hUv --nodeps --oldpackage libmp3lame0-3.97-16.0.el5.i386.rpm lame-3.97-16.0.el5.i386.rpm
+
+To prevent updating libmp3lame0 and lame again when running yum <span class="keyword">update</span>, be sure to <span class="keyword">edit</span> /etc/yum.<span class="keyword">conf</span> and exclude these packages. Add the following <span class="keyword">line</span>:
+
+exclude=lame* libmp3lame*
+
+(ffmpeg参数说明)：
+
+控制画面参数
+
+-r 数值  帧速率(非标准数值会导致音画不同步【标准值为15或29.97】)
+
+-b 比特率  指定压缩比特率
+
+控制声音参数
+
+-<span class="keyword">ac</span> 数值  设定声道数：1为单声道，2为立体声
+
+-ar 采样率  设定声音采样率(8000，11025，22050)
+
+-ab 比特率  设定声音比特率(-<span class="keyword">ac</span>设为立体声时要以一半比特率来设置，比如192kbps的就设成96)
+
+-vol 百分比  设定音量大小，比如设定200就会比原来的音量大2倍
+
+参考：
+
+http:<span class="comment">//linux.cn/home/space-3-do-blog-id-136.html</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/02/w/centos-linux-e4-b8-8aflvswf-e8-a7-86-e9-a2-91-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-9e-b6-e8-ae-be/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-01-12T08:06:47.000Z" class="post__time">一月 12, 2010</time><h1 class="post__title"><a href="/2010/01/12/w/e4-bf-ae-e6-94-b9-e9-82-ae-e4-bb-b6smtp-e7-ab-af-e5-8f-a3-e8-a7-a3-e5-86-b3isp-e5-b0-81-e9-94-8125-e7-ab-af-e5-8f-a3-e4-b8-8d-e8-83-bd-e5-8f-91-e4-bf-a1/">修改邮件smtp端口解决ISP封锁25端口不能发信</a></h1></header><div class="post__main"><p> 邮件服务器的默认发送邮件端口是25，一些ISP会封锁25端口防止垃圾邮件的发送，这样就导致不能使用Foxmail、outlook等邮件客户端发送邮件。修改默认smtp端口就可以解决这个问题。下面的方法以CentOS linux上Postfix mail server为例，增加2626邮件发送端口。</p>
 <p>方法一，使用linux iptables防火墙的端口重定向，适用于各种mail server：</p>
 <p>修改/etc/sysconfig/iptables，在开头添加</p>
 <p>*nat</p>
@@ -472,146 +753,4 @@ kernel <span class="regexp">/LiveOS/</span>vmlinuz0 root=<span class="string">li
 
 initrd <span class="regexp">/LiveOS/</span>initrd0.img
 </code></pre><p>CDLABEL修改为分区的卷标名称。提取CentOS-5.5-i386-LiveCD.iso中的文件，复制LiveOS目录到u盘，复制initrd0.img、vmlinuz0到LiveOS目录。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-11-24T01:36:33.000Z" class="post__time">十一月 24, 2009</time><h1 class="post__title"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/">linux系统apache tomcat虚拟主机安装配置</a></h1></header><div class="post__main"><p> 多年不用tomcat，应一朋友要求，搭建一个java环境的虚拟主机，经过多次测试，现在把可以正常运行的配置记录下来。</p>
-<p>安装jdk</p>
-<pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>
-
-sh /mnt/mysql/jdk-<span class="number">6</span>u14-linux-i586.bin 
-
-ln <span class="operator">-s</span> jdk1.<span class="number">6.0</span>_14/ jdk
-
-<span class="built_in">echo</span> <span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk
-
-<span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span>
-
-<span class="built_in">export</span> CLASSPATH=<span class="variable">$CLASSPATH</span>:<span class="variable">$JAVA_HOME</span>/lib  /etc/profile.d/java.sh
-
-chmod +x /etc/profile.d/java.sh
-</code></pre><p>安装tomcat</p>
-<p>wget <a href="http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz" target="_blank" rel="external">http://apache.freelamp.com/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.tar.gz</a></p>
-<pre><code>tar xzf apache-tomcat-<span class="number">6.0</span>.20.tar.gz -C <span class="regexp">/usr/</span>local/
-
-cd <span class="regexp">/usr/</span>local/
-
-ln -s apache-tomcat-<span class="number">6.0</span>.20/ tomcat
-
-vi ~/.bash_profile
-
-TOMCAT_HOME=<span class="regexp">/usr/</span>local/tomcat
-
-export PATH TOMCAT_HOME
-
-source ~/.bash_profile
-
-安装jk connector
-
-wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/tomcat/tomcat-connectors/jk/source/jk-1.2.28/tomcat-connectors-1.2.28-src.tar.gz</span>
-
-tar xfz tomcat-connectors-<span class="number">1.2</span>.28-src.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>tomcat-connectors-<span class="number">1.2</span>.28-src/
-
-cd native/
-
-.<span class="regexp">/configure --with-apxs=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs
-
-make
-
-cp apache-<span class="number">2.0</span><span class="regexp">/mod_jk.so /</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/modules/</span>
-</code></pre><p>apche配置</p>
-<p>vim /usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
-<p>LoadModule jk_module modules/mod_jk.so</p>
-<pre><code><span class="keyword">Include</span> /usr/<span class="keyword">local</span>/httpd/<span class="keyword">conf</span>/mod_jk.<span class="keyword">conf</span>
-
-VirtualHost *:80
-
-JkMountCopy <span class="keyword">On</span>
-
- ServerName edu.veryi.com
-
-DirectoryIndex index.jsp index.html index.jsp index.htm
-
- DocumentRoot /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT
-
- #DocumentRoot /usr/<span class="keyword">local</span>/www/edu.veryi.com/html
-
-#Directory /usr/<span class="keyword">local</span>/www/edu.veryi.com
-
-Directory /usr/<span class="keyword">local</span>/tomcat/webapps/ROOT
-
- <span class="keyword">Order</span> allow,deny
-
- Allow from all
-
-/Directory
-
- CustomLog |/usr/<span class="keyword">local</span>/sbin/cronolog /<span class="keyword">var</span>/<span class="keyword">log</span>/httpd/edu.veryi.com-access_log.%Y%<span class="keyword">m</span>%<span class="keyword">d</span> combined
-
- ErrorDocument 404 /missing.html
-
-/VirtualHost
-</code></pre><hr>
-<p>vim /usr/local/httpd/conf/mod_jk.conf</p>
-<pre><code>JkWorkersFile /usr/<span class="keyword">local</span>/httpd/conf/workers.properties
-
-<span class="comment"># Where to put jk logs</span>
-
-JkLogFile /usr/<span class="keyword">local</span>/httpd/logs/mod_jk.<span class="keyword">log</span>
-
-<span class="comment"># Set the jk log level [debug/error/info]</span>
-
-JkLogLevel info
-
-<span class="comment"># Select the log format</span>
-
-JkLogStampFormat [<span class="variable">%a</span> <span class="variable">%b</span> <span class="variable">%d</span> <span class="variable">%H</span>:<span class="variable">%M</span>:<span class="variable">%S</span> <span class="variable">%Y</span>]
-
-<span class="comment"># JkOptions indicate to send SSL KEY SIZE,</span>
-
-JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
-
-<span class="comment"># JkRequestLogFormat set the request format</span>
-
-JkRequestLogFormat <span class="variable">%w</span> <span class="variable">%V</span> <span class="variable">%T</span>
-
-<span class="comment"># servlet 和jsp请求通过ajp13的协议送给Tomcat</span>
-
-JkMount /servlet/* worker1
-
-JkMount /*.jsp worker1
-</code></pre><hr>
-<p>/usr/local/httpd/conf/workers.properties</p>
-<pre><code><span class="comment"># Defining a worker named worker1 and of type ajp13</span>
-
-worker.<span class="variable">list=</span>worker1
-
-<span class="comment"># Set properties for worker1</span>
-
-worker.worker1.<span class="variable">type=</span>ajp13
-
-worker.worker1.<span class="variable">host=</span>localhost
-
-worker.worker1.<span class="variable">port=</span><span class="number">8009</span>
-
-<span class="comment">#worker.worker1.lbfactor=50</span>
-
-<span class="comment">#worker.worker1.socket_keepalive=1</span>
-
-<span class="comment">#worker.worker1.socket_timeout=300</span>
-</code></pre><p>tomcat配置</p>
-<p>vim /usr/local/tomcat/conf/server.xml</p>
-<p> Host name=edu.veryi.com </p>
-<pre><code><span class="variable">unpackWARs=</span><span class="constant">true</span> <span class="variable">autoDeploy=</span><span class="constant">true</span> Context <span class="variable">path=</span> <span class="variable">docBase=</span>/usr/local/tomcat/webapps/ROOT / Valve <span class="variable">className=</span>org.apache.catalina.valves.AccessLogValve <span class="variable">directory=</span>logs 
-
-<span class="variable">prefix=</span>tomcat_access_log. <span class="variable">suffix=</span>.log <span class="variable">pattern=</span>common <span class="variable">resolveHosts=</span><span class="constant">false</span>/ Logger <span class="variable">className=</span>org.apache.catalina.logger.FileLogger <span class="variable">directory=</span>logs 
-
-<span class="variable">prefix=</span>tomcat_file_log. <span class="variable">suffix=</span>.log <span class="variable">timestamp=</span><span class="constant">true</span>/
-
-/Host
-</code></pre><p> Host name=class.veryi.com appBase=</p>
-<pre><code><span class="variable">unpackWARs=</span><span class="constant">false</span> <span class="variable">autoDeploy=</span><span class="constant">true</span> <span class="variable">xmlValidation=</span><span class="constant">false</span> <span class="variable">xmlNamespaceAware=</span><span class="constant">false</span>
-
-Aliasveryi.com/Alias Context <span class="variable">path=</span> <span class="variable">docBase=</span>/webapps/ROOT <span class="variable">reloadable=</span><span class="constant">true</span> <span class="variable">workDir=</span>work /
-
-/Host
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/11/24/w/linux-e7-b3-bb-e7-bb-9fapache-tomcat-e8-99-9a-e6-8b-9f-e4-b8-bb-e6-9c-ba-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/20/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/22/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/12/23/w/u-e7-9b-98usb-hd-e5-ae-89-e8-a3-85-e5-a4-9a-e7-a7-8dlinux-live-cd/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/20/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/22/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

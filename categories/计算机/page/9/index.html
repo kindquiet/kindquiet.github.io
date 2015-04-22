@@ -1,4 +1,12 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong>微码</strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-01-09T09:43:37.000Z" class="post__time">一月 9, 2012</time><h1 class="post__title"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">DNS劫持与RBL使用的解决办法</a></h1></header><div class="post__main"><p> 使用opendns nameserver 208.67.220.220 208.67.222.222可以解决dns hijacking，缺点是web浏览时可能不会解析到最快的ip地址。电信、联通nameserver 如202.106.196.115 202.106.0.20 202.106.46.151多被劫持。导致邮件服务器使用rbl服务阻挡全部邮件。解决办法之一是用返回码验证。postfix修改main.cf：</p>
+<p> reject_rbl_client cblless.anti-spam.org.cn=127.0.8.5,</p>
+<pre><code>reject_rbl_client zen<span class="class">.spamhaus</span><span class="class">.org</span>=<span class="number">127.0</span>.<span class="number">0.2</span>, 
+</code></pre><p>…</p>
+<p>关于RBL的原理。目前用于垃圾邮件过滤的RBL服务，应该称之为基于DNS的实时黑名单查询，也就是说，这个服务是通过DNS协议来完成的。</p>
+<p>　　具体而言，当一个客户端希望查询某个IP地址（如1.2.3.4）是否在某个RBL（如cbl.anti-spam.org.cn）中 是，其实际上是查询如下地址是否存在解析： 4.3.2.1.cbl.anti-spam.org.cn. （IP地址逆转附加在RBL地址后）。DNS的解析分为几种类型，对于RBL查询，通常是查询这个地址是否存在A记录、TXT记录或者任意（ANY）记 录。</p>
+<p>　　如果该地址被列入了这个RBL，那么查询会返回一个具体的解析结果，根据RBL和查询的不同，可以返回一段文本，也可以返回一个或几个IP地 址，也可以同时返回文本和IP。返回的文本通常是一个说明，用来说明这个IP地址被列入了哪个RBL，具体信息去哪里查询等。返回的IP地址并不具有实际 意义，只是标识该查询有结果，通常这个IP地址是一个保留IP段的地址，如127.0.0.1、127.0.0.2等。</p>
+<p>　　如果该地址没有被列入这个RBL，那么该查询会返回一个查询错误（NXDOMAIN），表示该地址未列入。</p>
+</div><footer class="post__foot u-cf"><a href="/2012/01/09/w/dns-e5-8a-ab-e6-8c-81-e4-b8-8erbl-e4-bd-bf-e7-94-a8-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-01-05T11:41:02.000Z" class="post__time">一月 5, 2012</time><h1 class="post__title"><a href="/2012/01/05/w/e7-94-a8u-e7-9b-98-e7-a7-bb-e5-8a-a8-e7-a1-ac-e7-9b-98-e5-8d-87-e7-ba-a7pc-e6-9c-8d-e5-8a-a1-e5-99-a8bios/">用u盘/移动硬盘升级pc服务器bios</a></h1></header><div class="post__main"><p>pc服务器，又称工业标准服务器。升级bios<strong>微码</strong>一般需要软盘或光盘。软盘难以找到，刻盘也麻烦。就考虑用u盘/移动硬盘升级bios，以下在ibm x-366服务器（m/t m8836-isx）测试通过。</p>
 <p>准备工作：</p>
 <p>制作可引导移动硬盘，<a href="http://veryi.com/w/257.html" target="_blank" rel="external">参考http://veryi.com/w/257.html</a>；</p>
 <p>下载bios镜像，复制到移动硬盘相应目录。</p>
@@ -141,69 +149,4 @@ leaves <span class="operator">the</span> regular old forward-proxy port <span cl
 Adding http_port <span class="number">3128</span> <span class="operator">or</span> somesuch is enough <span class="built_in">to</span> avoid this message
 
 <span class="keyword">http</span>://web.archiveorange.com/archive/v/ieAjrN4CBMd2O0bTzhKl
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-11-11T06:06:17.000Z" class="post__time">十一月 11, 2011</time><h1 class="post__title"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/">一起艰难的网络故障排除-不可忽视的路由表</a></h1></header><div class="post__main"><p>某个ip[221.6.209.46]不能访问我们的网站[121.12.49.36]，检查路由器、防火墙、交换机，操作系统linux iptables，hosts.deny，应用系统的访问控制列表。都没有发现对此ip的限制。</p>
-<p>和IDC机房多次报故障，机房说没有限制，让我们检查路由器、防火墙、交换机和操作系统…我们也说没限制。</p>
-<pre><code>直到最后查看路由表才发现问题所在：
-
-Tracing route <span class="built_in">to</span> [<span class="number">121.12</span>.49.36]
-
-over <span class="operator">a</span> maximum <span class="operator">of</span> <span class="number">30</span> hops:
-
- <span class="number">1</span> <span class="number">1</span> ms <span class="number">1</span> ms <span class="number">1</span> ms <span class="number">221.76</span>.209.41
-
-...可以到达机房的路由器
-
-traceroute <span class="number">221.6</span>.209.46 -n
-
-traceroute <span class="built_in">to</span> <span class="number">221.6</span>.209.46 (<span class="number">221.6</span>.209.46), <span class="number">30</span> hops <span class="built_in">max</span>, <span class="number">40</span> <span class="keyword">byte</span> packets
-
-没有响应，说明根本没有出去。
-
-netstat -rn
-
-Kernel IP routing table
-
-Destination Gateway Genmask Flags MSS Window irtt Iface
-
-<span class="number">172.16</span>.1.0 <span class="number">0.0</span>.0.0 <span class="number">255.255</span>.255.0 U <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> eth1
-
-<span class="number">169.254</span>.0.0 <span class="number">0.0</span>.0.0 <span class="number">255.255</span>.0.0 U <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> eth1
-
-<span class="number">221.0</span>.0.0 <span class="number">0.0</span>.0.0 <span class="number">255.0</span>.0.0 U <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> eth0
-
-<span class="number">0.0</span>.0.0 <span class="number">121.12</span>.49.1 <span class="number">0.0</span>.0.0 UG <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> eth0
-
-route del -net <span class="number">221.0</span>.0.0/<span class="number">8</span> 
-
-traceroute <span class="number">221.76</span>.209.46 -n
-
-traceroute <span class="built_in">to</span> <span class="number">221.76</span>.209.46 (<span class="number">221.76</span>.209.46), <span class="number">30</span> hops <span class="built_in">max</span>, <span class="number">40</span> <span class="keyword">byte</span> packets
-
-<span class="number">1</span> <span class="number">121.12</span>.49.1 <span class="number">0.490</span> ms <span class="number">0.922</span> ms <span class="number">1.131</span> ms
-
-<span class="number">2</span> <span class="number">121.12</span>.55.17 <span class="number">0.318</span> ms <span class="number">0.342</span> ms <span class="number">0.363</span> ms
-
-<span class="number">3</span> <span class="number">110.96</span>.72.97 <span class="number">1.292</span> ms <span class="number">1.334</span> ms <span class="number">1.410</span> ms
-
-<span class="number">4</span> <span class="number">61.233</span>.9.213 <span class="number">1.360</span> ms <span class="number">1.357</span> ms <span class="number">1.341</span> ms
-
-<span class="number">5</span> <span class="number">61.237</span>.97.58 <span class="number">10.237</span> ms <span class="number">10.252</span> ms <span class="number">10.238</span> ms
-
-<span class="number">6</span> <span class="number">61.237</span>.124.10 <span class="number">10.250</span> ms <span class="number">10.305</span> ms <span class="number">10.355</span> ms
-
-<span class="number">7</span> <span class="number">222.39</span>.46.194 <span class="number">10.106</span> ms <span class="number">10.189</span> ms <span class="number">10.095</span> ms
-
-<span class="number">8</span> <span class="number">222.39</span>.162.214 <span class="number">10.585</span> ms <span class="number">10.505</span> ms <span class="number">10.562</span> ms
-
-<span class="number">9</span> <span class="number">221.76</span>.208.2 <span class="number">12.346</span> ms <span class="number">12.464</span> ms <span class="number">12.643</span> ms
-
-<span class="number">10</span> <span class="number">221.76</span>.209.34 <span class="number">11.679</span> ms <span class="number">11.890</span> ms <span class="number">12.019</span> ms
-
-添加/删除路由的命令示例：
-
-route <span class="built_in">add</span> -net <span class="number">221.0</span>.0.0/<span class="number">8</span> dev eth0
-
-route <span class="built_in">add</span> -net <span class="number">192.57</span>.66.0 netmask <span class="number">255.255</span>.255.0 gw ipx4
-
-route <span class="built_in">add</span> -net <span class="number">224.0</span>.0.0 netmask <span class="number">240.0</span>.0.0 dev eth0
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/11/11/w/e4-b8-80-e8-b5-b7-e8-89-b0-e9-9a-be-e7-9a-84-e7-bd-91-e7-bb-9c-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4-e4-b8-8d-e5-8f-af-e5-bf-bd-e8-a7-86-e7-9a-84-e8-b7-af-e7-94-b1-e8-a1-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/12/01/w/centos-6-server-dhcpd-e3-80-81squid-e5-92-8c-e7-bd-91-e7-bb-9c-e6-8e-92-e9-94-99/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

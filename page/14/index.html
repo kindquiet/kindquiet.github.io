@@ -1,4 +1,394 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-06-24T02:51:04.000Z" class="post__time">六月 24, 2011</time><h1 class="post__title"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/">邮件系统维护的常用命令</a></h1></header><div class="post__main"><p>查找发信最多的用户，如果账户被盗用，通常一天会发送成千上万封邮件</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-07-11T02:04:24.000Z" class="post__time">七月 11, 2011</time><h1 class="post__title"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/">awstats分析统计squid日志</a></h1></header><div class="post__main"><p>关键：squid自定义日志格式中combined %a和之间只可有一个空格分隔，如果多于一个，squid日志中每行行首会有前置空格，分析时会报错： Found 6 corrupted records。</p>
+<p>以下测试在centos linux中通过。</p>
+<pre><code>squid配置：
+
+#logformat combined <span class="variable">%a</span> <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] <span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span> <span class="variable">%Hs</span> <span class="variable">%st</span> <span class="variable">%{Referer}</span>h %{User-Agent}h <span class="variable">%Ss</span>:<span class="variable">%Sh</span>
+
+logformat combined <span class="variable">%a</span> <span class="variable">%ui</span> <span class="variable">%un</span> [<span class="variable">%tl</span>] <span class="variable">%rm</span> <span class="variable">%ru</span> HTTP/<span class="variable">%rv</span> <span class="variable">%Hs</span> <span class="variable">%st</span> <span class="variable">%{Referer}</span>h %{User-Agent}h <span class="variable">%Ss</span>:<span class="variable">%Sh</span> <span class="variable">%{host}</span>h
+
+access_log /var/squid/logs/access.<span class="keyword">log</span> combined
+
+logfile_rotate <span class="number">10</span>
+</code></pre><p>日志类似：10.168.6.166 - - [11/Jul/2011:10:16:42 +0800] POST <a href="http://veryi.com/getconf.php" target="_blank" rel="external">http://veryi.com/getconf.php</a> HTTP/1.1 200 960 - Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727) TCP_MISS:DIRECT veryi.com</p>
+<pre><code>或者配置为：
+</code></pre><p>emulate_httpd_log on</p>
+<p>日志类似：10.168.6.54 - - [11/Jul/2011:09:21:02 +0800] GET <a href="http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg" target="_blank" rel="external">http://veryi.com/20110705/10/aedf8255-14da-48c5-9338-296caceaf645.jpg</a> HTTP/1.1 200 22328 TCP_MISS:DIRECT</p>
+<pre><code>awstats配置：
+
+LogFormat=<span class="number">4</span>
+
+#LogFormat = <span class="variable">%host</span> <span class="variable">%other</span> <span class="variable">%logname</span> <span class="variable">%time1</span> <span class="variable">%methodurl</span> <span class="variable">%code</span> <span class="variable">%bytesd</span> <span class="variable">%refererquot</span> <span class="variable">%uaquot</span> <span class="variable">%other</span> <span class="variable">%virtualname</span>
+</code></pre><p>使用预定义格式即可，自定义报corrupted records错。</p>
+<pre><code>squid日志分隔脚本：squid_log.sh
+
+export PATH=/bin:/usr/bin
+
+bakdir=`date +%Y`
+
+baklog=access.log-`date +%Y%m%d%H`
+
+/usr/local/squid/sbin/squid -k rotate
+
+cd /<span class="keyword">var</span>/squid/logs
+
+[ -d `date +%Y` ] || mkdir `date +%Y`
+
+mv access.log.<span class="number">9</span> $bakdir
+
+cd $bakdir
+
+mv access.log.<span class="number">9</span> access.log-`date +%Y%m%d%H`
+
+/usr/bin/bzip2 -<span class="number">1</span> $baklog
+
+find . -name &amp;<span class="string">#39</span>;*log*&amp;<span class="string">#39</span>; -mtime +<span class="number">90</span> -<span class="keyword">type</span> f -exec rm -f <span class="comment">{}</span> \;
+
+awstats自定义字段说明：
+
+# %host Client hostname <span class="keyword">or</span> IP address (<span class="keyword">or</span> Sender host <span class="keyword">for</span> mail log)
+
+# %host_r Receiver hostname <span class="keyword">or</span> IP address (<span class="keyword">for</span> mail log)
+
+# %lognamequot Authenticated login/user <span class="keyword">with</span> format: john
+
+# %logname Authenticated login/user <span class="keyword">with</span> format: john
+
+# %time1 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: [dd/mon/yyyy:hh:mm:ss +<span class="number">0000</span>] <span class="keyword">or</span> [dd/mon/yyyy:hh:mm:ss]
+
+# %time2 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: yyyy-mm-dd hh:mm:ss
+
+# %time3 Date <span class="keyword">and</span> time <span class="keyword">with</span> format: Mon dd hh:mm:ss <span class="keyword">or</span> Mon dd hh:mm:ss yyyy
+
+# %time4 Date <span class="keyword">and</span> time <span class="keyword">with</span> unix timestamp format: dddddddddd
+
+# %methodurl <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> GET /<span class="keyword">index</span>.html HTTP/x.x
+
+# %methodurlnoprot <span class="function"><span class="keyword">Method</span> <span class="title">and</span> <span class="title">URL</span> <span class="title">with</span> <span class="title">format</span>:</span> GET /<span class="keyword">index</span>.html
+
+# %<span class="function"><span class="keyword">method</span> <span class="title">Method</span> <span class="title">with</span> <span class="title">format</span>:</span> GET
+
+# %url URL only <span class="keyword">with</span> format: /<span class="keyword">index</span>.html
+
+# %query Query string (used <span class="keyword">by</span> URLWithQuery option)
+
+# %code Return code status (<span class="keyword">with</span> format <span class="keyword">for</span> web log: <span class="number">999</span>)
+
+# %bytesd Size <span class="keyword">of</span> document <span class="keyword">in</span> bytes
+
+# %refererquot Referer page <span class="keyword">with</span> format: http:<span class="comment">//from.com/from.htm</span>
+
+# %referer Referer page <span class="keyword">with</span> format: http:<span class="comment">//from.com/from.htm</span>
+
+# %uabracket User agent <span class="keyword">with</span> format: [Mozilla/<span class="number">4.0</span> (compatible, ...)]
+
+# %uaquot User agent <span class="keyword">with</span> format: Mozilla/<span class="number">4.0</span> (compatible, ...)
+
+# %ua User agent <span class="keyword">with</span> format: Mozilla/<span class="number">4.0</span>_(compatible...)
+
+# %gzipin mod_gzip compression input bytes: <span class="keyword">In</span>:XXX
+
+# %gzipout mod_gzip compression output bytes  ratio: <span class="keyword">Out</span>:YYY:ZZpct.
+
+# %gzipratio mod_gzip compression ratio: ZZpct.
+
+# %deflateratio mod_deflate compression ratio <span class="keyword">with</span> format: (ZZ)
+
+# %email EMail sender (<span class="keyword">for</span> mail log)
+
+# %email_r EMail receiver (<span class="keyword">for</span> mail log)
+
+# %virtualname Web sever <span class="keyword">virtual</span> hostname. Use this tag when same log
+
+# contains data <span class="keyword">of</span> several <span class="keyword">virtual</span> web servers. AWStats
+
+# will discard records <span class="keyword">not</span> <span class="keyword">in</span> SiteDomain nor HostAliases
+
+# %cluster <span class="keyword">If</span> log file <span class="keyword">is</span> provided <span class="keyword">from</span> several computers (merged <span class="keyword">by</span>
+
+# logresolvemerge.pl), use this <span class="keyword">to</span> define cluster id field.
+
+# %extraX Another field that you plan <span class="keyword">to</span> use <span class="keyword">for</span> building a
+
+# personalized report <span class="keyword">with</span> ExtraSection feature (See later).
+
+# <span class="keyword">If</span> your log format <span class="keyword">has</span> some fields <span class="keyword">not</span> included <span class="keyword">in</span> this list, use:
+
+# %other Means another <span class="keyword">not</span> used field
+
+# %otherquot Means another <span class="keyword">not</span> used double quoted field
+</code></pre><p>squid自定义字段说明：</p>
+<pre><code>logformat name <span class="built_in">format</span> specification
+
+ Defines <span class="operator">an</span> access <span class="built_in">log</span> <span class="built_in">format</span>.
+
+ The <span class="built_in">format</span> specification is <span class="operator">a</span> <span class="keyword">string</span> <span class="operator">with</span> embedded % <span class="built_in">format</span> codes
+
+ % <span class="built_in">format</span> codes all follow <span class="operator">the</span> same basic structure where all but
+
+ <span class="operator">the</span> formatcode is optional. Output strings are automatically escaped
+
+ <span class="keyword">as</span> required according <span class="built_in">to</span> their context <span class="operator">and</span> <span class="operator">the</span> output <span class="built_in">format</span>
+
+ modifiers are usually <span class="operator">not</span> needed, but can be specified <span class="keyword">if</span> <span class="operator">an</span> explicit
+
+ output <span class="built_in">format</span> is desired.
+
+  % [|[|&amp;<span class="comment">#39;|#] [-] [[0]width] [{argument}] formatcode</span>
+
+   output <span class="operator">in</span> quoted <span class="keyword">string</span> <span class="built_in">format</span>
+
+  [ output <span class="operator">in</span> squid <span class="keyword">text</span> <span class="built_in">log</span> <span class="built_in">format</span> <span class="keyword">as</span> used <span class="keyword">by</span> log_mime_hdrs
+
+  <span class="comment"># output in URL quoted format</span>
+
+  &amp;<span class="comment">#39; output as-is</span>
+
+  - left aligned
+
+  width field width. If starting <span class="operator">with</span> <span class="number">0</span> <span class="operator">the</span>
+
+   output is <span class="constant">zero</span> padded
+
+  {arg} argument such <span class="keyword">as</span> header name etc
+
+ Format codes:
+
+  % <span class="operator">a</span> literal % <span class="keyword">character</span>
+
+  sn Unique sequence <span class="built_in">number</span> per <span class="built_in">log</span> <span class="built_in">line</span> entry
+
+  err_code The ID <span class="operator">of</span> <span class="operator">an</span> error response served <span class="keyword">by</span> Squid <span class="operator">or</span>
+
+    <span class="operator">a</span> similar internal error identifier.
+
+  err_detail Additional err_code-dependent error information.
+
+ Connection related <span class="built_in">format</span> codes:
+
+  <span class="operator">a</span> Client source IP address
+
+  A Client FQDN
+
+  p Client source port
+
+  eui Client EUI (MAC address, EUI-<span class="number">48</span> <span class="operator">or</span> EUI-<span class="number">64</span> identifier)
+
+  A Server IP address <span class="operator">or</span> peer name
+
+  la Local IP address (http_port)
+
+  lp Local port <span class="built_in">number</span> (http_port)
+
+  la Local IP address <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> server <span class="operator">or</span> peer connection
+
+  lp Local port <span class="built_in">number</span> <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> server <span class="operator">or</span> peer connection
+
+ Time related <span class="built_in">format</span> codes:
+
+  ts Seconds since epoch
+
+  tu subsecond <span class="built_in">time</span> (<span class="built_in">milliseconds</span>)
+
+  tl Local <span class="built_in">time</span>. Optional strftime <span class="built_in">format</span> argument
+
+    default %d/%b/%Y:%H:%M:%S %z
+
+  tg GMT <span class="built_in">time</span>. Optional strftime <span class="built_in">format</span> argument
+
+    default %d/%b/%Y:%H:%M:%S %z
+
+  tr Response <span class="built_in">time</span> (<span class="built_in">milliseconds</span>)
+
+  dt Total <span class="built_in">time</span> spent making DNS lookups (<span class="built_in">milliseconds</span>)
+
+ HTTP cache related <span class="built_in">format</span> codes:
+
+  [<span class="keyword">http</span>::]h Original request header. Optional header name argument
+
+    <span class="command"><span class="keyword">on</span> <span class="title">the</span> <span class="title">format</span> <span class="title">header</span>[:[<span class="title">separator</span>]<span class="title">element</span>]</span>
+
+  [<span class="keyword">http</span>::]ha The HTTP request headers <span class="keyword">after</span> adaptation <span class="operator">and</span> redirection. 
+
+    Optional header name argument <span class="keyword">as</span> <span class="keyword">for</span> h
+
+  [<span class="keyword">http</span>::]h Reply header. Optional header name argument
+
+    <span class="keyword">as</span> <span class="keyword">for</span> h
+
+  [<span class="keyword">http</span>::]un User name
+
+  [<span class="keyword">http</span>::]ul User name <span class="built_in">from</span> authentication
+
+  [<span class="keyword">http</span>::]ui User name <span class="built_in">from</span> ident
+
+  [<span class="keyword">http</span>::]us User name <span class="built_in">from</span> SSL
+
+  [<span class="keyword">http</span>::]ue User name <span class="built_in">from</span> external acl helper
+
+  [<span class="keyword">http</span>::]Hs HTTP status code sent <span class="built_in">to</span> <span class="operator">the</span> client
+
+  [<span class="keyword">http</span>::]Hs HTTP status code received <span class="built_in">from</span> <span class="operator">the</span> next hop
+
+  [<span class="keyword">http</span>::]bs Number <span class="operator">of</span> HTTP-equivalent message body <span class="keyword">bytes</span> 
+
+    received <span class="built_in">from</span> <span class="operator">the</span> next hop, excluding chunked
+
+    transfer encoding <span class="operator">and</span> control messages.
+
+    Generated FTP/Gopher listings are treated <span class="keyword">as</span>
+
+    received bodies.
+
+  [<span class="keyword">http</span>::]Ss Squid request status (TCP_MISS etc)
+
+  [<span class="keyword">http</span>::]Sh Squid hierarchy status (DEFAULT_PARENT etc)
+
+  [<span class="keyword">http</span>::]mt MIME content type
+
+  [<span class="keyword">http</span>::]rm Request method (GET/POST etc)
+
+  [<span class="keyword">http</span>::]rm Request method <span class="built_in">from</span> client
+
+  [<span class="keyword">http</span>::]rm Request method sent <span class="built_in">to</span> server <span class="operator">or</span> peer
+
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> <span class="built_in">from</span> client (historic, filtered <span class="keyword">for</span> logging)
+
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> <span class="built_in">from</span> client
+
+  [<span class="keyword">http</span>::]ru Request <span class="built_in">URL</span> sent <span class="built_in">to</span> server <span class="operator">or</span> peer
+
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname
+
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname <span class="built_in">from</span> client
+
+  [<span class="keyword">http</span>::]rp Request <span class="built_in">URL</span>-Path excluding hostname sento <span class="built_in">to</span> server <span class="operator">or</span> peer
+
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span>
+
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span> <span class="built_in">from</span> client
+
+  [<span class="keyword">http</span>::]rv Request protocol <span class="built_in">version</span> sent <span class="built_in">to</span> server <span class="operator">or</span> peer
+
+  [<span class="keyword">http</span>::]et Tag returned <span class="keyword">by</span> external acl
+
+  [<span class="keyword">http</span>::]ea Log <span class="keyword">string</span> returned <span class="keyword">by</span> external acl
+
+  [<span class="keyword">http</span>::]st Sent reply size including HTTP headers
+
+  [<span class="keyword">http</span>::]st Received request size including HTTP headers. In <span class="operator">the</span>
+
+    <span class="keyword">case</span> <span class="operator">of</span> chunked requests <span class="operator">the</span> chunked encoding metadata
+
+    are <span class="operator">not</span> included
+
+  [<span class="keyword">http</span>::]sh Received HTTP request headers size
+
+  [<span class="keyword">http</span>::]sh Sent HTTP reply headers size
+
+  [<span class="keyword">http</span>::]st Request+Reply size including HTTP headers
+
+  [<span class="keyword">http</span>::]<span class="variable">sH</span> Reply high <span class="built_in">offset</span> sent
+
+  [<span class="keyword">http</span>::]<span class="variable">sS</span> Upstream object size
+
+  [<span class="keyword">http</span>::]pt Peer response <span class="built_in">time</span> <span class="operator">in</span> <span class="built_in">milliseconds</span>. The timer starts
+
+    when <span class="operator">the</span> <span class="keyword">last</span> request <span class="keyword">byte</span> is sent <span class="built_in">to</span> <span class="operator">the</span> next hop
+
+    <span class="operator">and</span> stops when <span class="operator">the</span> <span class="keyword">last</span> response <span class="keyword">byte</span> is received.
+
+  [<span class="keyword">http</span>::]tt Total server-side <span class="built_in">time</span> <span class="operator">in</span> <span class="built_in">milliseconds</span>. The timer 
+
+    starts <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">first</span> connect request (<span class="operator">or</span> <span class="built_in">write</span> I/O)
+
+    sent <span class="built_in">to</span> <span class="operator">the</span> <span class="keyword">first</span> selected peer. The timer stops
+
+    <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">last</span> I/O <span class="operator">with</span> <span class="operator">the</span> <span class="keyword">last</span> peer.
+
+ If ICAP is enabled, <span class="operator">the</span> following code becomes available (<span class="keyword">as</span>
+
+ well <span class="keyword">as</span> ICAP <span class="built_in">log</span> codes documented <span class="operator">with</span> <span class="operator">the</span> icap_log option):
+
+  icap::tt Total ICAP processing <span class="built_in">time</span> <span class="keyword">for</span> <span class="operator">the</span> HTTP
+
+    transaction. The timer <span class="built_in">ticks</span> when ICAP
+
+    ACLs are checked <span class="operator">and</span> when ICAP
+
+    transaction is <span class="operator">in</span> progress.
+
+ If adaptation is enabled <span class="operator">the</span> following <span class="constant">three</span> codes become available:
+
+  adapt::last_h The header <span class="operator">of</span> <span class="operator">the</span> <span class="keyword">last</span> ICAP response <span class="operator">or</span>
+
+    meta-information <span class="built_in">from</span> <span class="operator">the</span> <span class="keyword">last</span> eCAP
+
+    transaction related <span class="built_in">to</span> <span class="operator">the</span> HTTP transaction.
+
+    Like h, accepts <span class="operator">an</span> optional header name
+
+    argument.
+
+  adapt::sum_trs Summed adaptation transaction response
+
+    times recorded <span class="keyword">as</span> <span class="operator">a</span> <span class="constant">comma</span>-separated list <span class="operator">in</span>
+
+    <span class="operator">the</span> order <span class="operator">of</span> transaction <span class="built_in">start</span> <span class="built_in">time</span>. Each <span class="built_in">time</span>
+
+    <span class="built_in">value</span> is recorded <span class="keyword">as</span> <span class="operator">an</span> <span class="keyword">integer</span> <span class="built_in">number</span>,
+
+    representing response <span class="built_in">time</span> <span class="operator">of</span> <span class="constant">one</span> <span class="operator">or</span> more
+
+    adaptation (ICAP <span class="operator">or</span> eCAP) transaction <span class="operator">in</span>
+
+    <span class="built_in">milliseconds</span>. When <span class="operator">a</span> failed transaction is
+
+    being retried <span class="operator">or</span> repeated, its <span class="built_in">time</span> is <span class="operator">not</span>
+
+    logged individually but added <span class="built_in">to</span> <span class="operator">the</span>
+
+    replacement (next) transaction. See also:
+
+    adapt::all_trs.
+
+  adapt::all_trs All adaptation transaction response times.
+
+    Same <span class="keyword">as</span> adaptation_strs but response times <span class="operator">of</span>
+
+    individual transactions are never added
+
+    together. Instead, all transaction response
+
+    times are recorded individually.
+
+ You can prefix adapt::*<span class="title">_trs</span> <span class="built_in">format</span> codes <span class="operator">with</span> adaptation
+
+ service name <span class="operator">in</span> curly braces <span class="built_in">to</span> record response <span class="built_in">time</span>(s) specific
+
+ <span class="built_in">to</span> that service. For example: %{my_service}adapt::sum_trs
+
+ The default formats available (which <span class="built_in">do</span> <span class="operator">not</span> need re-defining) are:
+
+logformat squid %ts.%<span class="number">03</span>tu %<span class="number">6</span>tr %<span class="operator">a</span> %Ss/%<span class="number">03</span>Hs %st %rm %ru %un %Sh/%A %mt
+
+logformat common %<span class="operator">a</span> %ui %un [%tl] %rm %ru HTTP/%rv %Hs %st %Ss:%Sh
+
+logformat combined %<span class="operator">a</span> %ui %un [%tl] %rm %ru HTTP/%rv %Hs %st %{Referer}h %{User-Agent}h %Ss:%Sh
+
+logformat referrer %ts.%<span class="number">03</span>tu %<span class="operator">a</span> %{Referer}h %ru
+
+logformat useragent %<span class="operator">a</span> [%tl] %{User-Agent}h
+
+ When <span class="operator">the</span> log_mime_hdrs directive is <span class="built_in">set</span> <span class="built_in">to</span> ON. The squid, common <span class="operator">and</span> combined
+
+ formats have <span class="operator">a</span> safely encoded copy <span class="operator">of</span> <span class="operator">the</span> mime headers appended <span class="built_in">to</span> <span class="keyword">each</span> <span class="built_in">line</span>
+
+ <span class="operator">within</span> <span class="operator">a</span> pair <span class="operator">of</span> brackets.
+
+ The common <span class="operator">and</span> combined formats are <span class="operator">not</span> quite <span class="constant">true</span> <span class="built_in">to</span> <span class="operator">the</span> Apache definition.
+
+ The logs <span class="built_in">from</span> Squid contain <span class="operator">an</span> extra status <span class="operator">and</span> hierarchy code appended.
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-06-24T02:51:04.000Z" class="post__time">六月 24, 2011</time><h1 class="post__title"><a href="/2011/06/24/w/e9-82-ae-e4-bb-b6-e7-b3-bb-e7-bb-9f-e7-bb-b4-e6-8a-a4-e7-9a-84-e5-b8-b8-e7-94-a8-e5-91-bd-e4-bb-a4/">邮件系统维护的常用命令</a></h1></header><div class="post__main"><p>查找发信最多的用户，如果账户被盗用，通常一天会发送成千上万封邮件</p>
 <p>gzip -cd maillog.1.gz |grep from=|cut -f 7 -d  |cut -f 2 -d |sed &#39;s/,//g&#39;|sed &#39;/^$/d&#39;|grep @|awk -F: &#39;{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
 <p>查找发现最多的ip：</p>
 <p>cat maillog.1|grep  connect from|cut -f 8 -d  |cut -f 2 -d [“|sed ‘s/]//g’|awk -F”:” ‘{++S[$(NF-1)]} END{for(a in S) print a, S[a]}&#39;|sort -n -k 2|less</p>
@@ -760,196 +1150,4 @@ Web服务器加速（反向代理）是针对Web服务器提供加速功能的�
 <pre><code>3． 反向代理缓冲服务器
 
  反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
-<pre><code>PHP <span class="number">5.3</span>.6
-
-cacti spine
-
-pureftp
-
-安装
-
-wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
-
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span>.12-linux2.6-x86_64.tar.gz
-
-cd <span class="regexp">/usr/</span>local
-
-ln -s mysql-<span class="number">5.5</span>.12-linux2.6-x86_64/ mysql
-
-cd <span class="regexp">/usr/</span>local/mysql
-
-mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
-
-cp support-files<span class="regexp">/my-huge.cnf etc/</span>my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/skip-locking/</span>skip-external-locking/&amp;#<span class="number">39</span>; my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/default-character-set/</span>character-set-server/&amp;#<span class="number">39</span>; my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_queries/</span>slow_query_log/&amp;#<span class="number">39</span>; my.cnf
-
-修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
-
-vim my.cnf
-
-#max_allowed_packet = <span class="number">1</span>M
-
-server-id = <span class="number">8108</span>
-
-max_allowed_packet = <span class="number">64</span>M
-
-max_connections=<span class="number">800</span>
-
-character-set-server=utf8
-
-expire_logs_days = <span class="number">60</span>
-
-binlog_format=mixed
-
-log-bin=mysql-bin
-
-#read_only=<span class="number">1</span>
-
-#slave-skip-errors=<span class="number">1062</span>,<span class="number">1032</span>,<span class="number">1053</span>
-
-innodb_log_files_in_group=<span class="number">2</span>
-
-#default_table_type = INNODB <span class="comment">//unknown variable</span>
-
-innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
-
-innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-# <span class="number">4</span>G RAM
-
-innodb_buffer_pool_size = <span class="number">1</span>G
-
-innodb_log_file_size = <span class="number">256</span>M
-
-innodb_log_buffer_size = <span class="number">8</span>M
-
-innodb_flush_log_at_trx_commit=<span class="number">0</span>
-
-innodb_thread_concurrency=<span class="number">8</span>
-
-innodb_flush_method=O_DIRECT
-
-# perform
-
-tmp_table_size = <span class="number">512</span>M
-
-max_heap_table_size=<span class="number">128</span>M
-
-slow_query_log
-
-#log-queries-not-using-indexes
-
-#log-slow-admin-statements
-
-#slow_query_log_file=mysql-slow.log
-
-long_query_time=<span class="number">1</span>
-
-log-error=mysqld.log
-
-[mysqld_safe]
-
-log-error=<span class="regexp">/var/</span>log/mysqld.log
-
-pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
-
-添加数据库用户
-
-<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
-
-<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
-
-mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
-
-scripts/mysql_install_db --user=mysql
-
-chown -R root .
-
-chown -R mysql data
-
-chgrp -R mysql .
-
-#chmod -R u+rw data
-
-cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
-
-cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
-
-chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
-
-<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld restart
-
-#<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
-
-#<span class="regexp">/sbin/</span>chkconfig --del mysqld
-
-<span class="regexp">/sbin/</span>chkconfig --add mysqld
-
-<span class="regexp">/sbin/</span>chkconfig --list mysqld
-
-echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
-
-cat <span class="regexp">/etc/</span>ld.so.conf
-
-ldconfig
-
-mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
-
-ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
-
-#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe 
-
-mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
-
-chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
-
-#加入mysql到路径
-
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
-
-#执行一下，保证mysql在路径环境变量中
-
-. <span class="regexp">/etc/</span>profile
-
-mysql5.1升级到mysql5.5
-
-mysql_upgrade包含一下三个命令：
-
-# mysqlcheck --check-upgrade --all-databases --auto-repair
-
-# mysql_fix_privilege_tables
-
-# mysqlcheck --all-databases --check-upgrade --fix-db-names --fix-table-names
-
-在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
-
-<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql_upgrade -uroot -p
-
-[ERROR] <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/<span class="string">mysqld:</span> unknown variable &amp;#<span class="number">39</span>;default_table_type=INNODB&amp;#<span class="number">39</span>;
-
-注释my.cnf中的default_table_type=INNODB
-
-把所有INNODB表转换成MYISAM表的脚本
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
-
-<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/13/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/15/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/13/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/15/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

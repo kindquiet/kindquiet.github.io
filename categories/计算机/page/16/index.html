@@ -1,4 +1,64 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-10T03:59:05.000Z" class="post__time">九月 10, 2010</time><h1 class="post__title"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/">centos4 升级内核linux-2.6.34.1及iptables升级到v1.4.9.1</a></h1></header><div class="post__main"><p>centos4.2 升级到内核linux-2.6.34后iptables无法使用，升级iptables:</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-09-20T03:58:13.000Z" class="post__time">九月 20, 2010</time><h1 class="post__title"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/">web服务器使用mod_deflate（apache）gzip（nginx）压缩节约带宽及测试方法</a></h1></header><div class="post__main"><p> cpu速度越来越快也更便宜，IDC机房带宽很昂贵，所以用cpu来换取带宽。</p>
+<pre><code>apche启用mod_deflate压缩：
+
+ifmodule mod_deflate.c
+
+ DeflateCompressionLevel <span class="number">9</span>
+
+ SetOutputFilter DEFLATE
+
+ SetEnvIfNoCase Request_URI <span class="string">\.(?:gif|jpe?g|png)$</span> <span class="literal">no</span>-gzip dont-vary
+
+ SetEnvIfNoCase Request_URI <span class="string">\.(?:exe|t?gz|zip|bz2|sit|rar)$</span> <span class="literal">no</span>-gzip dont-vary
+
+ SetEnvIfNoCase Request_URI <span class="string">\.pdf$</span> <span class="literal">no</span>-gzip dont-vary
+
+ BrowserMatch ^Mozilla/<span class="number">4</span> gzip-only-text/html
+
+ BrowserMatch ^Mozilla/<span class="number">4</span><span class="string">\.0[678]</span> <span class="literal">no</span>-gzip
+
+ BrowserMatch <span class="string">\bMSIE</span> !<span class="literal">no</span>-gzip !gzip-only-text/html
+
+/ifmodule
+
+nginx 启用gzip压缩：
+
+http {
+
+ gzip <span class="literal">on</span>;
+
+ gzip_min_length <span class="number">1000</span>;
+
+ gzip_buffers <span class="number">4</span> <span class="number">8k</span>;
+
+ gzip_types text/plain application/x-javascript text/css text/html application/xml;
+
+ }
+
+压缩效果测试
+
+不使用压缩:
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --write-out size_download=%{size_download}\n --output /dev/null
+
+size_download=64031
+
+使用 Accept-Encoding 头：
+
+curl http://</span>veryi.com/w/<span class="number">1.html</span> --silent -H <span class="attribute">Accept-Encoding</span>: gzip,deflate --write-out size_download=%{size_download}<span class="string">\n</span> --output /dev/<span class="literal">null</span>
+
+size_download=<span class="number">20012</span>
+
+比较数字就可以知道压缩效果。
+
+使用 HTTP <span class="number">1.0</span> 测试：
+
+curl <span class="attribute">http</span>:<span class="pi">//veryi.com/w/1.html --silent --http1.0 -H Accept-Encoding: gzip,deflate --write-out size_download=%{size_download}\n --output /dev/null
+
+size_download=64031
+
+[参考](http://</span>dev.nuclearrooster.com<span class="pi">/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>)：<span class="attribute">http</span>:<span class="pi">//dev.nuclearrooster.com/2009/11/08/checking-gzipdeflate-server-responses-with-curl/</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/09/20/w/webaeoeasaaccmod-deflateiapacheigzipinginxiazcescaaasaeueaeae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-09-10T03:59:05.000Z" class="post__time">九月 10, 2010</time><h1 class="post__title"><a href="/2010/09/10/w/centos4-e5-8d-87-e7-ba-a7-e5-86-85-e6-a0-b8linux-2-6-34-1-e5-8f-8aiptables-e5-8d-87-e7-ba-a7-e5-88-b0v1-4-9-1/">centos4 升级内核linux-2.6.34.1及iptables升级到v1.4.9.1</a></h1></header><div class="post__main"><p>centos4.2 升级到内核linux-2.6.34后iptables无法使用，升级iptables:</p>
 <p>wget <a href="http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2" target="_blank" rel="external">http://www.netfilter.org/projects/iptables/files/iptables-1.4.9.1.tar.bz2</a></p>
 <pre><code>tar xjf iptables-<span class="number">1.4</span>.9.1.tar.bz2 -C <span class="regexp">/usr/</span>local/src
 
@@ -108,34 +168,4 @@ spine
 <p>modprobe fuse</p>
 <p>mkdir /mnt/ntfs/</p>
 <p>mount -t ntfs -o noatime /dev/sdb2 /mnt/ntfs/</p>
-</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-08-03T03:28:10.000Z" class="post__time">八月 3, 2010</time><h1 class="post__title"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/">mysql导入数据提示没有SUPER Privilege权限处理</a></h1></header><div class="post__main"><p>ERROR 1419 (HY000): You do not have the SUPER Privilege and Binary Logging is Enabled</p>
-<pre><code>导入function 、 trigger 到 MySQL database,报错: You <span class="operator"><span class="keyword">do</span> <span class="keyword">not</span> have the SUPER privilege <span class="keyword">and</span> <span class="built_in">binary</span> logging <span class="keyword">is</span> enabled (you *might* want <span class="keyword">to</span> <span class="keyword">use</span> the less safe log_bin_trust_function_creators variable).
-
-原因：
-
-<span class="keyword">function</span> / <span class="keyword">trigger</span> 中有dangerous statements修改数据库，错误只在启用<span class="built_in">binary</span> logging选项进行主从复制的服务器上出现。
-
-解决：
-
-<span class="number">1</span>）导入数据的用户不仅需要<span class="keyword">CREATE</span> ROUTINE, <span class="keyword">ALTER</span> ROUTINE, <span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span>, <span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span>, <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> 和 <span class="keyword">ALTER</span> <span class="keyword">FUNCTION</span> 权限，还需要SUPER <span class="keyword">privileges</span> 权限，使用超级用户导入数据。
-
-<span class="number">2</span>）让所有用户具有执行类似functions的权限，危险，不推荐，
-
- o <span class="keyword">by</span> specifying it <span class="keyword">on</span> the <span class="keyword">server</span> <span class="keyword">start</span>, <span class="keyword">like</span>: <span class="comment">--log-bin-trust-function-creators=1</span>
-
- o <span class="keyword">by</span> setting it <span class="keyword">to</span> <span class="number">1</span> through the <span class="keyword">SET</span> <span class="keyword">GLOBAL</span> statement, <span class="keyword">like</span>:
-
-mysql <span class="keyword">SET</span> <span class="keyword">GLOBAL</span> log_bin_trust_function_creators = <span class="number">1</span>;</span>
-
-3）如果不需要复制，或者是从库，关闭binlog，
-
-# binary logging - not required for slaves, but recommended
-
-#log-bin=mysql-bin
-
-# binary logging format - mixed recommended 
-
-#binlog_format=mixed
-
-原文：http://www.ispirer.com/wiki/sqlways/troubleshooting-guide/mysql/import/binary-logging 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/08/03/w/mysql-e5-af-bc-e5-85-a5-e6-95-b0-e6-8d-ae-e6-8f-90-e7-a4-ba-e6-b2-a1-e6-9c-89super-privilege-e6-9d-83-e9-99-90-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/15/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/17/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2010/08/13/w/centos-e4-bd-bf-e7-94-a8ntfs-3g-mount-ntfs-e5-88-86-e5-8c-ba/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/15/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/17/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

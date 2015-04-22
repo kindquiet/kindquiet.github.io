@@ -1,4 +1,54 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-29T06:21:29.000Z" class="post__time">四月 29, 2009</time><h1 class="post__title"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/">理解Unicode字符编码规范</a></h1></header><div class="post__main"><p>Unicode是一种字符编码规范 。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-05-12T02:11:58.000Z" class="post__time">五月 12, 2009</time><h1 class="post__title"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/">linux NTP（Network Time Protocol）服务器配置</a></h1></header><div class="post__main"><p> 服务器记录文件以及其后的报告中的数据来评估组织的活动，包括防火墙和VPN安全相关的活动，带宽的使用，以及其他各种各样的记录、管理、确认、授权和会计职能。由于服务器记录的是来自不同主机的信息，因此时间的准确性显得非常必要，否则的话就可能出现不同的事件顺序和故障排除的根源问题，使得与时间有关的一切数据都变得毫无意义。即使是在路由器里，像路由器配置改变、接口状态、调制解调器事件、安全警报、环境条件、CPU处理过载等主要的配置事件和系统错误信息，都要有准确的时间戳，这些数据才有意义。</p>
+<p>网络时间协议简介</p>
+<p> NTP（Network Time Protocol）是由美国德拉瓦大学的David L. Mills教授于1985年提出，除了可以估算封包在网络上的往返延迟外，还可独立地估算计算机时钟偏差，从而实现在网络上的高精准度计算机校时，它是设计用来在Internet上使不同的机器能维持相同时间的一种通讯协定。时间服务器（time server）是利用NTP的一种服务器，通过它可以使网络中的机器维持时间同步。在大多数的地方，NTP可以提供1-50ms的可信赖性的同步时间源和网络工作路径。</p>
+<p> 网络时间协议（NTP）的详细说明在RFC-1305[Mills 1992]中。RFC-1305对 NTP协议自动机在事件、状态、转变功能和行为方面给出了明确的说明。它以合适的算法以增强时钟的准确性，并且减轻多个由于同步源而产生的差错，实现了准确性低于毫秒的时间服务，以满足目前因特网中路径量测的需要。</p>
+<p> NTP 是一个跨越广域网或局域网的复杂的同步时间协议，它通常可获得毫秒级的精度。RFC2030[Mills 1996]描述了SNTP（Simple Network Time Protocol），目的是为了那些不需要完整NTP实现复杂性的主机，它是NTP的一个子集。通常让局域网上的若干台主机通过因特网与其他的NTP主机同步时钟，接着再向局域网内其他客户端提供时间同步服务。</p>
+<ul>
+<li><p>网络时间服务的工作模式</p>
+<p>o Sever/Client mode：用户向一个多几个服务器提出服务请求，根据所交换的信息，从中选择认为最准确的时间，并调整本地的时钟。</p>
+<p>o Multicast/Broadcast mode：此种模式是适用于用在高速的LAN上。利用一个或多个服务器在固定的周期向某个多播地址做广播。</p>
+<p>o Symmetric mode：二个以上的Server互相进行时间消息的通讯，可以互相校正对方的时间，以维持整个subnet的时间一致性。</p>
+</li>
+<li><p>保持网络节点时间同步的机制</p>
+<p>o ntpdate 命令：此命令被用来立即同步客户端和服务器的时间。这是同步客户端和服务器的时间的最快方式。系统每次启动的时候会使用这个命令，用来确保客户端和服务器的时间的同步。这个命令通常指定一个NTP服务器作为一个参数，客户端的时钟被设置为和服务器的时间匹配。当这个命令使用多个NTP服务器作为参数时，客户端会使用最低级的NTP服务器。如果级别相等，客户端会使用加权平均数。</p>
+<p>o ntpd守护进程：此进程在后台持续运行，并且会定时校验客户端的时钟和NTP服务器的时间。xntpd守护进程通常是在系统启动的时候启动。因为客户端的时钟可能产生漂移，以致与实际的NTP时钟有差异。xntpd守护进程会周期性地发送一个NTP服务器的网络请求，并且与客户端的时钟对比，在必要的时候修正客户端的时间，同时将时间差存到名为/etc/ntp.drift文件。默认的xntpd时间检查的间隔为64秒，在第一次检查的时候，客户端的时钟和NTP服务器上的时钟的差异会被记录下来，同时依靠这个时间差异来计划下一次检查。如果这个时间差异很大，下一次的时间检查会很快发生。如果这个差异很小，下一次的检查到来的时间会相应的延长。这样就避免每次都去查询网络中的时间服务器，从而可以减轻网络负载。查询NTP服务器的次数会慢慢变少。直到达到NTP请求的最小值。</p>
+<p>o 注：在命令行方式下，可以采用ntpd -q或者ntpdate [-b] pool.ntp.org进行对时。使用ntpd进行时间同步时，应事先配置好ntp.conf文件。</p>
+</li>
+</ul>
+<h1 id="yum_update_ntp">yum update ntp</h1><p>vi /etc/ntp.conf</p>
+<p>restrict default nomodify notrap noquery</p>
+<h1 id="restrict_default_ignore_//忽略所有ntp要求封包">restrict default ignore //忽略所有ntp要求封包</h1><p>//如果restric 后面不带参数，表示可以允许全部权限</p>
+<p>restrict 127.0.0.1</p>
+<p>restrict 192.168.6.0 mask 255.255.255.0 nomodify notrap</p>
+<h1 id="—-_OUR_TIMESERVERS_——-">—- OUR TIMESERVERS ——-</h1><p>server 0.pool.ntp.org</p>
+<p>server 1.pool.ntp.org</p>
+<p>server 2.pool.ntp.org</p>
+<p>server pool.ntp.org</p>
+<p>server 3.cn.pool.ntp.org</p>
+<p>server 0.asia.pool.ntp.org</p>
+<p>server 127.127.1.0 # local clock</p>
+<p>fudge 127.127.1.0 stratum 10</p>
+<p>//driftfile 选项，则指定了用来保存系统时钟频率偏差的文件, ntpd程序使用它来自动地补偿时钟的自然漂移， 从而使时钟即使在切断了外来时源的情况下，仍能保持相当的准确度</p>
+<p>driftfile /var/lib/ntp/drift</p>
+<p>broadcastdelay 0.008</p>
+<p>keys /etc/ntp/keys</p>
+<p>logfile /var/log/ntp.log</p>
+<p>/etc/init.d/ntpd restart</p>
+<p>chkconfig —level 345 ntpd on</p>
+<p> 使用下面的命令检查时间服务器同步的状态：</p>
+<p>ntpq -p</p>
+<p> 一个可以证明同步问题的证据是所有远程服务器的jitter值是4000并且delay和reach的值是0。</p>
+<p> 可能的原因有：</p>
+<p> 配置文件中的restrict default ignore没有被注释</p>
+<p> 有防火墙阻断了与server之间的通讯</p>
+<p> 此外每次重启NTP服务器之后大约要3－5分钟客户端才能与server建立正常的通讯连接，否则你执行ntpdate ip的时候将返回：</p>
+<p>ntpdate: no server suitable for synchronization found</p>
+<hr>
+<p>网络内其它服务器时间的同步:</p>
+<p>每一刻钟同步一次</p>
+<p>crontab -e</p>
+<p><em>/15 </em> <em> </em> * root /usr/sbin/ntpdate 192.168.6.153  /dev/null 21</p>
+</div><footer class="post__foot u-cf"><a href="/2009/05/12/w/linux-ntp-ef-bc-88network-time-protocol-ef-bc-89-e6-9c-8d-e5-8a-a1-e5-99-a8-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-29T06:21:29.000Z" class="post__time">四月 29, 2009</time><h1 class="post__title"><a href="/2009/04/29/w/e7-90-86-e8-a7-a3unicode-e5-ad-97-e7-ac-a6-e7-bc-96-e7-a0-81-e8-a7-84-e8-8c-83/">理解Unicode字符编码规范</a></h1></header><div class="post__main"><p>Unicode是一种字符编码规范 。</p>
 <p>　　先从ASCII说起。ASCII是用来表示英文字符的一种编码规范，每个ASCII字符占用1个字节（8bits）</p>
 <p>　　因此，ASCII编码可以表示的最大字符数是256，其实英文字符并没有那么多，一般只用前128个（最高位为0），其中包括了控制字符、数字、大小写字母和其他一些符号 </p>
 <p>。</p>
@@ -178,171 +228,4 @@
 <p>check_nt!CPULOAD! -s PASSWORD -l 5,80,95</p>
 <p>可以通过以下指令测试设备响应是否正常</p>
 <p>/usr/local/nagios/libexec/check_nt -H 主机IP -p 12489 -s 密码 -v UPTIME </p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T06:14:22.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">企业级网管开源软件nagios远程主机的安装配置</a></h1></header><div class="post__main"><p>远程主机（被监控机）安装部分</p>
-<h1 id="yum_install_openssl">yum install openssl</h1><p>rpm -ihv gd-devel-2.0.28-4.4E.1.i386.rpm</p>
-<p>安装nagios-plugin</p>
-<p>groupadd nagios</p>
-<p>useradd nagios -g nagios -s /sbin/nologin</p>
-<p>mkdir -p /usr/local/nagios</p>
-<p>mkdir -p /usr/local/nagios/etc</p>
-<p>tar zxf nagios-plugins-1.4.13.tar.gz -C /usr/local/src</p>
-<p>cd /usr/local/src/nagios-plugins-1.4.13</p>
-<p>./configure -prefix=/usr/local/nagios-plugins -enable-redhat-pthread-workaround</p>
-<p>make -j6  make install</p>
-<p>cp -a /usr/local/nagios-plugins/libexec /usr/local/nagios</p>
-<h1 id="enable-redhat-pthread-workaround_这个参数可以在出现checking_for_redhat_spopen_problem_错误时使用">enable-redhat-pthread-workaround 这个参数可以在出现checking for redhat spopen problem 错误时使用</h1><p>安装nrpe(主要是使用check_nrpe模块)</p>
-<p>tar zxf nrpe-2.12.tar.gz -C /usr/local/src</p>
-<p>cd /usr/local/src/nrpe-2.12</p>
-<p>./configure —enable-ssl —enable-command-args</p>
-<p>make all make install</p>
-<p>cp sample-config/nrpe.cfg /usr/local/nagios/etc</p>
-<p>chown -R nagios.nagios /usr/local/nagios</p>
-<p>vi /usr/local/nagios/etc/nrpe.cfg</p>
-<p>添加修改</p>
-<p>allowed_hosts=127.0.0.1,172.16.1.153,a.b.c.25</p>
-<p>command[check_/]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /</p>
-<p>command[check_swap]=/usr/local/nagios/libexec/check_swap -w 20% -c 10%</p>
-<p>command[check_/var]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /var</p>
-<p>command[check_/usr/local]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /usr/local</p>
-<p>command[check_/data1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /data1</p>
-<p>command[check_/opt]=/usr/local/nagios/libexec/check_disk -w 20 -c 10 -p /opt</p>
-<p>vi /etc/rc.local</p>
-<p>echo /usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d  /etc/rc.local</p>
-<p>如果有防火墙也要开放tcp 5666</p>
-<p>vi /etc/sysconfig/iptables</p>
-<p>-A INPUT -s a.b.c.25 -p icmp -m icmp —icmp-type echo-request -m state —state NEW -j ACCEPT</p>
-<p>-A INPUT -s a.b.c.25 -p tcp -m state —state NEW -m tcp —dport 5666 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
-<p>启动nrpe，端口为5666</p>
-<p>/usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d</p>
-<p>/etc/init.d/iptables restart</p>
-<p>服务器端（监控主机）测试:</p>
-<p>/usr/local/nagios/libexec/check_nrpe -H a.b.c.57</p>
-<p>服务器端（监控主机）的配置</p>
-<p>cd /usr/local/nagios/etc/</p>
-<p>mkdir servers/</p>
-<p>vi hosts.cfg</p>
-<h1 id="define_monitor_host">define monitor host</h1><p>define host{</p>
-<p> name idc-server ; The name of this host template</p>
-<p> use generic-host ; This template inherits other values from the generic-host template</p>
-<p> check_period 24x7 ; By default, Linux hosts are checked round the clock</p>
-<p> max_check_attempts 10 ; Check each Linux host 10 times (max)</p>
-<p> check_command check-host-alive ; Default command to check Linux hosts</p>
-<p> notification_period workhours ; Linux admins hate to be woken up, so we only notify during the day</p>
-<p> ; Note that the notification_period variable is being overridden from</p>
-<p> ; the value that is inherited from the generic-host template!</p>
-<p> notification_interval 720 ; Resend notification every 12 hours</p>
-<p> notification_options d,r ; Only send notifications for specific host states</p>
-<p> contact_groups admingroup ; Notifications get sent to the admins by default</p>
-<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL HOST, JUST A TEMPLATE!</p>
-<p> }</p>
-<h6 id="#">#</h6><h1 id="IDC_servers">IDC servers</h1><h6 id="#-1">#</h6><p>//这里只举一个例子</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name 57-185</p>
-<p> alias web veryi blog</p>
-<p> address a.b.c.57</p>
-<p> parents   inet switch</p>
-<p>}</p>
-<p>vi hostgroups.cfg</p>
-<p>//这里只举一个例子</p>
-<p>define hostgroup {</p>
-<p> hostgroup_name blog</p>
-<p> alias blog1 servers</p>
-<p> members 50-178,11-139,46-174,47-175,48-176,54-182,57-185</p>
-<p>}</p>
-<p>vi services.cfg</p>
-<p>define service{ name remote-service ; The name of this service template use generic-service ; Inherit default values from the generic-service definition</p>
-<p> check_period 24x7 ; The service can be checked at any time of the day</p>
-<p> max_check_attempts 4 ; Re-check the service up to 4 times in order to determine its final (hard) state</p>
-<p> normal_check_interval 5 ; Check the service every 5 minutes under normal conditions</p>
-<p> retry_check_interval 1 ; Re-check the service every minute until a hard state can be determined</p>
-<p> contact_groups sagroup ; Notifications get sent out to everyone in the ‘admins’ group</p>
-<p> notification_options c,r ; Send notifications about warning, unknown, critical, and recovery events</p>
-<p> notification_interval 720 ; Re-notify about service problems every 12 hours</p>
-<p> notification_period 24x7 ; Notifications can be sent out at any time</p>
-<p> register 0 ; DONT REGISTER THIS DEFINITION - ITS NOT A REAL SERVICE, JUST A TEMPLATE!</p>
-<h1 id="check_command_check-host-alive">check_command check-host-alive</h1><h1 id="notification_options_d,u,r">notification_options d,u,r</h1><p>}</p>
-<p>define service{</p>
-<p> use remote-service ; Name of service template to use</p>
-<p> host_name *,!localhost</p>
-<p> service_description PING</p>
-<p> check_command   check_ping!100.0,20%!500.0,60%</p>
-<p>}</p>
-<p>//这里只举一个例子</p>
-<p>define service {</p>
-<p> use remote-service</p>
-<p> host_name 57-185</p>
-<p> service_description check_tcp 80</p>
-<p> check_command check_tcp!80</p>
-<p> contact_groups admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p> use remote-service</p>
-<p> host_name 57-185</p>
-<p> service_description / Free Space</p>
-<p> check<em>command check_nrpe!check</em>/</p>
-<p> contact_groups admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p> use remote-service</p>
-<p> host_name 57-185</p>
-<p> service_description CPU Load</p>
-<p> check_command check_nrpe!check_load</p>
-<p> contact_groups admingroup</p>
-<p>}</p>
-<p>define service {</p>
-<p> use remote-service</p>
-<p> host_name 57-185</p>
-<p> service_description swap Free Space</p>
-<p> check_command check_nrpe!check_swap</p>
-<p> }</p>
-<p>vi servicegroups.cfg</p>
-<p>//这里只举一个例子</p>
-<p>define servicegroup{</p>
-<p>  servicegroup_name linux disks</p>
-<p>  alias   free disk Services</p>
-<p>  members   37-165,/var Free Space,37-165,/opt Free Space,37-165,/data1 Free Space,37-165,/usr/local Free Space</p>
-<p>  }</p>
-<p>进阶:</p>
-<p>Nagios is able to determine whether the hosts youre monitoring are in a DOWN or UNREACHABLE</p>
-<p>state. These are very different (although related) states and can help you quickly determine the root</p>
-<p>cause of network problems. Heres how the reachability logic works to distinguish between these two </p>
-<p>states…</p>
-<p>定义主机父子关系</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name idc router</p>
-<p> alias beijing idc</p>
-<p> address a.b.c.1</p>
-<p> parents   inet switch</p>
-<p>}</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name inet switch</p>
-<p> alias beijing idc</p>
-<p> address 10.0.8.90</p>
-<p> parents   localhost</p>
-<p>}</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name int switch</p>
-<p> alias beijing beiyuan</p>
-<p> address 192.168.12.90</p>
-<p> parents   localhost</p>
-<p>}</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name lan router</p>
-<p> alias beijing office</p>
-<p> address x.y.z.161</p>
-<p> parents  idc router</p>
-<p>}</p>
-<p>//这里只举一个例子</p>
-<p>define host {</p>
-<p> use idc-server</p>
-<p> host_name office.veryi.com</p>
-<p> alias veryi office</p>
-<p> address x.y.z.168</p>
-<p> parents  lan router</p>
-<p> }</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(136)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/28/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/30/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/28/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/30/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
