@@ -1,4 +1,238 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-12-13T02:37:27.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/">centos 5.5 安装 mysql-5.1.53-linux-x86_64  及主从复制集群配置</a></h1></header><div class="post__main"><p>设置Mysql的主从复制的主要用途：</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-12-13T03:38:26.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/">centos 5.5 x86_64 编译安装httpd-2.2.17、php-5.3.4、memcache扩展</a></h1></header><div class="post__main"><p>Apache是世界使用排名第一的Web服务器软件。同时也是最稳定、安全的服务器之一。</p>
+<pre><code>yum install zlib zlib-devel -y
+
+yum install opensll openssl-devel -y
+
+groupadd -g <span class="number">1000</span> vgroup
+
+useradd -u <span class="number">1000</span> -g vgroup -d <span class="regexp">/dev/</span><span class="literal">null</span> -s <span class="regexp">/bin/</span><span class="literal">false</span> vuser
+
+wget <span class="string">http:</span><span class="comment">//labs.xiaonei.com/apache-mirror/httpd/httpd-2.2.17.tar.bz2</span>
+
+tar xfj httpd-<span class="number">2.2</span>.17.tar.bz2 -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>httpd-<span class="number">2.2</span>.17
+
+make clean
+
+CHOST=x86_64-pc-linux-gnu
+
+CFLAGS=-march=native -O2 -pipe -fomit-frame-pointer
+
+CXXFLAGS=${CFLAGS}
+
+.<span class="regexp">/configure --prefix=/</span>usr<span class="regexp">/local/</span>httpd \
+
+--with-mpm=worker \
+
+--enable-expires --enable-headers --enable-rewrite --enable-deflate --enable-vhost-alias \
+
+--enable-so \
+
+--enable-ssl \
+
+--enable-cache --enable-file-cache --enable-mem-cache --enable-disk-cache --enable-<span class="keyword">static</span>-support --enable-<span class="keyword">static</span>-htpasswd --enable-<span class="keyword">static</span>-htdigest --enable-<span class="keyword">static</span>-rotatelogs --enable-<span class="keyword">static</span>-logresolve --enable-<span class="keyword">static</span>-htdbm --enable-<span class="keyword">static</span>-ab --enable-<span class="keyword">static</span>-checkgid --disable-userdir \
+
+--enable-suexec --with-suexec-caller=vuser --with-suexec-logfile=<span class="regexp">/var/</span>log<span class="regexp">/httpd/</span>suexec.log --with-suexec-docroot=<span class="regexp">/usr/</span>local/www --with-suexec-uidmin=<span class="number">500</span> --with-suexec-gidmin=<span class="number">100</span> 
+
+对于<span class="number">32</span>位系统：
+
+CHOST=i686-pc-linux-gnu 
+
+相对来说，prefork方式速度要稍高于worker，然而它需要的cpu和memory资源也稍多于woker。
+
+--enable-module=most --enable-proxy --enable-proxy-ajp --enable-forward --enable-proxy-connect --enable-proxy-http --enable-so --enable-deflate --enable-headers --enable-include
+
+上面的配置，用到了其他一些模块，说不定以后会用到，如支持ssi的include模块
+<span class="label">
+error:</span> APR version <span class="number">1.2</span>.0 or later is required
+
+yum install apr
+
+或者
+<span class="label">
+http:</span><span class="comment">//apr.apache.org/download.cgi</span>
+
+apr-<span class="number">1.2</span>.8.tar.bz2
+
+apr-util-<span class="number">1.2</span>.8.tar.bz2
+
+./configure
+
+.<span class="regexp">/configure --with-apr=/</span>usr<span class="regexp">/local/</span>apr/
+
+--with-apr=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span> --with-apr-util=<span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>
+
+设置自启动
+
+[ -f <span class="regexp">/etc/</span>init.d<span class="regexp">/httpd ] || cp support/</span>apachectl <span class="regexp">/etc/</span>init.d/httpd
+
+#apachectl=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl
+
+#httpd=${HTTPD-<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/httpd}
+
+vim <span class="regexp">/etc/</span>init.d/httpd
+
+# vi <span class="regexp">/etc/</span>init.d/httpd(在第两行之后添加如下内容)
+
+#!<span class="regexp">/bin/</span>sh
+
+#
+
+# Startup script <span class="keyword">for</span> the Apache Web Server
+
+# <span class="string">chkconfig:</span> - <span class="number">85</span> <span class="number">15</span>
+
+# <span class="string">description:</span> Apache is a World Wide Web server. It is used to serve \
+
+# HTML files and CGI.
+
+# <span class="string">processname:</span> httpd
+
+# <span class="string">pidfile:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>log/httpd.pid
+
+# <span class="string">config:</span> <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+或者
+
+sed -i &amp;#<span class="number">39</span>;s%apachectl=<span class="regexp">/usr/</span>sbin<span class="regexp">/apachectl%apachectl=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apachectl%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+sed -i &amp;#<span class="number">39</span>;s%httpd=${HTTPD-<span class="regexp">/usr/</span>sbin<span class="regexp">/httpd}%httpd=${HTTPD-/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>httpd}%&amp;#<span class="number">39</span>; <span class="regexp">/etc/</span>init.d/httpd
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/
+
+sed -i &amp;#<span class="number">39</span>;s%#Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%Include conf<span class="regexp">/extra/</span>httpd-<span class="keyword">default</span>.conf%&amp;#<span class="number">39</span>; httpd.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerTokens Full/</span>ServerTokens Prod<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/ServerSignature On/</span>ServerSignature Off<span class="regexp">/&amp;#39; extra/</span>httpd-<span class="keyword">default</span>.conf
+
+chkconfig --add httpd
+
+chmod <span class="number">755</span> <span class="regexp">/etc/</span>init.d/httpd
+
+chkconfig --level <span class="number">345</span> httpd on 
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/IfModule mime_module/</span>a\ AddType application/x-httpd-php .php\
+
+ AddType application/x-httpd-php-source .phps&amp;#<span class="number">39</span>; \
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+
+
+sed -i -e &amp;#<span class="number">39</span>;s<span class="regexp">/User daemon/</span>User vuser<span class="regexp">/&amp;#39; -e &amp;#39;s/</span>Group daemon<span class="regexp">/Group vgroup/</span>&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+vim <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/httpd.conf
+
+<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>bin/apachectl graceful
+
+php5安装
+
+yum install curl-devel -y
+
+yum install libxml2-devel -y
+
+yum install gettext-devel -y
+
+yum install libjpeg-devel -y
+
+yum install libpng-devel -y
+
+yum install freetype-devel -y
+
+yum install gmp-devel -y
+
+yum install libmcrypt-devel -y
+
+yum install libtool-ltdl-devel -y
+
+yum install libevent-devel -y
+
+yum install libtidy-devel -y
+
+yum install libtool-ltdl libtool -y
+
+#<span class="regexp">/usr/</span>bin/<span class="string">ld:</span> cannot find -lltdl
+
+#ldconfig -p |grep ltdl
+
+#yum install libtool-ltdl.x86_64 libtool.x86_64 -y
+
+wget <span class="string">http:</span><span class="comment">//cn.php.net/get/php-5.3.4.tar.bz2/from/ca.php.net/mirror</span>
+
+cd <span class="regexp">/mnt/</span>backup<span class="regexp">/soft/</span>
+
+tar xfj php-<span class="number">5.3</span>.4.tar.bz2 -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>php-<span class="number">5.3</span>.4
+
+make clean
+
+export PATH=<span class="string">$PATH:</span><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin
+
+#no fpm
+
+#config file locate apache directory --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf
+
+make clean
+
+.<span class="regexp">/configure --with-apxs2=/</span>usr<span class="regexp">/local/</span>httpd<span class="regexp">/bin/</span>apxs --with-config-file-path=<span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf --prefix=<span class="regexp">/usr/</span>local<span class="regexp">/php --with-mysqli=/</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_config --with-mysql=<span class="regexp">/usr/</span>local/mysql --with-curl --with-zlib --enable-ftp --with-mcrypt --enable-inline-optimization --disable-debug \
+
+--with-gd --enable-gd-native-ttf --enable-gd-jis-conv --with-iconv-dir= --with-freetype-dir --with-jpeg-dir --with-png-dir \
+
+--with-libxml-dir=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libxml --enable-xml --enable-exif --enable-soap --enable-zip --with-openssl --enable-mbstring --with-mhash --with-tidy --enable-mbstring --with-pdo-mysql=<span class="regexp">/usr/</span>local/mysql \
+
+--enable-sockets --with-gettext \
+
+--enable-sqlite-utf8 
+
+make -j6  make install
+
+Wrote PEAR system config file <span class="string">at:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>etc/pear.conf
+
+You may want to <span class="string">add:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib/php to your php.ini include_path
+
+\cp php.ini-production <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/pecl install memcache
+
+wget <span class="string">http:</span><span class="comment">//pecl.php.net/get/memcache-2.2.6.tgz</span>
+
+tar xzf memcache-<span class="number">2.2</span>.6.tgz -C <span class="regexp">/usr/</span>local/src
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>memcache-<span class="number">2.2</span>.6
+
+<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>bin/phpize
+
+.<span class="regexp">/configure --with-php-config=/</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php-config --with-apxs=<span class="regexp">/usr/</span>local<span class="regexp">/apache/</span>bin/apxs --enable-memcache
+
+make  make install
+
+提示：Installing shared <span class="string">extensions:</span> <span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20090626/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+
+然后修改php.ini
+
+把
+
+extension_dir = ./
+
+修改为
+
+extension_dir = <span class="regexp">/usr/</span>local<span class="regexp">/php/</span><span class="regexp">/lib/</span>php<span class="regexp">/extensions/</span>no-debug-non-zts-<span class="number">20060613</span>
+
+并添加一行
+
+extension=memcache.so
+
+sed -i &amp;#<span class="number">39</span>;<span class="regexp">/Dynamic Extensions/</span>a\
+
+extension=<span class="regexp">/usr/</span>local<span class="regexp">/php/</span>lib<span class="regexp">/php/</span>extensions<span class="regexp">/no-debug-zts-20060613/</span>memcache.so&amp;#<span class="number">39</span>; <span class="regexp">/usr/</span>local<span class="regexp">/httpd/</span>conf/php.ini
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/12/13/w/centos-5-5-x86-64-e7-bc-96-e8-af-91-e5-ae-89-e8-a3-85httpd-2-2-17-e5-92-8cphp-5-3-3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-12-13T02:37:27.000Z" class="post__time">十二月 13, 2010</time><h1 class="post__title"><a href="/2010/12/13/w/centos-5-5-e5-ae-89-e8-a3-85-mysql-5-1-53-linux-x86-64-e5-8f-8a-e4-b8-bb-e4-bb-8e-e5-a4-8d-e5-88-b6-e9-9b-86-e7-be-a4-e9-85-8d-e7-bd-ae/">centos 5.5 安装 mysql-5.1.53-linux-x86_64  及主从复制集群配置</a></h1></header><div class="post__main"><p>设置Mysql的主从复制的主要用途：</p>
 <pre><code><span class="number">1</span> 做备份机器，一旦主服务器崩溃，可以直接启用从服务器作为主服务器
 
 <span class="number">2</span> 可以直接锁定从服务器的表只读，然后做备份数据，这样不会影响主服务器的服务
@@ -277,42 +511,4 @@ POST自检如发现有错误，将按两种情况处理：对于严重故障(致
 regsvr32 jscript<span class="class">.dll</span>
 
 regsvr32 vbscript.dll。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-10-19T03:42:34.000Z" class="post__time">十月 19, 2010</time><h1 class="post__title"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/">彻底禁用RealPlayer播放器软件更新检测计划任务</a></h1></header><div class="post__main"><p>RealPlayer 会私自安装两个RealPlayer播放器软件更新检测计划任务,并且一打开RealPlayer播放器,会在任务管理器中加载一个realsched.exe进程,关闭RealPlayer后这个进程仍然会存在,并且每次自动添加一个启动项目TkBellExe.</p>
-<pre><code>RealPlayer启动项目:
-
-TkBellExe
-
-注册表位置: HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
-
-HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
-
-关联路径文件:C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
-
-RealPlayer计划任务
-
-文件路径: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
-
-C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
-
-注册表位置: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
-
-方法:
-
-开始<span class="command">\运</span>行<span class="command">\mmc</span>.exe
-
-找到Task Scheduler服务项,右键<span class="command">\停</span>止(如在启动状态进行这一步)<span class="command">\属</span>性<span class="command">\启</span>动类型(设置为已禁用)
-
-删除文件: C:<span class="command">\Program</span> Files<span class="command">\Real</span><span class="command">\RealUpgrade</span><span class="command">\realupgrade</span>.exe
-
-C:<span class="command">\Program</span> Files<span class="command">\Common</span> Files<span class="command">\Real</span><span class="command">\Update</span>_OB<span class="command">\realsched</span>.exe
-
-删除注册表项: HKEY_CURRENT_USER<span class="command">\Software</span><span class="command">\Microsoft</span><span class="command">\Search</span> Assistant<span class="command">\ACMru</span>\5603\000<span class="command">\RealUpgradeLogonTasks</span>-1-5-21-117609710-1425521274-1417001333-1005.job
-
-HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\TkBellExe</span>
-
-HKEY_LOCAL_MACHINE<span class="command">\SOFTWARE</span><span class="command">\Microsoft</span><span class="command">\Windows</span><span class="command">\CurrentVersion</span><span class="command">\Run</span><span class="command">\ZwuqiDisabled</span><span class="command">\TkBellExe</span>
-
-重启系统再操作:
-
-删除文件: C:<span class="command">\WINDOWS</span><span class="command">\Tasks</span><span class="command">\目</span>录中以Real开头的.job文件
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/10/19/w/aaccrealplayeraeaeaeaaeaeaeeaeueaaas/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/16/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/18/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/11/12/w/windows-e4-b8-8d-e8-83-bd-e6-90-9c-e7-b4-a2-e4-b8-ad-e6-96-87-e6-b1-89-e5-ad-97-e4-bf-ae-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/16/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/18/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

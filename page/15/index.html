@@ -1,4 +1,96 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-06-16T03:21:17.000Z" class="post__time">六月 16, 2011</time><h1 class="post__title"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/">squid透明代理访问非80端口http服务</a></h1></header><div class="post__main"><p>实现linux服务器配置squid透明代理访问非80端口，允许部分地址不通过代理服务器直接访问。</p>
+<p>iptables相关配置：</p>
+<p>*mangle</p>
+<pre><code>-A PREROUTING -<span class="keyword">d</span> 10.11.48.0/255.255.255.192 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x2
+
+-A PREROUTING -<span class="keyword">d</span> 10.11.48.0/255.255.255.192 -j <span class="literal">RETURN</span>
+
+#以上地址不通过代理
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x4
+
+-A PREROUTING -p tcp -<span class="keyword">m</span> tcp --dport 80 -j <span class="literal">RETURN</span>
+
+-A PREROUTING -j <span class="keyword">MARK</span> --<span class="keyword">set</span>-<span class="keyword">mark</span> 0x7
+
+-A PREROUTING -j <span class="literal">RETURN</span>
+
+COMMIT
+
+<span class="comment">*filter</span>
+</code></pre><p>:INPUT DROP [0:0]</p>
+<pre><code><span class="attribute">:FORWARD DROP [0:0]</span>
+
+<span class="attribute">:OUTPUT DROP [0:0]</span>
+
+-A FORWARD -d 10.11.40.0/255.255.255.192 -m state --state NEW -j ACCEPT
+
+-A FORWARD -s 172.168.6.0/255.255.254.0 -p tcp -m multiport --dports 25,110,143 -m state --state NEW -m tcp --tcp-flags SYN,RST,ACK SYN -j ACCEPT
+
+-A FORWARD -s 172.168.6.0/255.255.254.0 -p tcp -m state --state NEW -m tcp --dport 80 --tcp-flags SYN,RST,ACK SYN -j ACCEPT
+
+COMMIT
+
+<span class="strong">*nat
+
+</span>-A PREROUTING -i eth0 -p tcp -m mark --mark 0x4 -m tcp --dport 80 -j REDIRECT --to-ports 3128
+
+#透明代理
+
+-A PREROUTING -i eth0 -p tcp -m tcp --dport 8080 -j REDIRECT --to-ports 3128
+
+#访问非80端口
+
+-A POSTROUTING -s 172.168.6.0/255.255.254.0 -o eth1 -j SNAT --to-source 1.2.3.168
+
+#nat
+
+COMMIT
+</code></pre><p>代理服务器概述 </p>
+<pre><code><span class="number">1.1</span>什么是代理服务器 
+
+在TCP/<span class="literal">IP</span>网络中，传统的通信过程是这样的：客户端向服务器请求数据，服务器响应该请求，将数据传送给客户端。在引入了代理服务器以后，这一 过程变成了这样：客户端向服务器发起请求，该请求被送到代理服务器；代理服务器分析该请求，先查看自己缓存中是否有请求数据，如果有就直接传送给客户端， 如果没有就代替客户端向该服务器发出请求。服务器响应以后，代理服务器将响应的数据传送给客户端，同时在自己的缓存中保留一份该数据的拷贝。这样，再有客 户端请求相同的数据时，代理服务器就可以直接将数据传送给客户端，而不需要再向该服务器发起请求。 
+
+
+
+<span class="number">1.2</span>代理服务器的功能 
+
+一般说来，代理服务器具有以下的功能： 
+
+<span class="number">1</span>.通过缓存增加访问速度 
+
+随着Internet的迅猛发展，网络带宽变得越来越珍贵。所以为了提高访问速度，好多ISP都提供代理服务器，通过代理服务器的缓存功能来加快 网络的访问速度。一般说来，大多数的代理服务器都支持HTTP缓存，但是，有的代理服务器也支持FTP缓存。在选择代理服务器时，对于大多数的组织，只需 要HTTP缓存功能就足够了。 
+
+通常，缓存有主动缓存被动缓存之分。所谓被动缓存，指的是代理服务器只在客户端请求数据时才将服务器返回的数据进行缓存，如果数据过期了，又有客 户端请求相同数据时，代理服务器又必须重新发起新的数据请求，在将响应数据传送给客户端时又进行新的缓存。所谓主动缓存，就是代理服务器不断地检查缓存中 的数据，一旦有数据过期，则代理服务器主动发起新的数据请求来更新数据。这样，当有客户端请求该数据时就会大大缩短响应时间。还需要说明的是，对于数据中 的认证信息，大多数的代理服务器都不会进行缓存的。 
+
+<span class="number">2</span>.提供用私有<span class="literal">IP</span>访问Internet的方法 
+
+<span class="literal">IP</span>地址是不可再生的宝贵资源，假如你只有有限的<span class="literal">IP</span>地址，但是需要提供整个组织的Internet访问能力，那么，你可以通过使用代理服务器来实现这一点。 
+
+<span class="number">3</span>.提高网络的安全性 
+
+这一点是很明显的，如果内部用户访问Internet都是通过代理服务器，那么，代理服务器就成为进入Internet的唯一通道；反过来说，代 理服务器也是Internet访问内部网的唯一通道，如果你没有做反向代理，则对于Internet上的主机来说，你的整个内部网只有代理服务器是可见 的，从而大大增强了网络的安全性。
+</code></pre><p>反向代理:</p>
+<pre><code>什么是反向代理呢？其实，反向代理也就是通常所说的WEB服务器加速，它是一种通过在繁忙的WEB服务器和Internet之间增加一个高速的WEB缓冲服务器（即：WEB反向代理服务器）来降低实际的WEB服务器的负载。
+
+Web服务器加速（反向代理）是针对Web服务器提供加速功能的。它作为代理<span class="operator"><span class="keyword">Cache</span>，但并不针对浏览器用户，而针对一台或多台特定Web服务器（这也是反向代理名称的由来）。实施反向代理（如上图所示），只要将<span class="keyword">Reverse</span> Proxy <span class="keyword">Cache</span>设备放置在一台或多台Web服务器前端即可。当互联网用户访问某个WEB服务器时，通过DNS服务器解析后的IP地址是<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>的IP地址,而非原始Web服务器的IP地址,这时<span class="keyword">Reverse</span> Proxy <span class="keyword">Server</span>设备充当Web服务器，浏览器可以与它连接，无需再直接与Web服务器相连。因此，大量Web服务工作量被卸载到反向代理服务上。不但能够防止外部网主机直接和web服务器直接通信带来的安全隐患，而且能够很大程度上减轻web服务器的负担，提高访问速度。
+
+反向代理和其它代理的比较
+
+下面将对几种典型的代理服务作一个简单的比较。在网络上常见的代理服务器有三种：
+
+<span class="number">1</span>． 标准的代理缓冲服务器
+
+ 一个标准的代理缓冲服务被用于缓存静态的网页（例如：html文件和图片文件等）到本地网络上的一台主机上（即代理服务器）。当被缓存的页面被第二次访问的时候，浏览器将直接从本地代理服务器那里获取请求数据而不再向原web站点请求数据。这样就节省了宝贵的网络带宽，而且提高了访问速度。但是，要想实现这种方式，必须在每一个内部主机的浏览器上明确指明代理服务器的IP地址和端口号。客户端上网时，每次都把请求送给代理服务器处理，代理服务器根据请求确定是否连接到远程web服务器获取数据。如果在本地缓冲区有目标文件，则直接将文件传给用户即可。如果没有的话则先取回文件，先在本地保存一份缓冲，然后将文件发给客户端浏览器。
+
+<span class="number">2</span>． 透明代理缓冲服务器
+
+ 通常使用代理，大家都是在浏览器里面的代理选项中填入代理信息，开启代理功能。而透明代理则是在网关通过把客户端的请求重定向到代理服务器的代理端口，让客户端感觉不到代理的存在，当然，客户端也就无须任何代理设置。</span>
+</code></pre><p>透明代理缓冲服务和标准代理服务器的功能完全相同。但是，代理操作对客户端的浏览器是透明的（即不需指明代理服务器的IP和端口）。透明代理服务器阻断网络通信，并且过滤出访问外部的HTTP（80端口）流量。如果客户端的请求在本地有缓冲则将缓冲的数据直接发给用户，如果在本地没有缓冲则向远程web服务器发出请求，其余操作和标准的代理服务器完全相同。对于Linux操作系统来说，透明代理使用Iptables或者Ipchains实现。因为不需要对浏览器作任何设置，所以，透明代理对于ISP（Internet服务器提供商）特别有用。</p>
+<pre><code>3． 反向代理缓冲服务器
+
+ 反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
 <pre><code>PHP <span class="number">5.3</span>.6
 
 cacti spine
@@ -295,45 +387,4 @@ vim main.cf
  reject_unauthenticated_sender_login_mismatch
 </code></pre><p>使配置生效</p>
 <pre><code><span class="title">postfix</span> reload
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-04-27T02:05:00.000Z" class="post__time">四月 27, 2011</time><h1 class="post__title"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">Vsftpd服务器故障排除</a></h1></header><div class="post__main"><p>打开调试日志：</p>
-<p>dual_log_enable=yes</p>
-<pre><code><span class="built_in">log</span>_ftp_protocol=yes
-
-VSFTPd与<span class="built_in">log</span>有关的选项
-
-VSFTPd_<span class="built_in">log</span>_file
-
-xferlog_<span class="built_in">enable</span>
-
-xferlog_std_format
-
-xferlog_file
-
-dual_<span class="built_in">log</span>_<span class="built_in">enable</span>
-
-syslog_<span class="built_in">enable</span>
-
-<span class="built_in">log</span>_ftp_protocol
-
-no_<span class="built_in">log</span>_lock
-
-在介绍Vsftpd服务器故障排除之前，我们来看看vsftp中关于日志记录的参数。
-
-xferlog_<span class="built_in">enable</span>=yes/no //是否启用 xferlog 日志格式
-
-xferlog_std_format=yes/no //是否采用标准格式记录日志
-
-xferlog_file=/path/to/logfile //xferlog 日志文件所在位置，默认为/var/<span class="built_in">log</span>/xferlog
-
-上面的参数设置记录xferlog日志的格式。这是早期Wu-ftpd服务的日志格式，它会记录上传和下载的动作。
-
-VSFTPd也有专有的日志格式，用下列参数设置：
-
-dual_<span class="built_in">log</span>_<span class="built_in">enable</span>=yes/no //是否采用VSFTPd自己的日志记录方式
-
-<span class="built_in">log</span>_ftp_protocol=yes/no //是否记录所有的ftp命令日志 
-
-VSFTPd_<span class="built_in">log</span>_file=/path/to/logfile //指定VSFTPd 日志文件位置，默认为/var/<span class="built_in">log</span>/vsftpd.log ，xferlog_<span class="built_in">enable</span>的默认值为no（VSFTPd提供的配置文件模版将其值改为了yes），dual_<span class="built_in">log</span>_<span class="built_in">enable</span>的默认值也为no，就是说默认情况下VSFTPd是不记录日志的。我们也可以将日志信息写入系统日志/var/<span class="built_in">log</span>/messages中，使用如下参数：
-
-syslog_<span class="built_in">enable</span>=yes/no
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/04/27/w/vsftpd-e6-9c-8d-e5-8a-a1-e5-99-a8-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/14/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/16/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/14/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/16/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

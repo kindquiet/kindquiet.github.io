@@ -1,4 +1,276 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-03T05:39:24.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/">“不聪明”的wordpress在线编辑器-Dean's FCKEditor For Wordpress</a></h1></header><div class="post__main"><p>WP后台发表新文章或是编辑文章后，行前面的空格消失了。因为内建的编辑器会聪明地把空格删除。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-03T07:22:19.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">vsftpd用pam_mysql实现mysql虚拟用户认证安装配置</a></h1></header><div class="post__main"><p>vsftpd已经很安全了，但是使用系统用户不方便管理，以下是在Linux系统中用pam_mysql实现mysql虚拟用户认证的安装配置过程。</p>
+<p>系统环境：</p>
+<pre><code>cat /etc/redhat-<span class="operator"><span class="keyword">release</span>
+
+CentOS <span class="keyword">release</span> <span class="number">5.2</span> (Final)
+
+vsftpd是CentOS（RedHat <span class="keyword">AS</span>）自带的。
+
+建立用于存放vsftpd虚拟用户的<span class="keyword">Schema</span>的过程：
+
+mysql -uroot -ppass
+
+<span class="keyword">create</span> <span class="keyword">database</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> vsftpd.* <span class="keyword">to</span> vsftpd@localhost <span class="keyword">identified</span> <span class="keyword">by</span> veryi.com ;</span>
+
+<span class="operator"><span class="keyword">use</span> vsftpd;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> users (
+
+id <span class="built_in">int</span> AUTO_INCREMENT <span class="keyword">NOT</span> <span class="literal">NULL</span>,
+
+name <span class="built_in">char</span>(<span class="number">16</span>) <span class="built_in">binary</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,
+
+passwd <span class="built_in">char</span>(<span class="number">48</span>) <span class="built_in">binary</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,
+
+<span class="keyword">primary</span> <span class="keyword">key</span>(id)
+
+);</span>
+
+<span class="operator"><span class="keyword">describe</span> users;</span>
+
+<span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">logs</span> (msg <span class="built_in">varchar</span>(<span class="number">255</span>),
+
+<span class="keyword">user</span> <span class="built_in">char</span>(<span class="number">16</span>),
+
+pid <span class="built_in">int</span>,
+
+host <span class="built_in">char</span>(<span class="number">32</span>),
+
+rhost <span class="built_in">char</span>(<span class="number">32</span>),
+
+logtime <span class="keyword">timestamp</span>
+
+);</span>
+
+<span class="operator"><span class="keyword">describe</span> <span class="keyword">logs</span>;</span>
+
+插入用户信息：
+
+<span class="operator"><span class="keyword">insert</span> <span class="keyword">into</span> users (name,passwd) <span class="keyword">values</span>(&amp;#<span class="number">39</span>;</span>veryi&amp;#39;,password(&amp;#39;veryi.com&amp;#39;));
+
+<span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> users;</span>
+
+这里，用户密码这个字段的长度是48。这是根据MySQL加密函数的返回值的长度确定的。关于PASSWORD函数返回值的长度，可以参考这个：[http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html](http://dev.mysql.com/doc/refman/4.1/en/password-hashing.html)
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">encrypt</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| 4Wwn2AXFYb.So |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">password</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| *F3A2A51A9B0F2BE2468926B4132313728C250DBF |
+
+<span class="operator"><span class="keyword">select</span> <span class="keyword">md5</span>(&amp;#<span class="number">39</span>;</span>foo&amp;#39;);
+
+| acbd18db4cc2f85cedef654fccc4a4d8 |
+
+编译安装pam_mysql
+
+下载:
+
+wget -b [http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz](http://prdownloads.sourceforge.net/pam-mysql/pam_mysql-0.7RC1.tar.gz)
+
+tar xfz pam_mysql-0.7RC1.tar.gz -C /usr/local/src
+
+cd /usr/local/src/pam_mysql-0.7RC1
+
+./configure <span class="comment">--with-openssl --with-mysql=/usr/local/mysql</span>
+
+make  make <span class="operator"><span class="keyword">install</span>
+
+加上<span class="comment">--with-openssl可以避免make时报有关md5.h的编译错误</span>
+
+vi /etc/pam.d/vsftpd.mysql
+
+auth required /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+account required /usr/lib/security/pam_mysql.so config_file=/etc/security/pam_mysql.conf
+
+vi /etc/security/pam_mysql.conf
+
+users.host=localhost
+
+users.<span class="keyword">database</span>=vsftpd
+
+users.db_user=vsftpd
+
+users.db_passwd=veryi.com
+
+users.<span class="keyword">table</span>=users
+
+users.user_column=name
+
+users.password_column=passwd
+
+users.password_crypt=<span class="number">2</span>
+
+verbose=<span class="number">0</span>
+
+<span class="keyword">log</span>.enabled=<span class="number">0</span>
+
+<span class="keyword">log</span>.<span class="keyword">table</span>=<span class="keyword">logs</span>
+
+<span class="keyword">log</span>.message_column=msg
+
+<span class="keyword">log</span>.pid_column=pid
+
+<span class="keyword">log</span>.user_column=<span class="keyword">user</span>
+
+<span class="keyword">log</span>.host_column=host
+
+<span class="keyword">log</span>.rhost_column=rhost
+
+<span class="keyword">log</span>.time_column=logtime
+
+建立/etc/vsftpd/vsftpd.mysql.conf（同样，不影响已有的vsftpd服务，执行service vsftpd restart时会启动两个vsftpd服务，端口不一样）
+
+主要的设置如下：
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+l
+
+vi /etc/vsftpd/vsftpd.mysql.conf
+
+local_enable=YES
+
+write_enable=YES
+
+local_umask=<span class="number">002</span>
+
+dirmessage_enable=YES
+
+xferlog_enable=YES
+
+xferlog_std_format=YES</span>
+</code></pre><p>xferlog_file=/var/log/ftp/vsftpd.log</p>
+<pre><code><span class="constant">ftpd_banner</span>=veryi.com, thank you
+
+<span class="constant">listen</span>=YES
+
+<span class="constant">pam_service_name</span>=vsftpd
+
+<span class="constant">userlist_enable</span>=YES
+
+<span class="constant">chroot_local_user</span>=YES
+
+<span class="constant">chroot_list_enable</span>=YES
+
+<span class="constant">chroot_list_file</span>=/etc/vsftpd.chroot_list
+
+<span class="constant">tcp_wrappers</span>=YES
+
+<span class="constant">max_clients</span>=100
+
+<span class="constant">max_per_ip</span>=8
+
+<span class="constant">listen_port</span>=21
+
+<span class="constant">pasv_enable</span>=YES
+
+<span class="constant">pasv_min_port</span>=58000
+
+<span class="constant">pasv_max_port</span>=58129
+
+<span class="constant">guest_enable</span>=YES
+
+<span class="constant">guest_username</span>=vsftpdguest
+
+<span class="constant">virtual_use_local_privs</span>=YES
+
+<span class="constant">anonymous_enable</span>=no
+
+<span class="constant">pam_service_name</span>=vsftpd.mysql
+
+<span class="constant">user_config_dir</span>=/etc/vsftpd/vsftpd_user_conf
+
+<span class="constant">hide_ids</span>=YES
+
+<span class="constant">ssl_enable</span>=YES
+
+<span class="constant">ssl_tlsv1</span>=YES
+
+<span class="constant">rsa_cert_file</span>=/etc/vsftpd/vsftpd.pem
+
+<span class="constant">force_local_data_ssl</span>=NO
+
+<span class="constant">force_local_logins_ssl</span>=NO
+
+建立日志目录:
+</code></pre><p>mkdir /var/log/ftp</p>
+<pre><code>重新启动vsftpd
+
+<span class="regexp">/etc/i</span>nit.d<span class="regexp">/vsftpd restart</span>
+</code></pre><p>创建虚拟用户</p>
+<pre><code>VSFTPD采用PAM方式验证虚拟用户。由于虚拟用户的用户名/口令被单独保存，因此在验证时，VSFTPD需要用一个系统用户的身份来读取数据库文件或数据库服务器以完成验证，这就是VSFTPD的guest用户。这正如同匿名用户也需要有一个系统用户ftp一样。我们也可以把guest用户看成是虚拟用户在系统中的代表。下面在系统中添加vsftpdguest用户，作为VSFTPD的guest。
+
+useradd vsftpdguest
+
+当虚拟用户登录后，所在的位置为vsftpdguest的自家目录<span class="regexp">/home/</span>vsftpdguest。如果要让虚拟用户登录到<span class="regexp">/var/</span>ftp等其他目录，修改vsftpdguest的自家目录即可。
+
+无论是哪个虚拟用户，登录后所在的目录都是<span class="regexp">/home/</span>vsftpdguest。
+
+虚拟用户的个人目录:
+
+mkdir -p <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+cd <span class="regexp">/etc/</span>vsftpd/vsftpd_user_conf
+
+vi veryi
+
+local_root=<span class="regexp">/usr/</span>local/www
+
+修改目录权限:
+
+chown -R vsftpdguest.vsftpdguest <span class="regexp">/usr/</span>local/www
+</code></pre><p>日志轮询和分析统计:</p>
+<p>cat ftp_stats.sh</p>
+<pre><code><span class="shebang">#!/bin/sh
+</span>
+<span class="comment">#writed by dayu*veryi.com</span>
+
+<span class="comment">#</span>
+
+<span class="built_in">export</span> PATH=/bin:/usr/bin
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+/etc/init.d/vsftpd stop
+
+mv vsftpd.log vsftpd.`date +%F`.log
+
+/etc/init.d/vsftpd start
+
+<span class="built_in">cd</span> /var/www/cgi-bin/awstats
+
+./awstats.pl -update -config=ftp.veryi.com
+
+<span class="built_in">cd</span> /var/<span class="built_in">log</span>/ftp
+
+bzip2 vsftpd.`date +%F`.log
+</code></pre><p>加入cron每天自动执行:</p>
+<p>crontab -e</p>
+<p>0 4 <em> </em> * /home/yang/work/ftp_stats.sh</p>
+<pre><code>附调试时困扰了很长时间的一个问题
+
+Q：
+
+<span class="function"><span class="title">pam_mysql_check_passwd</span><span class="params">()</span></span> returning <span class="number">6</span>.
+
+A：
+
+vsftpd pam_mysql
+
+crypt=<span class="number">0</span> 成功
+
+crypt=<span class="number">2</span> 不能登录，原因，centos <span class="number">5.2</span>自带的mysql启动，二进制安装的最新mysqld没有启动。
+</code></pre><p>Q:</p>
+<p>configure: error: Cannot find pam headers. Please check if your system is ready for pam module development.</p>
+<p>A:</p>
+<p>yum install pam-devel -y</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-03T05:39:24.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/">“不聪明”的wordpress在线编辑器-Dean's FCKEditor For Wordpress</a></h1></header><div class="post__main"><p>WP后台发表新文章或是编辑文章后，行前面的空格消失了。因为内建的编辑器会聪明地把空格删除。</p>
 <p>这样，在粘贴一些脚本或程序代码就会把缩进删除，不便阅读。</p>
 <p>试了Monsters Editor for WP Super Edit，似乎在wp2.7下不可用。</p>
 <p>TinyMCE Advanced，这个插件增强连WP的原始编辑器，增加了表格，查找与替换，表情，插入媒体等等。</p>
@@ -255,160 +527,4 @@ LANGUAGE=zh_CN<span class="class">.GB18030</span>:zh_CN<span class="class">.GB23
 <p>2、打开风扇盖，拆下覆盖风扇的金属盖，拆下风扇，发现风扇的出风口已经完全被很细的绒毛堵上，清理干净。 </p>
 <p>3、安装风扇，别忘了按上风扇电源。安装时先把所有的螺丝都装上，但不要拧紧，然后逐个螺丝拧紧一点，直到完全拧紧。  开机后检测，cpu温度在50度以下，如果不贴到出风口上，是不会听到噪音的。即使你用上百元的散热器，降温也不会超过5度，而且带来了更大的电力浪费和更多的噪音源。</p>
 <p>清灰的降温效果比笔记本散热器要好用的多，值得试一试。还你一个清静的夏天。如果使用频繁，建议每半年清灰一次。 其他采用风扇降温的笔记本电脑也可以如法清理。如果你从来没有拆过笔记本电脑，那您还是请专业人士来完成吧。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-25T09:18:35.000Z" class="post__time">三月 25, 2009</time><h1 class="post__title"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/">MySQL完全备份、增量备份与恢复</a></h1></header><div class="post__main"><p>场景：每周日执行一次完全备份，每天下午1点执行增量备份</p>
-<pre><code>[ 配置 ]
-
-执行增量备份的前提条件是MySQL打开log-bin 日志开关，例如在my.ini或my.cnf中
-
-加入
-
-log-bin=/opt/data/mysql-bin
-
-log-bin=后的字符串为日志记载目录，一般建议放在不同于mysql数据目录的磁盘上。
-
-[ 完全备份]
-
-假定星期日下午1点执行完全备份，适用于MyISAM存储引擎。
-
-mysqldump <span class="operator"><span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span> <span class="keyword">flush</span>-<span class="keyword">logs</span> <span class="keyword">master</span>-<span class="keyword">data</span>=<span class="number">2</span> -u root -p test  backup_sunday_1_PM.<span class="keyword">sql</span>
-
-对于<span class="keyword">InnoDB</span> 将<span class="keyword">lock</span>-<span class="keyword">all</span>-<span class="keyword">tables</span>替换为single-<span class="keyword">transaction</span>
-
-<span class="keyword">flush</span>-<span class="keyword">logs</span> 为结束当前日志，生成新日志文件
-
-<span class="keyword">master</span>-<span class="keyword">data</span>=<span class="number">2</span> 选项将会在输出<span class="keyword">SQL</span>中记录下完全备份后新日志文件的名称，
-
-用于日后恢复时参考，例如输出的备份<span class="keyword">SQL</span>文件中含有：
-
- <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> <span class="keyword">TO</span> MASTER_LOG_FILE=mysql-<span class="keyword">bin</span>.000002, MASTER_LOG_POS=<span class="number">106</span>;</span>
-
-<span class="comment">--master-data[=value]</span>
-
- Write the binary log filename and position to the output. This option requires the RELOAD privilege and the binary log must be
-
- enabled. If the option value is equal to 1, the position and filename are written to the dump output in the form of a <span class="operator"><span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
-
- statement. <span class="keyword">If</span> the dump <span class="keyword">is</span> <span class="keyword">from</span> a <span class="keyword">master</span> <span class="keyword">server</span> <span class="keyword">and</span> you <span class="keyword">use</span> it <span class="keyword">to</span> <span class="keyword">set</span> up a <span class="keyword">slave</span> <span class="keyword">server</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span> statement causes the
-
- <span class="keyword">slave</span> <span class="keyword">to</span> <span class="keyword">start</span> <span class="keyword">from</span> the correct <span class="keyword">position</span> <span class="keyword">in</span> the masters <span class="built_in">binary</span> <span class="keyword">logs</span>. <span class="keyword">If</span> the <span class="keyword">option</span> <span class="keyword">value</span> <span class="keyword">is</span> equal <span class="keyword">to</span> <span class="number">2</span>, the <span class="keyword">CHANGE</span> <span class="keyword">MASTER</span>
-
- statement <span class="keyword">is</span> written <span class="keyword">as</span> an <span class="keyword">SQL</span> comment. (This <span class="keyword">is</span> the <span class="keyword">default</span> <span class="keyword">action</span> <span class="keyword">if</span> <span class="keyword">value</span> <span class="keyword">is</span> omitted.)
-
-其他说明：
-
-如果 mysqldump加上<span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span> 则清除以前的日志，以释放空间。但是如果服务器配置为镜像的复制主服务器，用mysqldump <span class="keyword">delete</span>-<span class="keyword">master</span>-<span class="keyword">logs</span>删掉MySQL二进制日志很危险，因为从服务器可能还没有完全处理该二进制日志的内容。在这种情况下，使用 <span class="keyword">PURGE</span> <span class="keyword">MASTER</span> <span class="keyword">LOGS</span>更为安全。
-
-[ 增量备份 ]
-
-每日定时使用 mysqladmin <span class="keyword">flush</span>-<span class="keyword">logs</span>来创建新日志，并结束前一日志写入过程。并
-
-把前一日志备份，例如上例中开始保存数据目录下的日志文件 mysql-<span class="keyword">bin</span>.000002 , 
-
-[ 从备份中恢复 ]
-
-* 恢复完全备份
-
-mysql -u root -p  backup_sunday_1_PM.<span class="keyword">sql</span>
-
-* 恢复增量备份
-
-mysqlbinlog mysql-<span class="keyword">bin</span>.000002  | mysql -u root -p
-
-注意此次恢复过程亦会写入日志文件，如果数据量很大，建议先关闭日志功能
-
-参考：http://bbs.bitscn.com /<span class="number">171622</span>
-
-常用参数：
-
-<span class="keyword">lock</span>-<span class="keyword">tables</span>, -l
-
-<span class="keyword">Lock</span> <span class="keyword">all</span> <span class="keyword">tables</span> <span class="keyword">before</span> dumping them. The <span class="keyword">tables</span> <span class="keyword">are</span> locked <span class="keyword">with</span> <span class="keyword">READ</span> <span class="keyword">LOCAL</span> <span class="keyword">to</span> allow <span class="keyword">concurrent</span> inserts <span class="keyword">in</span> the <span class="keyword">case</span> <span class="keyword">of</span> MyISAM
-
-<span class="keyword">tables</span>. <span class="keyword">For</span> transactional <span class="keyword">tables</span> such <span class="keyword">as</span> <span class="keyword">InnoDB</span> <span class="keyword">and</span> BDB, single-<span class="keyword">transaction</span> <span class="keyword">is</span> a much better <span class="keyword">option</span>, because it does <span class="keyword">not</span> need
-
-<span class="keyword">to</span> <span class="keyword">lock</span> the <span class="keyword">tables</span> <span class="keyword">at</span> <span class="keyword">all</span>.
-
-Please note that <span class="keyword">when</span> dumping multiple <span class="keyword">databases</span>, <span class="keyword">lock</span>-<span class="keyword">tables</span> locks <span class="keyword">tables</span> <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">database</span> separately. Therefore, this
-
-<span class="keyword">option</span> does <span class="keyword">not</span> guarantee that the <span class="keyword">tables</span> <span class="keyword">in</span> the dump file <span class="keyword">are</span> logically <span class="keyword">consistent</span> <span class="keyword">between</span> <span class="keyword">databases</span>. <span class="keyword">Tables</span> <span class="keyword">in</span> different
-
-<span class="keyword">databases</span> may be dumped <span class="keyword">in</span> completely different states.
-
-<span class="keyword">no</span>-<span class="keyword">data</span>, -d
-
-<span class="keyword">Do</span> <span class="keyword">not</span> <span class="keyword">write</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">row</span> information (that <span class="keyword">is</span>, <span class="keyword">do</span> <span class="keyword">not</span> dump <span class="keyword">table</span> contents). This <span class="keyword">is</span> very useful <span class="keyword">if</span> you want <span class="keyword">to</span> dump <span class="keyword">only</span> the
-
-<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> statement <span class="keyword">for</span> the <span class="keyword">table</span>.
-
-<span class="keyword">extended</span>-<span class="keyword">insert</span> <span class="keyword">lock</span>-<span class="keyword">tables</span> <span class="keyword">quick</span> <span class="keyword">set</span>-<span class="keyword">charset</span>. It should give you a <span class="keyword">fast</span> dump operation <span class="keyword">and</span> produce a dump file that can
-
-be reloaded <span class="keyword">into</span> a MySQL <span class="keyword">server</span> quickly.
-
-The opt <span class="keyword">option</span> <span class="keyword">is</span> enabled <span class="keyword">by</span> <span class="keyword">default</span>. <span class="keyword">Use</span> skip-opt <span class="keyword">to</span> disable it. See the discussion <span class="keyword">at</span> the beginning <span class="keyword">of</span> this <span class="keyword">section</span> <span class="keyword">for</span>
-
-information about selectively enabling <span class="keyword">or</span> disabling certain <span class="keyword">of</span> the options affected <span class="keyword">by</span> opt.
-
- * <span class="comment">--compatible=name</span>
-
- 它告诉 mysqldump，导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号将它们隔开。当然了，它并不保证能完全兼容，而是尽量兼容。
-
- * <span class="comment">--complete-insert，-c</span>
-
- 导出的数据采用包含字段名的完整 <span class="keyword">INSERT</span> 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数，至少我不推荐。
-
- * <span class="comment">--default-character-set=charset</span>
-
- 指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。
-
- * <span class="comment">--disable-keys</span>
-
- 告诉 mysqldump 在 <span class="keyword">INSERT</span> 语句的开头和结尾增加 <span class="comment">/*!40000 ALTER TABLE table DISABLE KEYS */</span>;</span> 和 <span class="comment">/*!40000 ALTER TABLE table ENABLE KEYS */</span>; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。
-
- * <span class="comment">--extended-insert = true|false</span>
-
- 默认情况下，mysqldump 开启 <span class="comment">--complete-insert 模式，因此不想用它的的话，就使用本选项，设定它的值为 false 即可。</span>
-
- * <span class="comment">--hex-blob</span>
-
- 使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。
-
- * <span class="comment">--lock-all-tables，-x</span>
-
- 在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 <span class="comment">--single-transaction 和 --lock-tables 选项。</span>
-
- * <span class="comment">--lock-tables</span>
-
- 它和 <span class="comment">--lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 --single-transaction 选项。</span>
-
- * <span class="comment">--no-create-info，-t</span>
-
- 只导出数据，而不添加 <span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 语句。
-
- * <span class="comment">--no-data，-d</span>
-
- 不导出任何数据，只导出数据库表结构。
-
- * <span class="comment">--opt</span>
-
- 这只是一个快捷选项，等同于同时添加 <span class="comment">--add-drop-tables --add-locking --create-option --disable-keys --extended-insert --lock-tables --quick --set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 --skip-opt 禁用。注意，如果运行 mysqldump 没有指定 --quick 或 --opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</span>
-
- * <span class="comment">--quick，-q</span>
-
- 该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。
-
- * <span class="comment">--routines，-R</span>
-
- 导出存储过程以及自定义函数。
-
- * <span class="comment">--single-transaction</span>
-
- 该选项在导出数据之前提交一个 <span class="keyword">BEGIN</span> <span class="keyword">SQL</span>语句，<span class="keyword">BEGIN</span> 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 <span class="keyword">InnoDB</span> 和 BDB。
-
- 本选项和 <span class="comment">--lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</span>
-
- 要想导出大表的话，应结合使用 <span class="comment">--quick 选项。</span>
-
- * <span class="comment">--triggers</span>
-
- 同时导出触发器。该选项默认启用，用 <span class="comment">--skip-triggers 禁用它。</span></span>
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/03/25/w/mysql-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e3-80-81-e5-a2-9e-e9-87-8f-e5-a4-87-e4-bb-bd-e4-b8-8e-e6-81-a2-e5-a4-8d/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

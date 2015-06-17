@@ -1,4 +1,41 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-16T09:31:55.000Z" class="post__time">五月 16, 2011</time><h1 class="post__title"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/">postfix邮件服务器安全</a></h1></header><div class="post__main"><p>配置extmail不允许伪造不存在的本地邮件地址发邮件,不允许并仿冒他人邮件地址发送邮件</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-25T03:57:42.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">cacti SQL Failed! Error:'1062'故障排除</a></h1></header><div class="post__main"><p>cacti日志报错：</p>
+<p>05/25/2011 11:40:01 AM - SPINE: Poller[0] ERROR: SQL Failed! Error:&#39;1062&#39;, Message:&#39;Duplicate entry &#39;3-mem_buffers-2011-05-25 11:40:01&#39; for key &#39;PRIMARY&#39;&#39;, SQL Fragment:&#39;INSERT INTO poller_output (local_data_id, rrd_name, time, output) VALUES (3,&#39;mem_buffers&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;927912&#39;),(4,&#39;mem_swap&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4192956&#39;),(5,&#39;&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;1min:0.10 5min:0.16 10min:0.23&#39;),(6,&#39;users&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4&#39;),(7,&#39;proc&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;169&#39;),(8,&#39;hdd_free&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;47949780&#39;),(8,&#39;hdd_used&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;44424292&#39;)&#39;</p>
+<pre><code>Check
+
+- <span class="regexp">/etc/</span>crontab
+
+- <span class="regexp">/etc/</span>cron.d/cacti
+
+- crontab of root and cactiuser 
+
+cat <span class="regexp">/etc/</span>crontab
+
+SHELL=<span class="regexp">/bin/</span>bash
+
+PATH=<span class="regexp">/sbin:/</span><span class="string">bin:</span><span class="regexp">/usr/</span><span class="string">sbin:</span><span class="regexp">/usr/</span>bin
+
+MAILTO=root
+
+HOME=/
+
+# run-parts
+
+<span class="number">01</span> * * * * root run-parts <span class="regexp">/etc/</span>cron.hourly
+
+<span class="number">02</span> <span class="number">4</span> * * * root run-parts <span class="regexp">/etc/</span>cron.daily
+
+<span class="number">22</span> <span class="number">4</span> * * <span class="number">0</span> root run-parts <span class="regexp">/etc/</span>cron.weekly
+
+<span class="number">42</span> <span class="number">4</span> <span class="number">1</span> * * root run-parts <span class="regexp">/etc/</span>cron.monthly
+</code></pre><p>crontab -l -u cactiuser</p>
+<pre><code>*<span class="regexp">/5 * * * * /</span>usr<span class="regexp">/local/</span>php<span class="regexp">/bin/</span>php <span class="regexp">/opt/</span>local<span class="regexp">/www/</span>html<span class="regexp">/cacti/</span>poller.php  <span class="regexp">/dev/</span><span class="literal">null</span> <span class="number">21</span>
+
+cat <span class="regexp">/etc/</span>cron.d/cacti 
+
+*<span class="regexp">/5 * * * * cacti php /</span>var<span class="regexp">/www/</span>cacti<span class="regexp">/poller.php /</span>dev/<span class="literal">null</span>
+
+注释以上语句故障排除。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-16T09:31:55.000Z" class="post__time">五月 16, 2011</time><h1 class="post__title"><a href="/2011/05/16/w/postfix-e9-82-ae-e4-bb-b6-e6-9c-8d-e5-8a-a1-e5-99-a8-e5-ae-89-e5-85-a8/">postfix邮件服务器安全</a></h1></header><div class="post__main"><p>配置extmail不允许伪造不存在的本地邮件地址发邮件,不允许并仿冒他人邮件地址发送邮件</p>
 <pre><code>cd /etc/postfix/
 
 cat mysql_virtual_sender_maps.cfEOF
@@ -153,57 +190,4 @@ innodb_flush_log_at_trx_commit=<span class="number">0</span>
  rewrite (.*) /<span class="keyword">index</span>.php;
 
  }
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-01-24T07:47:14.000Z" class="post__time">一月 24, 2011</time><h1 class="post__title"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/">千兆网络必须使用六类线</a></h1></header><div class="post__main"><p>cisc3750 10/100/1000BaseTX自适应交换机，25号端口灯是绿色的</p>
-<pre><code>show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
-
-GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
-
- Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
-
- MTU <span class="number">1500</span> bytes, BW <span class="number">100000</span> Kbit, DLY <span class="number">100</span> usec, 
-
- reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">2</span>/<span class="number">255</span>, rxload <span class="number">100</span>/<span class="number">255</span>
-
- Encapsulation ARPA, loopback not <span class="keyword">set</span>
-
- Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
-
- Full-duplex, <span class="number">100</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
-
-端口设置：
-
-!
-
-interface GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span>
-
-!
-
-联想r520服务器，千兆网卡，操作系统是centos <span class="number">5</span>，驱动是千兆的，交换机和服务器在一个机柜，但是<span class="number">25</span>号端口不能上到千兆。强行设成<span class="number">1000</span>M就会断网。
-
-网络跳线更换为千兆<span class="number">6</span>类线以后：
-
-show <span class="keyword">int</span> g1/<span class="number">0</span>/<span class="number">25</span>
-
-GigabitEthernet1/<span class="number">0</span>/<span class="number">25</span> <span class="keyword">is</span> <span class="keyword">up</span>, <span class="built_in">line</span> protocol <span class="keyword">is</span> <span class="keyword">up</span> (connected)
-
- Hardware <span class="keyword">is</span> Gigabit Ethernet, address <span class="keyword">is</span> <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span> (bia <span class="number">000</span><span class="keyword">a</span>.b8dc.<span class="number">5499</span>)
-
- MTU <span class="number">1500</span> bytes, BW <span class="number">1000000</span> Kbit, DLY <span class="number">10</span> usec, 
-
- reliability <span class="number">255</span>/<span class="number">255</span>, txload <span class="number">1</span>/<span class="number">255</span>, rxload <span class="number">23</span>/<span class="number">255</span>
-
- Encapsulation ARPA, loopback not <span class="keyword">set</span>
-
- Keepalive <span class="keyword">set</span> (<span class="number">10</span> sec)
-
- Full-duplex, <span class="number">1000</span>Mb/<span class="keyword">s</span>, media <span class="built_in">type</span> <span class="keyword">is</span> <span class="number">10</span>/<span class="number">100</span>/<span class="number">1000</span>BaseTX
-
-已经变成千兆了。
-</code></pre><p>附：</p>
-<p>CAT-5 is rated to 100M </p>
-<pre><code>CAT-<span class="number">5</span>e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">350</span>M 
-
-CAT-<span class="number">6</span> <span class="keyword">and</span> CAT6e <span class="keyword">is</span> rated <span class="keyword">to</span> <span class="number">550</span>M <span class="keyword">or</span> <span class="number">1000</span>M depending <span class="function_start"><span class="keyword">on</span></span> your source 
-
-CAT-<span class="number">7</span> <span class="keyword">is</span> supposedly rated <span class="keyword">to</span> <span class="number">700</span>M <span class="keyword">or</span> presumably <span class="number">1000</span>M 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/01/24/w/e5-8d-83-e5-85-86-e7-bd-91-e7-bb-9c-e5-bf-85-e9-a1-bb-e4-bd-bf-e7-94-a8-e5-85-ad-e7-b1-bb-e7-ba-bf/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

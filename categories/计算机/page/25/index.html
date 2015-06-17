@@ -1,4 +1,42 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-24T06:14:22.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">企业级网管开源软件nagios远程主机的安装配置</a></h1></header><div class="post__main"><p>远程主机（被监控机）安装部分</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-24T07:08:35.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/">企业级网管开源软件nagios 监控Windows远程服务器</a></h1></header><div class="post__main"><p>在nagios的libexec下有check_nt这个插件,它就是用来检查windows机器的服务的,其功能类似于上一章讲的check_nrpe.不过还需要搭配另外一个软件NSClient,它则类似于NRPE</p>
+<p>,NSClient与nrpe最大的区别就是:</p>
+<p>—被监控机上安装有nrpe,并且还有插件,最终的监控是由这些插件来进行的.当监控主机将监控请求发给nrpe后,nrpe调用插件来完成监控.—NSClient则不同,被监控机上只安装NSClient,没有任何的插件.当监控主机将监控请求发给NSClient后,NSClient直接完成监控,所有的监控是由NSClient完成的.</p>
+<p>安装NSClient</p>
+<p>从</p>
+<p><a href="http://sourceforge.net/projects/nscplus" target="_blank" rel="external">http://sourceforge.net/projects/nscplus</a></p>
+<p>下载NSClient++-Win32-0.3.5.msi(或者NSClient++-x64-0.3.5.msi，64位机)，双击安装。</p>
+<p>在开始-运行里面输入services.msc打开服务，启动服务:</p>
+<p>NSClientpp</p>
+<p>编辑NSC.ini文件，</p>
+<p>C:\Program Files\NSClient++</p>
+<p>将 [modules]部分的所有模块前面的注释都去掉,除了CheckWMI.dll， RemoteConfiguration.dll，SysTray.dll。</p>
+<p>在[Settings]部分设置’password’选项来设置密码,作用是在nagios连接过来时要求提供密码.这一步是可选的.</p>
+<p>将[Settings]部分’allowed_hosts’选项的注释去掉,并且加上运行nagios的监控主机的IP.</p>
+<p>allowed_hosts=127.0.0.1/32,172.16.8.153</p>
+<p>以逗号相隔.这个地方是支持子网的,如果写成192.168.0.0/24则表示该子网内的所有机器都可以访问.如果这个地方是空白则表示所有的主机都可以连接上来.</p>
+<p>[NSClient]的’port’选项取消注释,,这是NSClient的默认监听端口</p>
+<p>port=12489</p>
+<p>查看服务，在cmd里面执行netstat an可以看到已经开始监听tcp的12489端口了。</p>
+<p>防火墙也要打开tcp的12489端口,否则nagios检查此服务的时候会报socket 超时错误.</p>
+<p>监控主机的配置</p>
+<p>在监控主机上做的就是:</p>
+<p>1.安装监控windows的插件(已经默认安装了,check_nt)</p>
+<p>2.定义命令</p>
+<p>3.定义要监控的项目</p>
+<p>cd /usr/local/nagios/etc/servers</p>
+<p>vi services.cfg</p>
+<p>//这里只举一个例子</p>
+<p>define service {</p>
+<p> use remote-service</p>
+<p> host_name eblog</p>
+<p> service_description CPULOAD</p>
+<p> check_command check_nt!CPULOAD! -l 5,80,95</p>
+<p>}</p>
+<p>如果NSClient设置了连接需要密码,则应写成如下格式</p>
+<p>check_nt!CPULOAD! -s PASSWORD -l 5,80,95</p>
+<p>可以通过以下指令测试设备响应是否正常</p>
+<p>/usr/local/nagios/libexec/check_nt -H 主机IP -p 12489 -s 密码 -v UPTIME </p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e7-9b-91-e6-8e-a7windows-e8-bf-9c-e7-a8-8b-e6-9c-8d-e5-8a-a1-e5-99-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-24T06:14:22.000Z" class="post__time">四月 24, 2009</time><h1 class="post__title"><a href="/2009/04/24/w/e4-bc-81-e4-b8-9a-e7-ba-a7-e7-bd-91-e7-ae-a1-e5-bc-80-e6-ba-90-e8-bd-af-e4-bb-b6nagios-e8-bf-9c-e7-a8-8b-e4-b8-bb-e6-9c-ba-e7-9a-84-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">企业级网管开源软件nagios远程主机的安装配置</a></h1></header><div class="post__main"><p>远程主机（被监控机）安装部分</p>
 <h1 id="yum_install_openssl">yum install openssl</h1><p>rpm -ihv gd-devel-2.0.28-4.4E.1.i386.rpm</p>
 <p>安装nagios-plugin</p>
 <p>groupadd nagios</p>
@@ -916,34 +954,4 @@
 <h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
 <p>状态检查：</p>
 <p>/usr/local/named/sbin/rndc status</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
-<p>Your boot partition is on a disk using the GPT partitioning Scheme but this machines cannot boot using GPT.</p>
-<pre><code>用linux live CD，推荐slax <span class="function_start"><span class="keyword">on</span></span> usb disk,启动系统以后，执行:
-</code></pre><p>查看硬盘的设备名称：</p>
-<p>fdisk -l</p>
-<p>假设是/dev/sdb</p>
-<p>parted</p>
-<p>select /dev/sdb</p>
-<p>mklabel msdos</p>
-<p>quit</p>
-<p>或者运行</p>
-<pre><code>parted -s /dev/sdb mklabel msdos
-
-然后就可以正常安装了。
-
-可以用 parted -s /dev/sdc print来查看分区情况
-
-补充一些知识:
-
-目前我们可以接触到的大部分pc依然采用上世纪遗传下来的 BIOS + MBR 组合。 BIOS，基本输入输出系统 (Basic <span class="keyword">Input</span>-Output System)，是软件与硬件之间的一个接口，可以把它看作一个翻译在中文与英语之间，虽然两者完全不同，不过可以让大家了解 BIOS 所处的位置，BIOS 通常被写入一块 ROM 芯片连接在主板上，当然也有直接写入北桥的，不过相当少见。 BIOS 几乎是完全用汇编语言编写，很大程度上决定了主板的性能及稳定性。
-
-MBR，主引导记录 (Master Boot <span class="keyword">Record</span>)，也就是我们常见的分区方法，不过管理员外的最终用户很少知道它的存在，MBR 分区的标准决定了 MBR 只支持在<span class="number">2</span>TB以下 (超过 <span class="number">2</span>TB 的只能管理 <span class="number">2</span>TB) 的硬盘中创建<span class="number">4</span>个分区表项，要获得更多分区，需要次级结构--扩展分区。扩展分区可以再次被分成一个或多个逻辑磁盘，也就是普通情况下的<span class="keyword">C</span>盘以外的盘，或说第一个分区以外的部分，有些情况下 Windows 里的<span class="keyword">C</span>盘可能会是一个逻辑分区。
-
-EFI，可扩展固件接口 (Extensible Firmware Interface)，由英特尔 (Intel) 公司提出的一种替代 BIOS 的升级方案。 EFI 的位置很特殊，它不像是 BIOS 那样自己即是固件又是接口，EFI 只是一个接口，位于操作系统与平台固件之间，感觉像是公司、CEO、CEO秘书之间的关系一样，由CEO (操作系统) 下任务，CEO秘书 (EFI) 负责把任务分配下发到公司各部门经理 (平台固件)，经理们又把任务下发到具体的小组 (各类硬件) 去完成。
-
-GPT ，全局唯一标识磁盘分区表 (GUID <span class="keyword">Partition</span> <span class="keyword">Table</span>)，GUID，全局唯一标识符 (Globally <span class="keyword">Unique</span> Identifier) 。GUID 分区表 (GPT) 是作为 Extensible Firmware Interface (EFI) 计划的一部分引入的。当然，你也可以在 BIOS 的PC中使用 GPT 分区，虽然 GPT 来自以 EFI 计划，但并不依赖于 EFI。GPT 相对于以往 PC 普遍使用的主引导记录 (MBR) 分区方案更加灵活。比如可以超过 MBR 分区表项<span class="number">4</span>个的限制，在 GPT 规范里对分区的数量几乎是没有限制的，大家在网上可以查到的<span class="number">128</span>个实际上是 Windows 系统 (支持 GPT 的 Windows) 做出的限制。 GPT 对可管理磁盘大小也超过了 MBR 的<span class="number">2</span>TB (<span class="number">1</span>TB = <span class="number">1024</span>GB) 而达到了 <span class="number">18</span>EB (<span class="number">1</span>EB = <span class="number">1024</span>TB) 。在 MBR 分区方案中操作系统的引导是通过放在磁盘最开始 (第一扇区) 里的 MBR (这里的 MBR 是指主引导记录，而不是主引导记录分区方案，两者是同名的。我的猜测是为了与 GPT 分区方案区分，使用了主引导记录引导方式的名字 MBR 来命名此种分区方案，我查不到确切的资料正明我的猜测是否正确，只能大家努力区分一下了。) 。把重要的信息 (如分区信息、目录等) 放在某个扇区里是 MBR 分区方案的方法，而 GPT 把这个信息放到了分区里，Intel的解释是这样可以更加明确更加安全。 GPT 分区为了保护自己不受 MBR 方案下磁盘管理软件的危害，在磁盘的最开始位置 (第一个扇区) 建立了一个保护分区 (Protective MBR)，这种分区的类型标识为 <span class="number">0xEE</span>。苹果系统 (Mac OS X) 下这个保护分区大小为 <span class="number">200</span>MB，这个分区在 Window NT 磁盘管理器里名字叫做 GPT 保护分区。这个分区可以让不能识别 GPT 的磁盘管理软件把 GPT 磁盘看成一个未知格式的分区，而不是错误地当成一个未分区的磁盘。
-</code></pre><p>常用的 MS-DOS 分区表格式不能在一个大于 2TB 的设备上使用。要支持大于2TB</p>
-<pre><code>的设备，GPT 分区表格式必须被使用，并且必须使用 <span class="keyword">*</span>parted<span class="keyword">*</span> 工具程序来创建和
-
-管理 GPT 分区。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/24/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/24/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

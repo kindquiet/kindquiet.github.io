@@ -1,4 +1,94 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-04-27T02:49:58.000Z" class="post__time">四月 27, 2010</time><h1 class="post__title"><a href="/2010/04/27/w/wordpress-e5-b8-b8-e7-94-a8-e7-bb-b4-e6-8a-a4-e6-98-8e-e4-bb-a4/">wordpress常用维护明令</a></h1></header><div class="post__main"><p>备份数据库(innodb)</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2010-05-12T08:02:20.000Z" class="post__time">五月 12, 2010</time><h1 class="post__title"><a href="/2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/">用nxserver代替vnc-server实现快速远程桌面管理</a></h1></header><div class="post__main"><p>nx技术采取了新的远程协议，把x桌面的数据经过提取，仅传送一些参数，而且通过ssh来进行数据加密传送，因此相比VNC或直接XDMP具有很快的速度 和较高的安全性能。</p>
+<p> centos 6，安装更新为：</p>
+<p>yum install freenx nxproxy nxagent -y</p>
+<p>否则报错：</p>
+<p>Can&#39;t open /var/lib/nxserver/db/running/sessionId{…}: No such file or directory.</p>
+<p>centos客户端安装：</p>
+<p>yum install opennx -y</p>
+<p>或者下载<a href="https://www.nomachine.com/download" target="_blank" rel="external">https://www.nomachine.com/download</a></p>
+<p>要点：</p>
+<p>1、centos 5 yum安装的包是nx-3.4.0-3.el5.centos，freenx-0.7.3-3.el5.centos。</p>
+<p>配置文件在/etc/nxserver</p>
+<p>客户端的key的位置是</p>
+<p>/var/lib/nxserver/home/.ssh/client.id_dsa.key</p>
+<p>2、如果验证错误，可以重置key:</p>
+<p>nxsetup —install —setup-nomachine-key —clean —purge</p>
+<pre><code><span class="comment">nxsetup</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">setup</span><span class="literal">-</span><span class="comment">nomachine</span><span class="literal">-</span><span class="comment">key</span>
+</code></pre><p>3. 对于centos 6，安装 NX / FreeNX ：</p>
+<p>yum groupinstall Desktop -y</p>
+<p>yum install nx freenx -y</p>
+<p>You may also download the RPMS from:</p>
+<pre><code><span class="symbol">http:</span>/<span class="regexp">/mirror.centos.org/centos</span><span class="regexp">/5/extras</span><span class="regexp">/i386/</span><span class="constant">RPMS/</span>
+
+<span class="keyword">and</span> the <span class="constant">SRPMS </span><span class="symbol">from:</span>
+
+<span class="symbol">http:</span>/<span class="regexp">/mirror.centos.org/centos</span><span class="regexp">/5/extras</span><span class="regexp">/SRPMS/</span>
+</code></pre><p>Copy a minimal configuration file for nxserver :</p>
+<p>cd /etc/nxserver ; cp node.conf.sample node.conf</p>
+<p>nxsetup —install —setup-nomachine-key</p>
+<pre><code>nxserver <span class="comment">--start</span>
+</code></pre><p>4、如果是下载rpm包安装nxclient-3.4.0-7.i386.rpm,nxnode- 3.4.0-11.i386.rpm,nxserver-3.4.0-12.i386.rpm，</p>
+<p>配置文件在/usr/NX/etc/，</p>
+<p>执 行文件在/usr/NX/bin，初始化明令：</p>
+<p>nxserver —install —setup-nomachine-key</p>
+<p>5. Installing the NoMachine Client</p>
+<pre><code>download <span class="keyword">from</span> http:<span class="comment">//www.nomachine.com/</span>
+</code></pre><p> Select the connection type, the desktop system you want to use(e.g. Gnome), and the size of the desktop. Also decide if you want to Encrypt all Traffic via SSL. If you use SSL, not only is the traffic encrypted, but it uses only the SSL port you list to make the connection. This means only the SSL port needs to be open to inbound traffic if you are connecting from outside a firewall. Select Next when finished.</p>
+<p> In the advanced dialog window under the General Tab, you should see the items you have already entered and a Key… button. You will need to ssh into the server which you are trying to connect and go to the /etc/nxserver/ directory and edit the file client.id_dsa.key (you must be the root user to open this file). Copy all the text (including the BEGIN DSA PRIVATE KEY and END DSA PRIVATE KEY lines. Press the Key… button, delete the text that is in there, and paste the client.id_dsa.key information from the server into the DSA Key text box (shown in yellow below}, then select Save. [attachment:nxclient4.png] [attachment:nxclient5.png]</p>
+<p>6. Misc Notes</p>
+<p>If you are installing FreeNX on a remote server, you will also need to install a Desktop environment on the machine in order to run the remote session. An easy to do that for Gnome is to run this command :</p>
+<p>yum groupinstall &#39;GNOME Desktop Environment&#39; &#39;X Window System&#39;</p>
+<p>Note: If you are running CentOS 5, yum groupinstall GNOME Desktop Environment may complain about a missing libgaim.so.0. This is a known bug. Please see CentOS-5 FAQ for details.</p>
+<p>FreeNX expects to make an ssh connection at 127.0.0.1, i.e., at the local host address. If you haven&#39;t changed your default sshd_config, the sshd daemon will be available at that IP address.</p>
+<p>However, if you have modified the ListenAddress lines in /etc/ssh/sshd_config, this can cause a problem. Make sure that sshd is available at 127.0.0.1. This can be checked with</p>
+<p>netstat -an |grep 22</p>
+<p>The result should be similar to</p>
+<p>tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN</p>
+<pre><code><span class="title">tcp</span> <span class="number">0</span> <span class="number">0</span> :::<span class="number">22</span> <span class="number">0.0.0.0</span>:* LISTEN
+</code></pre><p>(The above assumes that you use the default port 22 for ssh connections.) This output indicates that sshd is listening on all addresses.</p>
+<p>If remotely connected, use the screen command. You are about to restart sshd which will disconnect a remote ssh session. (There are other ways to restart the sshd daemon without disconnecting yourself, but screen is one of the easiest ones.).</p>
+<p>screen</p>
+<p>This should give you a command prompt. Restart sshd.</p>
+<p>/etc/init.d/sshd restart</p>
+<p>Use netstat -an again to check that it is now listening at 127.0.0.1.</p>
+<p>netstat -an</p>
+<p>You should now see something like</p>
+<p>tcp 192.168.1.20:22 0.0.0.0:* LISTEN</p>
+<pre><code><span class="title">tcp</span> <span class="number">127.0.0.1:22</span> <span class="number">0.0.0.0</span>:* LISTEN
+</code></pre><p>FreeNX will now be able to connect.</p>
+<p><a href="http://wiki.centos.org/HowTos/FreeNX" target="_blank" rel="external">http://wiki.centos.org/HowTos/FreeNX</a></p>
+<p>Firewall ports</p>
+<ul>
+<li><p>NX need at least 2 ports: NX port and X11 port</p>
+<ul>
+<li><p>NX port = 4000 + display number (open port 5000-5200 on firewall)</p>
+</li>
+<li><p>X11 port = 6000 + display number (i.e. open port 7000-7200 on firewall)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>nx不能连接错误排除：</p>
+<p>freenx server 一连接上立即失效</p>
+<pre><code>已经通过密码验证，而且<span class="tag">windows</span>版的客户端还会出现一个有<span class="tag">nomechine</span>的<span class="tag">logo</span>的窗口，但是立刻就消失了，提示
+
+<span class="tag">Session</span> ... <span class="tag">failed</span>.
+
+详细信息：
+
+<span class="rule"><span class="attribute">Error</span>:<span class="value"> Connection with remote peer broken.
+
+Error: Please check the state of your network and retry.
+
+Session: Terminating session at &amp;<span class="hexcolor">#39</span></span></span>;<span class="tag">Tue</span> <span class="tag">Sep</span> 16 17<span class="pseudo">:24</span><span class="pseudo">:20</span> 2008&amp;<span class="id">#39</span>;.
+
+<span class="rule"><span class="attribute">Session</span>:<span class="value"> Session terminated at &amp;<span class="hexcolor">#39</span></span></span>;<span class="tag">Tue</span> <span class="tag">Sep</span> 16 17<span class="pseudo">:24</span><span class="pseudo">:20</span> 2008&amp;<span class="id">#39</span>;.
+</code></pre><p>解决：</p>
+<pre><code>检查服务器~user<span class="regexp">/.nx/</span>目录。
+
+检查gnome或kde是否安装，与nxclient设置是否一致。
+</code></pre><p>yum groupinstall &#39;KDE Desktop&#39; -y</p>
+</div><footer class="post__foot u-cf"><a href="/2010/05/12/w/e7-94-a8nxserver-e4-bb-a3-e6-9b-bfvnc-server-e5-ae-9e-e7-8e-b0-e5-bf-ab-e9-80-9f-e8-bf-9c-e7-a8-8b-e6-a1-8c-e9-9d-a2-e7-ae-a1-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-04-27T02:49:58.000Z" class="post__time">四月 27, 2010</time><h1 class="post__title"><a href="/2010/04/27/w/wordpress-e5-b8-b8-e7-94-a8-e7-bb-b4-e6-8a-a4-e6-98-8e-e4-bb-a4/">wordpress常用维护明令</a></h1></header><div class="post__main"><p>备份数据库(innodb)</p>
 <pre><code>/usr/local/mysql/bin/mysqldump -uuser -ppass --single-transaction --<span class="keyword">default</span>-character-<span class="keyword">set</span>=utf8 --opt --extended-insert=<span class="keyword">false</span> --triggers --routines --hex-blob wpdatabase  wpdatabase.`date +%F`.sql
 
 清理Revisions(历史版本)
@@ -154,31 +244,4 @@ Benchmark
 同样，access_<span class="built_in">log</span>文件超过<span class="number">2</span>G也会导致不能启动。
 
 当时没有注意<span class="number">2147483647</span>这个数字就是<span class="number">2</span>G-<span class="number">1</span>，其实，从启动是日志中没有任何内容也可以推理问题和日志文件有关。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2010-03-04T06:32:39.000Z" class="post__time">三月 4, 2010</time><h1 class="post__title"><a href="/2010/03/04/w/linux-e7-9a-84-e4-b8-ad-e6-96-87-e5-a4-84-e7-90-86-e5-92-8c-e6-96-87-e4-bb-b6-e5-90-8d-e4-b9-b1-e7-a0-81-e8-bd-ac-e6-8d-a2/">linux的中文处理和文件名乱码转换</a></h1></header><div class="post__main"><p>1、locale</p>
-<p>/etc/sysconfig/i18n </p>
-<pre><code>#LANG=zh_CN<span class="class">.GB18030</span>
-
-#LC_ALL=zh_CN<span class="class">.GB18030</span>
-
-LANG=zh_CN<span class="class">.UTF-8</span>
-
-LC_ALL=zh_CN<span class="class">.UTF-8</span>
-
-LANGUAGE=en_US<span class="class">.UTF-8</span>:zh_CN<span class="class">.GB18030</span>:zh_CN<span class="class">.GB2312</span>:zh_CN:en_US<span class="class">.UTF-8</span>
-
-SYSFONT=latarcyrheb-sun16
-</code></pre><p>2、samba</p>
-<p>/etc/samba/smb.conf</p>
-<p>[global]</p>
-<pre><code>DISPLAY <span class="variable">CHARSET=</span> utf8
-
-UNIX <span class="variable">CHARSET =</span> utf8
-
-<span class="comment">#UNIX CHARSET = cp936</span>
-
-DOS <span class="variable">CHARSET =</span> utf8
-</code></pre><h1 id="关键是UNIX_CHARSET_=_utf8，其它可以不加">关键是UNIX CHARSET = utf8，其它可以不加</h1><p>3、文件名乱码转换</p>
-<p>yum install convmv</p>
-<p>convmv -f GBK -t UTF-8 *.zip —notest</p>
-<p>—notest不加测试，直接转换，建议先测试。</p>
-</div><footer class="post__foot u-cf"><a href="/2010/03/04/w/linux-e7-9a-84-e4-b8-ad-e6-96-87-e5-a4-84-e7-90-86-e5-92-8c-e6-96-87-e4-bb-b6-e5-90-8d-e4-b9-b1-e7-a0-81-e8-bd-ac-e6-8d-a2/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/19/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/21/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2010/03/19/w/apache-e6-97-a0-e6-b3-95-e5-90-af-e5-8a-a8-e6-b2-a1-e6-9c-89-e9-94-99-e8-af-af-e6-8f-90-e7-a4-ba-e7-9a-84-e5-8f-af-e8-83-bd-e5-8e-9f-e5-9b-a0/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/19/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/21/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

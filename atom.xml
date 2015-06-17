@@ -4,7 +4,7 @@
   <subtitle><![CDATA[dayu's blog]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.veryi.com/"/>
-  <updated>2015-04-22T07:04:31.669Z</updated>
+  <updated>2015-06-17T02:34:19.408Z</updated>
   <id>http://blog.veryi.com/</id>
   
   <author>
@@ -13,6 +13,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[thinkpadparted]]></title>
+    <link href="http://blog.veryi.com/2015/06/17/thinkpadparted/"/>
+    <id>http://blog.veryi.com/2015/06/17/thinkpadparted/</id>
+    <published>2015-06-17T01:16:24.000Z</published>
+    <updated>2015-06-17T02:34:19.408Z</updated>
+    <content type="html"><![CDATA[<p>解决ThinkPad只有一个分区的问题——ThinkPad C盘分区，其它有一个分区的windows系统可以参考。在不破坏原系统的情况下，将C盘部分空间分割出来。</p>
+<p>注意：这样分区的前提是，电脑释放系统以后没有再做任何操作，直接进行分区。或者新装的系统。如果没有重要数据，可以重新释放，以t550为例，开机时按ENTER，再按F11键进入一键恢复预启动界面 ,请单击”复原系统”并按屏幕上的指示信息进行操作。</p>
+<h2 id="分区操作">分区操作</h2><p><strong> 取消分页文件 </strong><br>找到“计算机”，点击右键选择属性-&gt;点击“高级系统设置”，<br>在“高级”选项卡里面选择性能一栏里面的设置，找到“高级”选项卡，单击“更改”<br>，将“1”的对勾取消掉，2中选择“无分页文件”，点击“3”设置，最后点击“4”确定<br>,单击“是”</p>
+<p><strong> 关闭系统保护 </strong><br>之后在“系统属性”对话框里面找到“系统保护”选项卡，选择本地磁盘C:，单击“配置”<br>，先关闭系统保护，然后点击删除，之后点应用，再确定。<br><strong> 之后要重启电脑，这一步很关键。</strong></p>
+<h3 id="压缩卷">压缩卷</h3><p>找到“计算机”，单击右键，选择“管理”</p>
+<p>选择磁盘管理，选择C盘，就是容量最大那个分区，点击右键，选择“压缩卷”</p>
+<p>这里解释一下，从上到下有3个数字，“1”是C盘现在的大小，“2”是从C盘划出来多大空间，就是新的分区，我们这里选择400G左右，“3”是压缩以后C盘的大小，20G左右。</p>
+<p>确定之后会有新分出来的空间，在该空间图示上单击右键，选择“新建简单卷”-&gt;下一步<br>这里默认是最大的，如果不是，要把这个数值调到最大，然后单击“下一步”<br>选则“不分配驱动器号或驱动器路径”，单击“下一步”-&gt;“不要格式化这个卷”，单击下一步。<br>完成，现在看到刚才黑色的分区变成绿框的了，在这上面单击右键，选择“删除卷”<br>之后就是按照刚才的过程，直到分配驱动器号这里，这里默认就可以。格式化分区，单击下一步，<br>现在，新的分区已经可以正常使用了。</p>
+<p>重启，恢复分页文件，打开C盘系统保护<br><a href="http://benyouhui.it168.com/thread-1806819-1-1.html" target="_blank" rel="external">参考</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>解决ThinkPad只有一个分区的问题——ThinkPad C盘分区，其它有一个分区的windows系统可以参考。在不破坏原系统的情况下，将C盘部分空间分割出来。</p>
+<p>注意：这样分区的前提是，电脑释放系统以后没有再做任何操作，直接进行分区。或者新装的系统。如果没有]]>
+    </summary>
+    
+      <category term="计算机" scheme="http://blog.veryi.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[dedecms 5.7副栏目的使用]]></title>
@@ -43,8 +68,8 @@
     <link href="http://blog.veryi.com/2015/04/07/github-hexo-blog/"/>
     <id>http://blog.veryi.com/2015/04/07/github-hexo-blog/</id>
     <published>2015-04-07T03:45:22.000Z</published>
-    <updated>2015-04-10T06:54:46.143Z</updated>
-    <content type="html"><![CDATA[<p>hexo是一个基于Node.s的静态博客程序。hexo生成的静态网页可以直接放到GitHub Pages，BAE，SAE等平台上。把博客从wordpress迁移到了github，參考：<a href="http://riny.net/2014/move-blog-to-github/" target="_blank" rel="external">http://riny.net/2014/move-blog-to-github/</a>,<a href="http://blog.fens.me/hexo-blog-github/" target="_blank" rel="external">http://blog.fens.me/hexo-blog-github/</a><br>现在hexo已经更新到3.0，有部分内容需要修正，包括一些问题的解决办法，补充如下：<br><a id="more"></a></p>
+    <updated>2015-04-23T07:34:34.286Z</updated>
+    <content type="html"><![CDATA[<p>hexo是一个基于Node.s的静态博客程序。hexo生成的静态网页可以直接放到GitHub Pages，BAE，SAE等平台上。把博客从wordpress迁移到了github，參考：<a href="http://ippotsuko.com/build-your-hexo-blog-3/" target="_blank" rel="external">http://ippotsuko.com/build-your-hexo-blog-3/</a>,<a href="http://riny.net/2014/move-blog-to-github/" target="_blank" rel="external">http://riny.net/2014/move-blog-to-github/</a>,<a href="http://blog.fens.me/hexo-blog-github/" target="_blank" rel="external">http://blog.fens.me/hexo-blog-github/</a><br>现在hexo已经更新到3.0，有部分内容需要修正，包括一些问题的解决办法，补充如下：<br><a id="more"></a></p>
 <h2 id="github">github</h2><h3 id="申请github账号">申请github账号</h3><ul>
 <li>首先注册一个『GitHub』帐号</li>
 <li>建立与你用户名对应的仓库，仓库名为『your_user_name.github.io』<h4 id="配置自动登陆：">配置自动登陆：</h4></li>
@@ -1007,39 +1032,6 @@ Errors from xkbcomp are <span class="keyword">not</span> fatal <span class="keyw
     <summary type="html">
     <![CDATA[<p> 在线文档协同浏览，在WEB应用中实现百度文库那样可以在线浏览文档的功能。用户上传一个office文档，如doc、ppt、pdf之类的，然后在浏览器里显示出来。doc,ppt,xls,txt需转换为pdf ，分割pdf ，pdf转换为swf 。</p>
 <p>安装openo]]>
-    </summary>
-    
-      <category term="计算机" scheme="http://blog.veryi.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[禁止WordPress半角符号自动变成全角符号]]></title>
-    <link href="http://blog.veryi.com/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/"/>
-    <id>http://blog.veryi.com/2013/07/24/w/e7-a6-81-e6-ad-a2wordpress-e5-8d-8a-e8-a7-92-e7-ac-a6-e5-8f-b7-e8-87-aa-e5-8a-a8-e5-8f-98-e6-88-90-e5-85-a8-e8-a7-92-e7-ac-a6-e5-8f-b7/</id>
-    <published>2013-07-24T08:09:17.000Z</published>
-    <updated>2015-04-08T01:09:29.075Z</updated>
-    <content type="html"><![CDATA[<p> WordPress默认情况下会将代码的半角符号自动转成全角符号，防止外部源代码在网页上执行。例如会把—装换为－。在没有使用代码高亮插件时，直接粘贴在网页上的代码，就不能直接使用，必须将符号改为半角才行。对于经常需要在文章中使用代码的朋友来说，可以禁用WordPress的默认转换功能。</p>
-<p>方法一</p>
-<pre><code>修改当前主题的functions.php文件，例如：wp-content/themes/amazinggrace/functions.php，在?php 和 ? 之间加入下面的代码即可：
-
-remove_filter(&amp;<span class="string">#39</span>;the_content&amp;<span class="string">#39</span>;, &amp;<span class="string">#39</span>;wptexturize&amp;<span class="string">#39</span>;);
-
-这种方法的好处就是直接修改的是主题包中的文件，因此我们在不更换主题的情况下，wordpress可以自由升级；同样的，其缺点就是，当我们更换了主题之后，就要重新进行添加代码。
-</code></pre><p>方法二</p>
-<pre><code><span class="number">1</span>、打开并编辑 wp-includes/formatting.php 文件，找到以下代码（大概第<span class="number">124</span>行）：
-
-<span class="variable">$curl</span> = str_replace(<span class="variable">$static_characters</span>, <span class="variable">$static_replacements</span>, <span class="variable">$curl</span>);
-</code></pre><p>$curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
-<p>2、将$curl 开头的两句代码注释掉，修改后，效果如下：</p>
-<pre><code>// <span class="variable">$curl</span> = str_replace(<span class="variable">$static_characters</span>, <span class="variable">$static_replacements</span>, <span class="variable">$curl</span>);
-</code></pre><p>// $curl = preg_replace($dynamic_characters, $dynamic_replacements, $curl);</p>
-<pre><code>这样，别人复制下来的函数代码标点就不会是全角，无法使用了！
-
-方法二是直接修改WordPress程序文件的，只要更新WordPress，就得重新修改，所以推荐使用方法一。
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p> WordPress默认情况下会将代码的半角符号自动转成全角符号，防止外部源代码在网页上执行。例如会把—装换为－。在没有使用代码高亮插件时，直接粘贴在网页上的代码，就不能直接使用，必须将符号改为半角才行。对于经常需要在文章中使用代码的朋友来说，可以禁用WordPress的默]]>
     </summary>
     
       <category term="计算机" scheme="http://blog.veryi.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>

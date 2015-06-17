@@ -1,4 +1,39 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-07T03:56:33.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/">一个高度安全的iptables防火墙配置脚本</a></h1></header><div class="post__main"><p>管理linux服务器10年经验总结的一个linux iptables 防火墙。</p>
+<p>除了测试服务器，接入internet的linux服务器都应该打开iptables防火墙。</p>
+<p>vi /etc/sysconfig/iptables</p>
+<h1 id="created_by_dayu@veryi-com">created by dayu@veryi.com</h1><p>*filter</p>
+<p>:INPUT DROP [0:0]</p>
+<p>:FORWARD DROP [0:0]</p>
+<p>:OUTPUT DROP [0:0]</p>
+<p>:LOG_ACCEPT - [0:0]</p>
+<p>:LOG_DROP - [0:0]</p>
+<p>-A INPUT -i lo -j ACCEPT</p>
+<p>-A INPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A INPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A INPUT -p tcp —dport 80 -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 25 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A INPUT -p tcp -m state —state NEW -m tcp —dport 110 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<h1 id="pasv_ftp">pasv ftp</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_21_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 21 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><h1 id="-A_INPUT_-p_tcp_-m_state_—state_NEW_-m_tcp_—dport_58000:58129_—tcp-flags_SYN,RST,ACK_SYN_-j_ACCEPT">-A INPUT -p tcp -m state —state NEW -m tcp —dport 58000:58129 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</h1><p>-A INPUT -s your_trust_ip -p tcp -m state —state NEW -m tcp —dport 22 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
+<p>-A OUTPUT -o lo -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 53 -j ACCEPT</p>
+<p>-A OUTPUT -m state —state RELATED,ESTABLISHED -j ACCEPT</p>
+<p>-A OUTPUT -p icmp -m icmp —icmp-type any -m state —state NEW -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m tcp —dport 25 -j ACCEPT</p>
+<p>-A OUTPUT -p tcp -m multiport —dports 20,21,22,43,80,443,3306,8080 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 161 -j ACCEPT</p>
+<p>-A OUTPUT -p udp -m udp —dport 123 -j ACCEPT</p>
+<p>-A LOG_ACCEPT -j LOG —log-prefix [ACCEPT] :  —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_ACCEPT -j ACCEPT</p>
+<p>-A LOG_DROP -j LOG —log-prefix [DROP] :  —log-level 6 —log-tcp-options —log-ip-options</p>
+<p>-A LOG_DROP -j DROP</p>
+<p>COMMIT</p>
+<p>默认规则为禁止，并且对出去的包也作了限制，LOG_ACCEPT、LOG_DROP是调防火墙用的。</p>
+<p>ftp(vsftpd)需要配合以下参数:</p>
+<p>listen_port=21</p>
+<p>pasv_enable=YES</p>
+<p>pasv_min_port=58000</p>
+<p>pasv_max_port=58129</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
 <p>DenyHosts官方网站为：</p>
 <p><a href="http://denyhosts.sourceforge.net" target="_blank" rel="external">http://denyhosts.sourceforge.net</a></p>
 <p>如果没有python运行环境，需要先安装python</p>
@@ -788,75 +823,4 @@ crypt=<span class="number">2</span> 不能登录，原因，centos <span class="
 <p>Dean’s FCKEditor For Wordpress</p>
 <p><a href="http://wordpress.org/extend/plugins/fckeditor-for-wordpress-plugin/" target="_blank" rel="external">下载</a></p>
 <p>这个老牌的富文本编辑器，会很辛苦地把空格转换为nbsp，而不是聪明的删除之。感谢，我不用很费时的编辑html源文件了。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-02T08:44:00.000Z" class="post__time">四月 2, 2009</time><h1 class="post__title"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/">用mysqldump对mysql多个数据库完全备份的脚本</a></h1></header><div class="post__main"><p> mysqldump 是采用SQL级别的备份机制，它将数据表导成 SQL 脚本文件，在不同的 MySQL 版本之间升级时相对比较合适，但是效率相对较低。mysql文档中说明:除了二进制备份，你也应该周期性地用<strong>mysqldump</strong>转储你的数据库。这么做的原因是，二进制文件可能被破坏而你没有注意到。转储的文件被存储成为人可读的文本文件，所以定点表的损坏 修复变得更容易。再者，因为形式更简单，严重数据损坏的机会就更小。</p>
-<p>可以一周执行一次。</p>
-<p>crontab -e</p>
-<p>0 2 <em> </em> 5 /home/work/mysqlflbk.sh</p>
-<h1 id="!/bin/sh">!/bin/sh</h1><h1 id="writed_by_dayu@veryi-com">writed by dayu@veryi.com</h1><p>#</p>
-<p>export PATH=/bin:/usr/bin</p>
-<p>Dbamail=dayu@veryi.com</p>
-<p>Dbhostname=<code>hostname</code></p>
-<p>Interval=14</p>
-<p>website=newblog.cersp.com</p>
-<p>DATE=<code>date +%Y%m%d</code></p>
-<p>DbUser=root</p>
-<p>DbPasswd=pass</p>
-<p>BackupPath=/opt/backup</p>
-<p>LogFile=/var/log/mysql/mysqld.log</p>
-<p>DbPath=/usr/local/mysql/data</p>
-<p>DbName=<code>mysql -uroot -pnew_pass -e show databases; |grep -v \+|grep -v Database</code></p>
-<p>[ -d /var/log/mysql ] || ( mkdir -p /var/log/mysql ;chmod 777 /tmp/logs )</p>
-<p>[ -d /opt/backup ] || mkdir -p /opt/backup</p>
-<p>echo —————————————————————-  $LogFile</p>
-<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
-<p>echo —————————————  $LogFile</p>
-<p>cd /opt/backup</p>
-<p>for a in $DbName</p>
-<p>do</p>
-<p> /usr/local/mysql/bin/mysqldump -u$DbUser -p$DbPasswd \</p>
-<p> —default-character-set=utf8 —opt \</p>
-<p> $a  $a.$DATE.sql \</p>
-<p>  echo $a successful backup  $LogFile \</p>
-<p> || echo $a bakup failed | mail -s $Dbhostname db bakup failed. $Dbamail</p>
-<p>done</p>
-<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
-<p>for a in $DbName</p>
-<p>do</p>
-<p> bzip2 $a.$DATE.sql</p>
-<p> find . -name $a.*.bz2 -type f -mtime +$Interval -exec rm -f {} \;</p>
-<p>done</p>
-<p>echo $(date +%y-%m-%d %H:%M:%S)  $LogFile</p>
-<p>mysqldump 的一些主要参数说明：</p>
-<p>—compatible=name</p>
-<p>导出的数据将和哪种数据库或哪个旧版本的 MySQL 服务器相兼容。值可以为 ansi、mysql323、mysql40、postgresql、oracle、mssql、db2、maxdb、no_key_options、 no_tables_options、no_field_options 等，要使用几个值，用逗号隔开。</p>
-<p>—complete-insert，-c</p>
-<p>导出的数据采用包含字段名的完整 INSERT 方式，也就是把所有的值都写在一行。这么做能提高插入效率，但是可能会受到 max_allowed_packet 参数的影响而导致插入失败。因此，需要谨慎使用该参数。</p>
-<p>—default-character-set=charset</p>
-<p>指定导出数据时采用何种字符集，如果数据表不是采用默认的 latin1 字符集的话，那么导出时必须指定该选项，否则再次导入数据后将产生乱码问题。</p>
-<p>—disable-keys</p>
-<p>在 INSERT 语句的开头和结尾增加 /<em>!40000 ALTER TABLE table DISABLE KEYS </em>/; 和 /<em>!40000 ALTER TABLE table ENABLE KEYS </em>/; 语句，这能大大提高插入语句的速度，因为它是在插入完所有数据后才重建索引的。该选项只适合 MyISAM 表。</p>
-<p>—extended-insert = true|false</p>
-<p>默认总是导出一个长的insert语句，如果需要导出的sql中，每条记录对应一个insert语句，在不支持insert多值的数据库中，可以很方便的进行迁移，只需要加—extented-insert=false即可。</p>
-<p>—hex-blob</p>
-<p>使用十六进制格式导出二进制字符串字段。如果有二进制数据就必须使用本选项。影响到的字段类型有 BINARY、VARBINARY、BLOB。</p>
-<p>—lock-all-tables，-x</p>
-<p>在开始导出之前，提交请求锁定所有数据库中的所有表，以保证数据的一致性。这是一个全局读锁，并且自动关闭 —single-transaction 和 —lock-tables 选项。</p>
-<p>—lock-tables</p>
-<p>它和 —lock-all-tables 类似，不过是锁定当前导出的数据表，而不是一下子锁定全部库下的表。本选项只适用于 MyISAM 表，如果是 Innodb 表可以用 —single-transaction 选项。</p>
-<p>—no-create-info，-t</p>
-<p>只导出数据，而不添加 CREATE TABLE 语句。</p>
-<p>—no-data，-d</p>
-<p>不导出任何数据，只导出数据库表结构。</p>
-<p>—opt</p>
-<p>这只是一个快捷选项，等同于同时添加 —add-drop-tables —add-locking —create-option —disable-keys —extended-insert —lock-tables —quick —set-charset 选项。本选项能让 mysqldump 很快的导出数据，并且导出的数据能很快导回。该选项默认开启，但可以用 —skip-opt 禁用。注意，如果运行 mysqldump 没有指定 —quick 或 —opt 选项，则会将整个结果集放在内存中。如果导出大数据库的话可能会出现问题。</p>
-<p>—quick，-q</p>
-<p>该选项在导出大表时很有用，它强制 mysqldump 从服务器查询取得记录直接输出而不是取得所有记录后将它们缓存到内存中。</p>
-<p>—routines，-R</p>
-<p>导出存储过程以及自定义函数。</p>
-<p>—single-transaction</p>
-<p>该选项在导出数据之前提交一个 BEGIN SQL语句，BEGIN 不会阻塞任何应用程序且能保证导出时数据库的一致性状态。它只适用于事务表，例如 InnoDB 和 BDB。</p>
-<p>本选项和 —lock-tables 选项是互斥的，因为 LOCK TABLES 会使任何挂起的事务隐含提交。</p>
-<p>要想导出大表的话，应结合使用 —quick 选项。</p>
-<p>—triggers</p>
-<p>同时导出触发器。该选项默认启用，用 —skip-triggers 禁用它。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/02/w/e7-94-a8mysqldump-e5-af-b9mysql-e5-a4-9a-e4-b8-aa-e6-95-b0-e6-8d-ae-e5-ba-93-e5-ae-8c-e5-85-a8-e5-a4-87-e4-bb-bd-e7-9a-84-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(137)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/31/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/33/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/04/03/w/e2-80-9c-e4-b8-8d-e8-81-aa-e6-98-8e-e2-80-9d-e7-9a-84wordpress-e5-9c-a8-e7-ba-bf-e7-bc-96-e8-be-91-e5-99-a8-deans-fckeditor-for-wordpress/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/31/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/33/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
