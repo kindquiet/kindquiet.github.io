@@ -1,4 +1,445 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-21T07:08:59.000Z" class="post__time">四月 21, 2009</time><h1 class="post__title"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/">在Linux上源代码安装与配置bind 9 dns</a></h1></header><div class="post__main"><p>支持ipv6，参考rfc1912配置。</p>
+<p>Bind是一款开放源码的DNS服务器软件，Bind由美国加州大学Berkeley分校开发和维护的，全名为Berkeley Internet Name Domain它是目前世界上使用最为广泛的DNS服务器软件，支持各种unix平台和windows平台。</p>
+<p>操作系统:</p>
+<p>centos</p>
+<p>下载:</p>
+<p>wget <a href="http://ftp.isc.org/isc/bind9/9.6.0-P1/bind-9.6.0-P1.tar.gz" target="_blank" rel="external">http://ftp.isc.org/isc/bind9/9.6.0-P1/bind-9.6.0-P1.tar.gz</a></p>
+<p>最新bind 9需要安装新版本openssl:</p>
+<p>安装zlib</p>
+<p>tar xfj zlib-1.2.3.tar.bz2 -C /usr/local/src</p>
+<p>cd /usr/local/src/zlib-1.2.3</p>
+<p>./configure</p>
+<p>make -j6  make install </p>
+<p>echo /usr/local/lib  /etc/ld.so.conf</p>
+<p>ldconfig</p>
+<p>安装openssl</p>
+<p><a href="http://www.openssl.org/source/" target="_blank" rel="external">http://www.openssl.org/source/</a></p>
+<p>tar zxf openssl-0.9.8k.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/openssl-0.9.8k</p>
+<p>./config —prefix=/usr/local/openssl —openssldir=/usr/local/openssl shared zlib</p>
+<p>make  make test  make install</p>
+<p>/usr/local/openssl/lib/</p>
+<p>echo /usr/local/openssl/lib/  /etc/ld.so.conf</p>
+<p>ldconfig</p>
+<p>tar xfz bind-9.6.0-P1.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/bind-9.6.0-P1</p>
+<p>./configure —prefix=/usr/local/named —enable-threads —enable-ipv6 —with-openssl=/usr/local/openssl —with-dlz-mysql</p>
+<p>make -j6  make install</p>
+<p>建立BIND用户：</p>
+<p>groupadd bind</p>
+<p>useradd -g bind -d /usr/local/named -s /sbin/nologin bind</p>
+<p>创建配置文件目录：</p>
+<p>mkdir -p /usr/local/named/etc/primary</p>
+<p>chown bind:bind /usr/local/named/etc</p>
+<p>chmod 770 /usr/local/named/etc</p>
+<p>创建PID和日志文件：</p>
+<p>mkdir -p /var/run/named/</p>
+<p>chmod 777 /var/run/named/</p>
+<p>chown bind:bind /var/run/named/</p>
+<p>mkdir -p /var/log/named/</p>
+<p>touch /var/log/named/dns_warnings</p>
+<p>touch /var/log/named/dns_logs</p>
+<p>chown bind:bind /var/log/named</p>
+<p>建立启动脚本：</p>
+<p>vi /etc/init.d/named</p>
+<h1 id="!/bin/bash">!/bin/bash</h1><p>#</p>
+<h1 id="named_This_shell_script_takes_care_of_starting_and_stopping">named This shell script takes care of starting and stopping</h1><h1 id="named_(BIND_DNS_server)-">named (BIND DNS server).</h1><p>#</p>
+<h1 id="chkconfig:_-_55_45">chkconfig: - 55 45</h1><h1 id="description:_named_(BIND)_is_a_Domain_Name_Server_(DNS)_\">description: named (BIND) is a Domain Name Server (DNS) \</h1><h1 id="that_is_used_to_resolve_host_names_to_IP_addresses-">that is used to resolve host names to IP addresses.</h1><h1 id="probe:_true">probe: true</h1><h1 id="Source_function_library-">Source function library.</h1><p>. /etc/rc.d/init.d/functions</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ]  . /etc/sysconfig/network</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = no ]  exit 0</p>
+<p>[ -x /usr/local/named/sbin/named ] || exit 0</p>
+<p>RETVAL=0</p>
+<p>prog=named</p>
+<p>if [ <code>id -u</code> -ne 0 ]</p>
+<p>then</p>
+<p>echo ERROR:For bind to port 53,must run as root.</p>
+<p>exit 1</p>
+<p>fi</p>
+<p>case $1 in</p>
+<p>start)</p>
+<p>if [ -x /usr/local/named/sbin/named ]; then</p>
+<p> /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf  echo .  echo ‘BIND9 server started.’</p>
+<p>fi</p>
+<p>;;</p>
+<p>stop)</p>
+<h1 id="kill_cat_/var/run/named/pid_echo_-_echo_‘BIND9_server_stopped-’">kill <code>cat /var/run/named/pid</code>  echo .  echo ‘BIND9 server stopped.’</h1><p> killproc $prog  echo .  echo ‘BIND9 server stopped.’</p>
+<p>;;</p>
+<p>restart)</p>
+<p>echo .</p>
+<p>echo Restart BIND9 server</p>
+<p>$0 stop</p>
+<h1 id="sleep_10">sleep 10</h1><p>$0 start</p>
+<p>;;</p>
+<p>*)</p>
+<p>echo $0 start | stop | restart</p>
+<p>;;</p>
+<p>esac</p>
+<p>chmod 755 /etc/init.d/named</p>
+<p>chown root:root /etc/init.d/named</p>
+<p>chkconfig —add named</p>
+<p>chkconfig —level 345 named on</p>
+<p>chkconfig —list named</p>
+<p>到这里bind已经安装完毕 .下面是解析部分.创建主要的配置文件：</p>
+<p>cd /usr/local/named/etc/</p>
+<p>vi /usr/local/named/etc/named.conf</p>
+<p>acl reserv-lan { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
+<p>acl query-lan { 0/0; };</p>
+<p>acl trusted-lan { 192.168.6.0/23; a.b.c.168/32; };</p>
+<p>options {</p>
+<p> directory /usr/local/named/etc;</p>
+<p> listen-on {127.0.0.1; a.b.c.168;};</p>
+<p> pid-file /var/log/named/named.pid;</p>
+<p> memstatistics-file /var/log/named/data/named_mem_stats.txt;</p>
+<p> dump-file /var/log/named/data/cache_dump.db;</p>
+<p> max-cache-size 64M; //最大的缓存大小为64MB</p>
+<p> tcp-clients 256; //最大的客户端为256个</p>
+<p> recursive-clients 4000; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
+<p> interface-interval 0; //启动named时才检查监听的网络接口</p>
+<p> cleaning-interval 480; //每隔480分钟将统计日志写入文件</p>
+<p> lame-ttl 1800; //设定缓存有问题服务器指示的秒数为30分钟</p>
+<p> max-ncache-ttl 168000; //为降低网络流量和提升服务器存储否定回答的性能</p>
+<p> max-cache-ttl 86400; //设定了服务器储存普通(肯定)答案的最大时间</p>
+<p> version www.veryi.com;</p>
+<p> datasize 512M;</p>
+<p> auth-nxdomain yes;</p>
+<p> recursion yes;</p>
+<p> zone-statistics yes;</p>
+<p> statistics-file /var/log/named/data/named.stats;</p>
+<p> allow-transfer { none; };</p>
+<p> allow-query { any; };</p>
+<p> allow-recursion {</p>
+<p> query-lan;</p>
+<p> };</p>
+<p> allow-notify {</p>
+<p> trusted-lan;</p>
+<p> };</p>
+<p>/<strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></p>
+<p> forward first;</p>
+<p> forwarders {</p>
+<p> 208.67.220.220;</p>
+<p> 208.67.222.222;</p>
+<p> 202.106.0.20;</p>
+<p> 202.106.196.115;</p>
+<p> };</p>
+<p><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong>/</p>
+<p>};</p>
+<p>include rndc.key;</p>
+<p>include named_log.conf;</p>
+<p>zone . {</p>
+<p> type hint;</p>
+<p> file named.root;</p>
+<p>};</p>
+<p>include named.rfc1912.zones;</p>
+<p>zone 6.168.192.in-addr.arpa {</p>
+<p> type master;</p>
+<p> file primary/192.168.6.in-addr.arpa.zone;</p>
+<p>};</p>
+<p>生成rndc-key:</p>
+<p>cd /usr/local/named/etc/</p>
+<p>../sbin/rndc-confgen | head -5  rndc.key</p>
+<p>添加完成后，保存。</p>
+<p>更新根区文件：</p>
+<p>cd /usr/local/named/etc/</p>
+<p>wget ftp://ftp.internic.org/domain/named.root</p>
+<p>或者:</p>
+<p>dig</p>
+<p>dig @192.58.128.30 named.root</p>
+<p>vi named_log.conf</p>
+<p>logging {</p>
+<p> channel default_log</p>
+<p> { file /var/log/named/default_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category default {</p>
+<p> default_log;</p>
+<p> };</p>
+<p> channel queries_log</p>
+<p> { file /var/log/named/queries_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category queries {</p>
+<p> queries_log;</p>
+<p> };</p>
+<p> channel general_log</p>
+<p> { file /var/log/named/general_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category general { general_log; };</p>
+<p> channel client_log</p>
+<p> { file /var/log/named/client_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category client { client_log; };</p>
+<p> channel config_log</p>
+<p> { file /var/log/named/config_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category config {</p>
+<p> config_log;</p>
+<p> };</p>
+<p> channel database_log</p>
+<p> { file /var/log/named/database_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category database {</p>
+<p> database_log;</p>
+<p> };</p>
+<p> channel dnssec_log</p>
+<p> { file /var/log/named/dnssec_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category dnssec {</p>
+<p> dnssec_log;</p>
+<p> };</p>
+<p> channel lame-servers_log</p>
+<p> { file /var/log/named/lame-servers_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category lame-servers {</p>
+<p> lame-servers_log;</p>
+<p> };</p>
+<p> channel network_log</p>
+<p> { file /var/log/named/network_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category network {</p>
+<p> network_log;</p>
+<p> };</p>
+<p> channel notify_log</p>
+<p> { file /var/log/named/notify_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category notify {</p>
+<p> notify_log;</p>
+<p> };</p>
+<p> channel resolver_log</p>
+<p> { file /var/log/named/resolver_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category resolver {</p>
+<p> resolver_log;</p>
+<p> };</p>
+<p> channel security_log</p>
+<p> { file /var/log/named/security_log versions 3 size 8192k;</p>
+<p> //severity info;</p>
+<p> severity warning;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category security {</p>
+<p> security_log;</p>
+<p> };</p>
+<p> channel update_log</p>
+<p> { file /var/log/named/update_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category update {</p>
+<p> update_log;</p>
+<p> };</p>
+<p> channel xfer-in_log</p>
+<p> { file /var/log/named/xfer-in_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-in {</p>
+<p> xfer-in_log;</p>
+<p> };</p>
+<p> channel xfer-out_log</p>
+<p> { file /var/log/named/xfer-out_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-out {</p>
+<p> xfer-out_log;</p>
+<p> };</p>
+<p> channel default_debug {</p>
+<p> file /var/log/named/named.run_log;</p>
+<p> severity dynamic;</p>
+<p> };</p>
+<p>};</p>
+<p>vi named.rfc1912.zones</p>
+<p>// named.rfc1912.zones:</p>
+<p>//</p>
+<p>// ISC BIND named zone configuration for zones recommended by</p>
+<p>// RFC 1912 section 4.1 : localhost TLDs and address zones</p>
+<p>// </p>
+<p>zone localdomain IN {</p>
+<p> type master;</p>
+<p> file localdomain.zone;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone localhost IN {</p>
+<p> type master;</p>
+<p> file localhost.zone;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.0.127.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.local;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa IN {</p>
+<p> type master;</p>
+<p> file named.ip6.local;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 255.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.broadcast;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.zero;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>vi named.local</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
+<p>vi local.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
+<p>vi localhost.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
+<p>vi localdomain.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA localhost root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  localhost</p>
+<p>localhost IN A  127.0.0.1</p>
+<p>vi named.zero</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
+<p>vi named.broadcas</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
+<p>vi named.ip6.local</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
+<p>vi primary/192.168.6.in-addr.arpa.zone</p>
+<p>$ORIGIN .</p>
+<p>$TTL 203616 ; 2 days 8 hours 33 minutes 36 seconds</p>
+<p>6.168.192.in-addr.arpa. IN SOA localhost. acy.163.com. (</p>
+<p> 2003080900 ; serial</p>
+<p> 3600 ; refresh (1 hour)</p>
+<p> 300 ; retry (5 minutes)</p>
+<p> 3600000 ; expire (5 weeks 6 days 16 hours)</p>
+<p> 0 ; minimum (0 seconds)</p>
+<p> )</p>
+<p>$TTL 20000 ; 5 hours 33 minutes 20 seconds</p>
+<p> IN NS localhost</p>
+<p> IN NS mail.veryi.com.</p>
+<p>$ORIGIN 6.168.192.in-addr.arpa.</p>
+<p>2 IN PTR mx6.veryi.com.</p>
+<p>$GENERATE 3-34 $ PTR pc$.veryi.com.</p>
+<p>35 IN PTR veryi.veryi.com.</p>
+<p>运行测试：</p>
+<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
+<p>状态检查：</p>
+<p>/usr/local/named/sbin/rndc status</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
 <p>Your boot partition is on a disk using the GPT partitioning Scheme but this machines cannot boot using GPT.</p>
 <pre><code>用linux live CD，推荐slax <span class="function_start"><span class="keyword">on</span></span> usb disk,启动系统以后，执行:
 </code></pre><p>查看硬盘的设备名称：</p>
@@ -101,104 +542,4 @@ GPT ，全局唯一标识磁盘分区表 (GUID <span class="keyword">Partition</
 <p> 没有了五官的尊严，又何以谈人生？</p>
 <p>后记　原文刊载于台湾中国时报，作者服务于中国时报，是一位知名的作家。他所举的事例，自然是确实的。因为二年之前，我在中央日报副刊以及汉声杂志中也见过类似的呼吁。问题是，这些事的危害情形所达到的严重程度却很少有人了解。冀希望各级主事、读者与消费大众，为了自己、家人与亲友的健康，共同努力来改进。只要每个人都能为自己的行为负责，这些问题就不难解决。味精确实是种有问题的调味品，美国的婴儿食品，就绝不许添加味精；外国人进中国餐馆，也不喜食味精。国内使用味精太普遍了，因不能理智对待自己的口腹之欲，也因它背后有个庞大的工业生产利益驱动体系，借着我们的口腹之欲，循循善诱地和我们一起，将我们自己集体蒙蔽。</p>
 <p> 想起中国历史上战国时期楚国一位学识渊博，通晓古今治乱兴衰之道，热爱祖国，关心人民疾苦，坚持正义和真理，被司马迁称其为 推此志也，虽与日月争光可也 的三闾大夫屈原所说的一句名言：举世浑浊而我独清，众人皆醉而我独醒。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/09/w/e5-91-b3-e4-b9-8b-e7-b4-a0-e5-8f-b0-e6-b9-be-e6-9e-97-e6-b8-85-e7-8e-84/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-08T05:27:01.000Z" class="post__time">四月 8, 2009</time><h1 class="post__title"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/"> nfs的实用配置和安全</a></h1></header><div class="post__main"><p>网络文件系统是unix支持的文件系统中的一种， 也被称为 NFS。 NFS允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序可以象访问本地文件一样访问远端系统上的文件。以下是NFS的好处：</p>
-<ul>
-<li>本地工作站使用更少的磁盘空间，因为通常的数据可以存放在一台机器上而且可以通过网络访问到。</li>
-</ul>
-<ul>
-<li><p>用户不必在每个网络上机器里头都有一个home目录。Home目录 可以被放在NFS服务器上并且在网络上处处可用。</p>
-</li>
-<li><p>诸如软驱，CDROM，和 ZipU+00AE 之类的存储设备可以在网络上面被别的机器使用。这可以减少整个网络上的可移动介质设备的数量。</p>
-</li>
-</ul>
-<p>nfs的构成分成两个部份</p>
-<p>1.被分享的目录的机器通常称之为nfs server</p>
-<p>2.连接nfs的通常称之为nfs client</p>
-<p>创建或修改/etc/exports 配置文件</p>
-<p>这个文件的内容非常简单，每一行由提供路径，客户名列表以及每个客户名后紧跟的访问选项构成：</p>
-<p> [共享的目录] [主机名或IP(参数,参数)] </p>
-<p>其中参数是可选的，当不指定参数时，nfs将使用默认选项。默认的共享选项是</p>
-<p>sync,ro,root_squash,no_delay。</p>
-<p>当主机名或IP地址为空时，则代表共享给任意客户机提供服务。</p>
-<p>当将同一目录共享给多个客户机，但对每个客户机提供的权限不同时，可以这样：</p>
-<p> [共享的目录] [主机名1或IP1(参数1,参数2)] [主机名2或IP2(参数3,参数4)]</p>
-<p>以下是在centos linux上的配置:</p>
-<p>nfs服务器:</p>
-<p>vi /etc/exports </p>
-<p>/usr/local/nfs 172.16.1.0/24(ro,async,all_squash)</p>
-<p>/var/log/httpd 172.16.1.0/24(rw,async,all_squash)</p>
-<h1 id="/usr/local/nfs_*(ro,async,all_squash)">/usr/local/nfs *(ro,async,all_squash)</h1><h1 id="/khsys/vod_172-16-1-0/24(ro,async,all_squash，anonuid=99)">/khsys/vod 172.16.1.0/24(ro,async,all_squash，anonuid=99)</h1><p>root_squash：在登入 NFS 主机使用分享之目录的使用者如果是 root，那使用者的UID GID 变成 nobody 身份</p>
-<p>All_squash 客户机上的任何用户访问该共享目录时都映射成匿名用户 </p>
-<p>将客户机的用户都映射成服务器上的匿名用户(all_squash),相当于在服务器上用nobody用户访问该目录（若客户机要在该共享目录上保存文件（即写操作），则服务器上的nobody用户对该目录必须有写的权限）</p>
-<p>Async 资料会先暂存于内存中，而非直接写入硬盘 </p>
-<p>下面是一些NFS共享的常用参数：</p>
-<p> ro 只读访问 </p>
-<p> rw 读写访问 </p>
-<p> sync 所有数据在请求时写入共享 </p>
-<p> async NFS在写入数据前可以相应请求 </p>
-<p> secure NFS通过1024以下的安全TCP/IP端口发送 </p>
-<p> insecure NFS通过1024以上的端口发送 </p>
-<p> wdelay 如果多个用户要写入NFS目录，则归组写入（默认</p>
-<p> no_wdelay 如果多个用户要写入NFS目录，则立即写入，当使</p>
-<p> hide 在NFS共享目录中不共享其子目录 </p>
-<p> no_hide 共享NFS目录的子目录 </p>
-<p> subtree_check 如果共享/usr/bin之类的子目录时，强制NFS检查</p>
-<p> no_subtree_check 和上面相对，不检查父目录权限 </p>
-<p> all_squash 共享文件的UID和GID映射匿名用户anonymous，适合</p>
-<p> no_all_squash 保留共享文件的UID和GID（默认） </p>
-<p> root_squash root用户的所有请求映射成如anonymous用户一样</p>
-<p> no_root_squas root用户具有根目录的完全管理访问权限 </p>
-<p> anonuid=xxx 指定NFS服务器/etc/passwd文件中匿名用户的UID </p>
-<p> anongid=xxx 指定NFS服务器/etc/passwd文件中匿名用户的GID</p>
-<p>启动服务:</p>
-<p>/etc/init.d/portmap restart</p>
-<p>/etc/init.d/nfs restart</p>
-<p>开机自启动:</p>
-<p>chkconfig —level 345 nfs on</p>
-<p>修改/etc/hosts.allow和/etc/hosts.deny达到限制CLIENT的目的 </p>
-<p>vi /etc/hosts.allow </p>
-<p>portmap: 192.168.0.0/255.255.255.0 : allow </p>
-<p>portmap: 172.16.1.8 : allow </p>
-<p>vi /etc/hosts.deny </p>
-<p>portmap: ALL : deny </p>
-<p>卸载所有共享目录</p>
-<p>exportfs -au</p>
-<p>重新共享所有目录并输出详细信息</p>
-<p>exportfs -rv </p>
-<p>客户端的操作： </p>
-<p>1、showmount命令对于NFS的操作和查错有很大的帮助，所以我们先来看一下showmount的用法 </p>
-<p>showmount </p>
-<p>-a ：这个参数是一般在NFS SERVER上使用，是用来显示已经mount上本机nfs目录的cline机器。 </p>
-<p>-e ：显示指定的NFS SERVER上export出来的目录。</p>
-<p>2、mount nfs目录的方法： </p>
-<p>mount -t nfs hostname(orIP):/directory /mount/point </p>
-<p>具体例子： </p>
-<p>Linux:</p>
-<p>mount -t nfs 172.16.1.178:/tmp /mnt/nfs </p>
-<p>Solaris:mount -F nfs 172.16.1.178:/tmp /mnt/nfs </p>
-<p>BSD: mount 172.16.1.178:/tmp /mnt/nfs </p>
-<p>3、mount nfs的其它可选参数： </p>
-<p>HARD mount和SOFT MOUNT： </p>
-<p>HARD: NFS CLIENT会不断的尝试与SERVER的连接（在后台，不会给出任何提示信息,在LINUX下有的版本仍然会给出一些提示），直到MOUNT上。 </p>
-<p>SOFT:会在前台尝试与SERVER的连接，是默认的连接方式。当收到错误信息后终止mount尝试，并给出相关信息。 </p>
-<p>服务器端防火墙的配置:</p>
-<p>/etc/services</p>
-<p>nfs 2049/tcp nfsd</p>
-<p>nfs 2049/udp nfsd</p>
-<p>/etc/sysconfig/network</p>
-<p>MOUNTD_PORT=1212</p>
-<p>-A INPUT -p tcp -m state —state NEW -m tcp -s 172.16.1.0/24 —dport 111 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
-<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 111 -j ACCEPT</p>
-<p>-A INPUT -p tcp -m state —state NEW -m tcp -s 172.16.1.0/24 —dport 1212 —tcp-flags SYN,RST,ACK SYN -j ACCEPT</p>
-<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 1212 -j ACCEPT</p>
-<p>-A INPUT -p udp -m state —state NEW -m udp -s 172.16.1.0/24 —dport 2049 -j ACCEPT</p>
-<p>排错:</p>
-<p>！！！客户端必须启动，否则会长时间连不上</p>
-<p>/etc/init.d/portmap restar</p>
-<p>If your problem involves the inability mount or export shares please also include:</p>
-<p>a copy of your /etc/exports file</p>
-<p>the output of rpcinfo -p localhost run on the server</p>
-<p>the output of rpcinfo -p servername run on the client</p>
-<p>查看服务器上有关NFS服务器启动了哪些端口：</p>
-<p>lsof -i|grep rpc</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/08/w/nfs-e7-9a-84-e5-ae-9e-e7-94-a8-e9-85-8d-e7-bd-ae-e5-92-8c-e5-ae-89-e5-85-a8/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/30/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/32/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/04/09/w/e5-91-b3-e4-b9-8b-e7-b4-a0-e5-8f-b0-e6-b9-be-e6-9e-97-e6-b8-85-e7-8e-84/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/30/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/32/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

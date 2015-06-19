@@ -1,4 +1,445 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-21T07:08:59.000Z" class="post__time">四月 21, 2009</time><h1 class="post__title"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/">在Linux上源代码安装与配置bind 9 dns</a></h1></header><div class="post__main"><p>支持ipv6，参考rfc1912配置。</p>
+<p>Bind是一款开放源码的DNS服务器软件，Bind由美国加州大学Berkeley分校开发和维护的，全名为Berkeley Internet Name Domain它是目前世界上使用最为广泛的DNS服务器软件，支持各种unix平台和windows平台。</p>
+<p>操作系统:</p>
+<p>centos</p>
+<p>下载:</p>
+<p>wget <a href="http://ftp.isc.org/isc/bind9/9.6.0-P1/bind-9.6.0-P1.tar.gz" target="_blank" rel="external">http://ftp.isc.org/isc/bind9/9.6.0-P1/bind-9.6.0-P1.tar.gz</a></p>
+<p>最新bind 9需要安装新版本openssl:</p>
+<p>安装zlib</p>
+<p>tar xfj zlib-1.2.3.tar.bz2 -C /usr/local/src</p>
+<p>cd /usr/local/src/zlib-1.2.3</p>
+<p>./configure</p>
+<p>make -j6  make install </p>
+<p>echo /usr/local/lib  /etc/ld.so.conf</p>
+<p>ldconfig</p>
+<p>安装openssl</p>
+<p><a href="http://www.openssl.org/source/" target="_blank" rel="external">http://www.openssl.org/source/</a></p>
+<p>tar zxf openssl-0.9.8k.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/openssl-0.9.8k</p>
+<p>./config —prefix=/usr/local/openssl —openssldir=/usr/local/openssl shared zlib</p>
+<p>make  make test  make install</p>
+<p>/usr/local/openssl/lib/</p>
+<p>echo /usr/local/openssl/lib/  /etc/ld.so.conf</p>
+<p>ldconfig</p>
+<p>tar xfz bind-9.6.0-P1.tar.gz -C /usr/local/src</p>
+<p>cd /usr/local/src/bind-9.6.0-P1</p>
+<p>./configure —prefix=/usr/local/named —enable-threads —enable-ipv6 —with-openssl=/usr/local/openssl —with-dlz-mysql</p>
+<p>make -j6  make install</p>
+<p>建立BIND用户：</p>
+<p>groupadd bind</p>
+<p>useradd -g bind -d /usr/local/named -s /sbin/nologin bind</p>
+<p>创建配置文件目录：</p>
+<p>mkdir -p /usr/local/named/etc/primary</p>
+<p>chown bind:bind /usr/local/named/etc</p>
+<p>chmod 770 /usr/local/named/etc</p>
+<p>创建PID和日志文件：</p>
+<p>mkdir -p /var/run/named/</p>
+<p>chmod 777 /var/run/named/</p>
+<p>chown bind:bind /var/run/named/</p>
+<p>mkdir -p /var/log/named/</p>
+<p>touch /var/log/named/dns_warnings</p>
+<p>touch /var/log/named/dns_logs</p>
+<p>chown bind:bind /var/log/named</p>
+<p>建立启动脚本：</p>
+<p>vi /etc/init.d/named</p>
+<h1 id="!/bin/bash">!/bin/bash</h1><p>#</p>
+<h1 id="named_This_shell_script_takes_care_of_starting_and_stopping">named This shell script takes care of starting and stopping</h1><h1 id="named_(BIND_DNS_server)-">named (BIND DNS server).</h1><p>#</p>
+<h1 id="chkconfig:_-_55_45">chkconfig: - 55 45</h1><h1 id="description:_named_(BIND)_is_a_Domain_Name_Server_(DNS)_\">description: named (BIND) is a Domain Name Server (DNS) \</h1><h1 id="that_is_used_to_resolve_host_names_to_IP_addresses-">that is used to resolve host names to IP addresses.</h1><h1 id="probe:_true">probe: true</h1><h1 id="Source_function_library-">Source function library.</h1><p>. /etc/rc.d/init.d/functions</p>
+<h1 id="Source_networking_configuration-">Source networking configuration.</h1><p>[ -r /etc/sysconfig/network ]  . /etc/sysconfig/network</p>
+<h1 id="Check_that_networking_is_up-">Check that networking is up.</h1><p>[ ${NETWORKING} = no ]  exit 0</p>
+<p>[ -x /usr/local/named/sbin/named ] || exit 0</p>
+<p>RETVAL=0</p>
+<p>prog=named</p>
+<p>if [ <code>id -u</code> -ne 0 ]</p>
+<p>then</p>
+<p>echo ERROR:For bind to port 53,must run as root.</p>
+<p>exit 1</p>
+<p>fi</p>
+<p>case $1 in</p>
+<p>start)</p>
+<p>if [ -x /usr/local/named/sbin/named ]; then</p>
+<p> /usr/local/named/sbin/named -u bind -c /usr/local/named/etc/named.conf  echo .  echo ‘BIND9 server started.’</p>
+<p>fi</p>
+<p>;;</p>
+<p>stop)</p>
+<h1 id="kill_cat_/var/run/named/pid_echo_-_echo_‘BIND9_server_stopped-’">kill <code>cat /var/run/named/pid</code>  echo .  echo ‘BIND9 server stopped.’</h1><p> killproc $prog  echo .  echo ‘BIND9 server stopped.’</p>
+<p>;;</p>
+<p>restart)</p>
+<p>echo .</p>
+<p>echo Restart BIND9 server</p>
+<p>$0 stop</p>
+<h1 id="sleep_10">sleep 10</h1><p>$0 start</p>
+<p>;;</p>
+<p>*)</p>
+<p>echo $0 start | stop | restart</p>
+<p>;;</p>
+<p>esac</p>
+<p>chmod 755 /etc/init.d/named</p>
+<p>chown root:root /etc/init.d/named</p>
+<p>chkconfig —add named</p>
+<p>chkconfig —level 345 named on</p>
+<p>chkconfig —list named</p>
+<p>到这里bind已经安装完毕 .下面是解析部分.创建主要的配置文件：</p>
+<p>cd /usr/local/named/etc/</p>
+<p>vi /usr/local/named/etc/named.conf</p>
+<p>acl reserv-lan { 10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16; };</p>
+<p>acl query-lan { 0/0; };</p>
+<p>acl trusted-lan { 192.168.6.0/23; a.b.c.168/32; };</p>
+<p>options {</p>
+<p> directory /usr/local/named/etc;</p>
+<p> listen-on {127.0.0.1; a.b.c.168;};</p>
+<p> pid-file /var/log/named/named.pid;</p>
+<p> memstatistics-file /var/log/named/data/named_mem_stats.txt;</p>
+<p> dump-file /var/log/named/data/cache_dump.db;</p>
+<p> max-cache-size 64M; //最大的缓存大小为64MB</p>
+<p> tcp-clients 256; //最大的客户端为256个</p>
+<p> recursive-clients 4000; //服务器同时为用户执行的递归查询的最大数量 为4000</p>
+<p> interface-interval 0; //启动named时才检查监听的网络接口</p>
+<p> cleaning-interval 480; //每隔480分钟将统计日志写入文件</p>
+<p> lame-ttl 1800; //设定缓存有问题服务器指示的秒数为30分钟</p>
+<p> max-ncache-ttl 168000; //为降低网络流量和提升服务器存储否定回答的性能</p>
+<p> max-cache-ttl 86400; //设定了服务器储存普通(肯定)答案的最大时间</p>
+<p> version www.veryi.com;</p>
+<p> datasize 512M;</p>
+<p> auth-nxdomain yes;</p>
+<p> recursion yes;</p>
+<p> zone-statistics yes;</p>
+<p> statistics-file /var/log/named/data/named.stats;</p>
+<p> allow-transfer { none; };</p>
+<p> allow-query { any; };</p>
+<p> allow-recursion {</p>
+<p> query-lan;</p>
+<p> };</p>
+<p> allow-notify {</p>
+<p> trusted-lan;</p>
+<p> };</p>
+<p>/<strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></p>
+<p> forward first;</p>
+<p> forwarders {</p>
+<p> 208.67.220.220;</p>
+<p> 208.67.222.222;</p>
+<p> 202.106.0.20;</p>
+<p> 202.106.196.115;</p>
+<p> };</p>
+<p><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong>/</p>
+<p>};</p>
+<p>include rndc.key;</p>
+<p>include named_log.conf;</p>
+<p>zone . {</p>
+<p> type hint;</p>
+<p> file named.root;</p>
+<p>};</p>
+<p>include named.rfc1912.zones;</p>
+<p>zone 6.168.192.in-addr.arpa {</p>
+<p> type master;</p>
+<p> file primary/192.168.6.in-addr.arpa.zone;</p>
+<p>};</p>
+<p>生成rndc-key:</p>
+<p>cd /usr/local/named/etc/</p>
+<p>../sbin/rndc-confgen | head -5  rndc.key</p>
+<p>添加完成后，保存。</p>
+<p>更新根区文件：</p>
+<p>cd /usr/local/named/etc/</p>
+<p>wget ftp://ftp.internic.org/domain/named.root</p>
+<p>或者:</p>
+<p>dig</p>
+<p>dig @192.58.128.30 named.root</p>
+<p>vi named_log.conf</p>
+<p>logging {</p>
+<p> channel default_log</p>
+<p> { file /var/log/named/default_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category default {</p>
+<p> default_log;</p>
+<p> };</p>
+<p> channel queries_log</p>
+<p> { file /var/log/named/queries_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category queries {</p>
+<p> queries_log;</p>
+<p> };</p>
+<p> channel general_log</p>
+<p> { file /var/log/named/general_log versions 8 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category general { general_log; };</p>
+<p> channel client_log</p>
+<p> { file /var/log/named/client_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category client { client_log; };</p>
+<p> channel config_log</p>
+<p> { file /var/log/named/config_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category config {</p>
+<p> config_log;</p>
+<p> };</p>
+<p> channel database_log</p>
+<p> { file /var/log/named/database_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category database {</p>
+<p> database_log;</p>
+<p> };</p>
+<p> channel dnssec_log</p>
+<p> { file /var/log/named/dnssec_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category dnssec {</p>
+<p> dnssec_log;</p>
+<p> };</p>
+<p> channel lame-servers_log</p>
+<p> { file /var/log/named/lame-servers_log versions 3 size 8192k;</p>
+<p> //severity warning;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category lame-servers {</p>
+<p> lame-servers_log;</p>
+<p> };</p>
+<p> channel network_log</p>
+<p> { file /var/log/named/network_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category network {</p>
+<p> network_log;</p>
+<p> };</p>
+<p> channel notify_log</p>
+<p> { file /var/log/named/notify_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category notify {</p>
+<p> notify_log;</p>
+<p> };</p>
+<p> channel resolver_log</p>
+<p> { file /var/log/named/resolver_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category resolver {</p>
+<p> resolver_log;</p>
+<p> };</p>
+<p> channel security_log</p>
+<p> { file /var/log/named/security_log versions 3 size 8192k;</p>
+<p> //severity info;</p>
+<p> severity warning;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category security {</p>
+<p> security_log;</p>
+<p> };</p>
+<p> channel update_log</p>
+<p> { file /var/log/named/update_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category update {</p>
+<p> update_log;</p>
+<p> };</p>
+<p> channel xfer-in_log</p>
+<p> { file /var/log/named/xfer-in_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-in {</p>
+<p> xfer-in_log;</p>
+<p> };</p>
+<p> channel xfer-out_log</p>
+<p> { file /var/log/named/xfer-out_log versions 3 size 8192k;</p>
+<p> severity info;</p>
+<p> print-category yes;</p>
+<p> print-severity yes;</p>
+<p> print-time yes;</p>
+<p> };</p>
+<p> category xfer-out {</p>
+<p> xfer-out_log;</p>
+<p> };</p>
+<p> channel default_debug {</p>
+<p> file /var/log/named/named.run_log;</p>
+<p> severity dynamic;</p>
+<p> };</p>
+<p>};</p>
+<p>vi named.rfc1912.zones</p>
+<p>// named.rfc1912.zones:</p>
+<p>//</p>
+<p>// ISC BIND named zone configuration for zones recommended by</p>
+<p>// RFC 1912 section 4.1 : localhost TLDs and address zones</p>
+<p>// </p>
+<p>zone localdomain IN {</p>
+<p> type master;</p>
+<p> file localdomain.zone;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone localhost IN {</p>
+<p> type master;</p>
+<p> file localhost.zone;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.0.127.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.local;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa IN {</p>
+<p> type master;</p>
+<p> file named.ip6.local;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 255.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.broadcast;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>zone 0.in-addr.arpa IN {</p>
+<p> type master;</p>
+<p> file named.zero;</p>
+<p> allow-update { none; };</p>
+<p>};</p>
+<p>vi named.local</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
+<p>vi local.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
+<p>vi localhost.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA @ root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  @</p>
+<p>  IN A  127.0.0.1</p>
+<p>  IN AAAA  ::1</p>
+<p>vi localdomain.zone</p>
+<p>$TTL 86400</p>
+<p>@  IN SOA localhost root (</p>
+<pre><code><span class="number">42</span>  ; serial (d. adams)
+
+<span class="number">3</span>H  ; <span class="literal">refresh</span>
+
+<span class="number">15</span>M  ; retry
+
+<span class="number">1</span>W  ; <span class="literal">expiry</span>
+
+<span class="number">1</span>D )  ; minimum
+</code></pre><p>  IN NS  localhost</p>
+<p>localhost IN A  127.0.0.1</p>
+<p>vi named.zero</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
+<p>vi named.broadcas</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 42 ; serial (d. adams)</p>
+<p> 3H ; refresh</p>
+<p> 15M ; retry</p>
+<p> 1W ; expiry</p>
+<p> 1D ) ; minimum</p>
+<p> IN NS localhost.</p>
+<p>vi named.ip6.local</p>
+<p>$TTL 86400</p>
+<p>@ IN SOA localhost. root.localhost. (</p>
+<p> 1997022700 ; Serial</p>
+<p> 28800 ; Refresh</p>
+<p> 14400 ; Retry</p>
+<p> 3600000 ; Expire</p>
+<p> 86400 ) ; Minimum</p>
+<p> IN NS localhost.</p>
+<p>1 IN PTR localhost.</p>
+<p>vi primary/192.168.6.in-addr.arpa.zone</p>
+<p>$ORIGIN .</p>
+<p>$TTL 203616 ; 2 days 8 hours 33 minutes 36 seconds</p>
+<p>6.168.192.in-addr.arpa. IN SOA localhost. acy.163.com. (</p>
+<p> 2003080900 ; serial</p>
+<p> 3600 ; refresh (1 hour)</p>
+<p> 300 ; retry (5 minutes)</p>
+<p> 3600000 ; expire (5 weeks 6 days 16 hours)</p>
+<p> 0 ; minimum (0 seconds)</p>
+<p> )</p>
+<p>$TTL 20000 ; 5 hours 33 minutes 20 seconds</p>
+<p> IN NS localhost</p>
+<p> IN NS mail.veryi.com.</p>
+<p>$ORIGIN 6.168.192.in-addr.arpa.</p>
+<p>2 IN PTR mx6.veryi.com.</p>
+<p>$GENERATE 3-34 $ PTR pc$.veryi.com.</p>
+<p>35 IN PTR veryi.veryi.com.</p>
+<p>运行测试：</p>
+<h1 id="/usr/local/named/sbin/named_-gc_/usr/local/named/etc/named-conf">/usr/local/named/sbin/named -gc /usr/local/named/etc/named.conf</h1><p>/usr/local/named/sbin/named -u bind -d5 -g -c /usr/local/named/etc/named.conf</p>
+<p>状态检查：</p>
+<p>/usr/local/named/sbin/rndc status</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/21/w/e5-9c-a8linux-e4-b8-8a-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e4-b8-8e-e9-85-8d-e7-bd-aebind-9-dns/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-15T06:50:24.000Z" class="post__time">四月 15, 2009</time><h1 class="post__title"><a href="/2009/04/15/w/gpt-e5-88-86-e5-8c-ba-e5-9c-a8pc-e6-9c-ba-e4-b8-8a-e5-ae-89-e8-a3-85linux-e4-b8-8d-e8-83-bd-e5-bc-95-e5-af-bc-e7-9a-84-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">GPT分区在PC机上安装linux不能引导的解决方法</a></h1></header><div class="post__main"><p>硬盘以前装了mac os,被转换成了GPT,安装centos 5.3时提示:</p>
 <p>Your boot partition is on a disk using the GPT partitioning Scheme but this machines cannot boot using GPT.</p>
 <pre><code>用linux live CD，推荐slax <span class="function_start"><span class="keyword">on</span></span> usb disk,启动系统以后，执行:
 </code></pre><p>查看硬盘的设备名称：</p>
@@ -179,92 +620,4 @@ GPT ，全局唯一标识磁盘分区表 (GUID <span class="keyword">Partition</
 <p>pasv_enable=YES</p>
 <p>pasv_min_port=58000</p>
 <p>pasv_max_port=58129</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
-<p>DenyHosts官方网站为：</p>
-<p><a href="http://denyhosts.sourceforge.net" target="_blank" rel="external">http://denyhosts.sourceforge.net</a></p>
-<p>如果没有python运行环境，需要先安装python</p>
-<p>wget <a href="http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2" target="_blank" rel="external">http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2</a></p>
-<pre><code>tar zxf Python-<span class="number">2.5</span>.<span class="number">2</span><span class="class">.tar</span><span class="class">.gz</span>
-
-cd Python-<span class="number">2.5</span>.<span class="number">2</span>
-
-./configure --prefix=/usr/local
-
-make -j6  make install
-</code></pre><p>cd /usr/local/src</p>
-<pre><code>wget <span class="string">http:</span><span class="comment">//mesh.dl.sourceforge.net/sourceforge/denyhosts/DenyHosts-2.6.tar.gz</span>
-
-tar -zxf DenyHosts-<span class="number">2.6</span>.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>DenyHosts-<span class="number">2.6</span>
-
-python setup.py install
-</code></pre><p>默认是安装到/usr/share/denyhosts目录的。</p>
-<p>配置</p>
-<p>cd /usr/share/denyhosts/</p>
-<pre><code>cp denyhosts<span class="class">.cfg-dist</span> denyhosts<span class="class">.cfg</span>
-
-vi denyhosts.cfg
-</code></pre><p>根据自己需要进行相应的配置(解释见下文件的配置文件)。</p>
-<pre><code>设置启动脚本
-</code></pre><p>cp daemon-control-dist daemon-control</p>
-<pre><code>chown <span class="literal">root</span> daemon-<span class="literal">control</span>
-
-chmod <span class="number">700</span> daemon-<span class="literal">control</span>
-</code></pre><p>如果要使DenyHosts每次重起后自动启动还需做如下设置：</p>
-<pre><code><span class="keyword">cd</span> /etc/init.<span class="keyword">d</span>
-
-<span class="keyword">ln</span> -<span class="keyword">s</span> /usr/share/denyhosts/daemon-control denyhosts
-
-chkconfig --<span class="built_in">add</span> denyhosts
-
-chkconfig --level <span class="number">345</span> denyhosts <span class="keyword">on</span>
-
-chkconfig --<span class="keyword">list</span> denyhosts
-</code></pre><p>或者修改/etc/rc.local文件：</p>
-<pre><code><span class="preprocessor"># vi /etc/rc.local</span>
-
-加入下面这条命令
-</code></pre><p>/usr/share/denyhosts/daemon-control start</p>
-<p>DenyHosts配置文件：</p>
-<p>vi /etc/denyhosts.cfg</p>
-<p>SECURE_LOG = /var/log/secure</p>
-<pre><code><span class="id">#ssh</span> 日志文件，它是根据这个文件来判断的。
-</code></pre><p>HOSTS_DENY = /etc/hosts.deny</p>
-<pre><code><span class="preprocessor">#控制用户登陆的文件</span>
-</code></pre><p>PURGE_DENY = 7w</p>
-<pre><code><span class="preprocessor">#过多久后清除已经禁止的</span>
-</code></pre><p>BLOCK_SERVICE = sshd</p>
-<pre><code><span class="preprocessor">#禁止的服务名</span>
-</code></pre><p>DENY_THRESHOLD_INVALID = 1</p>
-<pre><code><span class="preprocessor">#允许无效用户失败的次数</span>
-</code></pre><p>DENY_THRESHOLD_VALID = 10</p>
-<pre><code><span class="preprocessor">#允许普通用户登陆失败的次数</span>
-</code></pre><p>DENY_THRESHOLD_ROOT = 5</p>
-<pre><code><span class="preprocessor">#允许root登陆失败的次数</span>
-</code></pre><p>HOSTNAME_LOOKUP=NO</p>
-<pre><code><span class="preprocessor">#是否做域名反解</span>
-</code></pre><p>ADMIN_EMAIL = dayu@veryi.com</p>
-<pre><code><span class="preprocessor">#管理员邮件地址</span>
-</code></pre><p>DAEMON_LOG = /var/log/denyhosts</p>
-<pre><code><span class="preprocessor">#denyhost的日志文件</span>
-</code></pre><p>完了之后执行daemon-contron start就可以了。</p>
-<pre><code><span class="regexp">/usr/</span>share<span class="regexp">/denyhosts/</span>daemon-control start
-</code></pre><p>参考: <a href="http://www.cublog.cn/u/12859/showart_247895.html" target="_blank" rel="external">http://www.cublog.cn/u/12859/showart_247895.html</a></p>
-<p>对于centos系统：</p>
-<h1 id="centos_6_x86_64">centos 6 x86_64</h1><pre><code>rpm -Uhv <span class="string">http:</span><span class="comment">//pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</span>
-</code></pre><h1 id="centos_6_i386">centos 6 i386</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.i686.rpm
-
-<span class="comment"># Red Hat Enterprise Linux 5 / i386:</span>
-
-rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el5.rf.i386.rpm
-</code></pre><h1 id="Red_Hat_Enterprise_Linux_5_/_x86_64:">Red Hat Enterprise Linux 5 / x86_64:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span><span class="regexp">/rpmforge-release-0.5.3-1.el5.rf.x86_64.rpm</span>
-</code></pre><h1 id="Red_Hat_Enterprise_Linux_4_/_i386:">Red Hat Enterprise Linux 4 / i386:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el4/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el4.rf.i386.rpm
-</code></pre><p>yum install denyhosts -y</p>
-<pre><code>vim <span class="regexp">/etc/</span>denyhosts/denyhosts.cfg
-
-<span class="regexp">/etc/</span>init.d/denyhosts restart
-</code></pre><p>chkconfig —level 345 denyhosts on</p>
-<pre><code>chkconfig <span class="comment">--list denyhosts</span>
-</code></pre><p>即可。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/25/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/27/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e4-b8-80-e4-b8-aa-e9-ab-98-e5-ba-a6-e5-ae-89-e5-85-a8-e7-9a-84iptables-e9-98-b2-e7-81-ab-e5-a2-99-e9-85-8d-e7-bd-ae-e8-84-9a-e6-9c-ac/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/25/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/27/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

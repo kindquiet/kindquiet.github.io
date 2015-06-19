@@ -1,4 +1,196 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-25T03:57:42.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">cacti SQL Failed! Error:'1062'故障排除</a></h1></header><div class="post__main"><p>cacti日志报错：</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
+<pre><code>PHP <span class="number">5.3</span>.6
+
+cacti spine
+
+pureftp
+
+安装
+
+wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
+
+tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span>.12-linux2.6-x86_64.tar.gz
+
+cd <span class="regexp">/usr/</span>local
+
+ln -s mysql-<span class="number">5.5</span>.12-linux2.6-x86_64/ mysql
+
+cd <span class="regexp">/usr/</span>local/mysql
+
+mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
+
+cp support-files<span class="regexp">/my-huge.cnf etc/</span>my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/skip-locking/</span>skip-external-locking/&amp;#<span class="number">39</span>; my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/default-character-set/</span>character-set-server/&amp;#<span class="number">39</span>; my.cnf
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_queries/</span>slow_query_log/&amp;#<span class="number">39</span>; my.cnf
+
+修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
+
+vim my.cnf
+
+#max_allowed_packet = <span class="number">1</span>M
+
+server-id = <span class="number">8108</span>
+
+max_allowed_packet = <span class="number">64</span>M
+
+max_connections=<span class="number">800</span>
+
+character-set-server=utf8
+
+expire_logs_days = <span class="number">60</span>
+
+binlog_format=mixed
+
+log-bin=mysql-bin
+
+#read_only=<span class="number">1</span>
+
+#slave-skip-errors=<span class="number">1062</span>,<span class="number">1032</span>,<span class="number">1053</span>
+
+innodb_log_files_in_group=<span class="number">2</span>
+
+#default_table_type = INNODB <span class="comment">//unknown variable</span>
+
+innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
+
+innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+# <span class="number">4</span>G RAM
+
+innodb_buffer_pool_size = <span class="number">1</span>G
+
+innodb_log_file_size = <span class="number">256</span>M
+
+innodb_log_buffer_size = <span class="number">8</span>M
+
+innodb_flush_log_at_trx_commit=<span class="number">0</span>
+
+innodb_thread_concurrency=<span class="number">8</span>
+
+innodb_flush_method=O_DIRECT
+
+# perform
+
+tmp_table_size = <span class="number">512</span>M
+
+max_heap_table_size=<span class="number">128</span>M
+
+slow_query_log
+
+#log-queries-not-using-indexes
+
+#log-slow-admin-statements
+
+#slow_query_log_file=mysql-slow.log
+
+long_query_time=<span class="number">1</span>
+
+log-error=mysqld.log
+
+[mysqld_safe]
+
+log-error=<span class="regexp">/var/</span>log/mysqld.log
+
+pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
+
+添加数据库用户
+
+<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
+
+<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+#chmod -R u+rw data
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
+
+chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
+
+<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld restart
+
+#<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
+
+#<span class="regexp">/sbin/</span>chkconfig --del mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe 
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+#加入mysql到路径
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+#执行一下，保证mysql在路径环境变量中
+
+. <span class="regexp">/etc/</span>profile
+
+mysql5.1升级到mysql5.5
+
+mysql_upgrade包含一下三个命令：
+
+# mysqlcheck --check-upgrade --all-databases --auto-repair
+
+# mysql_fix_privilege_tables
+
+# mysqlcheck --all-databases --check-upgrade --fix-db-names --fix-table-names
+
+在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql_upgrade -uroot -p
+
+[ERROR] <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/<span class="string">mysqld:</span> unknown variable &amp;#<span class="number">39</span>;default_table_type=INNODB&amp;#<span class="number">39</span>;
+
+注释my.cnf中的default_table_type=INNODB
+
+把所有INNODB表转换成MYISAM表的脚本
+
+sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T03:57:42.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/cacti-sql-failed-error1062-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">cacti SQL Failed! Error:'1062'故障排除</a></h1></header><div class="post__main"><p>cacti日志报错：</p>
 <p>05/25/2011 11:40:01 AM - SPINE: Poller[0] ERROR: SQL Failed! Error:&#39;1062&#39;, Message:&#39;Duplicate entry &#39;3-mem_buffers-2011-05-25 11:40:01&#39; for key &#39;PRIMARY&#39;&#39;, SQL Fragment:&#39;INSERT INTO poller_output (local_data_id, rrd_name, time, output) VALUES (3,&#39;mem_buffers&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;927912&#39;),(4,&#39;mem_swap&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4192956&#39;),(5,&#39;&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;1min:0.10 5min:0.16 10min:0.23&#39;),(6,&#39;users&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;4&#39;),(7,&#39;proc&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;169&#39;),(8,&#39;hdd_free&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;47949780&#39;),(8,&#39;hdd_used&#39;,&#39;2011-05-25 11:40:01&#39;,&#39;44424292&#39;)&#39;</p>
 <pre><code>Check
 
@@ -136,58 +328,4 @@ innodb_flush_method=O_DIRECT
 innodb_flush_log_at_trx_commit=<span class="number">0</span>
 
 后速度明显提高，写入操作从slow_query_log里面消失。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-03-15T08:41:53.000Z" class="post__time">三月 15, 2011</time><h1 class="post__title"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/">wordpress在nginx上固定链接</a></h1></header><div class="post__main"><p>Nginx服务器下如何设置才能使永久链接生效而不致报404页面找不到的错误。由于Nginx不支持Apache的.htaccess文件，要实现持久连接静态化，我们必须手工配置Nginx的文件,伪静态化配置的重写规则，假设wordpress放在w目录：</p>
-<pre><code> location /w/ {
-
- <span class="comment"># enable search for precompressed files ending in .gz</span>
-
- <span class="comment"># nginx needs to be complied using C-with-http_gzip_static_module</span>
-
- <span class="comment"># for this to work, comment out if using nginx from aptitude</span>
-
- gzip_static on;
-
- <span class="comment"># if the requested file exists, return it immediately</span>
-
- <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>) {
-
- <span class="keyword">break</span>;
-
- }
-
- <span class="comment"># all other requests go to Wordpress</span>
-
- <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>) {
-
- rewrite . /w/<span class="keyword">index</span>.php <span class="keyword">last</span>;
-
- }
-
- include php.conf;
-
- }
-
-后台管理的固定链接的设置：
-
-/<span class="variable">%post_id</span><span class="variable">%.</span>html
-
-网上提供的以下配置不成功
-
- <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.html){
-
- rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.html <span class="keyword">break</span>;
-
- }
-
- <span class="keyword">if</span> (-f <span class="variable">$request_filename</span>/<span class="keyword">index</span>.php){
-
- rewrite (.*) <span class="variable">$1</span>/<span class="keyword">index</span>.php;
-
- }
-
- <span class="keyword">if</span> (!-f <span class="variable">$request_filename</span>){
-
- rewrite (.*) /<span class="keyword">index</span>.php;
-
- }
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/15/w/wordpress-e5-9c-a8nginx-e4-b8-8a-e5-9b-ba-e5-ae-9a-e9-93-be-e6-8e-a5/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/03/16/w/mysql-e5-86-99-e5-85-a5-e4-bc-98-e5-8c-96/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/14/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

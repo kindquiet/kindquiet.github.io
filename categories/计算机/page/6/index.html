@@ -1,4 +1,27 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-12-25T10:35:11.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/">RPM命令详解</a></h1></header><div class="post__main"><p>yum、rpm 常用命令</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
+<pre><code>phpMyAdmin  Error
+
+Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
+</code></pre><p>502 bad gateway</p>
+<p>查看nginx error log：</p>
+<p>[error] recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: GET / HTTP/1.1, upstream: fastcgi://127.0.0.1:9000, host: mysql.veryi.com</p>
+<p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
+<p>其他可能：</p>
+<p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
+<pre><code>http
+
+{
+
+fastcgi_connect_timeout <span class="number">300</span>;
+
+fastcgi_send_timeout <span class="number">300</span>;
+
+fastcgi_<span class="built_in">read</span>_timeout <span class="number">300</span>;
+
+}
+
+php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以加大php.ini的memory_<span class="built_in">limit</span>为<span class="number">64</span>M。
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T10:35:11.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/">RPM命令详解</a></h1></header><div class="post__main"><p>yum、rpm 常用命令</p>
 <p>　　1.安装一个包</p>
 <p>　　# rpm -ivh</p>
 <p>　　2.升级一个包</p>
@@ -207,81 +230,4 @@ svn: REPORT <span class="keyword">of</span> &amp;<span class="string">#39</span>
 </code></pre><p>[crit] 17496#0: *31428 open() /usr/local/nginx/proxy_temp/1/00/0000001001 failed (13: Permission denied) while reading upstream, client: …, server: …, request: GET … HTTP/1.1, upstream: <a href="http://127.0.0.1:8080/" target="_blank" rel="external">http://127.0.0.1:8080/</a>…, host: …, referrer: http://…</p>
 <p>修改/usr/local/nginx/proxy_temp目录权限为nginx运行用户权限，问题解决。</p>
 <p>chown vuser /usr/local/nginx/proxy_temp -R</p>
-</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-10-10T08:18:43.000Z" class="post__time">十月 10, 2012</time><h1 class="post__title"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/">apache停止响应故障排除</a></h1></header><div class="post__main"><p> apache停止响应，httpd进程存在，80端口有监听。查看apache error log：</p>
-<p>[Sat Sep 29 11:16:01 2012] [error] server is within MinSpareThreads of MaxClients, consider raising the MaxClients setting</p>
-<pre><code><span class="attr_selector">[Sat Sep 29 11:18:07 2012]</span> <span class="attr_selector">[error]</span> <span class="tag">server</span> <span class="tag">reached</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>, <span class="tag">consider</span> <span class="tag">raising</span> <span class="tag">the</span> <span class="tag">MaxClients</span> <span class="tag">setting</span>
-</code></pre><p>修改apache配置文件：</p>
-<p>ServerLimit 300</p>
-<pre><code><span class="title">MaxClients</span> <span class="number">6000</span>
-</code></pre><p>问题解决。</p>
-<p>其中最重要的参数是 ThreadsPerChild和 MaxClients：</p>
-<pre><code><span class="preprocessor"># worker MPM</span>
-
-<span class="preprocessor"># ThreadLimit: maximum setting of ThreadsPerChild</span>
-
-<span class="preprocessor"># ServerLimit: maximum setting of StartServers</span>
-
-<span class="preprocessor"># StartServers: initial number of server processes to start</span>
-
-<span class="preprocessor"># MaxClients: maximum number of simultaneous client connections</span>
-
-<span class="preprocessor"># MinSpareThreads: minimum number of worker threads which are kept spare</span>
-
-<span class="preprocessor"># MaxSpareThreads: maximum number of worker threads which are kept spare</span>
-
-<span class="preprocessor"># ThreadsPerChild: constant number of worker threads in each server process</span>
-
-<span class="preprocessor"># MaxRequestsPerChild: maximum number of requests a server process serves</span>
-
-ThreadLimit <span class="number">125</span>
-
-ServerLimit <span class="number">320</span>
-
-StartServers <span class="number">5</span>
-
-MaxClients <span class="number">8000</span>
-
-MinSpareThreads <span class="number">125</span>
-
-MaxSpareThreads <span class="number">1250</span>
-
-ThreadsPerChild <span class="number">125</span>
-
-MaxRequestsPerChild <span class="number">1000</span>
-
-<span class="preprocessor">##ThreadsPerChild 每个子进程建立的线程数，子进程在启动时建立这些线程后就不再建立新的线程了</span>
-
-<span class="preprocessor">##MaxClients 允许同时伺服的最大接入请求数量（在worker下就是最大线程数量）</span>
-
-<span class="preprocessor">##ServerLimit：对最大子进程数的上限，该值必须大于等于MaxClients/ThreadsPerChild</span>
-
-<span class="preprocessor">##ThreadLimit：对ThreadsPerChild的上限，该值必须大于等于 ThreadsPerChild，如果将ThreadLimit设置成一个高出实际需要很多的ThreadsPerChild值，将会有过多的共享内存被分配，应当和ThreadsPerChild可能达到的最大值保持一致.</span>
-
-<span class="preprocessor">##StartServers：服务器启动时的服务进程数目，该值肯定小于等于ServerLimit</span>
-
-<span class="preprocessor">##MinSpareThreads和MaxSpareThreads：通过新建或结束子进程的方式，将空闲线程的总数维持在这个范围内</span>
-
-<span class="preprocessor">##MaxRequestsPerChild：用于控制服务器建立新进程和结束旧进程的频率，其实是一个为了防止内存溢出的参数，每个子进程在其生存期内允许伺服的最大请求数量。到达MaxRequestsPerChild的限制后，子进程将会结束。对于KeepAlive链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。</span>
-
-可以通过检查HTTPServer/logs/error_log日志，判断MaxClients是否需要增加，如果有下面的报错，就说明apache自上次重启至今，曾经发生过达到MaxClients的情况：
-
-[error] server reached MaxClients setting, consider raising the MaxClients setting
-
-还有一种可以实时看到连接数的方法，就是打开 server-status页面，设置方法如下：
-
-<span class="number">1</span>\. 去掉以下部分的注释
-
-LoadModule status_module modules/mod_status.so
-
-ExtendedStatus On
-
-<span class="number">2.</span>修改以下部分
-
- SetHandler server-status
-
- # order deny,allow
-
- # Deny from all
-
- Allow from <span class="number">192.168</span>.8
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/10/10/w/apache-e5-81-9c-e6-ad-a2-e5-93-8d-e5-ba-94-e6-95-85-e9-9a-9c-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/5/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/7/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,4 +1,22 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-07-11T02:04:24.000Z" class="post__time">七月 11, 2011</time><h1 class="post__title"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/">awstats分析统计squid日志</a></h1></header><div class="post__main"><p>关键：squid自定义日志格式中combined %a和之间只可有一个空格分隔，如果多于一个，squid日志中每行行首会有前置空格，分析时会报错： Found 6 corrupted records。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-07-13T02:41:47.000Z" class="post__time">七月 13, 2011</time><h1 class="post__title"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/">系统日志syslog不记录snmpd日志</a></h1></header><div class="post__main"><p>系统为centos linux 5.6。启动snmpd做流量统计，系统日志充斥大量snmpd日志</p>
+<pre><code>Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Connection from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
+
+Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Received SNMP <span class="function"><span class="title">packet</span><span class="params">(s)</span></span> from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
+
+修改：
+
+vim /etc/sysconfig/snmpd<span class="class">.options</span>
+
+#加入如下参数
+
+OPTIONS=-LS3d -Lf /dev/null -<span class="tag">p</span> /var/run/snmpd<span class="class">.pid</span> -<span class="tag">a</span>
+
+chmod +x /etc/sysconfig/snmpd<span class="class">.options</span>
+
+重启：
+
+/etc/init.d/snmpd restart
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-11T02:04:24.000Z" class="post__time">七月 11, 2011</time><h1 class="post__title"><a href="/2011/07/11/w/awstats-e5-88-86-e6-9e-90-e7-bb-9f-e8-ae-a1squid-e6-97-a5-e5-bf-97/">awstats分析统计squid日志</a></h1></header><div class="post__main"><p>关键：squid自定义日志格式中combined %a和之间只可有一个空格分隔，如果多于一个，squid日志中每行行首会有前置空格，分析时会报错： Found 6 corrupted records。</p>
 <p>以下测试在centos linux中通过。</p>
 <pre><code>squid配置：
 
@@ -1078,196 +1096,4 @@ Web服务器加速（反向代理）是针对Web服务器提供加速功能的�
 <pre><code>3． 反向代理缓冲服务器
 
  反向代理是和前两种代理完全不同的一种代理服务。使用它可以降低原始WEB服务器的负载。反向代理服务器承担了对原始WEB服务器的静态页面的请求，防止原始服务器过载。它位于本地WEB服务器和Internet之间，处理所有对WEB服务器的请求，组织了WEB服务器和Internet的直接通信。如果互联网用户请求的页面在代理服务器上有缓冲的话，代理服务器直接将缓冲内容发送给用户。如果没有缓冲则先向WEB服务器发出请求，取回数据，本地缓存后再发送给用户。这种方式通过降低了向WEB服务器的请求数从而降低了WEB服务器的负载。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-05-25T06:53:07.000Z" class="post__time">五月 25, 2011</time><h1 class="post__title"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/">mysql 5.5.12安装和升级</a></h1></header><div class="post__main"><p>mysql 5.5中InnoDB作为默认的数据库存储引擎，mysql-5.1升级mysql到mysql-5.5以后，以下程序需要重新编译安装升级：</p>
-<pre><code>PHP <span class="number">5.3</span>.6
-
-cacti spine
-
-pureftp
-
-安装
-
-wget <span class="string">http:</span><span class="comment">//dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.12-linux2.6-x86_64.tar.gz/from/http://mysql.ntu.edu.tw/</span>
-
-tar -C <span class="regexp">/usr/</span>local -xzf mysql-<span class="number">5.5</span>.12-linux2.6-x86_64.tar.gz
-
-cd <span class="regexp">/usr/</span>local
-
-ln -s mysql-<span class="number">5.5</span>.12-linux2.6-x86_64/ mysql
-
-cd <span class="regexp">/usr/</span>local/mysql
-
-mkdir -p <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
-
-cp support-files<span class="regexp">/my-huge.cnf etc/</span>my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/skip-locking/</span>skip-external-locking/&amp;#<span class="number">39</span>; my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/default-character-set/</span>character-set-server/&amp;#<span class="number">39</span>; my.cnf
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/log_slow_queries/</span>slow_query_log/&amp;#<span class="number">39</span>; my.cnf
-
-修改server-id = <span class="number">1</span>为服务器ip地址最后几位，或者其它数值：
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>etc/
-
-vim my.cnf
-
-#max_allowed_packet = <span class="number">1</span>M
-
-server-id = <span class="number">8108</span>
-
-max_allowed_packet = <span class="number">64</span>M
-
-max_connections=<span class="number">800</span>
-
-character-set-server=utf8
-
-expire_logs_days = <span class="number">60</span>
-
-binlog_format=mixed
-
-log-bin=mysql-bin
-
-#read_only=<span class="number">1</span>
-
-#slave-skip-errors=<span class="number">1062</span>,<span class="number">1032</span>,<span class="number">1053</span>
-
-innodb_log_files_in_group=<span class="number">2</span>
-
-#default_table_type = INNODB <span class="comment">//unknown variable</span>
-
-innodb_data_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-innodb_data_file_path = <span class="string">ibdata1:</span><span class="number">2000</span>M;<span class="string">ibdata2:</span><span class="number">2000</span>M;<span class="string">ibdata3:</span><span class="number">20</span><span class="string">M:</span>autoextend
-
-innodb_log_group_home_dir = <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-# <span class="number">4</span>G RAM
-
-innodb_buffer_pool_size = <span class="number">1</span>G
-
-innodb_log_file_size = <span class="number">256</span>M
-
-innodb_log_buffer_size = <span class="number">8</span>M
-
-innodb_flush_log_at_trx_commit=<span class="number">0</span>
-
-innodb_thread_concurrency=<span class="number">8</span>
-
-innodb_flush_method=O_DIRECT
-
-# perform
-
-tmp_table_size = <span class="number">512</span>M
-
-max_heap_table_size=<span class="number">128</span>M
-
-slow_query_log
-
-#log-queries-not-using-indexes
-
-#log-slow-admin-statements
-
-#slow_query_log_file=mysql-slow.log
-
-long_query_time=<span class="number">1</span>
-
-log-error=mysqld.log
-
-[mysqld_safe]
-
-log-error=<span class="regexp">/var/</span>log/mysqld.log
-
-pid-file=<span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.pid
-
-添加数据库用户
-
-<span class="regexp">/usr/</span>sbin/groupadd -g <span class="number">502</span> mysql
-
-<span class="regexp">/usr/</span>sbin/useradd -u <span class="number">502</span> -g mysql mysql
-
-mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
-
-scripts/mysql_install_db --user=mysql
-
-chown -R root .
-
-chown -R mysql data
-
-chgrp -R mysql .
-
-#chmod -R u+rw data
-
-cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
-
-cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
-
-cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/rc.d/</span>init.d/mysqld
-
-chmod +x <span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld
-
-<span class="regexp">/etc/</span>rc.d<span class="regexp">/init.d/</span>mysqld restart
-
-#<span class="regexp">/sbin/</span>chkconfig --level <span class="number">345</span> mysqld on
-
-#<span class="regexp">/sbin/</span>chkconfig --del mysqld
-
-<span class="regexp">/sbin/</span>chkconfig --add mysqld
-
-<span class="regexp">/sbin/</span>chkconfig --list mysqld
-
-echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
-
-cat <span class="regexp">/etc/</span>ld.so.conf
-
-ldconfig
-
-mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
-
-ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
-
-#<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqld_safe 
-
-mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
-
-chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
-
-#加入mysql到路径
-
-echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
-
-#执行一下，保证mysql在路径环境变量中
-
-. <span class="regexp">/etc/</span>profile
-
-mysql5.1升级到mysql5.5
-
-mysql_upgrade包含一下三个命令：
-
-# mysqlcheck --check-upgrade --all-databases --auto-repair
-
-# mysql_fix_privilege_tables
-
-# mysqlcheck --all-databases --check-upgrade --fix-db-names --fix-table-names
-
-在每一次的升级过程中，建议执行mysql_upgrade这个命令，通过mysqlcheck命令帮我们去检查表是否兼容新版本的数据库同时作出修复，使用mysql_fix_privilege_tables命令去升级权限表。
-
-<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql_upgrade -uroot -p
-
-[ERROR] <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/<span class="string">mysqld:</span> unknown variable &amp;#<span class="number">39</span>;default_table_type=INNODB&amp;#<span class="number">39</span>;
-
-注释my.cnf中的default_table_type=INNODB
-
-把所有INNODB表转换成MYISAM表的脚本
-
-sed -i &amp;#<span class="number">39</span>;s<span class="regexp">/$opt_type/</span>$opt_engine<span class="regexp">/&amp;#39; /</span>usr<span class="regexp">/local/</span>mysql<span class="regexp">/bin/</span>mysql_convert_table_format
-
-<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin<span class="regexp">/mysql_convert_table_format --user=&amp;#39;root&amp;#39; --password=&amp;#39;veryi.com&amp;#39; --socket=&amp;#39;/</span>tmp/mysql.sock&amp;#<span class="number">39</span>; --type=&amp;#<span class="number">39</span>;INNODB&amp;#<span class="number">39</span>; 
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/05/25/w/mysql-5-5-12-e5-ae-89-e8-a3-85-e5-92-8c-e5-8d-87-e7-ba-a7/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/11/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/13/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/06/16/w/e9-80-8f-e6-98-8e-e4-bb-a3-e7-90-86-e8-ae-bf-e9-97-ae-e9-9d-9e80-e7-ab-af-e5-8f-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/11/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/13/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

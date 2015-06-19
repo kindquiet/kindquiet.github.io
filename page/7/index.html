@@ -1,4 +1,168 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-12-25T10:15:03.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/">印光大师文钞中关于汇集本和汇集问题的开示</a></h1></header><div class="post__main"><p>一、增广文钞卷一复永嘉某居士书二</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-12-25T10:35:11.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/">RPM命令详解</a></h1></header><div class="post__main"><p>yum、rpm 常用命令</p>
+<p>　　1.安装一个包</p>
+<p>　　# rpm -ivh</p>
+<p>　　2.升级一个包</p>
+<p>　　# rpm -Uvh</p>
+<p>　　3.移走一个包</p>
+<p>　　# rpm -e</p>
+<p>yum remove</p>
+<p>　　4.安装参数</p>
+<p>　　—force 即使覆盖属于其它包的文件也强迫安装</p>
+<p>　　—nodeps 如果该RPM包的安装依赖其它包，即使其它包没装，也强迫安装。</p>
+<p> 5.查询一个包是否被安装</p>
+<p>　　# rpm -q  rpm package name</p>
+<p>　　6.得到被安装的包的信息</p>
+<p>　　# rpm -qi  rpm package name</p>
+<p>　　7.列出该包中有哪些文件</p>
+<p>　　# rpm -ql  rpm package name</p>
+<p>　　8.列出服务器上的一个文件属于哪一个RPM包</p>
+<p>　　#rpm -qf</p>
+<p>　　9.可综合好几个参数一起用</p>
+<p>　　# rpm -qil  rpm package name yum provides  rpm package name</p>
+<p>　　10.列出所有被安装的rpm package</p>
+<p>　　# rpm -qa</p>
+<p>　　11.列出一个未被安装进系统的RPM包文件中包含有哪些文件？</p>
+<p>　　# rpm -qilp  rpm package name yum provides  rpm package name</p>
+<p>　　</p>
+<p>　　一、安装</p>
+<p>　　命令格式：</p>
+<p>　　rpm -i ( or —install) options file1.rpm … fileN.rpm</p>
+<p>　　参数：</p>
+<p>　　file1.rpm … fileN.rpm 将要安装的RPM包的文件名</p>
+<p>　　详细选项：</p>
+<p>　　-h (or —hash) 安装时输出hash记号 (``#&#39;&#39;)</p>
+<p>　　—test 只对安装进行测试，并不实际安装。</p>
+<p>　　—percent 以百分比的形式输出安装的进度。</p>
+<p>　　—excludedocs 不安装软件包中的文档文件</p>
+<p>　　—includedocs 安装文档</p>
+<p>　　—replacepkgs 强制重新安装已经安装的软件包</p>
+<p>　　—replacefiles 替换属于其它软件包的文件</p>
+<p>　　—force 忽略软件包及文件的冲突</p>
+<p>　　—noscripts 不运行预安装和后安装脚本</p>
+<p>　　—prefix 将软件包安装到由 指定的路径下</p>
+<pre><code><span class="comment">--ignorearch 不校验软件包的结构</span>
+</code></pre><p>　　—ignoreos 不检查软件包运行的操作系统</p>
+<p>　　—nodeps 不检查依赖性关系</p>
+<p>　　—ftpproxy 用 作为 FTP代理</p>
+<p>　　—ftpport 指定FTP的端口号为</p>
+<p>　　通用选项</p>
+<p>　　-v 显示附加信息</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安</p>
+<p>　　装程序都会安装到这个目录下</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
+<p>　　二、删除</p>
+<p>　　命令格式：</p>
+<p>　　rpm -e ( or —erase) options pkg1 … pkgN</p>
+<p>　　参数</p>
+<p>　　pkg1 … pkgN ：要删除的软件包</p>
+<p>　　详细选项</p>
+<p>　　—test 只执行删除的测试</p>
+<p>　　—noscripts 不运行预安装和后安装脚本程序</p>
+<p>　　—nodeps 不检查依赖性</p>
+<p>　　通用选项</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装</p>
+<p>　　程序都会安装到这个目录下</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
+<p>　　三、升级</p>
+<p>　　命令格式</p>
+<p>　　rpm -U ( or —upgrade) options file1.rpm … fileN.rpm</p>
+<p>　　参数</p>
+<p>　　file1.rpm … fileN.rpm 软件包的名字</p>
+<p>　　详细选项</p>
+<p>　　-h (or —hash) 安装时输出hash记号 (``#&#39;&#39;)</p>
+<p>　　—oldpackage 允许升级到一个老版本</p>
+<p>　　—test 只进行升级测试</p>
+<p>　　—excludedocs 不安装软件包中的文档文件</p>
+<p>　　—includedocs 安装文档</p>
+<p>　　—replacepkgs 强制重新安装已经安装的软件包</p>
+<p>　　—replacefiles 替换属于其它软件包的文件</p>
+<p>　　—force 忽略软件包及文件的冲突</p>
+<p>　　—percent 以百分比的形式输出安装的进度。</p>
+<p>—noscripts 不运行预安装和后安装脚本</p>
+<p>　　—prefix 将软件包安装到由 指定的路径下</p>
+<p>　　—ignorearch 不校验软件包的结构</p>
+<p>　　—ignoreos 不检查软件包运行的操作系统</p>
+<p>　　—nodeps 不检查依赖性关系</p>
+<p>　　—ftpproxy 用 作为 FTP代理</p>
+<p>　　—ftpport 指定FTP的端口号为</p>
+<p>　　通用选项</p>
+<p>　　-v 显示附加信息</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
+<p>　　四、查询</p>
+<p>　　命令格式：</p>
+<p>　　rpm -q ( or —query) options</p>
+<p>　　参数：</p>
+<p>　　pkg1 … pkgN ：查询已安装的软件包</p>
+<p>　　详细选项</p>
+<p>　　-p (or ``-&#39;&#39;) 查询软件包的文件</p>
+<p>　　-f 查询属于哪个软件包</p>
+<p>　　-a 查询所有安装的软件包</p>
+<p>　　—whatprovides 查询提供了 功能的软件包</p>
+<p>　　-g 查询属于 组的软件包</p>
+<p>　　—whatrequires 查询所有需要 功能的软件包</p>
+<p>　　信息选项</p>
+<p>　　显示软件包的全部标识</p>
+<p>　　-i 显示软件包的概要信息</p>
+<p>　　-l 显示软件包中的文件列表</p>
+<p>　　-c 显示配置文件列表</p>
+<p>　　-d 显示文档文件列表</p>
+<p>　　-s 显示软件包中文件列表并显示每个文件的状态</p>
+<p>　　—scripts 显示安装、卸载、校验脚本</p>
+<p>　　—queryformat (or —qf) 以用户指定的方式显示查询信息</p>
+<p>　　—dump 显示每个文件的所有已校验信息</p>
+<p>　　—provides 显示软件包提供的功能</p>
+<p>　　—requires (or -R) 显示软件包所需的功能</p>
+<p>　　通用选项</p>
+<p>　　-v 显示附加信息</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
+<p>　　五、校验已安装的软件包</p>
+<p>　　命令格式：</p>
+<p>　　rpm -V ( or —verify, or -y) options</p>
+<p>　　参数</p>
+<p>　　pkg1 … pkgN 将要校验的软件包名</p>
+<p>　　软件包选项</p>
+<p>　　-p Verify against package file</p>
+<p>　　-f 校验所属的软件包</p>
+<p>　　-a Verify 校验所有的软件包</p>
+<p>　　-g 校验所有属于组 的软件包</p>
+<p>　　详细选项</p>
+<p>　　—noscripts 不运行校验脚本</p>
+<p>　　—nodeps 不校验依赖性</p>
+<p>　　—nofiles 不校验文件属性</p>
+<p>　　通用选项</p>
+<p>　　-v 显示附加信息</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—root 让RPM将指定的路径做为根目录，这样预安装程序和后安装程序都会安装到这个目录下</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　—dbpath 设置RPM 资料库存所在的路径为</p>
+<p>　　六、校验软件包中的文件</p>
+<p>　　语法：</p>
+<p>　　rpm -K ( or —checksig) options file1.rpm … fileN.rpm</p>
+<p>　　参数：</p>
+<p>　　file1.rpm … fileN.rpm 软件包的文件名</p>
+<p>　　Checksig—详细选项</p>
+<p>　　—nopgp 不校验PGP签名</p>
+<p>　　通用选项</p>
+<p>　　-v 显示附加信息</p>
+<p>　　-vv 显示调试信息</p>
+<p>　　—rcfile 设置rpmrc文件为</p>
+<p>　　七、其它RPM选项</p>
+<p>　　—rebuilddb 重建RPM资料库</p>
+<p>　　—initdb 创建一个新的RPM资料库</p>
+<p>　　—quiet 尽可能的减少输出</p>
+<p>　　—help 显示帮助文件</p>
+<p>　　—version 显示RPM的当前版本</p>
+</div><footer class="post__foot u-cf"><a href="/2012/12/25/w/rpm-e5-91-bd-e4-bb-a4-e8-af-a6-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-12-25T10:15:03.000Z" class="post__time">十二月 25, 2012</time><h1 class="post__title"><a href="/2012/12/25/w/e5-8d-b0-e5-85-89-e5-a4-a7-e5-b8-88-e6-96-87-e9-92-9e-e4-b8-ad-e5-85-b3-e4-ba-8e-e6-97-a0-e9-87-8f-e5-af-bf-e7-bb-8f-e6-b1-87-e9-9b-86-e6-9c-ac-e5-92-8c-e6-b1-87-e9-9b-86-e9-97-ae-e9-a2-98-e7-9a-84/">印光大师文钞中关于汇集本和汇集问题的开示</a></h1></header><div class="post__main"><p>一、增广文钞卷一复永嘉某居士书二</p>
 <pre><code>（原文）流通佛法，大非易事。翻译经论，皆非聊尔从事。故译场之中，有主译者，译语者，证义者，润文者，岂敢随自心裁，传布佛经。王龙舒大弥陀经，自宋至明末，人多受持。由云栖以犹有不恰当处，故此后渐就湮没。魏承贯之学识，不及龙舒，其自任过于龙舒。因人之迹以施功，故易为力。岂承贯超越龙舒之上耶。莲池尚不流通王本，吾侪何敢流通魏本，以启人妄改佛经之端。及辟佛之流，谓佛经皆后人编造，初非真实从佛国译来者。然此经此论，若真修上士观之，亦有大益。以但取其益，而不染其弊。若下士观之，则未得其益，先受其损。以徒效其改经斥古之愆，不法其直捷专精之行耳。观机设教，对症发药。教不契机，与药不对症等耳。敢以一二可取，而遂普令流通，以贻下士之罪愆乎。
 
 1、翻译佛经是高僧大德集体智慧的作业，不敢随自心裁，传布佛经。因此，类似王耕心《弥陀衷论》随自心裁的解释佛经和下文王本、魏本随自心裁的汇集佛经都是不可行的。
@@ -148,15 +312,4 @@ cp ..<span class="regexp">/old/</span>wp-content<span class="regexp">/plugins/</
 
 表情：<span class="regexp">/wp-includes/im</span>ages<span class="regexp">/smilies</span>
 </code></pre><p>至此成功升级。</p>
-</div><footer class="post__foot u-cf"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-11-30T09:32:43.000Z" class="post__time">十一月 30, 2012</time><h1 class="post__title"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/">svn: REPORT of : 200 OK 错误排除</a></h1></header><div class="post__main"><p>提示：疑难问题找不到原因时，一定要查看error log，相关的错误日志都要分析，不能只看当前服务的日志。</p>
-<p>操作系统：centos 6 x86_64</p>
-<p>服务配置：subversion ,mod_dav_svn ,apache ,nginx</p>
-<pre><code>不管用什么版本的svn客户端，对svn库checkout时都是如下错误:
-
-svn: REPORT <span class="keyword">of</span> &amp;<span class="string">#39</span>;/svn/.../!svn/vcc/<span class="keyword">default</span>&amp;<span class="string">#39</span>;: <span class="number">200</span> OK
-
-一直认为是svn服务的问题，用多种方案不能解决问题，用了大量时间排错debug，甚至计划重建版本库。查看nginx日志是发现：
-</code></pre><p>[crit] 17496#0: *31428 open() /usr/local/nginx/proxy_temp/1/00/0000001001 failed (13: Permission denied) while reading upstream, client: …, server: …, request: GET … HTTP/1.1, upstream: <a href="http://127.0.0.1:8080/" target="_blank" rel="external">http://127.0.0.1:8080/</a>…, host: …, referrer: http://…</p>
-<p>修改/usr/local/nginx/proxy_temp目录权限为nginx运行用户权限，问题解决。</p>
-<p>chown vuser /usr/local/nginx/proxy_temp -R</p>
-</div><footer class="post__foot u-cf"><a href="/2012/11/30/w/svn-report-of-200-ok-e9-94-99-e8-af-af-e6-8e-92-e9-99-a4/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/6/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/8/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2012/12/12/w/wordpress-e6-89-8b-e5-b7-a5-e5-8d-87-e7-ba-a7-e5-88-b03-5/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/6/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/8/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,4 +1,216 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p> 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php （这两个如果没有下面代码可以不用修改）</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2013-07-16T08:27:42.000Z" class="post__time">七月 16, 2013</time><h1 class="post__title"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/">centos 6.4 x86_64安装php5.5 apache2.2.15 mysql5.5.32</a></h1></header><div class="post__main"><p> 安装centos 6.4 x86_64，选最小化安装，参考<a href="http://veryi.com/w/273.html。" target="_blank" rel="external">http://veryi.com/w/273.html。</a></p>
+<p>升级一下：</p>
+<pre><code># yum <span class="keyword">update</span> -<span class="literal">y</span>
+</code></pre><h1 id="cat_/etc/issue-net">cat /etc/issue.net</h1><pre><code>CentOS release <span class="number">6.4</span> (Final)
+
+Kernel <span class="string">\r</span> <span class="literal">on</span> an <span class="string">\m</span>
+
+<span class="comment"># uname -a</span>
+
+Linux veryi.com <span class="number">2.6</span>.<span class="number">32</span>-<span class="number">358.11</span>.<span class="number">1.el</span>6.x86_64 <span class="comment">#1 SMP Wed Jun 12 03:34:52 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux</span>
+</code></pre><h1 id="yum_install_vim_-y">yum install vim -y</h1><p>vim /etc/sysconfig/iptables</p>
+<pre><code># Firewall configuration written by system-config-firewall
+
+# Manual customization of this file is not recommended.
+
+<span class="strong">*filter
+
+</span><span class="attribute">:INPUT ACCEPT [0:0]</span>
+
+<span class="attribute">:FORWARD ACCEPT [0:0]</span>
+
+<span class="attribute">:OUTPUT ACCEPT [0:0]</span>
+
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+-A INPUT -p icmp -j ACCEPT
+
+-A INPUT -i lo -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+COMMIT
+</code></pre><p>重启</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/iptables restart</span>
+</code></pre><p>vi /etc/selinux/config</p>
+<pre><code>安装mysql
+
+yum install wget <span class="attribute">-y</span>
+
+wget http:<span class="comment">//www.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.32-linux2.6-x86_64.tar.gz/from/http://cdn.mysql.com/</span>
+
+tar <span class="attribute">-C</span> /usr/<span class="built_in">local</span> <span class="attribute">-xzf</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="built_in">.32</span><span class="attribute">-linux2</span><span class="built_in">.6</span><span class="attribute">-x86_64</span><span class="built_in">.</span>tar<span class="built_in">.</span>gz
+
+cd /usr/<span class="built_in">local</span>
+
+ln <span class="attribute">-s</span> mysql<span class="subst">-</span><span class="number">5.5</span><span class="built_in">.32</span><span class="attribute">-linux2</span><span class="built_in">.6</span><span class="attribute">-x86_64</span><span class="subst">/</span> mysql
+
+cd /usr/<span class="built_in">local</span>/mysql
+
+mkdir <span class="attribute">-p</span> /usr/<span class="built_in">local</span>/mysql/etc<span class="subst">/</span>
+
+cp support<span class="attribute">-files</span>/my<span class="attribute">-innodb</span><span class="attribute">-heavy</span><span class="subst">-</span><span class="number">4</span>G<span class="built_in">.</span>cnf etc/my<span class="built_in">.</span>cnf
+
+mv /etc/my<span class="built_in">.</span>cnf ~/my<span class="built_in">.</span>cnf<span class="subst">-</span><span class="string">`date +%F`</span>
+
+mv /etc/rc<span class="built_in">.</span>d/init<span class="built_in">.</span>d/mysqld ~/mysqld<span class="subst">-</span><span class="string">`date +%F`</span>
+
+cd /usr/<span class="built_in">local</span>/mysql/etc<span class="subst">/</span>
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/max_connect_errors <span class="subst">=</span> <span class="number">10</span>/max_connect_errors <span class="subst">=</span> <span class="number">1000</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/default<span class="attribute">-storage</span><span class="attribute">-engine</span> <span class="subst">=</span> MYISAM<span class="subst">/</span><span class="variable">#default</span><span class="attribute">-storage</span><span class="attribute">-engine</span> <span class="subst">=</span> MYISAM<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/tmp_table_size <span class="subst">=</span> <span class="number">64</span>M<span class="subst">/</span><span class="variable">#tmp_table_size</span> <span class="subst">=</span> <span class="number">64</span>M<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/innodb_flush_log_at_trx_commit <span class="subst">=</span> <span class="number">1</span><span class="subst">/</span><span class="variable">#innodb_flush_log_at_trx_commit</span> <span class="subst">=</span> <span class="number">1</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/max_allowed_packet <span class="subst">=</span> <span class="number">1</span>M<span class="subst">/</span><span class="variable">#max_allowed_packet</span> <span class="subst">=</span> <span class="number">1</span>M<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/<span class="keyword">skip</span><span class="attribute">-locking</span>/<span class="keyword">skip</span><span class="attribute">-external</span><span class="attribute">-locking</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/default<span class="attribute">-character</span><span class="attribute">-set</span>/character<span class="attribute">-set</span><span class="attribute">-server</span><span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;s/log_slow_queries/slow_query_log<span class="subst">/</span><span class="subst">&amp;</span><span class="variable">#39</span>; my<span class="built_in">.</span>cnf
+
+sed <span class="attribute">-i</span> <span class="subst">&amp;</span><span class="variable">#39</span>;<span class="subst">/</span><span class="subst">\</span><span class="preprocessor">[</span>mysqldump<span class="subst">\</span><span class="preprocessor">]</span><span class="markup">/i\
+
+character-set-server=utf8 \
+
+#innodb_file_per_table=1 \
+
+expire_logs_days = 60 \
+
+innodb_flush_log_at_trx_commit=0 \
+
+innodb_flush_method=O_DIRECT \
+
+innodb_data_home_dir = /opt/data/mysql/ \
+
+innodb_log_group_home_dir = /opt/data/mysql/ \
+
+#tmp_table_size = 512M \
+
+#max_heap_table_size=128M \
+
+log-error=mysqld.log \
+
+long_query_time = 2 \
+
+&amp;#39; my.cnf</span>
+</code></pre><p>vim my.cnf</p>
+<p>/usr/sbin/groupadd -g 200 mysql</p>
+<pre><code><span class="regexp">/usr/</span>sbin/useradd -u <span class="number">200</span> -g mysql mysql
+
+mkdir -p <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+scripts/mysql_install_db --user=mysql
+
+chown -R root .
+
+chown -R mysql data
+
+chgrp -R mysql .
+
+cd <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+chown mysql.mysql <span class="regexp">/opt/</span>data<span class="regexp">/mysql/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>
+
+\cp support-files<span class="regexp">/mysql.server /</span>etc<span class="regexp">/init.d/</span>mysqld
+
+chmod +x <span class="regexp">/etc/</span>init.d/mysqld
+
+<span class="regexp">/etc/</span>init.d/mysqld restart
+
+<span class="regexp">/sbin/</span>chkconfig --add mysqld
+
+<span class="regexp">/sbin/</span>chkconfig --list mysqld
+
+echo <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>lib  <span class="regexp">/etc/</span>ld.so.conf
+
+cat <span class="regexp">/etc/</span>ld.so.conf
+
+ldconfig
+
+mkdir -p <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>lib<span class="regexp">/mysql/</span>mysql.sock
+
+ln -s <span class="regexp">/tmp/</span>mysql.sock <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>mysqld.sock
+
+mkdir -p <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+chown mysql <span class="regexp">/var/</span>run<span class="regexp">/mysqld/</span>
+
+echo pathmunge <span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin after  <span class="regexp">/etc/</span>profile.d/mysql.sh
+
+. <span class="regexp">/etc/</span>profile
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysqladmin -u root password &amp;#<span class="number">39</span>;veryi.com&amp;#<span class="number">39</span>;
+
+<span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql -u root -veryi.com
+</code></pre><p>Welcome to the MySQL monitor. Commands end with ; or \g.</p>
+<pre><code>Your MySQL connection <span class="property">id</span> <span class="keyword">is</span> <span class="number">13</span>
+
+Server <span class="property">version</span>: <span class="number">5.5</span>.32-<span class="command">log</span> MySQL Community Server (GPL)
+</code></pre><p>mysql \s</p>
+<hr>
+<pre><code><span class="regexp">/usr/</span>local<span class="regexp">/mysql/</span>bin/mysql Ver <span class="number">14.14</span> Distrib <span class="number">5.5</span>.32, <span class="keyword">for</span> linux2.6 (x86_64) using readline <span class="number">5.1</span>
+</code></pre><p>安装php5.5 httpd2.2.15，添加yum源：</p>
+<pre><code>rpm -Uvh <span class="string">http:</span><span class="comment">//mirrors.sohu.com/fedora-epel/6/x86_64/epel-release-6-8.noarch.rpm</span>
+
+rpm -Uvh <span class="string">http:</span><span class="comment">//rpms.famillecollet.com/enterprise/remi-release-6.rpm</span>
+
+yum repolist
+</code></pre><p>yum —enablerepo=remi,remi-test install httpd php php-common -y</p>
+<p>php -v</p>
+<pre><code>PHP 5.5.0 (<span class="keyword">cli</span>) (built: Jul 12 2013 19:03:02)
+
+<span class="keyword">Copyright</span> (c) 1997-2013 The PHP <span class="literal">Group</span>
+
+Zend Engine v2.5.0-dev, <span class="keyword">Copyright</span> (c) 1998-2013 Zend Technologies
+</code></pre><p>httpd -v</p>
+<pre><code>Server <span class="property">version</span>: Apache/<span class="number">2.2</span>.15 (Unix)
+</code></pre><p>设置自启动：</p>
+<p>chkconfig —list httpd</p>
+<pre><code>chkconfig <span class="comment">--level 345 httpd on</span>
+
+chkconfig <span class="comment">--list mysqld</span>
+</code></pre><p>vim /etc/httpd/conf/httpd.conf</p>
+<pre><code><span class="regexp">/etc/i</span>nit.d<span class="regexp">/httpd restart</span>
+</code></pre><p>cd /var/www/</p>
+<pre><code>chown apache.apache html/ -<span class="literal">R</span>
+
+安装php扩展
+
+yum --noplugins --enablerepo=remi,remi-<span class="keyword">test</span> install php-pecl-apc php-<span class="keyword">cli</span> php-pear php-pdo php-mysql php-pgsql php-pecl-mongo php-sqlite php-pecl-memcache php-pecl-memcached php-gd php-mbstring php-mcrypt php-xml -<span class="literal">y</span>
+
+/etc/init.<span class="keyword">d</span>/httpd restart
+</code></pre><p>QA：</p>
+<pre><code>yum通过代理升级：
+
+export http_proxy=http://yum-<span class="keyword">user</span>:<span class="literal">proxy</span>-<span class="literal">pass</span>@mycache.veryi.com:<span class="number">3128</span>
+</code></pre><p>装了epel的扩展后，执行yum报错：</p>
+<pre><code><span class="string">Error:</span> Cannot retrieve metalink <span class="keyword">for</span> <span class="string">repository:</span> epel. Please verify its path and <span class="keyword">try</span> again
+
+编辑<span class="regexp">/etc/</span>yum.repos.d/epel.repo，做如下改动，取消http行的注释（https行可不注释）：
+
+baseurl=<span class="string">http:</span><span class="comment">//download.fedoraproject.org/pub/epel/6/$basearch</span>
+
+#mirrorlist=<span class="string">https:</span><span class="comment">//mirrors.fedoraproject.org/metalink?repo=epel-6arch=$basearch</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/07/16/w/centos-6-4-x86-64-e5-ae-89-e8-a3-85php5-5-apache2-2-15-mysql5-5-32/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-06-17T03:24:31.000Z" class="post__time">六月 17, 2013</time><h1 class="post__title"><a href="/2013/06/17/w/e5-bf-98-e8-ae-b0discuz-e7-ae-a1-e7-90-86-e5-91-98admin-e5-af-86-e7-a0-81-e5-92-8c-e5-ae-89-e5-85-a8-e6-8f-90-e9-97-ae-e7-9a-84-e8-a7-a3-e5-86-b3-e5-8a-9e-e6-b3-95/">忘记Discuz管理员admin密码和安全提问的解决办法</a></h1></header><div class="post__main"><p> 在网站根目录下的子目录uc_server/data中打开找到文件config.inc.php以及config/config_global.php、config/config_ucenter.php （这两个如果没有下面代码可以不用修改）</p>
 <p>vim uc_server/data/config.inc.php</p>
 <pre><code>vim config/config_global<span class="built_in">.</span>php
 
@@ -114,27 +326,4 @@ comodoDNS
 <span class="number">198.153.192.60</span>(过滤不安全网页+色情+非家庭友好)
 
 <span class="number">198.153.194.60</span>(同上)
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2013-01-04T08:20:13.000Z" class="post__time">一月 4, 2013</time><h1 class="post__title"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/">nginx php 502 bad gateway 解决方法</a></h1></header><div class="post__main"><p>访问phpMyAdmin时，出现下面错误。</p>
-<pre><code>phpMyAdmin  Error
-
-Cannot start session without errors, please<span class="instruction"> check </span>errors given in your PHP<span class="instruction"> and/or </span>webserver log file<span class="instruction"> and </span>configure your PHP installation properly.第一次打开提示,刷新提示：
-</code></pre><p>502 bad gateway</p>
-<p>查看nginx error log：</p>
-<p>[error] recv() failed (104: Connection reset by peer) while reading response header from upstream, client:, server: , request: GET / HTTP/1.1, upstream: fastcgi://127.0.0.1:9000, host: mysql.veryi.com</p>
-<p>查看php session.save_path的设置，默认是/var/lib/php/session。修改该目录nginx进程的用户有读写权限。问题解决。</p>
-<p>其他可能：</p>
-<p>部分PHP程序的执行时间超过了Nginx的等待时间，可以适当增加nginx.conf配置文件中FastCGI的timeout时间，例如：</p>
-<pre><code>http
-
-{
-
-fastcgi_connect_timeout <span class="number">300</span>;
-
-fastcgi_send_timeout <span class="number">300</span>;
-
-fastcgi_<span class="built_in">read</span>_timeout <span class="number">300</span>;
-
-}
-
-php.ini中memory_<span class="built_in">limit</span>设低了会出错，可以加大php.ini的memory_<span class="built_in">limit</span>为<span class="number">64</span>M。
-</code></pre></div><footer class="post__foot u-cf"><a href="/2013/01/04/w/nginx-php-502-bad-gateway-e8-a7-a3-e5-86-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2013/03/07/w/e5-85-ac-e5-85-b1dns-e6-9c-8d-e5-8a-a1/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/4/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/6/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

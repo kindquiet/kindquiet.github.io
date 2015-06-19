@@ -1,4 +1,92 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-03T07:22:19.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">vsftpd用pam_mysql实现mysql虚拟用户认证安装配置</a></h1></header><div class="post__main"><p>vsftpd已经很安全了，但是使用系统用户不方便管理，以下是在Linux系统中用pam_mysql实现mysql虚拟用户认证的安装配置过程。</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2009-04-07T03:30:05.000Z" class="post__time">四月 7, 2009</time><h1 class="post__title"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/">用DenyHosts防止SSH暴力破解</a></h1></header><div class="post__main"><p>完全开放ssh端口以后，就会引来一些无聊的人进行口令扫描。阻止ssh扫描可以减少安全日志的记录。DenyHosts是一个有效的方法。DenyHosts是Python语言写的一个程序，它会分析SSHD的日志文件，当发现重复的攻击时就会记录IP到/etc/hosts.deny文件，从而达到自动屏蔽IP的功能。</p>
+<p>DenyHosts官方网站为：</p>
+<p><a href="http://denyhosts.sourceforge.net" target="_blank" rel="external">http://denyhosts.sourceforge.net</a></p>
+<p>如果没有python运行环境，需要先安装python</p>
+<p>wget <a href="http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2" target="_blank" rel="external">http://www.python.org/ftp/python/2.5.2/Python-2.5.2.tar.bz2</a></p>
+<pre><code>tar zxf Python-<span class="number">2.5</span>.<span class="number">2</span><span class="class">.tar</span><span class="class">.gz</span>
+
+cd Python-<span class="number">2.5</span>.<span class="number">2</span>
+
+./configure --prefix=/usr/local
+
+make -j6  make install
+</code></pre><p>cd /usr/local/src</p>
+<pre><code>wget <span class="string">http:</span><span class="comment">//mesh.dl.sourceforge.net/sourceforge/denyhosts/DenyHosts-2.6.tar.gz</span>
+
+tar -zxf DenyHosts-<span class="number">2.6</span>.tar.gz -C <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>
+
+cd <span class="regexp">/usr/</span>local<span class="regexp">/src/</span>DenyHosts-<span class="number">2.6</span>
+
+python setup.py install
+</code></pre><p>默认是安装到/usr/share/denyhosts目录的。</p>
+<p>配置</p>
+<p>cd /usr/share/denyhosts/</p>
+<pre><code>cp denyhosts<span class="class">.cfg-dist</span> denyhosts<span class="class">.cfg</span>
+
+vi denyhosts.cfg
+</code></pre><p>根据自己需要进行相应的配置(解释见下文件的配置文件)。</p>
+<pre><code>设置启动脚本
+</code></pre><p>cp daemon-control-dist daemon-control</p>
+<pre><code>chown <span class="literal">root</span> daemon-<span class="literal">control</span>
+
+chmod <span class="number">700</span> daemon-<span class="literal">control</span>
+</code></pre><p>如果要使DenyHosts每次重起后自动启动还需做如下设置：</p>
+<pre><code><span class="keyword">cd</span> /etc/init.<span class="keyword">d</span>
+
+<span class="keyword">ln</span> -<span class="keyword">s</span> /usr/share/denyhosts/daemon-control denyhosts
+
+chkconfig --<span class="built_in">add</span> denyhosts
+
+chkconfig --level <span class="number">345</span> denyhosts <span class="keyword">on</span>
+
+chkconfig --<span class="keyword">list</span> denyhosts
+</code></pre><p>或者修改/etc/rc.local文件：</p>
+<pre><code><span class="preprocessor"># vi /etc/rc.local</span>
+
+加入下面这条命令
+</code></pre><p>/usr/share/denyhosts/daemon-control start</p>
+<p>DenyHosts配置文件：</p>
+<p>vi /etc/denyhosts.cfg</p>
+<p>SECURE_LOG = /var/log/secure</p>
+<pre><code><span class="id">#ssh</span> 日志文件，它是根据这个文件来判断的。
+</code></pre><p>HOSTS_DENY = /etc/hosts.deny</p>
+<pre><code><span class="preprocessor">#控制用户登陆的文件</span>
+</code></pre><p>PURGE_DENY = 7w</p>
+<pre><code><span class="preprocessor">#过多久后清除已经禁止的</span>
+</code></pre><p>BLOCK_SERVICE = sshd</p>
+<pre><code><span class="preprocessor">#禁止的服务名</span>
+</code></pre><p>DENY_THRESHOLD_INVALID = 1</p>
+<pre><code><span class="preprocessor">#允许无效用户失败的次数</span>
+</code></pre><p>DENY_THRESHOLD_VALID = 10</p>
+<pre><code><span class="preprocessor">#允许普通用户登陆失败的次数</span>
+</code></pre><p>DENY_THRESHOLD_ROOT = 5</p>
+<pre><code><span class="preprocessor">#允许root登陆失败的次数</span>
+</code></pre><p>HOSTNAME_LOOKUP=NO</p>
+<pre><code><span class="preprocessor">#是否做域名反解</span>
+</code></pre><p>ADMIN_EMAIL = dayu@veryi.com</p>
+<pre><code><span class="preprocessor">#管理员邮件地址</span>
+</code></pre><p>DAEMON_LOG = /var/log/denyhosts</p>
+<pre><code><span class="preprocessor">#denyhost的日志文件</span>
+</code></pre><p>完了之后执行daemon-contron start就可以了。</p>
+<pre><code><span class="regexp">/usr/</span>share<span class="regexp">/denyhosts/</span>daemon-control start
+</code></pre><p>参考: <a href="http://www.cublog.cn/u/12859/showart_247895.html" target="_blank" rel="external">http://www.cublog.cn/u/12859/showart_247895.html</a></p>
+<p>对于centos系统：</p>
+<h1 id="centos_6_x86_64">centos 6 x86_64</h1><pre><code>rpm -Uhv <span class="string">http:</span><span class="comment">//pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm</span>
+</code></pre><h1 id="centos_6_i386">centos 6 i386</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/pkgs.repoforge.org/rpmforge</span>-release/rpmforge-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el6.rf.i686.rpm
+
+<span class="comment"># Red Hat Enterprise Linux 5 / i386:</span>
+
+rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el5.rf.i386.rpm
+</code></pre><h1 id="Red_Hat_Enterprise_Linux_5_/_x86_64:">Red Hat Enterprise Linux 5 / x86_64:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el5/en</span><span class="regexp">/x86_64/rpmforge</span><span class="regexp">/RPMS/</span><span class="regexp">/rpmforge-release-0.5.3-1.el5.rf.x86_64.rpm</span>
+</code></pre><h1 id="Red_Hat_Enterprise_Linux_4_/_i386:">Red Hat Enterprise Linux 4 / i386:</h1><pre><code>rpm -<span class="constant">Uhv </span><span class="symbol">http:</span>/<span class="regexp">/apt.sw.be/redhat</span><span class="regexp">/el4/en</span><span class="regexp">/i386/rpmforge</span><span class="regexp">/RPMS/rpmforge</span>-release-<span class="number">0</span>.<span class="number">5.3</span>-<span class="number">1</span>.el4.rf.i386.rpm
+</code></pre><p>yum install denyhosts -y</p>
+<pre><code>vim <span class="regexp">/etc/</span>denyhosts/denyhosts.cfg
+
+<span class="regexp">/etc/</span>init.d/denyhosts restart
+</code></pre><p>chkconfig —level 345 denyhosts on</p>
+<pre><code>chkconfig <span class="comment">--list denyhosts</span>
+</code></pre><p>即可。</p>
+</div><footer class="post__foot u-cf"><a href="/2009/04/07/w/e7-94-a8denyhosts-e9-98-b2-e6-ad-a2ssh-e6-9a-b4-e5-8a-9b-e7-a0-b4-e8-a7-a3/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-04-03T07:22:19.000Z" class="post__time">四月 3, 2009</time><h1 class="post__title"><a href="/2009/04/03/w/vsftpd-e7-94-a8pam-mysql-e5-ae-9e-e7-8e-b0mysql-e8-99-9a-e6-8b-9f-e7-94-a8-e6-88-b7-e8-ae-a4-e8-af-81-e5-ae-89-e8-a3-85-e9-85-8d-e7-bd-ae/">vsftpd用pam_mysql实现mysql虚拟用户认证安装配置</a></h1></header><div class="post__main"><p>vsftpd已经很安全了，但是使用系统用户不方便管理，以下是在Linux系统中用pam_mysql实现mysql虚拟用户认证的安装配置过程。</p>
 <p>系统环境：</p>
 <pre><code>cat /etc/redhat-<span class="operator"><span class="keyword">release</span>
 
@@ -521,10 +609,4 @@ LANGUAGE=zh_CN<span class="class">.GB18030</span>:zh_CN<span class="class">.GB23
 <p>mkdir -p /var/log/samba</p>
 <p>启动：</p>
 <p>/etc/init.d/smb start</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2009-03-26T01:00:06.000Z" class="post__time">三月 26, 2009</time><h1 class="post__title"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/">笔记本电脑不花钱的降温降噪音方法</a></h1></header><div class="post__main"><p>把我去年笔记本电脑降噪音方法写出来。</p>
-<p>天气热了，旭日420的风扇声音吵得人无法安心工作，用speadfan软件(<a href="http://www.almico.com/speedfan.php" target="_blank" rel="external">http://www.almico.com/speedfan.php</a>) 检测，cpu温度75度以上，但不死机。给联想打电话，说明去年夏天很安静，使用不到一年。说可能需要清灰，并建议如果可以找到发票，证明购机不到一年，可以上门。或者送到联想服务站。 发票不好找，去服务站没时间，忍无可忍，自己动手丰衣足食：</p>
-<p>1、拔掉外界电源，拔掉电池！！这个是必须做的，至少你修不好但不至于修坏。不知道如何拆电池？您还是送到维修站吧。 </p>
-<p>2、打开风扇盖，拆下覆盖风扇的金属盖，拆下风扇，发现风扇的出风口已经完全被很细的绒毛堵上，清理干净。 </p>
-<p>3、安装风扇，别忘了按上风扇电源。安装时先把所有的螺丝都装上，但不要拧紧，然后逐个螺丝拧紧一点，直到完全拧紧。  开机后检测，cpu温度在50度以下，如果不贴到出风口上，是不会听到噪音的。即使你用上百元的散热器，降温也不会超过5度，而且带来了更大的电力浪费和更多的噪音源。</p>
-<p>清灰的降温效果比笔记本散热器要好用的多，值得试一试。还你一个清静的夏天。如果使用频繁，建议每半年清灰一次。 其他采用风扇降温的笔记本电脑也可以如法清理。如果你从来没有拆过笔记本电脑，那您还是请专业人士来完成吧。</p>
-</div><footer class="post__foot u-cf"><a href="/2009/03/26/w/e7-ac-94-e8-ae-b0-e6-9c-ac-e7-94-b5-e8-84-91-e4-b8-8d-e8-8a-b1-e9-92-b1-e7-9a-84-e9-99-8d-e6-b8-a9-e9-99-8d-e5-99-aa-e9-9f-b3-e6-96-b9-e6-b3-95/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</div><footer class="post__foot u-cf"><a href="/2009/03/27/w/linux-e6-9c-8d-e5-8a-a1-e5-99-a8samba-e6-ba-90-e4-bb-a3-e7-a0-81-e5-ae-89-e8-a3-85-e8-ae-be-e7-bd-ae/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/26/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/28/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

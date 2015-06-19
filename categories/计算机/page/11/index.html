@@ -1,4 +1,58 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-09-14T08:06:12.000Z" class="post__time">九月 14, 2011</time><h1 class="post__title"><a href="/2011/09/14/w/e5-a6-82-e4-bd-95-e5-ae-8c-e5-85-a8-e5-81-9c-e6-ad-a2qmail-e7-9a-84-e6-9c-8d-e5-8a-a1-e8-bf-9b-e7-a8-8b/">如何完全停止qmail的服务进程</a></h1></header><div class="post__main"><p>qmailctl stop</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>计算机 - kindquiet素食勤俭敬老孝慈</title><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2011-09-23T08:37:14.000Z" class="post__time">九月 23, 2011</time><h1 class="post__title"><a href="/2011/09/23/w/e6-9d-bf-e8-bd-bdraid1-e5-ae-89-e8-a3-85centos-6-x86-64-linux-e7-b3-bb-e7-bb-9f/">板载raid1安装centos 6 x86_64 linux系统</a></h1></header><div class="post__main"><p>由于centos 6标准内核不包含raid驱动，需要单独安装或者在安装是加载，服务器是惠普ProLiant DL120 G7，阵列是HP Smart Array B110i SATA-3G RAID控制器（RAID 0/1/1+0）,。</p>
+<pre><code>进到BIOS里配置好raid。
+
+在hp网站下载
+
+Driver Diskette <span class="keyword">for</span> HP Smart Array B110i SATA RAID Controller <span class="keyword">for</span> Red Hat Enterprise Linux 6 (AMD64/EM64T) 。
+
+输出到<span class="keyword">u</span>盘上
+
+<span class="keyword">For</span> a USB key <span class="keyword">for</span> Red Hat and SuSE
+
+ dd <span class="keyword">if</span>=hpahcisr-1.2.6-7.rhel6.x86_64.dd of=/dev/sd?
+
+解压出了一个dd.img文件
+
+At <span class="keyword">boot</span> prompt <span class="keyword">type</span> linux nostorage
+
+光驱放入安装光盘，在安装界面的第一个画面输入 ：linux nostorage （用linux text dd 不成功）
+
+安装程序启动，会提示是否需要加载，按Yes，在弹出的对话框里找到含有驱动的USB设备，选中拷贝好的.img文件，确定，驱动加载完毕，安装程序提示是否需要继续加载其他驱动，如无其他设备，选择<span class="keyword">No</span>，返回安装界面，按正常步骤操作即可，安装过程中会发现安装程序能正常识别到raid驱动设备了；
+
+接下来，将<span class="keyword">U</span>盘拔出，因为<span class="keyword">U</span>盘符占用/dev/sda,不拔出linux会把<span class="keyword">U</span>盘当硬盘的，这样系统直至安装结束。
+
+yum -y <span class="keyword">update</span> 升级，如果升级了内核，新的内核不会自动添加raid驱动的，重启后就进不了系统了，所以升级完毕切记不要忙着重启 , 以CentOS升级到6.0举例：
+
+b110i.ko 是驱动模块，如果更新前的内核里不包含这个文件可以在驱动的.img文件里找到：
+
+
+
+<span class="keyword">mkdir</span> ~/b110i 
+
+<span class="keyword">mkdir</span> /mnt/tmp 
+
+mount -o loop dd.img /mnt/tmp 
+
+<span class="keyword">cd</span> /mnt/tmp 
+
+cp modules.cgz ~/b110i 
+
+<span class="keyword">cd</span> ~/b110i 
+
+gunzip -S .cgz modules.cgz 
+
+cpio -ivd  modules 
+
+cp 2.6.18-194.el5/x86_64/b110i.ko /lib/modules/2.6.18-238.12.1.el5/updates/b110i.ko #注意根据实际版本情况适当调整 
+
+depmod -v 2.6.18-238.12.1.el5 
+
+mv /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img.backup 
+
+mkinitrd /<span class="keyword">boot</span>/initrd-2.6.18-238.12.1.el5.img 2.6.18-238.12.1.el5 
+
+参考http:<span class="comment">//coralzd.blog.51cto.com/90341/580046</span>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/09/23/w/e6-9d-bf-e8-bd-bdraid1-e5-ae-89-e8-a3-85centos-6-x86-64-linux-e7-b3-bb-e7-bb-9f/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-09-14T08:06:12.000Z" class="post__time">九月 14, 2011</time><h1 class="post__title"><a href="/2011/09/14/w/e5-a6-82-e4-bd-95-e5-ae-8c-e5-85-a8-e5-81-9c-e6-ad-a2qmail-e7-9a-84-e6-9c-8d-e5-8a-a1-e8-bf-9b-e7-a8-8b/">如何完全停止qmail的服务进程</a></h1></header><div class="post__main"><p>qmailctl stop</p>
 <pre><code>vpopmailctl stop
 
 vi <span class="regexp">/etc/</span>inittab
@@ -269,22 +323,4 @@ lsb_release -<span class="tag">a</span>
 查询rpm安装包名称:
 
 yum whatprovides */lsb_release
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/26/w/e6-9f-a5-e7-9c-8blinux-e5-8f-91-e8-a1-8c-e7-89-88-e4-bf-a1-e6-81-af-lsb-release/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2011-07-13T02:41:47.000Z" class="post__time">七月 13, 2011</time><h1 class="post__title"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/">系统日志syslog不记录snmpd日志</a></h1></header><div class="post__main"><p>系统为centos linux 5.6。启动snmpd做流量统计，系统日志充斥大量snmpd日志</p>
-<pre><code>Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Connection from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
-
-Jul <span class="number">10</span> <span class="number">11</span>:<span class="number">03</span>:<span class="number">59</span> lb snmpd[<span class="number">1821</span>]: Received SNMP <span class="function"><span class="title">packet</span><span class="params">(s)</span></span> from UDP: [<span class="number">127.0</span>.<span class="number">0.1</span>]:<span class="number">34179</span>
-
-修改：
-
-vim /etc/sysconfig/snmpd<span class="class">.options</span>
-
-#加入如下参数
-
-OPTIONS=-LS3d -Lf /dev/null -<span class="tag">p</span> /var/run/snmpd<span class="class">.pid</span> -<span class="tag">a</span>
-
-chmod +x /etc/sysconfig/snmpd<span class="class">.options</span>
-
-重启：
-
-/etc/init.d/snmpd restart
-</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/13/w/e7-b3-bb-e7-bb-9f-e6-97-a5-e5-bf-97syslog-e4-b8-8d-e8-ae-b0-e5-bd-95snmpd-e6-97-a5-e5-bf-97/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2011/07/26/w/e6-9f-a5-e7-9c-8blinux-e5-8f-91-e8-a1-8c-e7-89-88-e4-bf-a1-e6-81-af-lsb-release/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/categories/计算机/page/10/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/categories/计算机/page/12/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>

@@ -1,4 +1,232 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-05-24T10:53:18.000Z" class="post__time">五月 24, 2012</time><h1 class="post__title"><a href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/">centos编译mldonkey解决中文乱码</a></h1></header><div class="post__main"><p>mldonkey可能是最好最稳定的p2p下载软件了，除了支持eD2k和Overnet两种网络外还可以支持BT,DC,Gnutella,Fasttrack,Kad等多种流行的P2P应用网络。编译好的mldonkey-3.1.0.static.i386-Linux_glibc-2.7.tar.bz2汉字文件名乱码。下载mldonkey-3.1.2.tar.bz2源代码编译解决：</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="kindquiet"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="alternative" href="/atom.xml" title="kindquiet素食勤俭敬老孝慈" type="application/atom+xml"><link rel="icon" href="/favicon.ico"><title>kindquiet素食勤俭敬老孝慈</title><meta name="keywords" content="centos,素食"><meta name="description" content="kindquiet素食勤俭敬老孝慈"><script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "//hm.baidu.com/hm.js?33ec0e4a308e2f174e68f15c700d8b5d";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script><link rel="stylesheet" href="/css/style.css" type="text/css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--></head><body><header class="site-head"><div class="inner"><h1 class="site-title u-fl"><a href="/">kindquiet素食勤俭敬老孝慈</a></h1><nav class="site-nav u-fr"><ul class="site-nav__list"><li class="site-nav__item"><a href="/" class="site-nav__link">Home</a></li><li class="site-nav__item"><a href="/archives" class="site-nav__link">Archives</a></li></ul></nav></div></header><section class="site-content"><main class="site-main"><article class="post"><header class="post__head"><time datetime="2012-09-14T02:22:56.000Z" class="post__time">九月 14, 2012</time><h1 class="post__title"><a href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/">华为H3C交换机S5120配置管理地址和ssh/telnet</a></h1></header><div class="post__main"><p> 使用串口连接交换机，笔记本电脑通信使用USB转串口，建议串口芯片是FT232RL的转接头。</p>
+<pre><code>交换机默认密码是<span class="constant">H</span>3C,<span class="constant">H</span>3C或者admin，admin 。 
+
+[<span class="constant">Quidway</span>] <span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span> <span class="number">4</span>
+
+[<span class="constant">Quidway</span>-ui-vty<span class="number">0</span>-<span class="number">4</span>] authentication-<span class="literal">mode</span> scheme
+
+[<span class="constant">Quidway</span>-ui-vty<span class="number">0</span>-<span class="number">4</span>] protocol inbound ssh
+
+[<span class="constant">Quidway</span>] local-<span class="keyword">user</span> client001
+
+[<span class="constant">Quidway</span>-luser-client001] <span class="literal">password</span> simple nmamtf
+
+[<span class="constant">Quidway</span>-luser-client001] <span class="keyword">service</span>-<span class="built_in">type</span> ssh
+
+[<span class="constant">Quidway</span>] ssh <span class="keyword">user</span> client001 authentication-<span class="built_in">type</span> <span class="literal">password</span>
+
+protocol inbound all 
+
+h3csys
+
+[h3c]int <span class="keyword">vlan</span> <span class="number">1</span>
+
+[h3c-int-vlan1]<span class="literal">ip</span> add <span class="number">192.168</span>.<span class="number">12.89</span> <span class="number">255.255</span>.<span class="number">255.0</span>
+
+[h3c-int-vlan1]quit
+
+[h3c]local-<span class="keyword">user</span> admin
+
+[h3c-admin]<span class="literal">password</span> simple nmamtf
+
+[h3c-admin]<span class="keyword">service</span>-<span class="built_in">type</span> telnet authorization-attribute level <span class="number">3</span>
+
+[h3c-admin]quit
+
+[h3c]<span class="keyword">user</span> vty <span class="number">0</span> <span class="number">4</span>
+
+[h3c-v-<span class="number">0</span>-<span class="number">4</span>]auth s
+
+[h3c-v-<span class="number">0</span>-<span class="number">4</span>]quit
+
+[h3c]quit
+
+h3csave
+
+ssh <span class="keyword">user</span> admin authentication-<span class="built_in">type</span> <span class="literal">password</span>
+
+local-<span class="keyword">user</span> admin
+
+ <span class="literal">password</span> simple/cipher admin
+
+ <span class="keyword">service</span>-<span class="built_in">type</span> telnet
+
+ authorization-attribute level <span class="number">3</span>
+
+如果是telnet的话还加上下面的
+
+telnet server <span class="literal">enable</span>
+
+<span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span> <span class="number">4</span>
+
+ authentication-<span class="literal">mode</span> scheme
+
+display snmp-agent community
+
+<span class="constant">H</span>3Csystem-view
+
+<span class="constant">System</span> <span class="constant">View</span>: return to <span class="constant">User</span> <span class="constant">View</span> with <span class="constant">Ctrl</span>+<span class="constant">Z</span>.
+
+[<span class="constant">H</span>3C]snmp-agent
+
+[<span class="constant">H</span>3C]snmp-agent community read public
+
+[<span class="constant">H</span>3C]snmp-agent sys-info version v1 v2c
+
+[<span class="constant">H</span>3C]save
+
+<span class="constant">H</span>3C <span class="constant">S</span>512<span class="number">0</span> 交换机常用配置
+
+<span class="number">1</span>、配置主机名
+
+[<span class="constant">H</span>3C]systemname <span class="constant">H</span>3C
+
+<span class="number">2</span>、配置console口密码
+
+<span class="comment"># 进入系统视图。</span>
+
+<span class="constant">H</span>3C <span class="literal">system</span>-view
+
+<span class="comment"># 进入AUX用户界面视图。</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">user</span>-<span class="keyword">interface</span> aux <span class="number">0</span>
+
+<span class="comment"># 设置通过Console口登录交换机的用户进行Password认证。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] authentication-<span class="literal">mode</span> <span class="literal">password</span>
+
+<span class="comment"># 设置用户的认证口令为加密方式，口令为nmamtf。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] set authentication <span class="literal">password</span> cipher nmamtf
+
+<span class="comment"># 设置从AUX用户界面登录后可以访问的命令级别为2级。</span>
+
+[<span class="constant">H</span>3C-ui-aux<span class="number">0</span>] <span class="keyword">user</span> privilege level <span class="number">2</span>
+
+<span class="number">3</span>、配置<span class="constant">Telnet</span>
+
+<span class="comment"># 进入系统视图。</span>
+
+<span class="constant">H</span>3C <span class="literal">system</span>-view
+
+<span class="comment"># 进入VTY0用户界面视图。</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">user</span>-<span class="keyword">interface</span> vty <span class="number">0</span>
+
+<span class="comment"># 设置通过VTY0口登录交换机的用户进行Password认证。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] authentication-<span class="literal">mode</span> <span class="literal">password</span>
+
+<span class="comment"># 设置用户的认证口令为密码方式，口令为nmamtf。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] set authentication <span class="literal">password</span> cipher nmamtf
+
+<span class="comment"># 设置从VTY0用户界面登录后可以访问的命令级别为2级。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] <span class="keyword">user</span> privilege level <span class="number">2</span>
+
+<span class="comment"># 设置VTY0用户界面支持Telnet协议。</span>
+
+[<span class="constant">H</span>3C-ui-vty<span class="number">0</span>] protocol inbound telnet
+
+<span class="number">4</span>、配置交换机<span class="constant">V</span>LAN <span class="number">1</span> 管理地址
+
+<span class="constant">H</span>3C <span class="literal">system</span>-view
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> <span class="keyword">vlan</span>-<span class="keyword">interface</span> <span class="number">1</span>
+
+[<span class="constant">H</span>3C-<span class="constant">V</span>LAN-interface1] <span class="literal">ip</span> address <span class="number">192.168</span>.<span class="number">0</span>.<span class="number">129</span> <span class="number">255.255</span>.<span class="number">255.0</span>
+
+<span class="number">5</span>、配置交换机网关地址
+
+[<span class="constant">H</span>3C]<span class="literal">ip</span> route-static <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> <span class="number">192.168</span>.<span class="number">0</span>.<span class="number">1</span>
+
+<span class="number">6</span>、配置<span class="constant">H</span>TTP服务
+
+[<span class="constant">H</span>3C] local-<span class="keyword">user</span> admin <span class="comment">#创建http用户</span>
+
+[<span class="constant">H</span>3C-luser-admin] <span class="keyword">service</span>-<span class="built_in">type</span> telnet 
+
+[<span class="constant">H</span>3C-luser-admin] authorization-attribute level <span class="number">3</span>
+
+[<span class="constant">H</span>3C-luser-admin] <span class="literal">password</span> cipher admin <span class="comment">#设置http用户密码,并加密显示</span>
+
+<span class="number">7</span>、配置<span class="constant">S</span>NMP
+
+[<span class="constant">H</span>3C]snmp-agent
+
+[<span class="constant">H</span>3C]snmp-agent community read public <span class="comment">#设置snmp团体名称 ，权限为只读</span>
+
+[<span class="constant">H</span>3C]snmp-agent sys-info version v1 v2c <span class="comment">#设置snmp版本v1 和v2</span>
+
+<span class="number">8</span>、<span class="constant">Qos</span>端口限速
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> gigabitethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">1</span>
+
+<span class="comment"># 配置限速参数，端口进/出速率限制为5120kbps。</span>
+
+[<span class="constant">H</span>3C-<span class="constant">Gigabit</span>Ethernet1/<span class="number">0</span>/<span class="number">1</span>] qos lr inbound cir <span class="number">5120</span>
+
+[<span class="constant">H</span>3C-<span class="constant">Gigabit</span>Ethernet1/<span class="number">0</span>/<span class="number">1</span>] qos lr outbound cir <span class="number">5120</span>
+
+<span class="number">9</span>、创建<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C] <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">10</span>、删除<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C] undo <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">11</span>、将端口加入<span class="keyword">vlan</span> <span class="number">100</span>
+
+[<span class="constant">H</span>3C] <span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C] port access <span class="keyword">vlan</span> <span class="number">100</span>
+
+<span class="number">12</span>、查看<span class="constant">V</span>LAN
+
+[<span class="constant">H</span>3C]display <span class="keyword">vlan</span> all
+
+<span class="number">12</span>、查看端口状态
+
+[<span class="constant">H</span>3C]display <span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+<span class="number">14</span>、启用端口
+
+[<span class="constant">H</span>3C]<span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C]undo shutdown
+
+<span class="number">15</span>、关闭端口
+
+[<span class="constant">H</span>3C]<span class="keyword">interface</span> <span class="constant">Gigabit</span>Ethernet <span class="number">1</span>/<span class="number">0</span>/<span class="number">24</span>
+
+[<span class="constant">H</span>3C]shutdown
+
+<span class="number">16</span>、查看<span class="constant">M</span>AC地址列表
+
+[<span class="constant">H</span>3C]display mac-address
+
+<span class="number">17</span>、查看arp信息
+
+[<span class="constant">H</span>3C]display arp
+
+<span class="number">18</span>、查看current配置
+
+[<span class="constant">H</span>3C]display current-configuration
+
+<span class="number">19</span>、查看saved配置
+
+[<span class="constant">H</span>3C]display saved-configuration
+
+注:current 配置是保存在交换机内存里面，当交换机重启时，不会生效
+
+ 要交换机重启时生效，必须保存在saved-configureation配置里
+
+<span class="number">20</span>、保存交换机配置
+
+[<span class="constant">H</span>3C]save 
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/09/14/w/e5-8d-8e-e4-b8-bah3c-e4-ba-a4-e6-8d-a2-e6-9c-bas5120-e9-85-8d-e7-bd-ae-e7-ae-a1-e7-90-86-e5-9c-b0-e5-9d-80-e5-92-8csshtelnet/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-05-24T10:53:18.000Z" class="post__time">五月 24, 2012</time><h1 class="post__title"><a href="/2012/05/24/w/centos-e7-bc-96-e8-af-91mldonkey-e8-a7-a3-e5-86-b3-e4-b8-ad-e6-96-87-e4-b9-b1-e7-a0-81/">centos编译mldonkey解决中文乱码</a></h1></header><div class="post__main"><p>mldonkey可能是最好最稳定的p2p下载软件了，除了支持eD2k和Overnet两种网络外还可以支持BT,DC,Gnutella,Fasttrack,Kad等多种流行的P2P应用网络。编译好的mldonkey-3.1.0.static.i386-Linux_glibc-2.7.tar.bz2汉字文件名乱码。下载mldonkey-3.1.2.tar.bz2源代码编译解决：</p>
 <pre><code>tar xfj mldonkey-<span class="number">3.1</span>.<span class="number">2</span><span class="class">.tar</span><span class="class">.bz2</span> -C /usr/local/src/
 
 cd /usr/local/src/mldonkey-<span class="number">3.1</span>.<span class="number">2</span>/
@@ -438,23 +666,4 @@ pvcreate /dev/sdb
  Writing physical volume <span class="built_in">data</span> <span class="keyword">to</span> disk /dev/sdb
 
  Physical volume /dev/sdb successfully created
-</code></pre></div><footer class="post__foot u-cf"><a href="/2012/05/23/w/gpt-e5-88-86-e5-8c-ba-e4-b8-8d-e8-83-bd-e7-94-a8-e7-89-a9-e7-90-86-e7-a1-ac-e7-9b-98-e5-88-9b-e5-bb-bapv/#comments" class="post__foot-link u-fr">评论</a></footer></article><article class="post"><header class="post__head"><time datetime="2012-04-19T10:18:23.000Z" class="post__time">四月 19, 2012</time><h1 class="post__title"><a href="/2012/04/19/w/logroate-e5-af-bc-e8-87-b4-e7-b3-bb-e7-bb-9f-e9-ab-98-e8-b4-9f-e8-bd-bd-e5-a4-84-e7-90-86/">logroate导致系统高负载处理</a></h1></header><div class="post__main"><p> 一台centos服务器变得极慢，好不容易ssh远程连接上，发现有大量logrotate进程。紧急响应，当务之急恢复系统，首先结束logrotate进程：</p>
-<p>pkill logrotate</p>
-<p>查看/var/log目录，发现一个目录下有大量文件（原因是配置文件错误，修改日志配置）。用rm -f无法删除，改用命令：</p>
-<p>ls | xargs rm -f</p>
-<p>删除。</p>
-<p>清空logrotate状态文件：</p>
-<p> /var/lib/logrotate.status</p>
-<p>执行日志档案轮替</p>
-<p>logrotate -v /etc/logrotate.conf</p>
-<p>系统恢复正常。</p>
-<p>logrotate命令可以自动替换，压缩，删除，邮寄日志文件</p>
-<pre><code>-<span class="ruby"><span class="symbol">f:</span>强行启动记录文件维护操作
-</span>
--<span class="ruby">s 状态文件，指定状态文件，默认为 /var/lib/logrotate.status
-</span>
--<span class="ruby"><span class="symbol">v:</span> 显示命令执行过程
-</span>
-logrotate 配置文件/etc/logrotate.conf ，配置日志文件的处理方式。
-</code></pre><p>每天定时执行配置文件/etc/cron.daily/logrotate</p>
-</div><footer class="post__foot u-cf"><a href="/2012/04/19/w/logroate-e5-af-bc-e8-87-b4-e7-b3-bb-e7-bb-9f-e9-ab-98-e8-b4-9f-e8-bd-bd-e5-a4-84-e7-90-86/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(138)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
+</code></pre></div><footer class="post__foot u-cf"><a href="/2012/05/23/w/gpt-e5-88-86-e5-8c-ba-e4-b8-8d-e8-83-bd-e7-94-a8-e7-89-a9-e7-90-86-e7-a1-ac-e7-9b-98-e5-88-9b-e5-bb-bapv/#comments" class="post__foot-link u-fr">评论</a></footer></article></main><aside class="site-aside"><div class="widget about"><div class="b"><div class="info u-cf"><img src="/avatar.jpg"><div class="text"> <p>dayu graceful</p><p>vegan</p><p>linux sysadm</p><p> <a href="http://www.weibo.com/vegetablegrain" title="wiebo" class="weibo ico"></a><a href="http://user.qzone.qq.com/13467/main" title="qq" class="qq ico"></a></p></div></div></div></div><div class="widget tags"><div class="h">categories</div><div class="b"> <ul><li><a href="/categories/计算机/">计算机</a><small>(139)</small></li><li><a href="/categories/佛法传统文化/">佛法传统文化</a><small>(18)</small></li><li><a href="/categories/健康/">健康</a><small>(12)</small></li><li><a href="/categories/学习/">学习</a><small>(2)</small></li><li><a href="/categories/default/">default</a><small>(1)</small></li><li><a href="/categories/健康之道/">健康之道</a><small>(1)</small></li><li><a href="/categories/网络/">网络</a><small>(1)</small></li><li><a href="/categories/recreation/">recreation</a><small>(1)</small></li></ul></div></div><div class="widget links"><div class="h">links</div><div class="b"> <ul><li><a href="http://www.enzymesos.com/">酵素Enzyme救地球</a></li><li><a href="http://www.osalt.com/">商业软件的开源替代品</a></li></ul></div></div></aside></section><footer class="site-foot"><div class="inner"><div class="site-copy u-fl">© 2015 dayu<bdi> ❤ Theme by <a href="http://riny.net" target="_blank">Bubblings</a></bdi></div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/page/8/" class="page-menu__link icon-arrow-left">prev</a></li><li class="page-menu__item"><a title="Next" href="/page/10/" class="page-menu__link icon-arrow-right">next</a></li></menu></div></footer><div id="back-top" title="返回顶部"></div><script src="/js/script.js"></script></body></html>
